@@ -1,9 +1,54 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-FlowJo-like Flow Cytometry Visualization Tool - v3.9.0
+FlowJo-like Flow Cytometry Visualization Tool - v3.9.3
 @author: vincentpb
 
+Changelog v3.9.2 → v3.9.3
+──────────────────────────
+BUG FIXES
+  1. Region % labels on plot not appearing after gating
+       • _draw_region_labels() was called BEFORE _set_axis_scale().
+         Moving it to AFTER ensures the custom axis transform (asinh /
+         biexp / logicle) is fully in place when label positions are
+         resolved, preventing clipping or misplacement caused by the
+         axis autoscale range being recalculated for the new scale type.
+       • Added an unconditional canvas.draw_idle() at the very end of
+         refresh_plot so every code path (no gate, gate but labels off,
+         gate + labels) flushes exactly once after all changes.
+       • Wrapped _draw_region_labels call in try/except so a label
+         error can never crash the full plot refresh.
+
+  2. Polar analysis: X/Y centroid columns not loading from gated population
+       • _get_population_mask in PolarAnalysisWindow passed _cache_path
+         to _gate_mask_for.  The gate-mask cache was built against the
+         full-file DataFrame; if the polar window operated on a filtered
+         (sub-gate) DataFrame the cached boolean arrays had a different
+         length, raising an exception that was silently swallowed, causing
+         the gate filter to be ignored (all cells used instead).
+       • Fix: _get_population_mask no longer passes _cache_path — it
+         always triggers a fresh, correct computation.
+       • Additional safety: _gate_mask_for now validates cached mask length
+         before using it; a length mismatch forces a recompute.
+
+  3. _clear_preview() called canvas.draw_idle() prematurely
+       • _clear_preview is invoked at the very start of _preview_gate(),
+         which is itself called early in refresh_plot (before gate outlines,
+         labels, scale, and limits are set).  The premature draw_idle()
+         could fire a repaint while the canvas was still in an incomplete
+         state.  Removed draw_idle() from _clear_preview(); all interactive
+         callers of _preview_gate() already issued their own draw_idle().
+
+  4. _auto_detect_channels improvements
+       • Removed duplicate startswith condition (case-insensitive check
+         already subsumed the case-sensitive one).
+       • StringVars are now cleared before re-detection so stale column
+         names from a previous session do not survive if detection fails.
+       • Combo value lists are updated BEFORE var.set() to avoid the
+         ttk readonly-Combobox display glitch where a new value is not
+         shown until the widget is interacted with.
+       • Added fallback detection for 'centroid_x'/'centroid_y' naming
+         conventions used by some analysis pipelines.
 """
 
 import os
@@ -714,21 +759,37 @@ def otsu_threshold(data: np.ndarray, n_bins: int = 512,
 # ─────────────────────────────────────────────────────────────────────────────
 
 class FolderScanDialog(tk.Toplevel):
+    """
+    Load-from-Folder dialog with an integrated Concatenate & Export section.
+
+    result attribute after closing:
+      - list of individual file paths  →  normal "Load Selected" workflow
+      - [single_concat_path]           →  "Save & Load Concatenate" workflow
+    """
+
     def __init__(self, parent, T: dict):
         super().__init__(parent)
         self.T = T
         self.title("Load from Folder")
-        self.geometry("680x540")
+        self.geometry("700x660")
         self.configure(bg=T['sidebar_bg'])
         self.resizable(True, True)
         self.result = []
-        self._folder  = tk.StringVar()
-        self._pattern = tk.StringVar()
-        self._vars    = []
+        self._folder            = tk.StringVar()
+        self._pattern           = tk.StringVar()
+        self._vars              = []
+        # ── Concatenate section state ─────────────────────────────────────
+        self._concat_out_folder = tk.StringVar()
+        self._concat_filename   = tk.StringVar(value="Concatenate.csv")
         self._build()
         self.grab_set()
 
+    # ── Layout ────────────────────────────────────────────────────────────
+
     def _build(self):
+        T = self.T
+
+        # ── Top: pattern filter + folder + scan ──────────────────────────
         fr1 = ttk.Frame(self, style='TFrame')
         fr1.pack(fill=tk.X, padx=10, pady=8)
 
@@ -756,21 +817,12 @@ class FolderScanDialog(tk.Toplevel):
         self._count_lbl = ttk.Label(self, text="No scan yet.", style='Dim.TLabel')
         self._count_lbl.pack(anchor='w', padx=10, pady=(2, 0))
 
-        list_fr = ttk.Frame(self, style='TFrame')
-        list_fr.pack(fill=tk.BOTH, expand=True, padx=8, pady=4)
-        vsb = ttk.Scrollbar(list_fr, orient='vertical')
-        vsb.pack(side=tk.RIGHT, fill=tk.Y)
-        self._cv = tk.Canvas(list_fr, bg=self.T['plot_bg'],
-                              highlightthickness=0, yscrollcommand=vsb.set)
-        self._cv.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        vsb.config(command=self._cv.yview)
-        self._inner = ttk.Frame(self._cv, style='TFrame')
-        self._cv.create_window((0, 0), window=self._inner, anchor='nw')
-        self._inner.bind('<Configure>',
-            lambda e: self._cv.configure(scrollregion=self._cv.bbox('all')))
+        # ── Pack bottom frames FIRST so the list gets remaining space ─────
+        # (pack with side=BOTTOM stacks from the bottom upward)
 
+        # Bottom action row
         btn_fr = ttk.Frame(self, style='TFrame')
-        btn_fr.pack(fill=tk.X, padx=8, pady=6)
+        btn_fr.pack(side=tk.BOTTOM, fill=tk.X, padx=8, pady=6)
         ttk.Button(btn_fr, text="Select All",
                    command=self._sel_all, style='Gray.TButton').pack(side=tk.LEFT, padx=2)
         ttk.Button(btn_fr, text="Deselect All",
@@ -780,11 +832,90 @@ class FolderScanDialog(tk.Toplevel):
         ttk.Button(btn_fr, text="Cancel",
                    command=self.destroy, style='Gray.TButton').pack(side=tk.RIGHT, padx=2)
 
+        # ── Concatenate & Export section (above btn_fr, packed BOTTOM) ───
+        cat_outer = ttk.Frame(self, style='TFrame')
+        cat_outer.pack(side=tk.BOTTOM, fill=tk.X, padx=8, pady=(0, 2))
+
+        # Header label (styled like a section title)
+        hdr_fr = tk.Frame(cat_outer, bg=T['header_bg'])
+        hdr_fr.pack(fill=tk.X, pady=(4, 4))
+        tk.Label(hdr_fr, text="  ⊞  Concatenate & Export",
+                 bg=T['header_bg'], fg=T['fg'],
+                 font=('Arial', 8, 'bold')).pack(side=tk.LEFT, padx=4, pady=3)
+
+        # Row 1: output folder
+        row_folder = ttk.Frame(cat_outer, style='TFrame')
+        row_folder.pack(fill=tk.X, pady=2)
+        ttk.Label(row_folder, text="Output folder:", style='TLabel',
+                  width=13).pack(side=tk.LEFT)
+        ttk.Entry(row_folder, textvariable=self._concat_out_folder,
+                  font=('Arial', 8)).pack(side=tk.LEFT, fill=tk.X,
+                                          expand=True, padx=(4, 4))
+        ttk.Button(row_folder, text="Browse…",
+                   command=self._browse_concat_out,
+                   style='Gray.TButton').pack(side=tk.LEFT)
+
+        # Row 2: filename + action buttons
+        row_file = ttk.Frame(cat_outer, style='TFrame')
+        row_file.pack(fill=tk.X, pady=(2, 4))
+        ttk.Label(row_file, text="Filename:", style='TLabel',
+                  width=13).pack(side=tk.LEFT)
+        ttk.Entry(row_file, textvariable=self._concat_filename,
+                  font=('Arial', 8)).pack(side=tk.LEFT, fill=tk.X,
+                                          expand=True, padx=(4, 4))
+        ttk.Button(row_file, text="Save & Load",
+                   command=self._do_concat_save_load,
+                   style='Green.TButton').pack(side=tk.RIGHT, padx=(4, 0))
+        ttk.Button(row_file, text="Save Only",
+                   command=self._do_concat_save,
+                   style='Teal.TButton').pack(side=tk.RIGHT, padx=(4, 0))
+
+        # Status line for concat feedback
+        self._concat_status_var = tk.StringVar(value="")
+        ttk.Label(cat_outer, textvariable=self._concat_status_var,
+                  style='Dim.TLabel').pack(anchor='w', pady=(0, 2))
+
+        # Thin separator above concat section
+        ttk.Separator(self, orient='horizontal').pack(
+            side=tk.BOTTOM, fill=tk.X, padx=8, pady=0)
+
+        # ── Scrollable file list (takes all remaining middle space) ───────
+        list_fr = ttk.Frame(self, style='TFrame')
+        list_fr.pack(fill=tk.BOTH, expand=True, padx=8, pady=4)
+        vsb = ttk.Scrollbar(list_fr, orient='vertical')
+        vsb.pack(side=tk.RIGHT, fill=tk.Y)
+        self._cv = tk.Canvas(list_fr, bg=T['plot_bg'],
+                              highlightthickness=0, yscrollcommand=vsb.set)
+        self._cv.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        vsb.config(command=self._cv.yview)
+        self._inner = ttk.Frame(self._cv, style='TFrame')
+        self._cv.create_window((0, 0), window=self._inner, anchor='nw')
+        self._inner.bind('<Configure>',
+            lambda e: self._cv.configure(scrollregion=self._cv.bbox('all')))
+
         self._pat_entry.bind('<Return>', lambda e: self._scan())
+
+    # ── Browsing ──────────────────────────────────────────────────────────
 
     def _browse(self):
         d = filedialog.askdirectory(parent=self, title="Select root folder")
-        if d: self._folder.set(d)
+        if not d:
+            return
+        self._folder.set(d)
+        # Auto-fill the concat output folder to the same directory
+        if not self._concat_out_folder.get().strip():
+            self._concat_out_folder.set(d)
+
+    def _browse_concat_out(self):
+        init = (self._concat_out_folder.get().strip()
+                or self._folder.get().strip() or os.path.expanduser('~'))
+        d = filedialog.askdirectory(parent=self,
+                                    title="Select output folder for concatenated file",
+                                    initialdir=init)
+        if d:
+            self._concat_out_folder.set(d)
+
+    # ── Scanning ──────────────────────────────────────────────────────────
 
     def _scan(self):
         folder = self._folder.get().strip()
@@ -795,6 +926,15 @@ class FolderScanDialog(tk.Toplevel):
             messagebox.showwarning("Folder", "Please choose a valid folder.",
                                    parent=self)
             return
+
+        # Auto-fill concat output folder from root folder if not yet set
+        if not self._concat_out_folder.get().strip():
+            self._concat_out_folder.set(folder)
+
+        # Auto-suggest filename from the root folder name
+        folder_stem = os.path.basename(folder.rstrip('/\\')) or "data"
+        self._concat_filename.set(f"{folder_stem}_Concatenate.csv")
+
         pat   = self._pattern.get().strip().lower()
         found = []
         for root, _, files in os.walk(folder):
@@ -804,13 +944,15 @@ class FolderScanDialog(tk.Toplevel):
                         found.append(os.path.join(root, f))
 
         self._vars = []
-        for w in self._inner.winfo_children(): w.destroy()
+        self._concat_status_var.set("")
+        for w in self._inner.winfo_children():
+            w.destroy()
         if not found:
             ttk.Label(self._inner, text="No matching files found.",
                       style='Dim.TLabel').pack(padx=4, pady=4)
             self._count_lbl.config(text="0 files found.")
             return
-        self._count_lbl.config(text=f"{len(found)} CSV files found.")
+        self._count_lbl.config(text=f"{len(found)} file(s) found.")
         for path in found:
             var = tk.BooleanVar(value=True)
             self._vars.append((path, var))
@@ -818,12 +960,175 @@ class FolderScanDialog(tk.Toplevel):
             ttk.Checkbutton(self._inner, text=rel,
                             variable=var).pack(anchor='w', padx=4, pady=1)
 
+    # ── Selection helpers ─────────────────────────────────────────────────
+
     def _sel_all(self):
         for _, v in self._vars: v.set(True)
+
     def _desel_all(self):
         for _, v in self._vars: v.set(False)
+
+    # ── Load selected (unchanged behaviour) ───────────────────────────────
+
     def _confirm(self):
         self.result = [p for p, v in self._vars if v.get()]
+        self.destroy()
+
+    # ── Concatenate helpers ───────────────────────────────────────────────
+
+    def _selected_paths(self) -> list:
+        """Return the currently checked file paths."""
+        return [p for p, v in self._vars if v.get()]
+
+    def _build_concat_save_path(self) -> str | None:
+        """
+        Validate the concat output settings and return the full save path,
+        or None if something is missing / invalid.
+        """
+        out_folder = self._concat_out_folder.get().strip()
+        filename   = self._concat_filename.get().strip()
+
+        if not out_folder:
+            messagebox.showwarning("Concatenate",
+                "Please specify an output folder.", parent=self)
+            return None
+        if not os.path.isdir(out_folder):
+            try:
+                os.makedirs(out_folder, exist_ok=True)
+            except OSError as e:
+                messagebox.showerror("Concatenate",
+                    f"Cannot create output folder:\n{e}", parent=self)
+                return None
+        if not filename:
+            messagebox.showwarning("Concatenate",
+                "Please enter a filename.", parent=self)
+            return None
+        if not filename.lower().endswith('.csv'):
+            filename += '.csv'
+        return os.path.join(out_folder, filename)
+
+    @staticmethod
+    def _smart_read_csv(path: str) -> pd.DataFrame:
+        """
+        Read a CSV robustly, handling two common layouts produced by
+        image-analysis exporters:
+
+        Layout A — CytoFile style  (no leading index column):
+            Label,Intensity_TH,...
+            1,10742176,...
+
+        Layout B — Results style  (unnamed integer index as first column):
+             ,Label,X_TH_microns,...
+            1,1,23.99,...
+
+        Detection rule: if the first column header is empty (or whitespace
+        only), treat it as a row-number index and discard it via index_col=0.
+        """
+        # Peek at just the header to decide
+        with open(path, newline='', encoding='utf-8-sig') as fh:
+            first_line = fh.readline()
+        first_col_name = first_line.split(',')[0].strip()
+
+        if first_col_name == '':
+            # Layout B — unnamed leading index column → discard it
+            df = pd.read_csv(path, index_col=0)
+            df.index = range(len(df))   # reset to clean 0-based RangeIndex
+        else:
+            # Layout A — normal CSV, no index column
+            df = pd.read_csv(path)
+
+        return df
+
+    def _run_concat(self, selected: list) -> 'pd.DataFrame | None':
+        """
+        Read and concatenate the selected CSV files.
+        Adds a 'Source_File' column (basename of each source file) as the
+        first column so the origin of every row is traceable after merging.
+        Returns the combined DataFrame, or None on error.
+        Skips FCS files with a warning (concatenation is CSV-only).
+        """
+        if not selected:
+            messagebox.showwarning("Concatenate",
+                "No files selected — tick at least one file to concatenate.",
+                parent=self)
+            return None
+
+        frames = []
+        skipped = []
+        for path in selected:
+            ext = os.path.splitext(path)[1].lower()
+            if ext == '.fcs':
+                skipped.append(os.path.basename(path))
+                continue
+            try:
+                df = self._smart_read_csv(path)
+                # Insert Source_File as the very first column
+                df.insert(0, 'Source_File', os.path.basename(path))
+                frames.append(df)
+            except Exception as e:
+                messagebox.showerror("Concatenate",
+                    f"Could not read:\n{os.path.basename(path)}\n\n{e}",
+                    parent=self)
+                return None
+
+        if skipped:
+            messagebox.showwarning("Concatenate",
+                f"FCS files are excluded from concatenation "
+                f"(CSV only):\n" + "\n".join(skipped), parent=self)
+
+        if not frames:
+            messagebox.showwarning("Concatenate",
+                "No CSV files in selection to concatenate.", parent=self)
+            return None
+
+        return pd.concat(frames, ignore_index=True)
+
+    def _do_concat_save(self):
+        """Save the concatenated file; keep the dialog open."""
+        selected = self._selected_paths()
+        save_path = self._build_concat_save_path()
+        if save_path is None:
+            return
+        combined = self._run_concat(selected)
+        if combined is None:
+            return
+
+        try:
+            combined.to_csv(save_path, index=False)
+        except OSError as e:
+            messagebox.showerror("Concatenate", f"Could not save file:\n{e}",
+                                 parent=self)
+            return
+
+        n_cells = len(combined)
+        n_files = len(selected)
+        msg = (f"✓ {n_files} file(s) · {n_cells:,} rows  →  "
+               f"{os.path.basename(save_path)}")
+        self._concat_status_var.set(msg)
+        messagebox.showinfo("Concatenate",
+            f"Saved successfully:\n{save_path}\n\n"
+            f"{n_files} file(s) · {n_cells:,} rows",
+            parent=self)
+
+    def _do_concat_save_load(self):
+        """Save the concatenated file, then load it into the app."""
+        selected = self._selected_paths()
+        save_path = self._build_concat_save_path()
+        if save_path is None:
+            return
+        combined = self._run_concat(selected)
+        if combined is None:
+            return
+
+        try:
+            combined.to_csv(save_path, index=False)
+        except OSError as e:
+            messagebox.showerror("Concatenate", f"Could not save file:\n{e}",
+                                 parent=self)
+            return
+
+        # Return the single concatenated file path so the caller loads it
+        self.result = [save_path]
         self.destroy()
 
 
@@ -1010,6 +1315,1019 @@ class BatchStatsDialog(tk.Toplevel):
             return
         self.result = (folder, suffix, file_type, save_path)
         self.destroy()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Polar / Vector Analysis Window
+# ─────────────────────────────────────────────────────────────────────────────
+
+class PolarAnalysisWindow(tk.Toplevel):
+    """
+    Dedicated window for vector-directionality / polar analysis.
+
+    Workflow
+    --------
+    1.  Select which gate + region to analyse (or all cells).
+    2.  Map the four centroid coordinate columns
+        (X Ch1, Y Ch1, X Ch2, Y Ch2).
+    3.  Set analysis parameters (alpha, MRL threshold, # bins, sort order).
+    4.  Choose a view mode:
+          Merged   — all active files concatenated → one figure.
+          Per file — one file at a time; ◀ / ▶ to navigate.
+          Overlay  — all files drawn together on the same polar axes.
+    5.  Press "Compute & Plot".
+    6.  Export the current figure or one figure per file.
+
+    Analysis
+    --------
+    For each cell pair the displacement vector  (Δx, Δy) = Ch2 − Ch1
+    is computed.  Angles (atan2) and magnitudes are derived.
+
+    A magnitude threshold is found by sorting vectors (ascending or
+    descending) and iteratively checking, at each new vector added,
+    whether the Rayleigh p-value (Bonferroni-corrected for the number
+    of tests so far) is below alpha.  The threshold is the magnitude of
+    the first vector at which significance is reached.
+
+    Up to four subplots are produced:
+      • All-vectors polar histogram
+      • Below-threshold polar histogram
+      • Above-threshold polar histogram
+      • Magnitude distribution (histogram with threshold line)
+
+    A red arrow marks the mean direction when MRL ≥ mrl_threshold.
+    """
+
+    # ── construction ─────────────────────────────────────────────────────────
+
+    def __init__(self, parent_root, T: dict, app: 'FlowApp'):
+        super().__init__(parent_root)
+        self.T   = T
+        self.app = app
+        self.title("Vector / Polar Analysis")
+        self.geometry("1320x840")
+        self.configure(bg=T['sidebar_bg'])
+        self.resizable(True, True)
+
+        # ── tk variables ─────────────────────────────────────────────────
+        self._alpha_var      = tk.StringVar(value='0.05')
+        self._mrl_thresh_var = tk.StringVar(value='0.3')
+        self._n_bins_var     = tk.StringVar(value='36')
+        self._sort_var       = tk.StringVar(value='ascending')
+
+        self._cx1_var = tk.StringVar()
+        self._cy1_var = tk.StringVar()
+        self._cx2_var = tk.StringVar()
+        self._cy2_var = tk.StringVar()
+
+        self._gate_var   = tk.StringVar(value='All cells')
+        self._region_var = tk.StringVar(value='All regions')
+
+        self._view_var  = tk.StringVar(value='merged')
+        self._file_idx  = 0
+        self._file_keys = []
+
+        self._show_all_var   = tk.BooleanVar(value=True)
+        self._show_below_var = tk.BooleanVar(value=True)
+        self._show_above_var = tk.BooleanVar(value=True)
+        self._show_mag_var   = tk.BooleanVar(value=True)
+
+        # saved for export-all
+        self._last_params = None
+
+        self._build_ui()
+        self._auto_detect_channels()
+        self._populate_gate_dropdown()
+
+    # ── UI construction ───────────────────────────────────────────────────────
+
+    def _build_ui(self):
+        T = self.T
+
+        # ── Scrollable sidebar ────────────────────────────────────────────
+        sb_outer = tk.Frame(self, bg=T['sidebar_bg'], width=270)
+        sb_outer.pack(side=tk.LEFT, fill=tk.Y)
+        sb_outer.pack_propagate(False)
+
+        sv = ttk.Scrollbar(sb_outer, orient='vertical')
+        sv.pack(side=tk.RIGHT, fill=tk.Y)
+        self._sb_canvas = tk.Canvas(sb_outer, bg=T['sidebar_bg'],
+                                    highlightthickness=0, yscrollcommand=sv.set)
+        self._sb_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        sv.config(command=self._sb_canvas.yview)
+
+        self._sb = ttk.Frame(self._sb_canvas, style='TFrame')
+        self._sb_canvas.create_window((0, 0), window=self._sb,
+                                       anchor='nw', width=252)
+        self._sb.bind('<Configure>',
+            lambda e: self._sb_canvas.configure(
+                scrollregion=self._sb_canvas.bbox('all')))
+        def _scroll(evt):
+            self._sb_canvas.yview_scroll(int(-1 * (evt.delta / 120)), 'units')
+        self._sb_canvas.bind('<MouseWheel>', _scroll)
+        self._sb.bind('<MouseWheel>', _scroll)
+
+        p = self._sb   # shorthand for packing
+
+        def _sec(txt):
+            ttk.Label(p, text=f'  {txt}', style='Section.TLabel',
+                      anchor='w').pack(fill=tk.X, pady=(10, 2))
+
+        def _lbl(txt):
+            ttk.Label(p, text=txt, style='TLabel').pack(anchor='w', padx=8)
+
+        def _btn(txt, cmd, style='TButton'):
+            b = ttk.Button(p, text=txt, command=cmd, style=style)
+            b.pack(fill=tk.X, padx=8, pady=2)
+            return b
+
+        def _combo(var, vals, width=24):
+            cb = ttk.Combobox(p, textvariable=var, values=vals,
+                              state='readonly', font=('Arial', 8), width=width)
+            cb.pack(fill=tk.X, padx=8, pady=(0, 3))
+            return cb
+
+        def _entry(var):
+            e = ttk.Entry(p, textvariable=var, font=('Arial', 8), width=8)
+            e.pack(anchor='w', padx=8, pady=(0, 3))
+            return e
+
+        # ── POPULATION ───────────────────────────────────────────────────
+        _sec("POPULATION")
+        _lbl("Gate:")
+        self._gate_combo = _combo(self._gate_var, ['All cells'])
+        self._gate_combo.bind('<<ComboboxSelected>>', self._on_gate_changed)
+        _lbl("Region:")
+        self._region_combo = _combo(self._region_var, ['All regions'])
+
+        # ── CHANNEL MAPPING ───────────────────────────────────────────────
+        _sec("CHANNEL MAPPING")
+        cols = self._get_columns()
+        _lbl("X  Ch1 (centroid):")
+        self._cx1_combo = _combo(self._cx1_var, cols)
+        _lbl("Y  Ch1 (centroid):")
+        self._cy1_combo = _combo(self._cy1_var, cols)
+        _lbl("X  Ch2 (centroid):")
+        self._cx2_combo = _combo(self._cx2_var, cols)
+        _lbl("Y  Ch2 (centroid):")
+        self._cy2_combo = _combo(self._cy2_var, cols)
+        _btn("⟳  Auto-detect columns", self._auto_detect_channels, 'Gray.TButton')
+
+        # ── ANALYSIS SETTINGS ─────────────────────────────────────────────
+        _sec("ANALYSIS SETTINGS")
+        _lbl("Alpha (Rayleigh test):")
+        _entry(self._alpha_var)
+        _lbl("MRL threshold (0–1):")
+        _entry(self._mrl_thresh_var)
+        _lbl("Histogram bins:")
+        _entry(self._n_bins_var)
+        _lbl("Sort vectors by magnitude:")
+        _combo(self._sort_var, ['ascending', 'descending'])
+
+        # ── VIEW MODE ─────────────────────────────────────────────────────
+        _sec("VIEW MODE")
+        vm_row = ttk.Frame(p, style='TFrame')
+        vm_row.pack(fill=tk.X, padx=8)
+        for val, lbl_txt in [('merged', 'Merged'),
+                              ('perfile', 'Per file'),
+                              ('overlay', 'Overlay')]:
+            ttk.Radiobutton(vm_row, text=lbl_txt,
+                            variable=self._view_var, value=val,
+                            command=self._on_view_mode_change,
+                            style='TRadiobutton').pack(side=tk.LEFT, padx=2)
+
+        nav = ttk.Frame(p, style='TFrame')
+        nav.pack(fill=tk.X, padx=8, pady=2)
+        self._btn_prev = ttk.Button(nav, text='◀', command=self._prev_file,
+                                    style='Gray.TButton',
+                                    state=tk.DISABLED, width=3)
+        self._btn_prev.pack(side=tk.LEFT, padx=(0, 2))
+        self._btn_next = ttk.Button(nav, text='▶', command=self._next_file,
+                                    style='Gray.TButton',
+                                    state=tk.DISABLED, width=3)
+        self._btn_next.pack(side=tk.LEFT)
+        self._file_lbl_var = tk.StringVar(value='')
+        ttk.Label(nav, textvariable=self._file_lbl_var,
+                  style='Dim.TLabel').pack(side=tk.LEFT, padx=6)
+
+        # ── SUBPLOTS ──────────────────────────────────────────────────────
+        _sec("SUBPLOTS")
+        for var, txt in [
+            (self._show_all_var,   'All vectors'),
+            (self._show_below_var, 'Below-threshold'),
+            (self._show_above_var, 'Above-threshold'),
+            (self._show_mag_var,   'Magnitude distribution'),
+        ]:
+            ttk.Checkbutton(p, text=txt, variable=var,
+                            style='TCheckbutton').pack(anchor='w', padx=8)
+
+        # ── ACTIONS ───────────────────────────────────────────────────────
+        _sec("ACTIONS")
+        _btn("🔄  Compute & Plot",      self._compute_and_plot, 'Accent.TButton')
+        _btn("💾  Export current fig",  self._export_current,   'Green.TButton')
+        _btn("💾  Export all files",    self._export_all,       'Teal.TButton')
+        _btn("📋  Export stats → CSV",  self._export_stats,     'Blue2.TButton')
+
+        ttk.Frame(p, style='TFrame', height=20).pack()
+
+        # ── Plot area ─────────────────────────────────────────────────────
+        self._plot_frame = tk.Frame(self, bg=T['plot_bg'])
+        self._plot_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        self._fig = Figure(figsize=(9.5, 7), facecolor=T['fig_bg'])
+        self._canvas = FigureCanvasTkAgg(self._fig, master=self._plot_frame)
+        self._canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        tf = tk.Frame(self._plot_frame, bg=T['sidebar_bg'])
+        tf.pack(fill=tk.X)
+        tb = NavigationToolbar2Tk(self._canvas, tf)
+        tb.config(background=T['sidebar_bg'])
+        tb.update()
+
+        self._status_var = tk.StringVar(
+            value="Select coordinate columns, then press  🔄 Compute & Plot")
+        tk.Label(self._plot_frame, textvariable=self._status_var,
+                 bg=T['header_bg'], fg=T['fg_dim'],
+                 anchor='w', font=('Arial', 8), padx=6
+                 ).pack(side=tk.BOTTOM, fill=tk.X)
+
+    # ── helpers ───────────────────────────────────────────────────────────────
+
+    def _get_columns(self):
+        files = self.app._active()
+        if not files:
+            return []
+        sets = [set(df.columns) for df in files.values()]
+        return sorted(set.intersection(*sets)) if sets else []
+
+    def _auto_detect_channels(self):
+        """
+        Heuristic auto-assignment of the four centroid columns.
+
+        Looks for columns that match the vSynApp naming convention
+        X_{channel}_microns / Y_{channel}_microns first, then falls back to
+        any column name starting with X_ or Y_, or containing 'centroid'.
+        Refreshes combobox value lists at the same time.
+        """
+        cols = self._get_columns()
+
+        # Always update combo value lists (must precede var.set so that the
+        # readonly Combobox widget accepts the new value without a display glitch)
+        for cb in (self._cx1_combo, self._cy1_combo,
+                   self._cx2_combo, self._cy2_combo):
+            cb['values'] = cols
+
+        # Clear current values so stale results from a previous session
+        # do not survive if auto-detection finds nothing this time.
+        for v in (self._cx1_var, self._cy1_var, self._cx2_var, self._cy2_var):
+            v.set('')
+
+        # Build candidate lists (case-insensitive X_/Y_ prefix, or 'centroid')
+        x_cols = [c for c in cols
+                  if c.lower().startswith('x_') or 'centroid_x' in c.lower()
+                  or ('centroid' in c.lower() and 'x' in c.lower().split('_'))]
+        y_cols = [c for c in cols
+                  if c.lower().startswith('y_') or 'centroid_y' in c.lower()
+                  or ('centroid' in c.lower() and 'y' in c.lower().split('_'))]
+
+        # Deduplicate while preserving order
+        seen = set()
+        x_cols_u = []
+        for c in x_cols:
+            if c not in seen:
+                seen.add(c); x_cols_u.append(c)
+        seen = set()
+        y_cols_u = []
+        for c in y_cols:
+            if c not in seen:
+                seen.add(c); y_cols_u.append(c)
+        x_cols, y_cols = x_cols_u, y_cols_u
+
+        # Prefer columns containing 'microns' (vSynApp convention)
+        x_mu = [c for c in x_cols if 'micron' in c.lower()]
+        y_mu = [c for c in y_cols if 'micron' in c.lower()]
+        if x_mu: x_cols = x_mu
+        if y_mu: y_cols = y_mu
+
+        if len(x_cols) >= 2:
+            self._cx1_var.set(x_cols[0]); self._cx2_var.set(x_cols[1])
+        elif len(x_cols) == 1:
+            self._cx1_var.set(x_cols[0]); self._cx2_var.set(x_cols[0])
+
+        if len(y_cols) >= 2:
+            self._cy1_var.set(y_cols[0]); self._cy2_var.set(y_cols[1])
+        elif len(y_cols) == 1:
+            self._cy1_var.set(y_cols[0]); self._cy2_var.set(y_cols[0])
+
+    def _populate_gate_dropdown(self):
+        applied = [g for g in self.app.gates if g.get('applied')]
+        names   = ['All cells'] + [g['name'] for g in applied]
+        self._gate_combo['values'] = names
+        if self._gate_var.get() not in names:
+            self._gate_var.set('All cells')
+        self._on_gate_changed()
+
+    def _on_gate_changed(self, event=None):
+        name = self._gate_var.get()
+        if name == 'All cells':
+            self._region_combo['values'] = ['All regions']
+            self._region_var.set('All regions')
+            return
+        gate = next((g for g in self.app.gates
+                     if g['name'] == name and g.get('applied')), None)
+        if gate is None:
+            return
+        # Need x/y channels set to call _gate_mask_for safely
+        xch = self.app.x_channel
+        ych = self.app.y_channel
+        if not xch or not ych:
+            self._region_combo['values'] = ['All regions']
+            self._region_var.set('All regions')
+            return
+        dummy_x = np.array([0.0]); dummy_y = np.array([0.0])
+        try:
+            regions, _ = self.app._gate_mask_for(gate, dummy_x, dummy_y)
+            rnames = ['All regions'] + list(regions.keys())
+        except Exception:
+            rnames = ['All regions']
+        self._region_combo['values'] = rnames
+        if self._region_var.get() not in rnames:
+            self._region_var.set('All regions')
+
+    def _on_view_mode_change(self):
+        mode  = self._view_var.get()
+        state = tk.NORMAL if mode == 'perfile' else tk.DISABLED
+        self._btn_prev.config(state=state)
+        self._btn_next.config(state=state)
+        self._file_idx = 0
+        self._update_file_label()
+
+    def _update_file_label(self):
+        if self._view_var.get() == 'perfile' and self._file_keys:
+            n = len(self._file_keys)
+            i = self._file_idx % n
+            name = os.path.basename(self._file_keys[i])
+            self._file_lbl_var.set(
+                f'{i+1}/{n}  {name[:18]}{"…" if len(name) > 18 else ""}')
+        else:
+            self._file_lbl_var.set('')
+
+    def _prev_file(self):
+        if self._file_keys:
+            self._file_idx = (self._file_idx - 1) % len(self._file_keys)
+            self._update_file_label()
+            self._compute_and_plot()
+
+    def _next_file(self):
+        if self._file_keys:
+            self._file_idx = (self._file_idx + 1) % len(self._file_keys)
+            self._update_file_label()
+            self._compute_and_plot()
+
+    # ── data retrieval ────────────────────────────────────────────────────────
+
+    def _get_population_mask(self, df: pd.DataFrame, path: str) -> np.ndarray:
+        """Boolean row-mask for the selected gate + region (all-True if none)."""
+        name = self._gate_var.get()
+        n    = len(df)
+        if name == 'All cells':
+            return np.ones(n, bool)
+        gate = next((g for g in self.app.gates
+                     if g['name'] == name and g.get('applied')), None)
+        if gate is None:
+            return np.ones(n, bool)
+        xch = self.app.x_channel
+        ych = self.app.y_channel
+        if (not xch or not ych or
+                xch not in df.columns or ych not in df.columns):
+            return np.ones(n, bool)
+        xa = df[xch].values.astype(float)
+        ya = df[ych].values.astype(float)
+        try:
+            # Do NOT use the gate-mask cache here (_cache_path=None).
+            # The cache was built against the full file DataFrame; the polar
+            # window may work with a filtered sub-set (sub-gate tab) or the
+            # DataFrame may have changed since the cache entry was written,
+            # leading to wrong-length mask arrays and silently falling back
+            # to "all cells" (the except clause below).  A fresh computation
+            # is cheap enough (< 1 ms for typical file sizes) and correct.
+            regions, _ = self.app._gate_mask_for(gate, xa, ya)
+        except Exception:
+            return np.ones(n, bool)
+        region_sel = self._region_var.get()
+        if region_sel == 'All regions':
+            combined = np.zeros(n, bool)
+            for rname, mask in regions.items():
+                if gate.get('type', 'crosshair') != 'crosshair' \
+                        and rname == 'OUT':
+                    continue
+                combined |= mask
+            return combined
+        return regions.get(region_sel, np.ones(n, bool))
+
+    def _get_vectors_for_df(self, df: pd.DataFrame,
+                            mask: np.ndarray):
+        """
+        Return (angles_rad, magnitudes) for gated rows, or (None, None).
+        Uses the four centroid column variables set in the sidebar.
+        """
+        cx1 = self._cx1_var.get(); cy1 = self._cy1_var.get()
+        cx2 = self._cx2_var.get(); cy2 = self._cy2_var.get()
+        for col in (cx1, cy1, cx2, cy2):
+            if not col or col not in df.columns:
+                return None, None
+        sub = df[mask]
+        if len(sub) == 0:
+            return np.array([]), np.array([])
+        dx = sub[cx2].values.astype(float) - sub[cx1].values.astype(float)
+        dy = sub[cy2].values.astype(float) - sub[cy1].values.astype(float)
+        return np.arctan2(dy, dx), np.sqrt(dx**2 + dy**2)
+
+    # ── circular statistics ───────────────────────────────────────────────────
+
+    @staticmethod
+    def _mrl(angles: np.ndarray) -> float:
+        """Mean Resultant Length — circular analogue of mean absolute deviation."""
+        n = len(angles)
+        if n == 0:
+            return 0.0
+        return float(np.sqrt(np.sum(np.cos(angles))**2 +
+                              np.sum(np.sin(angles))**2) / n)
+
+    @staticmethod
+    def _mean_dir(angles: np.ndarray) -> float:
+        """Circular mean direction in radians."""
+        return float(np.arctan2(np.mean(np.sin(angles)),
+                                 np.mean(np.cos(angles))))
+
+    @staticmethod
+    def _rayleigh_p(angles: np.ndarray) -> float:
+        """
+        Rayleigh test p-value.
+
+        Uses the standard approximation  p ≈ exp(-n · R̄²)  which is
+        accurate for n ≥ 10 and conservative for smaller n.
+        Returns 1.0 for n < 2.
+        """
+        n = len(angles)
+        if n < 2:
+            return 1.0
+        R_bar = PolarAnalysisWindow._mrl(angles)
+        p = float(np.exp(-n * R_bar**2))
+        return float(np.clip(p, 0.0, 1.0))
+
+    def _find_threshold(self, magnitudes: np.ndarray,
+                        angles: np.ndarray,
+                        alpha: float,
+                        sort_asc: bool) -> float:
+        """
+        Iterate over vectors sorted by magnitude, applying a Bonferroni-
+        corrected Rayleigh test after each addition; return the magnitude of
+        the first vector at which significance is reached.
+        Falls back to max(magnitude) if no threshold is found.
+        """
+        if len(magnitudes) == 0:
+            return 0.0
+        combined = sorted(zip(magnitudes, angles),
+                          key=lambda x: x[0], reverse=not sort_asc)
+        threshold = float(magnitudes.max())
+        for i in range(2, len(combined) + 1):
+            subset_angles = np.array([x[1] for x in combined[:i]])
+            p_val  = self._rayleigh_p(subset_angles)
+            adj_p  = alpha / i   # Bonferroni correction
+            if p_val < adj_p:
+                threshold = combined[i - 1][0]
+                break
+        return float(threshold)
+
+    # ── plotting ──────────────────────────────────────────────────────────────
+
+    def _polar_ax(self, ax, angles: np.ndarray, title: str,
+                  color: str, n_bins: int, mrl_thresh: float):
+        """Render one polar histogram subplot."""
+        T = self.T
+        ax.set_facecolor(T['ax_bg'])
+        for sp in ax.spines.values():
+            sp.set_color(T['spine'])
+        ax.tick_params(colors=T['fg'], labelsize=6)
+        ax.grid(True, color=T['grid'], alpha=0.5)
+        ax.set_xticks(np.linspace(0, 2*np.pi, 8, endpoint=False))
+        ax.set_xticklabels(['0°','45°','90°','135°',
+                             '180°','225°','270°','315°'],
+                           fontsize=6, color=T['fg'])
+        ax.set_rlabel_position(30)
+        ax.set_title(title, y=1.1, fontsize=9, color=T['fg'])
+
+        if len(angles) == 0:
+            return
+
+        bin_edges   = np.linspace(-np.pi, np.pi, n_bins + 1)
+        bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2.0
+        counts, _   = np.histogram(angles, bins=bin_edges)
+        ax.bar(bin_centers, counts,
+               width=2*np.pi / n_bins, bottom=0.0,
+               color=color, alpha=0.55,
+               edgecolor=T['spine'], linewidth=0.4)
+
+        mrl = self._mrl(angles)
+        p   = self._rayleigh_p(angles)
+
+        # Mean-direction arrow when MRL exceeds threshold
+        if mrl >= mrl_thresh and np.max(counts) > 0:
+            mean_dir = self._mean_dir(angles)
+            ax.annotate(
+                '', xy=(mean_dir, np.max(counts) * 0.82), xytext=(0, 0),
+                arrowprops=dict(arrowstyle='->', color='#e85d5d', lw=2.0))
+
+        p_fmt  = f'{p:.4f}' if p >= 0.0001 else '< 0.0001'
+        status = ('Significant'
+                  if p < 0.05 and mrl > mrl_thresh
+                  else 'Not significant')
+        info = (f'MRL={mrl:.3f}  p={p_fmt}\n'
+                f'{status}   n={len(angles):,}')
+        ax.text(0.5, 0.05, info,
+                transform=ax.transAxes, fontsize=7,
+                ha='center', va='bottom', color=T['fg'],
+                bbox=dict(boxstyle='round,pad=0.3',
+                          facecolor=T['label_box'], alpha=0.78, linewidth=0))
+
+    def _mag_ax(self, ax, magnitudes: np.ndarray,
+                threshold: float, title: str):
+        """Render the magnitude-distribution histogram subplot."""
+        T = self.T
+        ax.set_facecolor(T['ax_bg'])
+        for sp in ax.spines.values():
+            sp.set_color(T['spine'])
+        ax.tick_params(colors=T['fg'], labelsize=7)
+        ax.grid(True, color=T['grid'], alpha=0.3, linestyle=':')
+        ax.set_title(title, fontsize=9, color=T['fg'])
+        ax.set_xlabel('Vector magnitude', color=T['fg'], fontsize=8)
+        ax.set_ylabel('Count', color=T['fg'], fontsize=8)
+        if len(magnitudes) == 0:
+            return
+        n_b = min(60, max(10, len(magnitudes) // 30))
+        ax.hist(magnitudes, bins=n_b,
+                color='#4a90d9', alpha=0.70,
+                edgecolor=T['spine'], linewidth=0.3)
+        ax.axvline(threshold, color='#e85d5d', lw=1.8,
+                   linestyle='--', label=f'Threshold: {threshold:.2f}')
+        ax.legend(fontsize=7, facecolor=T['legend_bg'],
+                  labelcolor=T['fg'])
+
+    def _render_figure(self, datasets, file_labels,
+                       alpha, mrl_thresh, n_bins, sort_asc):
+        """
+        Build and draw the complete figure.
+
+        datasets    : list of (angles, magnitudes) numpy arrays
+        file_labels : matching list of short string labels
+        """
+        T      = self.T
+        COLORS = ['#4ab573', '#4a90d9', '#e85d5d', '#c77dff',
+                  '#d4a843', '#3a9d9d', '#e07040', '#7070d0']
+
+        self._fig.clear()
+        self._fig.patch.set_facecolor(T['fig_bg'])
+
+        view = self._view_var.get()
+
+        # ── which subplot panels are enabled ─────────────────────────────
+        panel_flags = [self._show_all_var.get(),
+                       self._show_below_var.get(),
+                       self._show_above_var.get(),
+                       self._show_mag_var.get()]
+        panel_keys  = ['all', 'below', 'above', 'mag']
+        active_keys = [k for k, f in zip(panel_keys, panel_flags) if f]
+        if not active_keys:
+            active_keys = ['all']
+
+        # ────────────────────────────────────────────────────────────────
+        #  OVERLAY VIEW
+        # ────────────────────────────────────────────────────────────────
+        if view == 'overlay':
+            n_panels = len(active_keys)
+            ax_map   = {}
+            for pi, key in enumerate(active_keys):
+                if key == 'mag':
+                    ax_map[key] = self._fig.add_subplot(1, n_panels, pi + 1)
+                else:
+                    ax_map[key] = self._fig.add_subplot(
+                        1, n_panels, pi + 1, projection='polar')
+
+            # Compute one shared threshold from the merged dataset
+            valid_a = [a for a, _ in datasets if a is not None and len(a)]
+            valid_m = [m for _, m in datasets if m is not None and len(m)]
+            if not valid_a:
+                self._fig.text(0.5, 0.5, 'No valid vector data',
+                               ha='center', va='center',
+                               color=T['fg'], fontsize=12)
+                self._canvas.draw()
+                return
+            all_a = np.concatenate(valid_a)
+            all_m = np.concatenate(valid_m)
+            threshold = (self._find_threshold(all_m, all_a, alpha, sort_asc)
+                         if len(all_m) > 1 else 0.0)
+
+            bin_edges   = np.linspace(-np.pi, np.pi, n_bins + 1)
+            bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2.0
+
+            for idx, ((angles, mags), lbl) in \
+                    enumerate(zip(datasets, file_labels)):
+                if angles is None or len(angles) == 0:
+                    continue
+                color        = COLORS[idx % len(COLORS)]
+                below_mask   = mags <= threshold
+                above_mask   = ~below_mask
+
+                group_map = {
+                    'all':   angles,
+                    'below': angles[below_mask],
+                    'above': angles[above_mask],
+                }
+                for key in ('all', 'below', 'above'):
+                    if key not in ax_map:
+                        continue
+                    grp = group_map[key]
+                    if len(grp) == 0:
+                        continue
+                    cnts, _ = np.histogram(grp, bins=bin_edges)
+                    ax_map[key].bar(bin_centers, cnts,
+                                    width=2*np.pi/n_bins, bottom=0.0,
+                                    color=color, alpha=0.40,
+                                    edgecolor='none', label=lbl)
+
+                if 'mag' in ax_map:
+                    n_b = min(50, max(8, len(mags) // 30))
+                    ax_map['mag'].hist(mags, bins=n_b, color=color,
+                                       alpha=0.45, edgecolor='none', label=lbl)
+
+            # Dress up axes
+            titles = {'all':   'All vectors (overlay)',
+                      'below': f'Below threshold (overlay)',
+                      'above': 'Above threshold (overlay)',
+                      'mag':   'Magnitude distribution'}
+            for key, ax in ax_map.items():
+                ax.set_facecolor(T['ax_bg'])
+                for sp in ax.spines.values(): sp.set_color(T['spine'])
+                ax.tick_params(colors=T['fg'], labelsize=6)
+                ax.set_title(titles[key], y=1.1 if key != 'mag' else 1.0,
+                             fontsize=9, color=T['fg'])
+                if key != 'mag':
+                    ax.set_xticks(np.linspace(0, 2*np.pi, 8, endpoint=False))
+                    ax.set_xticklabels(
+                        ['0°','45°','90°','135°','180°','225°','270°','315°'],
+                        fontsize=6, color=T['fg'])
+                    ax.set_rlabel_position(30)
+                    ax.grid(True, color=T['grid'], alpha=0.5)
+                    ax.legend(fontsize=6, facecolor=T['legend_bg'],
+                              labelcolor=T['fg'], loc='upper right')
+                else:
+                    ax.axvline(threshold, color='#e85d5d', lw=1.8,
+                               linestyle='--',
+                               label=f'Threshold: {threshold:.2f}')
+                    ax.set_xlabel('Vector magnitude', color=T['fg'], fontsize=8)
+                    ax.set_ylabel('Count', color=T['fg'], fontsize=8)
+                    ax.grid(True, color=T['grid'], alpha=0.3, ls=':')
+                    ax.legend(fontsize=6, facecolor=T['legend_bg'],
+                              labelcolor=T['fg'])
+
+        # ────────────────────────────────────────────────────────────────
+        #  MERGED or PER-FILE VIEW
+        # ────────────────────────────────────────────────────────────────
+        else:
+            if view == 'merged':
+                all_a = (np.concatenate([a for a, _ in datasets
+                                         if a is not None and len(a)])
+                         if datasets else np.array([]))
+                all_m = (np.concatenate([m for _, m in datasets
+                                         if m is not None and len(m)])
+                         if datasets else np.array([]))
+                work_datasets = [(all_a, all_m)]
+                work_labels   = ['All files merged']
+            else:   # perfile
+                work_datasets = datasets
+                work_labels   = file_labels
+
+            angles, mags = work_datasets[0] if work_datasets else \
+                           (np.array([]), np.array([]))
+            label        = work_labels[0] if work_labels else ''
+
+            threshold = (self._find_threshold(mags, angles, alpha, sort_asc)
+                         if len(mags) > 1 else
+                         (float(mags[0]) if len(mags) == 1 else 0.0))
+
+            below_mask   = mags <= threshold if len(mags) else \
+                           np.array([], dtype=bool)
+            above_mask   = ~below_mask
+
+            angles_below = angles[below_mask] if len(angles) else np.array([])
+            angles_above = angles[above_mask] if len(angles) else np.array([])
+
+            # Build the list of (kind, data, color, title) for each panel
+            layout = []
+            if 'all' in active_keys:
+                layout.append(
+                    ('polar', angles, '#4ab573', 'All vectors'))
+            if 'below' in active_keys:
+                layout.append(
+                    ('polar', angles_below, '#4a90d9',
+                     f'Below threshold\n({len(angles_below):,} vectors)'))
+            if 'above' in active_keys:
+                layout.append(
+                    ('polar', angles_above, '#e85d5d',
+                     f'Above threshold\n({len(angles_above):,} vectors)'))
+            if 'mag' in active_keys:
+                layout.append(
+                    ('mag', mags, None, 'Magnitude distribution'))
+
+            n = len(layout)
+            cols = min(n, 4)
+            rows = (n + cols - 1) // cols
+
+            for i, (kind, data, color, title) in enumerate(layout):
+                if kind == 'polar':
+                    ax = self._fig.add_subplot(rows, cols, i + 1,
+                                               projection='polar')
+                    self._polar_ax(ax, data, title, color, n_bins, mrl_thresh)
+                else:
+                    ax = self._fig.add_subplot(rows, cols, i + 1)
+                    self._mag_ax(ax, data, threshold, title)
+
+            self._fig.suptitle(label, color=T['fg'], fontsize=10, y=1.01)
+
+        self._fig.tight_layout()
+        self._canvas.draw()
+
+    # ── compute & plot ────────────────────────────────────────────────────────
+
+    def _compute_and_plot(self, file_subset: dict = None):
+        """
+        Read parameters, gather data, compute vectors, render figure.
+        If file_subset is given, only those files are processed
+        (used by export-all to render one file at a time).
+        """
+        try:
+            alpha      = float(self._alpha_var.get())
+            mrl_thresh = float(self._mrl_thresh_var.get())
+            n_bins     = int(self._n_bins_var.get())
+            sort_asc   = self._sort_var.get() == 'ascending'
+        except ValueError:
+            messagebox.showerror("Polar Analysis",
+                "Invalid parameter value(s).", parent=self)
+            return
+
+        active = self.app._active()
+        if not active:
+            messagebox.showwarning("Polar Analysis",
+                "No data loaded.", parent=self)
+            return
+
+        if not all([self._cx1_var.get(), self._cy1_var.get(),
+                    self._cx2_var.get(), self._cy2_var.get()]):
+            messagebox.showerror("Polar Analysis",
+                "Please select all four coordinate columns.", parent=self)
+            return
+
+        self._file_keys = sorted(active.keys())
+        self._update_file_label()
+
+        # Determine which files to display
+        if file_subset is not None:
+            sources = file_subset
+        elif self._view_var.get() == 'perfile' and self._file_keys:
+            key     = self._file_keys[self._file_idx % len(self._file_keys)]
+            sources = {key: active[key]}
+        else:
+            sources = active
+
+        datasets    = []
+        file_labels = []
+        for path, df in sources.items():
+            mask             = self._get_population_mask(df, path)
+            angles, mags     = self._get_vectors_for_df(df, mask)
+            datasets.append((angles if angles is not None else np.array([]),
+                             mags   if mags   is not None else np.array([])))
+            file_labels.append(os.path.basename(path))
+
+        if not any(len(a) > 0 for a, _ in datasets):
+            messagebox.showwarning(
+                "Polar Analysis",
+                "No valid vector data found.\n"
+                "Check that the coordinate columns exist and the gate "
+                "contains cells.",
+                parent=self)
+            return
+
+        self._last_params = dict(
+            alpha=alpha, mrl_thresh=mrl_thresh,
+            n_bins=n_bins, sort_asc=sort_asc)
+
+        n_total = sum(len(a) for a, _ in datasets)
+        gate_lbl = self._gate_var.get()
+        region_lbl = self._region_var.get()
+        pop_info = (f'{gate_lbl} / {region_lbl}'
+                    if gate_lbl != 'All cells' else 'All cells')
+        self._status_var.set(
+            f"{n_total:,} vectors  ·  population: {pop_info}"
+            f"  ·  α={alpha}  ·  MRL-thresh={mrl_thresh}"
+            f"  ·  {len(datasets)} file(s)")
+
+        self._render_figure(datasets, file_labels,
+                             alpha, mrl_thresh, n_bins, sort_asc)
+
+    # ── export ────────────────────────────────────────────────────────────────
+
+    def _save_fig(self, fig: Figure, default_name: str):
+        path = filedialog.asksaveasfilename(
+            parent=self,
+            defaultextension='.pdf',
+            initialfile=default_name,
+            filetypes=[("PDF", "*.pdf"), ("PNG", "*.png"),
+                       ("SVG", "*.svg"), ("All", "*.*")])
+        if not path:
+            return False
+        try:
+            fig.savefig(path, dpi=300, bbox_inches='tight',
+                        facecolor=fig.get_facecolor())
+            messagebox.showinfo("Saved", f"Figure saved:\n{path}", parent=self)
+            return True
+        except Exception as e:
+            messagebox.showerror("Save Error", str(e), parent=self)
+            return False
+
+    def _export_current(self):
+        self._save_fig(self._fig, 'polar_analysis.pdf')
+
+    def _export_all(self):
+        """Export one PDF per active file (always uses per-file rendering)."""
+        if not self._last_params:
+            messagebox.showwarning(
+                "Export", "Press  🔄 Compute & Plot  first.", parent=self)
+            return
+        active = self.app._active()
+        if not active:
+            return
+        directory = filedialog.askdirectory(
+            parent=self, title="Select output folder")
+        if not directory:
+            return
+
+        p      = self._last_params
+        saved  = 0
+        errors = []
+
+        # Temporarily switch view to merged so _render_figure uses one dataset
+        prev_view = self._view_var.get()
+        self._view_var.set('merged')
+
+        for path, df in active.items():
+            mask         = self._get_population_mask(df, path)
+            angles, mags = self._get_vectors_for_df(df, mask)
+            if angles is None or len(angles) == 0:
+                continue
+            datasets    = [(angles, mags)]
+            file_labels = [os.path.basename(path)]
+
+            self._render_figure(datasets, file_labels,
+                                 p['alpha'], p['mrl_thresh'],
+                                 p['n_bins'], p['sort_asc'])
+
+            stem    = os.path.splitext(os.path.basename(path))[0]
+            outpath = os.path.join(directory, f'{stem}_polar.pdf')
+            try:
+                self._fig.savefig(outpath, dpi=300, bbox_inches='tight',
+                                  facecolor=self._fig.get_facecolor())
+                saved += 1
+            except Exception as e:
+                errors.append(f'{os.path.basename(path)}: {e}')
+
+        self._view_var.set(prev_view)
+        self._compute_and_plot()   # restore original view
+
+        msg = f"Saved {saved} figure(s) to:\n{directory}"
+        if errors:
+            msg += "\n\nErrors:\n" + "\n".join(errors)
+        messagebox.showinfo("Export All", msg, parent=self)
+
+    def _export_stats(self):
+        """
+        Compute vector statistics for every active file and save a CSV.
+
+        Columns:  File, N_vectors, MRL, Rayleigh_p, Threshold_magnitude,
+                  N_below, N_above, Mean_dir_deg, Status,
+                  MRL_below, Rayleigh_p_below, Mean_dir_deg_below,
+                  MRL_above, Rayleigh_p_above, Mean_dir_deg_above,
+                  Gate, Region, Alpha, MRL_thresh
+        """
+        try:
+            alpha      = float(self._alpha_var.get())
+            mrl_thresh = float(self._mrl_thresh_var.get())
+            sort_asc   = self._sort_var.get() == 'ascending'
+        except ValueError:
+            messagebox.showerror("Export Stats",
+                "Invalid parameter value(s).", parent=self)
+            return
+
+        active = self.app._active()
+        if not active:
+            messagebox.showwarning("Export Stats",
+                "No data loaded.", parent=self)
+            return
+
+        if not all([self._cx1_var.get(), self._cy1_var.get(),
+                    self._cx2_var.get(), self._cy2_var.get()]):
+            messagebox.showerror("Export Stats",
+                "Please select all four coordinate columns.", parent=self)
+            return
+
+        path_out = filedialog.asksaveasfilename(
+            parent=self,
+            defaultextension='.csv',
+            initialfile='polar_vector_stats.csv',
+            filetypes=[("CSV", "*.csv"), ("All files", "*.*")])
+        if not path_out:
+            return
+
+        gate_lbl   = self._gate_var.get()
+        region_lbl = self._region_var.get()
+        rows = []
+
+        for fpath, df in active.items():
+            mask         = self._get_population_mask(df, fpath)
+            angles, mags = self._get_vectors_for_df(df, mask)
+            if angles is None or len(angles) == 0:
+                rows.append({'File': os.path.basename(fpath),
+                             'N_vectors': 0, 'Gate': gate_lbl,
+                             'Region': region_lbl})
+                continue
+
+            threshold   = self._find_threshold(mags, angles, alpha, sort_asc)
+            below_mask  = mags <= threshold
+            above_mask  = ~below_mask
+
+            a_all   = angles
+            a_below = angles[below_mask]
+            a_above = angles[above_mask]
+
+            def _stats(a):
+                if len(a) == 0:
+                    return dict(mrl=None, p=None, mean_dir=None)
+                mrl = self._mrl(a)
+                p   = self._rayleigh_p(a)
+                md  = float(np.degrees(self._mean_dir(a))) % 360
+                return dict(mrl=round(mrl, 5),
+                            p=round(p, 6) if p >= 1e-6 else p,
+                            mean_dir=round(md, 2))
+
+            s_all   = _stats(a_all)
+            s_below = _stats(a_below)
+            s_above = _stats(a_above)
+
+            status = ('Significant'
+                      if (s_all['p'] is not None and
+                          s_all['p'] < 0.05 and
+                          s_all['mrl'] is not None and
+                          s_all['mrl'] > mrl_thresh)
+                      else 'Not significant')
+
+            rows.append({
+                'File':              os.path.basename(fpath),
+                'Gate':              gate_lbl,
+                'Region':            region_lbl,
+                'N_vectors':         len(a_all),
+                'MRL':               s_all['mrl'],
+                'Rayleigh_p':        s_all['p'],
+                'Mean_dir_deg':      s_all['mean_dir'],
+                'Status':            status,
+                'Threshold_mag':     round(float(threshold), 4),
+                'N_below':           int(below_mask.sum()),
+                'MRL_below':         s_below['mrl'],
+                'Rayleigh_p_below':  s_below['p'],
+                'Mean_dir_deg_below': s_below['mean_dir'],
+                'N_above':           int(above_mask.sum()),
+                'MRL_above':         s_above['mrl'],
+                'Rayleigh_p_above':  s_above['p'],
+                'Mean_dir_deg_above': s_above['mean_dir'],
+                'Alpha':             alpha,
+                'MRL_thresh':        mrl_thresh,
+                'Sort_order':        'ascending' if sort_asc else 'descending',
+                'X_Ch1':             self._cx1_var.get(),
+                'Y_Ch1':             self._cy1_var.get(),
+                'X_Ch2':             self._cx2_var.get(),
+                'Y_Ch2':             self._cy2_var.get(),
+            })
+
+        if not rows:
+            messagebox.showwarning("Export Stats",
+                "No vector data found.", parent=self)
+            return
+
+        try:
+            pd.DataFrame(rows).to_csv(path_out, index=False)
+            messagebox.showinfo("Export Stats",
+                f"Stats saved ({len(rows)} file(s)):\n{path_out}",
+                parent=self)
+        except Exception as e:
+            messagebox.showerror("Export Stats", str(e), parent=self)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1481,6 +2799,16 @@ class FlowApp:
         self._btn("Export Gated Data → CSV",   self.export_gated_data,  'Green.TButton')
         self._btn("📊 Batch Stats → Folder",   self.batch_export_stats, 'Teal.TButton')
         self._btn("Export Figure → PDF/PNG",   self.export_figure,      'Blue2.TButton')
+
+        # ── VECTOR ANALYSIS ──
+        self._section("VECTOR ANALYSIS")
+        ttk.Label(
+            p,
+            text="  Requires X/Y centroid columns\n  for two channels in the data.",
+            style='Dim.TLabel', justify='left'
+        ).pack(anchor='w', padx=8, pady=(0, 4))
+        self._btn("🧭 Polar / Vector Analysis…",
+                  self.open_polar_analysis, 'Purple.TButton')
 
         ttk.Frame(p, style='TFrame', height=20).pack()
 
@@ -1994,12 +3322,10 @@ class FlowApp:
             if self.ax_top and self.ax_right:
                 self._plot_marginals(x_raw, y_raw, xt, yt, valid, color)
 
-        # Draw ALL applied gate outlines + handles for selected gate
-        self._preview_gate()   # calls canvas.draw_idle() internally
-
-        if eff_gate and self.show_labels_var.get():
-            self._draw_region_labels(applied_gates)
-            self.canvas.draw_idle()   # flush label text additions
+        # Draw ALL applied gate outlines + handles for selected gate.
+        # _clear_preview no longer calls draw_idle(); refresh_plot owns the
+        # full draw lifecycle and issues one unconditional flush at the end.
+        self._preview_gate()
 
         fg = T['fg']
         self.fig.suptitle(f'{self.x_channel}  ×  {self.y_channel}',
@@ -2013,6 +3339,12 @@ class FlowApp:
             self.ax_top.tick_params(colors=fg, labelsize=6)
         if self.ax_right:
             self.ax_right.tick_params(colors=fg, labelsize=6)
+
+        # Apply the custom axis scale BEFORE drawing region labels so that
+        # the full axis transform (asinh / biexp / logicle) is in place when
+        # _label_centroid() resolves text positions.  Labels placed before
+        # set_xscale() can be clipped or repositioned when the axis
+        # autoscale range is recalculated for the new scale type.
         self._set_axis_scale()
 
         # ── Fit axes to data (FlowJo-style "zoom to data") ────────────────────
@@ -2041,6 +3373,16 @@ class FlowApp:
             except Exception:
                 pass   # non-finite limits (e.g. log of negative) → keep auto
 
+        # ── Region % labels ───────────────────────────────────────────────────
+        # Drawn AFTER _set_axis_scale() + fit-axes so that:
+        #   • _label_centroid uses the correct axis transform space
+        #   • axis limits are finalised before text positions are resolved
+        if eff_gate and self.show_labels_var.get():
+            try:
+                self._draw_region_labels(applied_gates)
+            except Exception:
+                pass   # never let a label error crash the full refresh
+
         if self.show_legend_var.get():
             if eff_gate and gated_legend_handles:
                 self.ax.legend(handles=gated_legend_handles,
@@ -2060,6 +3402,10 @@ class FlowApp:
             f"{self.x_channel} vs {self.y_channel}  │  "
             f"Scale: {self.x_scale}/{self.y_scale}"
             + (f"  │  {len(applied_gates)} gate(s) ON" if eff_gate else ""))
+
+        # Single unconditional flush — renders scatter + gate outlines +
+        # labels + axis styling all at once, avoiding partial repaints.
+        self.canvas.draw_idle()
 
     # ── Plot helpers ──────────────────────────────────────────────────────────
 
@@ -2650,7 +3996,15 @@ class FlowApp:
             ck  = (_cache_path, self.x_channel, self.y_channel,
                    gate['id'], sig)
             if ck in self._gmc:
-                return self._gmc[ck]
+                cached_regions, cached_colors = self._gmc[ck]
+                # Safety: verify mask length matches current input to guard
+                # against stale cache entries (e.g. from a differently-sized
+                # filtered DataFrame in the Polar window or sub-gate tabs).
+                if cached_regions:
+                    first_mask = next(iter(cached_regions.values()))
+                    if len(first_mask) == len(xa):
+                        return cached_regions, cached_colors
+                    # Length mismatch → fall through and recompute
 
         gt = gate.get('type', 'crosshair')
         c  = gate.get('color', GATE_PALETTE[0])
@@ -2905,6 +4259,7 @@ class FlowApp:
                 draw['vertices'].append((x, y))
             self._update_poly_close_btn()
             self._preview_gate()
+            self.canvas.draw_idle()
             return
 
         if draw is None or draw.get('applied'):
@@ -2941,6 +4296,7 @@ class FlowApp:
 
         self.moving_gate = True
         self._preview_gate()
+        self.canvas.draw_idle()
 
     def _on_motion(self, event):
         # ── Handle drag: must work even when cursor moves outside axes ──
@@ -3019,6 +4375,7 @@ class FlowApp:
             gate['x1'] = x; gate['y1'] = y
 
         self._preview_gate()
+        self.canvas.draw_idle()
 
     def _on_release(self, event):
         # ── Finish handle drag (any button) ──
@@ -3382,7 +4739,12 @@ class FlowApp:
             except Exception: pass
         self._preview_artists = []
         self._clear_handles()
-        self.canvas.draw_idle()
+        # NOTE: draw_idle() intentionally removed here.
+        # refresh_plot calls _preview_gate() as part of a larger redraw
+        # sequence; a premature flush here would render an incomplete state
+        # (scatter drawn, gate artists not yet added, labels not yet added).
+        # Each interactive caller (_on_click, _on_motion etc.) issues its own
+        # explicit canvas.draw_idle() after _preview_gate() returns.
 
     def _preview_gate(self):
         """
@@ -5168,6 +6530,21 @@ class FlowApp:
             f"Gated data saved:\n{save_path}\n\n"
             f"{n_cells:,} cells · {n_files} file(s)\n"
             f"Gates: {', '.join(g['name'] for g in applied_gates)}")
+
+    def open_polar_analysis(self):
+        """
+        Open the Polar / Vector Analysis window.
+
+        The window inherits the currently active files and applied gates
+        from this FlowApp instance, but manages its own display independently.
+        """
+        if not self.loaded_files:
+            messagebox.showwarning(
+                "Polar Analysis",
+                "Load at least one data file first.")
+            return
+        win = PolarAnalysisWindow(self.root, self.T, self)
+        win.focus_set()
 
     def export_figure(self):
         stem = self._auto_stem()
