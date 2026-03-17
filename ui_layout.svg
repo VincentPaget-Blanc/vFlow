@@ -1,0 +1,241 @@
+<svg width="100%" viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="580" fill="#1e1e1e" rx="10"/>
+
+  <!-- ── Sidebar ── -->
+  <rect x="10" y="10" width="200" height="560" fill="#2b2b2b" rx="6"/>
+
+  <!-- Theme toggle -->
+  <rect x="18" y="18" width="184" height="22" fill="#3c3f41" rx="4"/>
+  <text x="110" y="33" fill="#aaa" font-size="10" text-anchor="middle">☀  Light mode</text>
+
+  <!-- FILES section -->
+  <rect x="10" y="48" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="59" fill="#aaa" font-size="9" font-weight="bold">  FILES</text>
+  <rect x="18" y="66" width="88" height="18" fill="#4a90d9" rx="3"/>
+  <text x="62" y="79" fill="white" font-size="9" text-anchor="middle">+ Load CSV Files</text>
+  <rect x="110" y="66" width="88" height="18" fill="#3c3f41" rx="3"/>
+  <text x="154" y="79" fill="#ccc" font-size="9" text-anchor="middle">Load from Folder</text>
+
+  <!-- File rows -->
+  <rect x="14" y="88" width="6" height="14" fill="#1f77b4" rx="1"/>
+  <text x="24" y="99" fill="#ccc" font-size="9">■ Sample_A.csv  (n=1,661)</text>
+  <rect x="14" y="104" width="6" height="14" fill="#ff7f0e" rx="1"/>
+  <text x="24" y="115" fill="#ccc" font-size="9">■ Sample_B.csv  (n=1,563)</text>
+  <rect x="14" y="120" width="6" height="14" fill="#2ca02c" rx="1"/>
+  <text x="24" y="131" fill="#ccc" font-size="9">■ Sample_C.csv  (n=2,534)</text>
+
+  <!-- AXES section -->
+  <rect x="10" y="140" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="151" fill="#aaa" font-size="9" font-weight="bold">  AXES &amp; SCALE</text>
+  <text x="18" y="166" fill="#aaa" font-size="9">X axis:</text>
+  <rect x="18" y="170" width="184" height="16" fill="#3c3f41" rx="3"/>
+  <text x="110" y="182" fill="#ccc" font-size="9" text-anchor="middle">Bkgd_Corr_Intensity_TH  ▾</text>
+  <text x="18" y="196" fill="#aaa" font-size="9">Y axis:</text>
+  <rect x="18" y="200" width="184" height="16" fill="#3c3f41" rx="3"/>
+  <text x="110" y="212" fill="#ccc" font-size="9" text-anchor="middle">Bkgd_Corr_Intensity_VGLUT1  ▾</text>
+  <rect x="18" y="220" width="88" height="16" fill="#3c3f41" rx="3"/>
+  <text x="62" y="232" fill="#ccc" font-size="9" text-anchor="middle">Scale: asinh  ▾</text>
+  <rect x="112" y="220" width="88" height="16" fill="#4a90d9" rx="3"/>
+  <text x="156" y="232" fill="white" font-size="9" text-anchor="middle">Apply Axes</text>
+
+  <!-- PLOT section -->
+  <rect x="10" y="242" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="253" fill="#aaa" font-size="9" font-weight="bold">  PLOT</text>
+  <rect x="18" y="258" width="184" height="16" fill="#3c3f41" rx="3"/>
+  <text x="110" y="270" fill="#ccc" font-size="9" text-anchor="middle">Density Plot  ▾</text>
+  <text x="18" y="285" fill="#888" font-size="8">■ Marginal histograms   ■ Region labels</text>
+  <text x="18" y="297" fill="#888" font-size="8">■ Legend   ■ Grid   □ Fit axes to data</text>
+
+  <!-- AUTO-GATE section -->
+  <rect x="10" y="304" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="315" fill="#aaa" font-size="9" font-weight="bold">  AUTO-GATE</text>
+  <rect x="18" y="320" width="184" height="16" fill="#3949ab" rx="3"/>
+  <text x="110" y="332" fill="white" font-size="9" text-anchor="middle">2D GMM  (joint X,Y space)</text>
+  <rect x="18" y="339" width="184" height="16" fill="#b05e3e" rx="3"/>
+  <text x="110" y="351" fill="white" font-size="9" text-anchor="middle">KDE Valley  (X + Y)</text>
+  <rect x="18" y="358" width="184" height="16" fill="#1a6b7a" rx="3"/>
+  <text x="110" y="370" fill="white" font-size="9" text-anchor="middle">Multi-Valley Grid  (KDE X+Y)</text>
+  <rect x="18" y="377" width="184" height="16" fill="#2a7d7d" rx="3"/>
+  <text x="110" y="389" fill="white" font-size="9" text-anchor="middle">Otsu  (X + Y)</text>
+  <rect x="18" y="396" width="184" height="16" fill="#6d4c41" rx="3"/>
+  <text x="110" y="408" fill="white" font-size="9" text-anchor="middle">Cluster Polygons  (HDBSCAN)</text>
+
+  <!-- GATE MANAGER section -->
+  <rect x="10" y="418" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="429" fill="#aaa" font-size="9" font-weight="bold">  GATE MANAGER</text>
+  <rect x="18" y="434" width="184" height="16" fill="#4a90d9" rx="3"/>
+  <text x="110" y="446" fill="white" font-size="9" text-anchor="middle">+ Add Gate</text>
+  <rect x="14" y="453" width="8" height="12" fill="#e74c3c" rx="1"/>
+  <text x="26" y="463" fill="#ccc" font-size="9">▸ Gate 1  [crosshair]</text>
+  <text x="160" y="463" fill="#e74c3c" font-size="9">✗</text>
+
+  <!-- STATISTICS section -->
+  <rect x="10" y="470" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="481" fill="#aaa" font-size="9" font-weight="bold">  STATISTICS</text>
+  <rect x="18" y="487" width="184" height="40" fill="#1e1e1e" rx="3"/>
+  <text x="24" y="500" fill="#e41a1c" font-size="8">VGLUT1+/TH+   349   21.0%</text>
+  <text x="24" y="510" fill="#377eb8" font-size="8">VGLUT1+/TH−   532   32.0%</text>
+  <text x="24" y="520" fill="#4daf4a" font-size="8">VGLUT1−/TH+   780   47.0%</text>
+
+  <!-- EXPORT section -->
+  <rect x="10" y="534" width="200" height="14" fill="#3c3f41"/>
+  <text x="18" y="545" fill="#aaa" font-size="9" font-weight="bold">  EXPORT</text>
+  <text x="18" y="560" fill="#888" font-size="8">Save Gates  ·  Export Stats  ·  Batch Stats</text>
+
+  <!-- ── Plot area ── -->
+  <!-- Top marginal histogram -->
+  <rect x="250" y="10" width="620" height="80" fill="#1e1e1e" rx="4"/>
+  <text x="560" y="26" fill="#555" font-size="9" text-anchor="middle">Count</text>
+  <!-- Histogram bars top -->
+  <rect x="290" y="50" width="8" height="30" fill="#1f77b4" opacity="0.6"/>
+  <rect x="300" y="40" width="8" height="40" fill="#1f77b4" opacity="0.6"/>
+  <rect x="310" y="55" width="8" height="25" fill="#1f77b4" opacity="0.6"/>
+  <rect x="370" y="35" width="8" height="45" fill="#ff7f0e" opacity="0.6"/>
+  <rect x="380" y="25" width="8" height="55" fill="#ff7f0e" opacity="0.6"/>
+  <rect x="390" y="30" width="8" height="50" fill="#ff7f0e" opacity="0.6"/>
+  <rect x="500" y="28" width="8" height="52" fill="#2ca02c" opacity="0.6"/>
+  <rect x="510" y="20" width="8" height="60" fill="#2ca02c" opacity="0.6"/>
+  <rect x="520" y="24" width="8" height="56" fill="#2ca02c" opacity="0.6"/>
+  <rect x="610" y="40" width="8" height="40" fill="#d62728" opacity="0.6"/>
+  <rect x="620" y="32" width="8" height="48" fill="#d62728" opacity="0.6"/>
+  <rect x="630" y="35" width="8" height="45" fill="#d62728" opacity="0.6"/>
+
+  <!-- Main scatter area -->
+  <rect x="250" y="98" width="580" height="452" fill="#1e1e1e" rx="4"/>
+
+  <!-- Grid lines -->
+  <line x1="250" y1="200" x2="830" y2="200" stroke="#333" stroke-width="0.5"/>
+  <line x1="250" y1="300" x2="830" y2="300" stroke="#333" stroke-width="0.5"/>
+  <line x1="250" y1="400" x2="830" y2="400" stroke="#333" stroke-width="0.5"/>
+  <line x1="350" y1="98" x2="350" y2="550" stroke="#333" stroke-width="0.5"/>
+  <line x1="470" y1="98" x2="470" y2="550" stroke="#333" stroke-width="0.5"/>
+  <line x1="590" y1="98" x2="590" y2="550" stroke="#333" stroke-width="0.5"/>
+  <line x1="710" y1="98" x2="710" y2="550" stroke="#333" stroke-width="0.5"/>
+
+  <!-- Density dot cloud — VGLUT1+/TH+ top-right quadrant (upper right of crosshair) -->
+  <circle cx="670" cy="140" r="22" fill="#ff4500" opacity="0.7"/>
+  <circle cx="640" cy="155" r="18" fill="#ff6600" opacity="0.6"/>
+  <circle cx="700" cy="130" r="15" fill="#ff8c00" opacity="0.5"/>
+  <circle cx="655" cy="170" r="14" fill="#ffa500" opacity="0.5"/>
+  <circle cx="720" cy="145" r="10" fill="#ffcc00" opacity="0.4"/>
+
+  <!-- Scattered TH+ VGLUT1+ dots -->
+  <circle cx="620" cy="120" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="635" cy="108" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="658" cy="115" r="2" fill="#1f77b4" opacity="0.7"/>
+  <circle cx="680" cy="105" r="2" fill="#2ca02c" opacity="0.7"/>
+  <circle cx="695" cy="118" r="2" fill="#d62728" opacity="0.7"/>
+  <circle cx="710" cy="110" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="730" cy="125" r="2" fill="#1f77b4" opacity="0.7"/>
+  <circle cx="745" cy="135" r="2" fill="#2ca02c" opacity="0.7"/>
+  <circle cx="760" cy="115" r="2" fill="#d62728" opacity="0.7"/>
+  <circle cx="775" cy="128" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="790" cy="140" r="2" fill="#1f77b4" opacity="0.7"/>
+  <circle cx="805" cy="120" r="2" fill="#2ca02c" opacity="0.7"/>
+
+  <!-- VGLUT1+/TH- dots (top-left of crosshair) -->
+  <circle cx="320" cy="130" r="2" fill="#e41a1c" opacity="0.8"/>
+  <circle cx="345" cy="118" r="2" fill="#e41a1c" opacity="0.8"/>
+  <circle cx="370" cy="125" r="2" fill="#9467bd" opacity="0.7"/>
+  <circle cx="390" cy="112" r="2" fill="#e41a1c" opacity="0.8"/>
+  <circle cx="410" cy="135" r="2" fill="#9467bd" opacity="0.7"/>
+  <circle cx="430" cy="108" r="2" fill="#e41a1c" opacity="0.8"/>
+  <circle cx="450" cy="122" r="2" fill="#9467bd" opacity="0.7"/>
+  <circle cx="278" cy="140" r="2" fill="#e41a1c" opacity="0.8"/>
+  <circle cx="295" cy="155" r="2" fill="#9467bd" opacity="0.7"/>
+  <circle cx="308" cy="145" r="2" fill="#e41a1c" opacity="0.8"/>
+
+  <!-- VGLUT1-/TH+ dots (bottom-right) — large dense cluster -->
+  <circle cx="660" cy="390" r="18" fill="#ff4500" opacity="0.7"/>
+  <circle cx="635" cy="410" r="15" fill="#ff6600" opacity="0.6"/>
+  <circle cx="690" cy="375" r="12" fill="#ff8c00" opacity="0.5"/>
+  <circle cx="615" cy="430" r="10" fill="#ffa500" opacity="0.5"/>
+  <circle cx="720" cy="395" r="8"  fill="#ffcc00" opacity="0.4"/>
+  <!-- More scattered TH+ VGLUT1- dots -->
+  <circle cx="620" cy="360" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="640" cy="345" r="2" fill="#1f77b4" opacity="0.7"/>
+  <circle cx="665" cy="335" r="2" fill="#2ca02c" opacity="0.7"/>
+  <circle cx="700" cy="355" r="2" fill="#d62728" opacity="0.7"/>
+  <circle cx="740" cy="365" r="2" fill="#ff7f0e" opacity="0.7"/>
+  <circle cx="760" cy="380" r="2" fill="#1f77b4" opacity="0.7"/>
+  <circle cx="780" cy="395" r="2" fill="#2ca02c" opacity="0.7"/>
+  <circle cx="800" cy="410" r="2" fill="#d62728" opacity="0.7"/>
+  <circle cx="820" cy="390" r="2" fill="#ff7f0e" opacity="0.7"/>
+
+  <!-- VGLUT1-/TH- bottom-left sparse -->
+  <circle cx="280" cy="450" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="305" cy="430" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="330" cy="460" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="355" cy="440" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="380" cy="470" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="400" cy="490" r="2" fill="#888" opacity="0.5"/>
+  <circle cx="420" cy="455" r="2" fill="#888" opacity="0.5"/>
+
+  <!-- Crosshair gate lines -->
+  <line x1="560" y1="98" x2="560" y2="550" stroke="#e74c3c" stroke-width="1.8"/>
+  <line x1="250" y1="310" x2="830" y2="310" stroke="#e74c3c" stroke-width="1.8"/>
+
+  <!-- Region labels -->
+  <rect x="395" y="148" width="148" height="50" fill="#111" opacity="0.82" rx="5"/>
+  <text x="469" y="166" fill="white" font-size="9" text-anchor="middle" font-weight="bold">VGLUT1+/TH− ⤵</text>
+  <text x="469" y="179" fill="white" font-size="9" text-anchor="middle">32.0%</text>
+  <text x="469" y="192" fill="white" font-size="9" text-anchor="middle">(532)</text>
+
+  <rect x="575" y="148" width="148" height="50" fill="#e74c3c" opacity="0.82" rx="5"/>
+  <text x="649" y="166" fill="white" font-size="9" text-anchor="middle" font-weight="bold">VGLUT1+/TH+ ⤵</text>
+  <text x="649" y="179" fill="white" font-size="9" text-anchor="middle">21.0%</text>
+  <text x="649" y="192" fill="white" font-size="9" text-anchor="middle">(349)</text>
+
+  <rect x="575" y="350" width="148" height="50" fill="#e74c3c" opacity="0.82" rx="5"/>
+  <text x="649" y="368" fill="white" font-size="9" text-anchor="middle" font-weight="bold">VGLUT1−/TH+ ⤵</text>
+  <text x="649" y="381" fill="white" font-size="9" text-anchor="middle">47.0%</text>
+  <text x="649" y="394" fill="white" font-size="9" text-anchor="middle">(780)</text>
+
+  <!-- Axis labels -->
+  <text x="540" y="568" fill="#ccc" font-size="10" text-anchor="middle">Bkgd_Corr_Intensity_TH</text>
+  <text x="240" y="325" fill="#ccc" font-size="10" text-anchor="middle" transform="rotate(-90, 240, 325)">Bkgd_Corr_Intensity_VGLUT1</text>
+
+  <!-- Y-axis tick labels -->
+  <text x="246" y="202" fill="#888" font-size="8" text-anchor="end">10⁶</text>
+  <text x="246" y="302" fill="#888" font-size="8" text-anchor="end">10⁴</text>
+  <text x="246" y="402" fill="#888" font-size="8" text-anchor="end">10²</text>
+
+  <!-- X-axis tick labels -->
+  <text x="350" y="562" fill="#888" font-size="8" text-anchor="middle">−10⁴</text>
+  <text x="470" y="562" fill="#888" font-size="8" text-anchor="middle">0</text>
+  <text x="590" y="562" fill="#888" font-size="8" text-anchor="middle">10⁴</text>
+  <text x="710" y="562" fill="#888" font-size="8" text-anchor="middle">10⁶</text>
+
+  <!-- Right marginal histogram -->
+  <rect x="836" y="98" width="54" height="452" fill="#1e1e1e" rx="4"/>
+  <rect x="842" y="110" width="20" height="8"  fill="#1f77b4" opacity="0.6"/>
+  <rect x="842" y="120" width="32" height="8"  fill="#1f77b4" opacity="0.6"/>
+  <rect x="842" y="140" width="18" height="8"  fill="#ff7f0e" opacity="0.6"/>
+  <rect x="842" y="150" width="40" height="8"  fill="#ff7f0e" opacity="0.6"/>
+  <rect x="842" y="160" width="28" height="8"  fill="#2ca02c" opacity="0.6"/>
+  <rect x="842" y="300" width="12" height="8"  fill="#1f77b4" opacity="0.6"/>
+  <rect x="842" y="380" width="36" height="8"  fill="#ff7f0e" opacity="0.6"/>
+  <rect x="842" y="390" width="44" height="8"  fill="#2ca02c" opacity="0.6"/>
+  <rect x="842" y="400" width="30" height="8"  fill="#d62728" opacity="0.6"/>
+  <rect x="842" y="420" width="16" height="8"  fill="#1f77b4" opacity="0.6"/>
+  <text x="863" y="570" fill="#888" font-size="8" text-anchor="middle">Count</text>
+
+  <!-- Legend -->
+  <rect x="258" y="500" width="200" height="42" fill="#2b2b2b" opacity="0.9" rx="4"/>
+  <circle cx="268" cy="511" r="3" fill="#1f77b4"/>
+  <text x="275" y="514" fill="#ccc" font-size="8">Sample_A.csv  (n=1,661)</text>
+  <circle cx="268" cy="524" r="3" fill="#ff7f0e"/>
+  <text x="275" y="527" fill="#ccc" font-size="8">Sample_B.csv  (n=1,563)</text>
+  <circle cx="268" cy="537" r="3" fill="#2ca02c"/>
+  <text x="275" y="540" fill="#ccc" font-size="8">Sample_C.csv  (n=2,534)</text>
+
+  <!-- Title -->
+  <text x="540" y="90" fill="#ddd" font-size="11" text-anchor="middle" font-weight="bold">Bkgd_Corr_Intensity_TH  ×  Bkgd_Corr_Intensity_VGLUT1</text>
+</svg>

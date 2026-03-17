@@ -9,6 +9,25 @@ vFlow is a desktop application for interactive 2D gating, visualisation, and qua
 
 In both cases the unit of analysis is the same: one row = one particle, columns = measured channels. vFlow treats these files identically and provides the gating, population quantification, and batch statistics that standard flow cytometry software provides for FCS data, applied to any single-particle measurement table.
 
+<img src="docs/ui_layout.svg" alt="vFlow main interface showing sidebar controls, density scatter plot with crosshair gate, region labels, marginal histograms, and statistics panel" width="100%"/>
+
+---
+
+## Changelog
+
+### v3.9.4 — Bug fixes
+- **Stats panel empty after gate placement** — root cause identified and fixed: `_gate_sig()`, the function that hashes gate geometry to form persistent cache keys, had two bugs introduced in v3.9.2:
+  - **TypeError crash** (`tuple(None)`): `y_boundaries` is initialised to `None` for every manually-drawn crosshair gate; calling `tuple()` on that value raised `TypeError`, which silently aborted the entire `_finish_gate()` chain before the stats panel, cell colouring, or gate-manager row could be updated.
+  - **Wrong cache-key fields**: the function read `x_thresh_active` / `y_thresh_active` (JSON serialisation keys) instead of reading the live `BooleanVar` objects stored under `x_thresh_vars` / `y_thresh_var`. Threshold toggle state was therefore never included in the cache key, so toggling a threshold left a stale cached mask in `_gmc` and stats / cell colours did not update.
+  - Both issues now fixed; `_gate_sig` correctly reads `BooleanVar.get()` for live gates and falls back to plain `bool` for loaded/serialised gates, with all `tuple()` calls guarded against `None`.
+
+### v3.9.3 — Bug fixes and Polar Analysis redesign
+- **Region % labels not appearing after gating** — `_draw_region_labels()` was called before `_set_axis_scale()`, so text positions were resolved under the wrong coordinate transform; moved to after both `_set_axis_scale()` and "Fit axes to data"; added unconditional `canvas.draw_idle()` at end of `refresh_plot`.
+- **Polar analysis: gate filter silently ignored** — `_get_population_mask` passed `_cache_path` to `_gate_mask_for`; cache entries built against the full DataFrame were returned unchanged for filtered sub-gate DataFrames of different length; now always computes fresh, with a length-safety guard in the cache.
+- **Premature repaint in `_clear_preview`** — removed `draw_idle()` from `_clear_preview`; each interactive caller issues its own explicit flush.
+- **Polar Analysis window redesigned** — one polar axes, files overlaid with `FILE_COLORS`, MRL + Rayleigh stats annotated per file, all output non-rasterised for true vector PDF/SVG export; removed below/above-threshold subplots, magnitude subplot, and view-mode switcher.
+- **`_auto_detect_channels` robustness** — clears stale values before re-detection; updates combo value lists before `var.set()`; adds `centroid_x`/`centroid_y` fallback naming; removes duplicate `startswith` condition.
+
 ---
 
 ## Background: The SynaptosomesMacro Pipeline
@@ -27,7 +46,7 @@ The [IJ-Toolset SynaptosomesMacro](https://github.com/fabricecordelieres/IJ-Tool
 5. Saves per-acquisition results as `___CytoFile.csv` and pools all acquisitions of a condition into `_Pooled_CytoFile.csv`
 6. Optionally runs Monte Carlo randomization (via the RandomizerColocalization plugin) to produce a null-distribution colocalization reference in `Analysis_RandomizationResults.csv`
 
-**vFlow is a downstream tool ** It reads those CytoFiles directly, provides the full 2D gating and population quantification workflow, and adds batch processing across all acquisitions of an experiment in a single operation.
+**vFlow is a downstream tool.** It reads those CytoFiles directly, provides the full 2D gating and population quantification workflow, and adds batch processing across all acquisitions of an experiment in a single operation.
 
 ---
 
@@ -74,7 +93,7 @@ scikit-learn is only required for the 2D GMM and Cluster Polygons auto-gate meth
 ## Quick Start
 
 ```bash
-python vFlow.py
+python vFlow_v3_9_4.py
 ```
 
 1. Click **Load Files** or **Load from Folder** to open your `___CytoFile.csv`, `_Pooled_CytoFile.csv`, or `.fcs` files.
@@ -112,7 +131,7 @@ Opens a file picker. Multiple files can be selected at once. Each file gets a di
 Opens the **Folder Scanner** dialog. Select a root directory and optionally a filename suffix filter — the default `___CytoFile` matches the SynaptosomesMacro naming convention directly. The tool recursively scans all subfolders and lists every matching file. Use **Select All** / **Deselect All** or tick individual files before confirming.
 
 ### Exclude / Restore
-Each file row has an **Excl.** button. Excluded files move to the **EXCLUDED FILES** panel and can be restored at any time. Exclusion also propagates to Batch Stats: any file sharing an experiment-level filename prefix with an excluded file is automatically skipped — particularly useful for excluding a `_Pooled_CytoFile` without having to individually exclude every acquisition from the same condition.
+Each file row has an **✕** button. Excluded files move to the **EXCLUDED FILES** panel and can be restored at any time. Exclusion also propagates to Batch Stats: any file sharing an experiment-level filename prefix with an excluded file is automatically skipped — particularly useful for excluding a `_Pooled_CytoFile` without having to individually exclude every acquisition from the same condition.
 
 ### Clear All Files
 Removes all loaded and excluded files after confirmation. Gates are preserved.
@@ -174,6 +193,8 @@ Filled viridis contour levels with an outer boundary at a user-chosen probabilit
 Enable **Draw** mode with the radio button, then select a gate type.
 
 ### Gate Types
+
+<img src="docs/gate_types.svg" alt="Four gate types side by side: crosshair (quadrant grid), rectangle, ellipse, and polygon with vertex handles" width="100%"/>
 
 **Crosshair (✛)**
 One or more vertical X thresholds and one or more horizontal Y thresholds, dividing the plot into a rectangular grid. Each region is labelled with its channel combination (e.g. `TH+/VGLUT1+`). The natural gate type for classic quadrant analysis — separating single-positive, double-positive, and negative populations.
@@ -254,6 +275,44 @@ When multiple gates are applied the panel shows every Venn combination (exclusiv
 
 ---
 
+## Vector / Polar Analysis
+
+The **Vector Analysis** window computes displacement vectors from paired centroid columns (e.g. `X_TH_microns`, `Y_TH_microns`, `X_VGLUT1_microns`, `Y_VGLUT1_microns`) and visualises their angular distribution as a polar rose histogram.
+
+<img src="docs/polar_analysis.svg" alt="Polar analysis window showing overlaid rose histograms for three files with mean-direction arrows and per-file MRL and Rayleigh p-value statistics" width="100%"/>
+
+### Workflow
+
+1. Apply a gate in the main window to select a population of interest (e.g. `VGLUT1+/TH+` double-positive structures).
+2. Click **Vector Analysis** in the EXPORT section.
+3. Select the gate and region in the **POPULATION** section of the sidebar.
+4. Confirm or manually assign the four centroid columns under **CHANNEL MAPPING** (`X Ch1`, `Y Ch1`, `X Ch2`, `Y Ch2`). Click **⟳ Auto-detect** — the tool looks for columns matching `X_*_microns` / `Y_*_microns` naming automatically.
+5. Set histogram bins (default 36), bar alpha, and MRL threshold (default 0.3).
+6. Press **🔄 Compute & Plot**.
+
+### What is plotted
+
+For each active file, the displacement vector `(Δx, Δy) = Ch2 centroid − Ch1 centroid` is computed per row. The angular distribution of these vectors is rendered as a normalised polar rose histogram (each bar = fraction of vectors in that angular bin, so multi-file overlays are directly comparable regardless of cell count). All rendering is non-rasterised — PDF and SVG exports are true vector graphics.
+
+Files are coloured with the same `FILE_COLORS` palette used in the main scatter plot, so the same experiment colours carry through to the polar figure.
+
+### Statistics
+
+Two circular statistics are computed per file and displayed as an annotation on the plot:
+
+| Statistic | Description |
+|-----------|-------------|
+| **MRL** (Mean Resultant Length) | Ranges 0 (uniform) to 1 (perfectly aligned). Indicates the strength of directional preference. |
+| **Rayleigh p-value** | Tests the null hypothesis of a uniform angular distribution. p < 0.05 indicates significant directionality. |
+
+A mean-direction arrow is drawn when `MRL ≥ threshold` (configurable, default 0.3).
+
+### Export
+- **Export figure** — saves as PDF (vector), SVG (vector), or PNG. PDF/SVG output is fully resolution-independent.
+- **Export stats → CSV** — one row per file with `N_vectors`, `MRL`, `Rayleigh_p`, `Mean_dir_deg`, `Significant`, and the four centroid column names.
+
+---
+
 ## Export
 
 ### Save Gates → JSON
@@ -283,13 +342,13 @@ Excluded files are skipped at two levels:
 A companion `_excluded.csv` log is always written alongside the main results, listing every skipped file and the reason.
 
 ### Export Figure → PDF / PNG / SVG
-Saves the current plot at 300 dpi. For vector formats (PDF, SVG, EPS) scatter points are automatically de-rasterised before saving for crisp output at any zoom level, then restored to rasterised state for normal interactive performance.
+Saves the current scatter plot at 300 dpi. For vector formats (PDF, SVG, EPS) scatter points are automatically de-rasterised before saving for crisp output at any zoom level, then restored to rasterised state for normal interactive performance.
 
 ---
 
 ## Themes
 
-**☀ Light** / **🌙 Dark** toggle in the toolbar. The dark theme is the default.
+**☀ Light** / **☾ Dark** toggle in the toolbar. The dark theme is the default.
 
 ---
 
@@ -302,7 +361,7 @@ vFlow is designed to remain responsive at the dataset sizes typical in single-pa
 | Scatter rendering | Capped at 50,000 points drawn (random subsample); statistics always on full data |
 | Density / contour KDE | Fitted on ≤ 30,000 subsampled points; evaluated on a 128×128 grid then interpolated |
 | Coordinate transforms | Cached per `(file, x_channel, y_channel, x_scale, y_scale, cofactor)`; partial eviction on overflow |
-| Gate masks | Cached per `(file, channels, gate_id, gate_geometry_hash)`; auto-invalidated on geometry change |
+| Gate masks | Cached per `(file, channels, gate_id, gate_geometry_hash)`; auto-invalidated on geometry or toggle change |
 | Auto-gate KDE | Subsampled to 30,000 points before fitting |
 | Marginal histograms | Binned from ≤ 30,000 subsampled values; bin edges from full data range |
 | Sensitivity slider | Debounced at 350 ms; live re-runs the last auto-gate without a button click |
@@ -356,12 +415,12 @@ Downstream  (vFlow)
     fine-tune by dragging handles
 
 11. Statistics panel → Merged:
-      TH+/VGLUT1+   double-positive (co-labelled structures)
-      TH+/VGLUT1-   TH-only
-      TH-/VGLUT1+   VGLUT1-only
-      TH-/VGLUT1-   double-negative
+      VGLUT1+/TH+   double-positive (co-labelled structures)
+      VGLUT1+/TH−   VGLUT1-only
+      VGLUT1−/TH+   TH-only
+      VGLUT1−/TH−   double-negative
 
-12. Double-click TH+/VGLUT1+ ⤵ → sub-gate tab opens with only
+12. Double-click VGLUT1+/TH+ ⤵ → sub-gate tab opens with only
     those particles → gate on Distance or a third channel
 
 13. Export Stats → CSV for the gate breakdown
@@ -371,17 +430,25 @@ Downstream  (vFlow)
 14. Back in the main tab:
     Batch Stats → Folder → suffix ___CytoFile → experiment root
     → one output CSV, one row per acquisition, across all conditions
+
+15. Optional — Vector Analysis:
+    Select VGLUT1+/TH+ gate → map X_TH_microns/Y_TH_microns
+    and X_VGLUT1_microns/Y_VGLUT1_microns → Compute & Plot
+    → polar rose histogram per condition with MRL and Rayleigh p
+    → Export figure (PDF/SVG) or stats CSV
 ```
 
 ---
 
 ## Architecture
 
-vFlow is a single-file Python application (~5,400 lines).
+vFlow is a single-file Python application (~6,400 lines, v3.9.4).
 
 **`FlowApp`** — complete analysis environment for one dataset view. Owns the matplotlib figure, all gate state, all file state, and the control panel. Runs standalone or embedded as a tab inside `FlowTabManager`.
 
 **`FlowTabManager`** — manages a `ttk.Notebook` of multiple independent `FlowApp` instances. Handles sub-gate tab creation and passes filtered particle data from parent to child.
+
+**`PolarAnalysisWindow`** — dedicated `tk.Toplevel` for vector directionality analysis. Reads paired centroid columns, computes displacement vectors, renders a polar rose histogram with one overlay per active file. All output is non-rasterised.
 
 **`FolderScanDialog`** — modal dialog for recursive folder scanning with suffix filtering.
 
