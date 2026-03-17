@@ -15,13 +15,23 @@ In both cases the unit of analysis is the same: one row = one particle, columns 
 
 ## Changelog
 
+### v3.9.5 — Concatenate & Export
+
+- **Folder Scanner — Concatenate & Export section** — a new panel at the bottom of the Load from Folder dialog allows selected CSV files to be concatenated into a single pooled file without leaving the dialog:
+  - **Save Only** — concatenates the ticked files, adds a `Source_File` column (basename of each source), and writes the result to a user-chosen folder and filename. The dialog stays open so additional files can still be loaded individually.
+  - **Save & Load** — performs the same concatenation, saves the file, then immediately loads it into the main app as a single pooled dataset. Equivalent to manually merging files in a spreadsheet tool and then loading the result, but in one click.
+  - FCS files are automatically skipped during concatenation (CSV-only) with a warning. Layout variants (unnamed leading index column vs. clean header) are both handled automatically.
+  - Useful for combining per-acquisition `___CytoFile.csv` files from a single condition into a `Pooled_CytoFile.csv` directly within vFlow, without needing an external step.
+
 ### v3.9.4 — Bug fixes
+
 - **Stats panel empty after gate placement** — root cause identified and fixed: `_gate_sig()`, the function that hashes gate geometry to form persistent cache keys, had two bugs introduced in v3.9.2:
   - **TypeError crash** (`tuple(None)`): `y_boundaries` is initialised to `None` for every manually-drawn crosshair gate; calling `tuple()` on that value raised `TypeError`, which silently aborted the entire `_finish_gate()` chain before the stats panel, cell colouring, or gate-manager row could be updated.
   - **Wrong cache-key fields**: the function read `x_thresh_active` / `y_thresh_active` (JSON serialisation keys) instead of reading the live `BooleanVar` objects stored under `x_thresh_vars` / `y_thresh_var`. Threshold toggle state was therefore never included in the cache key, so toggling a threshold left a stale cached mask in `_gmc` and stats / cell colours did not update.
   - Both issues now fixed; `_gate_sig` correctly reads `BooleanVar.get()` for live gates and falls back to plain `bool` for loaded/serialised gates, with all `tuple()` calls guarded against `None`.
 
 ### v3.9.3 — Bug fixes and Polar Analysis redesign
+
 - **Region % labels not appearing after gating** — `_draw_region_labels()` was called before `_set_axis_scale()`, so text positions were resolved under the wrong coordinate transform; moved to after both `_set_axis_scale()` and "Fit axes to data"; added unconditional `canvas.draw_idle()` at end of `refresh_plot`.
 - **Polar analysis: gate filter silently ignored** — `_get_population_mask` passed `_cache_path` to `_gate_mask_for`; cache entries built against the full DataFrame were returned unchanged for filtered sub-gate DataFrames of different length; now always computes fresh, with a length-safety guard in the cache.
 - **Premature repaint in `_clear_preview`** — removed `draw_idle()` from `_clear_preview`; each interactive caller issues its own explicit flush.
@@ -56,8 +66,8 @@ A `___CytoFile.csv` produced by the SynaptosomesMacro toolset typically contains
 
 | Column | Description |
 |--------|-------------|
-| `Intensity_Ch1` | Mean fluorescence intensity, channel 1 (e.g. TH-488) |
-| `Intensity_Ch2` | Mean fluorescence intensity, channel 2 (e.g. VGLUT1-647) |
+| `Intensity_Ch1` | Mean fluorescence intensity, channel 1 (e.g. Ch1-488) |
+| `Intensity_Ch2` | Mean fluorescence intensity, channel 2 (e.g. Ch2-647) |
 | `Bkgd_Corr_Intensity_Ch1` | Background-corrected intensity, channel 1 |
 | `Bkgd_Corr_Intensity_Ch2` | Background-corrected intensity, channel 2 |
 | `Background_Ch1` | Local background estimate, channel 1 |
@@ -93,11 +103,11 @@ scikit-learn is only required for the 2D GMM and Cluster Polygons auto-gate meth
 ## Quick Start
 
 ```bash
-python vFlow_v3_9_4.py
+python vFlow_v3_9_5.py
 ```
 
 1. Click **Load Files** or **Load from Folder** to open your `___CytoFile.csv`, `_Pooled_CytoFile.csv`, or `.fcs` files.
-2. Select X and Y channels (e.g. `Bkgd_Corr_Intensity_TH` vs `Bkgd_Corr_Intensity_VGLUT1`) and click **Apply Axes**.
+2. Select X and Y channels (e.g. `Bkgd_Corr_Intensity_Ch1` vs `Bkgd_Corr_Intensity_Ch2`) and click **Apply Axes**.
 3. Choose a **Scale** for each axis (`asinh` at cofactor 150 is a good starting point for background-corrected immunofluorescence intensities).
 4. Switch to **Density** or **Contour Plot** mode to reveal population structure.
 5. Use one of the **Auto-Gate** buttons or draw a gate manually in **Draw** mode.
@@ -115,7 +125,7 @@ Pure-Python reader, no external dependencies. Supports:
 - Big-endian and little-endian byte orders
 - `$PnE` log-decade encoding for integer channels
 - Non-standard `$BEGINDATA` / `$ENDDATA` offsets written by some instruments
-- Channel names prefer the stain/marker label (`$PnS`, e.g. `TH-488`) over the technical short name (`$PnN`)
+- Channel names prefer the stain/marker label (`$PnS`, e.g. `Ch1-488`) over the technical short name (`$PnN`)
 
 ### CSV files (`.csv`)
 Standard comma-separated files. Each column is a channel; each row is one particle event. Headers required. This is the format produced by the SynaptosomesMacro toolset.
@@ -129,6 +139,14 @@ Opens a file picker. Multiple files can be selected at once. Each file gets a di
 
 ### Load from Folder
 Opens the **Folder Scanner** dialog. Select a root directory and optionally a filename suffix filter — the default `___CytoFile` matches the SynaptosomesMacro naming convention directly. The tool recursively scans all subfolders and lists every matching file. Use **Select All** / **Deselect All** or tick individual files before confirming.
+
+#### Concatenate & Export *(v3.9.5)*
+The Folder Scanner dialog includes a **⊞ Concatenate & Export** panel at the bottom. After ticking the files you want:
+
+- **Save Only** — concatenates the selected CSV files into a single pooled file (with a `Source_File` column identifying each row's origin) and saves it to a chosen folder. The dialog remains open.
+- **Save & Load** — performs the same concatenation, saves, then immediately loads the result into the app as a single merged dataset.
+
+This replaces a common manual step of merging CSV files in a spreadsheet before loading into vFlow.
 
 ### Exclude / Restore
 Each file row has an **✕** button. Excluded files move to the **EXCLUDED FILES** panel and can be restored at any time. Exclusion also propagates to Batch Stats: any file sharing an experiment-level filename prefix with an excluded file is automatically skipped — particularly useful for excluding a `_Pooled_CytoFile` without having to individually exclude every acquisition from the same condition.
@@ -197,7 +215,7 @@ Enable **Draw** mode with the radio button, then select a gate type.
 <img src="docs/gate_types.svg" alt="Four gate types side by side: crosshair (quadrant grid), rectangle, ellipse, and polygon with vertex handles" width="100%"/>
 
 **Crosshair (✛)**
-One or more vertical X thresholds and one or more horizontal Y thresholds, dividing the plot into a rectangular grid. Each region is labelled with its channel combination (e.g. `TH+/VGLUT1+`). The natural gate type for classic quadrant analysis — separating single-positive, double-positive, and negative populations.
+One or more vertical X thresholds and one or more horizontal Y thresholds, dividing the plot into a rectangular grid. Each region is labelled with its channel combination (e.g. `Ch1+/Ch2+`). The natural gate type for classic quadrant analysis — separating single-positive, double-positive, and negative populations.
 
 **Rectangle (▬)**
 Click-drag to define a rectangular gate. Resize by right-dragging corner handles.
@@ -221,7 +239,7 @@ Click to place vertices one by one. Close with **✓ Close Polygon** or by doubl
 Six automatic gate methods, all tunable via the **Sensitivity** slider (1–10, default 7). Moving the slider live re-runs the last-used method with a short debounce delay.
 
 ### 2D GMM — Joint X,Y space
-Fits a Gaussian Mixture Model in the 2D transformed space, using the BIC to select 1–3 components. Thresholds at the valleys between component means. Best for well-separated elliptical populations — typical for clearly distinct TH+/TH− subpopulations.
+Fits a Gaussian Mixture Model in the 2D transformed space, using the BIC to select 1–3 components. Thresholds at the valleys between component means. Best for well-separated elliptical populations — typical for clearly distinct Ch1+/Ch1− subpopulations.
 
 ### KDE Valley — X + Y
 Detects the deepest KDE valley between two populations independently on each axis. Validated by requiring both flanking peaks to be substantially taller than the valley. Falls back to the 5 % left-tail edge for unimodal distributions. A reliable first choice for bimodal channels.
@@ -255,9 +273,9 @@ Any applied gate region can be opened as a **sub-gate tab**:
 
 1. Set Gate Mode to **Off**
 2. Apply a gate so region labels appear on the plot
-3. Double-click any region label (e.g. `TH+ ⤵`)
+3. Double-click any region label (e.g. `Ch1+ ⤵`)
 
-A new tab opens pre-loaded with only the particles from that region. The sub-gate tab is a fully independent vFlow instance with its own axes, scale, plot mode, auto-gate, statistics, and export. This enables hierarchical gating — for example, first gate on FSC-H vs FM4-64-H to select intact synaptosomes, then sub-gate the positive population on TH-488 vs VGLUT1-647 to quantify co-labelled structures.
+A new tab opens pre-loaded with only the particles from that region. The sub-gate tab is a fully independent vFlow instance with its own axes, scale, plot mode, auto-gate, statistics, and export. This enables hierarchical gating — for example, first gate on FSC-H vs FM4-64-H to select intact synaptosomes, then sub-gate the positive population on Ch1 vs Ch2 to quantify co-labelled structures.
 
 Right-click a sub-gate tab header to close it. The Main tab cannot be closed.
 
@@ -277,13 +295,13 @@ When multiple gates are applied the panel shows every Venn combination (exclusiv
 
 ## Vector / Polar Analysis
 
-The **Vector Analysis** window computes displacement vectors from paired centroid columns (e.g. `X_TH_microns`, `Y_TH_microns`, `X_VGLUT1_microns`, `Y_VGLUT1_microns`) and visualises their angular distribution as a polar rose histogram.
+The **Vector Analysis** window computes displacement vectors from paired centroid columns (e.g. `X_Ch1_microns`, `Y_Ch1_microns`, `X_Ch2_microns`, `Y_Ch2_microns`) and visualises their angular distribution as a polar rose histogram.
 
 <img src="docs/polar_analysis.svg" alt="Polar analysis window showing overlaid rose histograms for three files with mean-direction arrows and per-file MRL and Rayleigh p-value statistics" width="100%"/>
 
 ### Workflow
 
-1. Apply a gate in the main window to select a population of interest (e.g. `VGLUT1+/TH+` double-positive structures).
+1. Apply a gate in the main window to select a population of interest (e.g. `Ch1+/Ch2+` double-positive structures).
 2. Click **Vector Analysis** in the EXPORT section.
 3. Select the gate and region in the **POPULATION** section of the sidebar.
 4. Confirm or manually assign the four centroid columns under **CHANNEL MAPPING** (`X Ch1`, `Y Ch1`, `X Ch2`, `Y Ch2`). Click **⟳ Auto-detect** — the tool looks for columns matching `X_*_microns` / `Y_*_microns` naming automatically.
@@ -402,11 +420,12 @@ Downstream  (vFlow)
 ───────────────────
 7.  Load from Folder → suffix ___CytoFile
     → select all acquisitions from one condition
-    (or load _Pooled_CytoFile for a pre-merged view)
+    Optional: use ⊞ Concatenate & Export → Save & Load to merge them
+    into a single pooled file in one step  (new in v3.9.5)
 
 8.  Apply axes:
-      X → Bkgd_Corr_Intensity_TH       (channel 1 background-corrected)
-      Y → Bkgd_Corr_Intensity_VGLUT1   (channel 2 background-corrected)
+      X → Bkgd_Corr_Intensity_Ch1      (channel 1 background-corrected)
+      Y → Bkgd_Corr_Intensity_Ch2      (channel 2 background-corrected)
 
 9.  Set both scales to asinh, cofactor 150–300
     Enable Density or Contour Plot to reveal population structure
@@ -415,12 +434,12 @@ Downstream  (vFlow)
     fine-tune by dragging handles
 
 11. Statistics panel → Merged:
-      VGLUT1+/TH+   double-positive (co-labelled structures)
-      VGLUT1+/TH−   VGLUT1-only
-      VGLUT1−/TH+   TH-only
-      VGLUT1−/TH−   double-negative
+      Ch1+/Ch2+     double-positive (co-labelled structures)
+      Ch1+/Ch2−     Ch1-only
+      Ch1−/Ch2+     Ch2-only
+      Ch1−/Ch2−     double-negative
 
-12. Double-click VGLUT1+/TH+ ⤵ → sub-gate tab opens with only
+12. Double-click Ch1+/Ch2+ ⤵ → sub-gate tab opens with only
     those particles → gate on Distance or a third channel
 
 13. Export Stats → CSV for the gate breakdown
@@ -432,8 +451,8 @@ Downstream  (vFlow)
     → one output CSV, one row per acquisition, across all conditions
 
 15. Optional — Vector Analysis:
-    Select VGLUT1+/TH+ gate → map X_TH_microns/Y_TH_microns
-    and X_VGLUT1_microns/Y_VGLUT1_microns → Compute & Plot
+    Select Ch1+/Ch2+ gate → map X_Ch1_microns/Y_Ch1_microns
+    and X_Ch2_microns/Y_Ch2_microns → Compute & Plot
     → polar rose histogram per condition with MRL and Rayleigh p
     → Export figure (PDF/SVG) or stats CSV
 ```
@@ -442,7 +461,7 @@ Downstream  (vFlow)
 
 ## Architecture
 
-vFlow is a single-file Python application (~6,400 lines, v3.9.4).
+vFlow is a single-file Python application (~6,580 lines, v3.9.5).
 
 **`FlowApp`** — complete analysis environment for one dataset view. Owns the matplotlib figure, all gate state, all file state, and the control panel. Runs standalone or embedded as a tab inside `FlowTabManager`.
 
@@ -450,7 +469,7 @@ vFlow is a single-file Python application (~6,400 lines, v3.9.4).
 
 **`PolarAnalysisWindow`** — dedicated `tk.Toplevel` for vector directionality analysis. Reads paired centroid columns, computes displacement vectors, renders a polar rose histogram with one overlay per active file. All output is non-rasterised.
 
-**`FolderScanDialog`** — modal dialog for recursive folder scanning with suffix filtering.
+**`FolderScanDialog`** — modal dialog for recursive folder scanning with suffix filtering. Includes the Concatenate & Export panel for merging selected CSV files into a single pooled dataset.
 
 **`BatchStatsDialog`** — modal dialog for configuring and previewing a batch statistics run.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-FlowJo-like Flow Cytometry Visualization Tool - v3.9.5
+Flow Cytometry Visualization Tool - v3.9.5
 @author: vincentpb
 
 Changelog v3.9.2 → v3.9.3
@@ -1521,14 +1521,14 @@ class PolarAnalysisWindow(tk.Toplevel):
         # ── CHANNEL MAPPING ───────────────────────────────────────────────
         _sec("CHANNEL MAPPING")
         cols = self._get_columns()
-        _lbl("X  Ch1 (centroid):")
-        self._cx1_combo = _combo(self._cx1_var, cols)
         _lbl("Y  Ch1 (centroid):")
         self._cy1_combo = _combo(self._cy1_var, cols)
-        _lbl("X  Ch2 (centroid):")
-        self._cx2_combo = _combo(self._cx2_var, cols)
+        _lbl("X  Ch1 (centroid):")
+        self._cx1_combo = _combo(self._cx1_var, cols)
         _lbl("Y  Ch2 (centroid):")
         self._cy2_combo = _combo(self._cy2_var, cols)
+        _lbl("X  Ch2 (centroid):")
+        self._cx2_combo = _combo(self._cx2_var, cols)
         _btn("⟳  Auto-detect columns", self._auto_detect_channels, 'Gray.TButton')
 
         # ── SETTINGS ──────────────────────────────────────────────────────
@@ -2191,7 +2191,7 @@ class FlowApp:
         # In standalone mode, build directly into root.
         # In tab mode, build into the supplied container frame.
         if container is None:
-            root.title("Flow Cytometry Tool v39")
+            root.title("vFlow 3.9.5")
             root.geometry("1500x960")
             self._theme_name = 'dark'
             self.T = THEMES['dark']
@@ -2420,24 +2420,24 @@ class FlowApp:
 
         # ── AXES ──
         self._section("AXES")
-        self._lbl("X Axis:")
-        self.x_var = tk.StringVar()
-        self.x_menu = ttk.Combobox(p, textvariable=self.x_var,
-                                    state='readonly', font=('Arial', 8))
-        self.x_menu.pack(fill=tk.X, padx=8, pady=(0, 4))
         self._lbl("Y Axis:")
         self.y_var = tk.StringVar()
         self.y_menu = ttk.Combobox(p, textvariable=self.y_var,
                                     state='readonly', font=('Arial', 8))
         self.y_menu.pack(fill=tk.X, padx=8, pady=(0, 4))
+        self._lbl("X Axis:")
+        self.x_var = tk.StringVar()
+        self.x_menu = ttk.Combobox(p, textvariable=self.x_var,
+                                    state='readonly', font=('Arial', 8))
+        self.x_menu.pack(fill=tk.X, padx=8, pady=(0, 4))
         self._btn("Apply Axes", self.apply_axes, 'Green.TButton')
 
         # ── SCALE ──
         self._section("SCALE")
         sf = ttk.Frame(p, style='TFrame')
         sf.pack(fill=tk.X, padx=8, pady=2)
-        for row_i, (lbl_text, attr) in enumerate([("X:", 'x_scale_var'),
-                                                   ("Y:", 'y_scale_var')]):
+        for row_i, (lbl_text, attr) in enumerate([("Y:", 'y_scale_var'),
+                                                   ("X:", 'x_scale_var')]):
             ttk.Label(sf, text=lbl_text, style='TLabel', width=3
                       ).grid(row=row_i, column=0, sticky='w')
             var = tk.StringVar(value='asinh')
@@ -6444,7 +6444,7 @@ class FlowTabManager:
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        root.title("Flow Cytometry Tool v39")
+        root.title("vFlow 3.9.5")
         root.geometry("1500x960")
 
         self._theme_name = 'dark'
