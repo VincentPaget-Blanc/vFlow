@@ -1,40 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-FlowJo-like Flow Cytometry Visualization Tool - v3.9.4
+FlowJo-like Flow Cytometry Visualization Tool - v3.9.5
 @author: vincentpb
-
-Changelog v3.9.3 → v3.9.4
-──────────────────────────
-BUG FIX — Stats panel empty + gate coloring not applied after drawing a gate
-
-  Root cause: _gate_sig() had two bugs introduced with the persistent
-  gate-mask cache (_gmc) in v3.9.2:
-
-  BUG A — TypeError crash (primary cause of empty stats & blank plot):
-    _gate_sig read  gate.get('y_boundaries', [])  then called tuple() on the
-    result.  For every manually drawn crosshair gate, 'y_boundaries' is
-    initialised to None in _add_gate() — so .get() returns None (the stored
-    value, not the [] default), and tuple(None) raises TypeError.
-    That exception propagated silently through tkinter's event loop, aborting
-    _finish_gate() immediately after _compute_gate_stats_for() — before
-    _rebuild_gate_manager(), refresh_plot(), and _update_stats_display()
-    could run.  The stats panel stayed empty and cell coloring was never
-    applied after gate placement.
-
-  BUG B — Wrong cache-key keys (stale mask after threshold toggle):
-    _gate_sig read 'x_thresh_active', 'y_thresh_active', 'y_thresh_actives'
-    — the serialised JSON key names used in save/load.  Live gate dicts
-    store toggle state in BooleanVar objects under 'x_thresh_vars',
-    'y_thresh_var', 'y_thresh_vars'.  Because those keys are absent in live
-    dicts, the defaults ([] / True / []) were always returned, so the hash
-    never changed when the user toggled a threshold checkbox.  The _gmc
-    cache returned the stale mask (wrong threshold state) and stats/colors
-    did not update.
-
-  Fix: _gate_sig now reads BooleanVar.get() values for live gates and falls
-  back to plain bool values for loaded/serialised gates.  All tuple() calls
-  are guarded against None inputs with `or []`.
 
 Changelog v3.9.2 → v3.9.3
 ──────────────────────────
@@ -375,40 +343,34 @@ def _gate_sig(gate: dict) -> int:
     are naturally bypassed without explicit invalidation.
 
     BUG FIXED (v3.9.3 → v3.9.4):
-    The original implementation read  gate.get('x_thresh_active', []),
+    The original implementation read gate.get('x_thresh_active', []),
     gate.get('y_thresh_active', True) and gate.get('y_thresh_actives', []).
     Those keys are the *serialised* names used in save/load JSON.  Live gate
     dicts store threshold toggle state in BooleanVar objects under the keys
     x_thresh_vars, y_thresh_var and y_thresh_vars — meaning the toggle state
-    was NEVER included in the cache key.
-
-    Two consequences:
+    was NEVER included in the cache key.  Two consequences:
       1. tuple(gate.get('y_boundaries', [])) crashed with TypeError when
-         y_boundaries=None (its initial value for every manually-drawn
-         crosshair gate), because the key exists in the dict with value None
-         so .get() returns None rather than the [] default.  That TypeError
-         silently aborted _finish_gate() at _compute_gate_stats_for(), so
-         the stats panel stayed empty, the plot was never refreshed after gate
-         placement, and the gate-manager row was never rebuilt.
+         y_boundaries=None (its initial value in _add_gate), because the key
+         exists in the dict with value None so .get() returns None rather
+         than the [] default, and tuple(None) raises TypeError.  That
+         TypeError silently aborted _finish_gate() at _compute_gate_stats_for
+         so the stats panel stayed empty, the plot was never refreshed, and
+         the gate-manager row was never rebuilt.
       2. Toggling a threshold checkbox left the stale cached mask in _gmc
          (same hash) so stats and cell colours did not update.
-
-    The fix reads BooleanVar values when present (live gate) and falls back
-    to plain bool values for loaded/serialised gates.  It also guards every
-    tuple() call against None values.
+    The fix reads BooleanVar.get() for live gates and falls back to plain
+    bool for serialised gates.  All tuple() calls are guarded against None.
     """
     gt = gate.get('type', 'crosshair')
     if gt == 'crosshair':
         # ── X threshold active-state ──────────────────────────────────────
         x_tvs = gate.get('x_thresh_vars') or []
         if x_tvs:
-            # Live gate: BooleanVar objects
             try:
                 x_ta = tuple(bool(v.get()) for v in x_tvs)
             except AttributeError:
                 x_ta = tuple(bool(v) for v in x_tvs)
         else:
-            # Loaded/serialised gate: plain bool list
             x_ta = tuple(bool(v) for v in (gate.get('x_thresh_active') or []))
 
         # ── Y threshold active-state (single) ─────────────────────────────
@@ -1413,28 +1375,39 @@ class BatchStatsDialog(tk.Toplevel):
 
 class PolarAnalysisWindow(tk.Toplevel):
     """
-    Polar / Vector Analysis window  (v3.9.3 simplified design)
+    Polar / Vector Analysis window  (v3.9.4)
 
-    Shows ONE polar axes per "Compute & Plot" call.
-    When multiple files are active, each file's rose histogram is overlaid on
-    the same axes using FILE_COLORS — mirroring the behaviour of the main
-    scatter plot.
+    One polar axes, files overlaid with FILE_COLORS.
+    Non-rasterised output → true vector PDF/SVG export.
 
-    The axes is rendered without rasterization so that PDF / SVG exports are
-    true vector graphics.
+    Sidebar
+    -------
+    POPULATION    gate + region selectors
+    FILES         per-file visibility checkboxes (mirrors main window)
+    CHANNEL MAP   X/Y Ch1, X/Y Ch2 centroid column combos + auto-detect
+    SETTINGS      histogram bins, bar alpha, MRL threshold for arrow
+    DISPLAY       show/hide stats annotation on plot, legend
+    ACTIONS       Compute & Plot, Export figure, Export stats CSV
+    STATISTICS    per-file / merged treeview (n, MRL, p, mean dir°, sig)
 
-    What is displayed
-    -----------------
-    • A polar rose histogram (bar chart of angles) for each file / population.
-    • A mean-direction arrow when MRL ≥ mrl_threshold.
-    • A per-file statistics annotation (n, MRL, Rayleigh p).
-
-    Sidebar controls
-    ----------------
-    POPULATION  : gate selector + region selector
-    CHANNEL MAP : X Ch1, Y Ch1, X Ch2, Y Ch2 centroid column combos
-    SETTINGS    : histogram bins, bar alpha, MRL threshold (for arrow)
-    ACTIONS     : Compute & Plot, Export figure, Export stats CSV
+    Statistics
+    ----------
+    MRL   : Mean Resultant Length  R̄ = |∑exp(iθ)| / n ∈ [0, 1]
+    Rayleigh p : Zar (2010) §27.2 corrected series —
+                 Z = n·R̄²,  p ≈ exp(-Z)·(1 + (2Z−Z²)/4n − (24Z−132Z²+76Z³−9Z⁴)/288n²)
+                 This is the standard finite-sample correction; for high MRL
+                 (|R̄| ≥ 0.4) the correction is substantial and should not
+                 be omitted.
+    Significance : marked ✓ when BOTH p < 0.05 AND MRL ≥ threshold.
+                   Using both criteria together is intentional:
+                   • p alone can flag large-n samples with trivially small MRL
+                     (statistically significant but biologically irrelevant).
+                   • MRL alone can appear high in small-n samples that are
+                     simply underpowered for the Rayleigh test.
+                   For typical synaptosome data (n = 12–36 per file), requiring
+                   both an effect-size threshold (MRL) and a significance test
+                   (p) guards against both failure modes.  This is the circular-
+                   statistics analogue of a two-criterion gate in flow cytometry.
     """
 
     # ── construction ─────────────────────────────────────────────────────────
@@ -1444,12 +1417,12 @@ class PolarAnalysisWindow(tk.Toplevel):
         self.T   = T
         self.app = app
         self.title("Vector / Polar Analysis")
-        self.geometry("1000x720")
+        self.geometry("1150x820")
         self.configure(bg=T['sidebar_bg'])
         self.resizable(True, True)
 
         # ── tk variables ─────────────────────────────────────────────────
-        self._mrl_thresh_var = tk.StringVar(value='0.3')
+        self._mrl_thresh_var = tk.StringVar(value='0.5')
         self._n_bins_var     = tk.StringVar(value='36')
         self._alpha_var      = tk.StringVar(value='0.55')
 
@@ -1461,9 +1434,22 @@ class PolarAnalysisWindow(tk.Toplevel):
         self._gate_var   = tk.StringVar(value='All cells')
         self._region_var = tk.StringVar(value='All regions')
 
+        self._show_stats_ann_var = tk.BooleanVar(value=True)
+        self._show_legend_var    = tk.BooleanVar(value=True)
+        self._stats_mode_var     = tk.StringVar(value='perfile')
+
+        # per-file visibility: {path: BooleanVar}
+        self._file_vars: dict = {}
+
+        # last computed datasets for stats refresh without replot
+        self._last_datasets: list = []   # [(angles, mags, label, color, path)]
+
         self._build_ui()
+        self._build_file_list()
         self._auto_detect_channels()
         self._populate_gate_dropdown()
+        # Auto-compute after the window is fully drawn
+        self.after(150, self._compute_and_plot)
 
     # ── UI construction ───────────────────────────────────────────────────────
 
@@ -1471,7 +1457,7 @@ class PolarAnalysisWindow(tk.Toplevel):
         T = self.T
 
         # ── Scrollable sidebar ────────────────────────────────────────────
-        sb_outer = tk.Frame(self, bg=T['sidebar_bg'], width=260)
+        sb_outer = tk.Frame(self, bg=T['sidebar_bg'], width=270)
         sb_outer.pack(side=tk.LEFT, fill=tk.Y)
         sb_outer.pack_propagate(False)
 
@@ -1484,7 +1470,7 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         self._sb = ttk.Frame(self._sb_canvas, style='TFrame')
         self._sb_canvas.create_window((0, 0), window=self._sb,
-                                       anchor='nw', width=244)
+                                       anchor='nw', width=254)
         self._sb.bind('<Configure>',
             lambda e: self._sb_canvas.configure(
                 scrollregion=self._sb_canvas.bbox('all')))
@@ -1526,6 +1512,12 @@ class PolarAnalysisWindow(tk.Toplevel):
         _lbl("Region:")
         self._region_combo = _combo(self._region_var, ['All regions'])
 
+        # ── FILES ─────────────────────────────────────────────────────────
+        _sec("FILES")
+        self._file_list_frame = ttk.Frame(p, style='TFrame')
+        self._file_list_frame.pack(fill=tk.X, padx=8, pady=(0, 4))
+        # populated by _build_file_list()
+
         # ── CHANNEL MAPPING ───────────────────────────────────────────────
         _sec("CHANNEL MAPPING")
         cols = self._get_columns()
@@ -1545,11 +1537,20 @@ class PolarAnalysisWindow(tk.Toplevel):
         _entry(self._n_bins_var)
         _lbl("Bar alpha (0–1):")
         _entry(self._alpha_var)
-        _lbl("MRL threshold for arrow:")
+        _lbl("MRL threshold (arrow + sig.):")
         _entry(self._mrl_thresh_var)
-        ttk.Label(p,
-            text="  Arrow drawn when MRL ≥ threshold",
-            style='Dim.TLabel').pack(anchor='w', padx=8, pady=(0, 6))
+        ttk.Label(p, text="  ✓ sig. requires p<0.05 AND MRL ≥ threshold",
+                  style='Dim.TLabel').pack(anchor='w', padx=8, pady=(0, 4))
+
+        # ── DISPLAY ───────────────────────────────────────────────────────
+        _sec("DISPLAY")
+        for var, txt in [
+            (self._show_stats_ann_var, 'Stats annotation on plot'),
+            (self._show_legend_var,    'Legend'),
+        ]:
+            ttk.Checkbutton(p, text=txt, variable=var,
+                            command=self._refresh_display,
+                            style='TCheckbutton').pack(anchor='w', padx=8)
 
         # ── ACTIONS ───────────────────────────────────────────────────────
         _sec("ACTIONS")
@@ -1557,13 +1558,40 @@ class PolarAnalysisWindow(tk.Toplevel):
         _btn("💾  Export figure",      self._export_current,   'Green.TButton')
         _btn("📋  Export stats → CSV", self._export_stats,     'Blue2.TButton')
 
-        ttk.Frame(p, style='TFrame', height=20).pack()
+        # ── STATISTICS ────────────────────────────────────────────────────
+        _sec("STATISTICS")
+        sm_row = ttk.Frame(p, style='TFrame')
+        sm_row.pack(fill=tk.X, padx=8, pady=(0, 4))
+        for val, lbl_txt in [('perfile', 'Per file'), ('merged', 'Merged')]:
+            ttk.Radiobutton(sm_row, text=lbl_txt,
+                            variable=self._stats_mode_var, value=val,
+                            command=self._update_stats_display,
+                            style='TRadiobutton').pack(side=tk.LEFT, padx=4)
+
+        self._stats_tree = ttk.Treeview(
+            p, columns=('n', 'mrl', 'p', 'dir', 'sig'),
+            show='tree headings', height=8)
+        self._stats_tree.heading('#0',  text='File',      anchor='w')
+        self._stats_tree.heading('n',   text='N',         anchor='e')
+        self._stats_tree.heading('mrl', text='MRL',       anchor='e')
+        self._stats_tree.heading('p',   text='p',         anchor='e')
+        self._stats_tree.heading('dir', text='Dir°',      anchor='e')
+        self._stats_tree.heading('sig', text='Sig.',      anchor='center')
+        self._stats_tree.column('#0',  width=100, stretch=True)
+        self._stats_tree.column('n',   width=40,  anchor='e', stretch=False)
+        self._stats_tree.column('mrl', width=46,  anchor='e', stretch=False)
+        self._stats_tree.column('p',   width=58,  anchor='e', stretch=False)
+        self._stats_tree.column('dir', width=44,  anchor='e', stretch=False)
+        self._stats_tree.column('sig', width=36,  anchor='center', stretch=False)
+        self._stats_tree.pack(fill=tk.X, padx=8, pady=(0, 6))
+
+        ttk.Frame(p, style='TFrame', height=12).pack()
 
         # ── Plot area ─────────────────────────────────────────────────────
         self._plot_frame = tk.Frame(self, bg=T['plot_bg'])
         self._plot_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self._fig = Figure(figsize=(8.5, 7), facecolor=T['fig_bg'])
+        self._fig = Figure(figsize=(9.5, 7.5), facecolor=T['fig_bg'])
         self._canvas = FigureCanvasTkAgg(self._fig, master=self._plot_frame)
         self._canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         tf = tk.Frame(self._plot_frame, bg=T['sidebar_bg'])
@@ -1573,11 +1601,47 @@ class PolarAnalysisWindow(tk.Toplevel):
         tb.update()
 
         self._status_var = tk.StringVar(
-            value="Select coordinate columns, then press  🔄 Compute & Plot")
+            value="Opening  …  auto-computing")
         tk.Label(self._plot_frame, textvariable=self._status_var,
                  bg=T['header_bg'], fg=T['fg_dim'],
                  anchor='w', font=('Arial', 8), padx=6
                  ).pack(side=tk.BOTTOM, fill=tk.X)
+
+    # ── File list ─────────────────────────────────────────────────────────────
+
+    def _build_file_list(self):
+        """Build per-file visibility checkboxes in the FILES section."""
+        for w in self._file_list_frame.winfo_children():
+            w.destroy()
+        active = self.app._active()
+        file_keys = sorted(active.keys())
+        # Preserve existing checkbox state; create new vars only for new files
+        for path in list(self._file_vars.keys()):
+            if path not in file_keys:
+                del self._file_vars[path]
+        for fi, path in enumerate(file_keys):
+            if path not in self._file_vars:
+                self._file_vars[path] = tk.BooleanVar(value=True)
+            var   = self._file_vars[path]
+            color = FILE_COLORS[fi % len(FILE_COLORS)]
+            row   = ttk.Frame(self._file_list_frame, style='TFrame')
+            row.pack(fill=tk.X, pady=1)
+            tk.Label(row, bg=color, width=2, relief='raised'
+                     ).pack(side=tk.LEFT, padx=(0, 4))
+            name  = os.path.basename(path)
+            disp  = (name[:20] + '…') if len(name) > 21 else name
+            ttk.Checkbutton(row, text=disp, variable=var,
+                            command=self._compute_and_plot,
+                            style='TCheckbutton').pack(side=tk.LEFT)
+        if not file_keys:
+            ttk.Label(self._file_list_frame, text="(no files loaded)",
+                      style='Dim.TLabel').pack(anchor='w')
+
+    def _get_active_paths(self) -> list:
+        """Return list of paths where the per-file checkbox is checked."""
+        active = self.app._active()
+        return [p for p in sorted(active.keys())
+                if self._file_vars.get(p, tk.BooleanVar(value=True)).get()]
 
     # ── helpers ───────────────────────────────────────────────────────────────
 
@@ -1591,23 +1655,17 @@ class PolarAnalysisWindow(tk.Toplevel):
     def _auto_detect_channels(self):
         """
         Heuristic auto-assignment of the four centroid columns.
-        Prefers columns matching X_{ch}_microns / Y_{ch}_microns (vSynApp).
-        Falls back to any X_*/Y_* prefix or centroid_x/centroid_y naming.
-        Clears StringVars first so stale values from a previous session
-        do not survive when detection finds nothing.
+        Prefers X_{ch}_microns / Y_{ch}_microns naming (vSynApp convention).
+        Falls back to any X_* / Y_* prefix or centroid_x / centroid_y naming.
+        Clears StringVars first so stale values do not survive.
         """
         cols = self._get_columns()
-
-        # Update combo lists before setting vars (avoids readonly-combo glitch)
         for cb in (self._cx1_combo, self._cy1_combo,
                    self._cx2_combo, self._cy2_combo):
             cb['values'] = cols
-
-        # Clear stale values
         for v in (self._cx1_var, self._cy1_var, self._cx2_var, self._cy2_var):
             v.set('')
 
-        # Build candidate lists (case-insensitive)
         x_cols = [c for c in cols
                   if c.lower().startswith('x_') or 'centroid_x' in c.lower()
                   or ('centroid' in c.lower() and 'x' in c.lower().split('_'))]
@@ -1615,7 +1673,6 @@ class PolarAnalysisWindow(tk.Toplevel):
                   if c.lower().startswith('y_') or 'centroid_y' in c.lower()
                   or ('centroid' in c.lower() and 'y' in c.lower().split('_'))]
 
-        # Deduplicate while preserving order
         seen = set(); x_cols_u = []
         for c in x_cols:
             if c not in seen: seen.add(c); x_cols_u.append(c)
@@ -1624,7 +1681,6 @@ class PolarAnalysisWindow(tk.Toplevel):
             if c not in seen: seen.add(c); y_cols_u.append(c)
         x_cols, y_cols = x_cols_u, y_cols_u
 
-        # Prefer columns containing 'microns' (vSynApp convention)
         x_mu = [c for c in x_cols if 'micron' in c.lower()]
         y_mu = [c for c in y_cols if 'micron' in c.lower()]
         if x_mu: x_cols = x_mu
@@ -1634,7 +1690,6 @@ class PolarAnalysisWindow(tk.Toplevel):
             self._cx1_var.set(x_cols[0]); self._cx2_var.set(x_cols[1])
         elif len(x_cols) == 1:
             self._cx1_var.set(x_cols[0]); self._cx2_var.set(x_cols[0])
-
         if len(y_cols) >= 2:
             self._cy1_var.set(y_cols[0]); self._cy2_var.set(y_cols[1])
         elif len(y_cols) == 1:
@@ -1678,13 +1733,10 @@ class PolarAnalysisWindow(tk.Toplevel):
 
     def _get_population_mask(self, df: pd.DataFrame, path: str) -> np.ndarray:
         """
-        Boolean row-mask for the selected gate + region (all-True if none).
-
-        Important: does NOT pass _cache_path to _gate_mask_for.
-        The gate-mask cache is keyed to the full-file DataFrame.  Here the df
-        may be a filtered subset (sub-gate tab), so we always compute fresh to
-        avoid wrong-length mask errors that would silently fall back to
-        'all cells'.
+        Boolean row-mask for the selected gate + region.
+        Does NOT pass _cache_path to _gate_mask_for — always computes fresh
+        to avoid wrong-length cached masks from the main window's full-file
+        DataFrame being returned for a differently-sized sub-gate DataFrame.
         """
         name = self._gate_var.get()
         n    = len(df)
@@ -1716,12 +1768,8 @@ class PolarAnalysisWindow(tk.Toplevel):
             return combined
         return regions.get(region_sel, np.ones(n, bool))
 
-    def _get_vectors_for_df(self, df: pd.DataFrame,
-                            mask: np.ndarray):
-        """
-        Return (angles_rad, magnitudes) for gated rows, or (None, None).
-        Uses the four centroid column variables set in the sidebar.
-        """
+    def _get_vectors_for_df(self, df: pd.DataFrame, mask: np.ndarray):
+        """Return (angles_rad, magnitudes) or (None, None)."""
         cx1 = self._cx1_var.get(); cy1 = self._cy1_var.get()
         cx2 = self._cx2_var.get(); cy2 = self._cy2_var.get()
         for col in (cx1, cy1, cx2, cy2):
@@ -1738,7 +1786,10 @@ class PolarAnalysisWindow(tk.Toplevel):
 
     @staticmethod
     def _mrl(angles: np.ndarray) -> float:
-        """Mean Resultant Length — circular analogue of mean absolute deviation."""
+        """
+        Mean Resultant Length: R̄ = |∑ exp(iθ)| / n ∈ [0, 1].
+        0 = uniform distribution, 1 = all vectors identical.
+        """
         n = len(angles)
         if n == 0:
             return 0.0
@@ -1747,41 +1798,59 @@ class PolarAnalysisWindow(tk.Toplevel):
 
     @staticmethod
     def _mean_dir(angles: np.ndarray) -> float:
-        """Circular mean direction in radians."""
+        """Circular mean direction in radians ∈ (−π, π]."""
         return float(np.arctan2(np.mean(np.sin(angles)),
                                  np.mean(np.cos(angles))))
 
     @staticmethod
     def _rayleigh_p(angles: np.ndarray) -> float:
         """
-        Rayleigh test p-value.
-        Uses the standard approximation  p ≈ exp(-n · R̄²).
-        Returns 1.0 for n < 2.
+        Rayleigh test p-value with Zar (2010) §27.2 finite-sample correction.
+
+        The simple approximation  p ≈ exp(−n·R̄²)  is the leading-order
+        Greenwood & Durand (1955) result and is adequate only for small R̄.
+        For moderate-to-large R̄ (> 0.4, common in synaptosome data) the
+        higher-order correction terms are substantial — up to ~75% difference
+        for n≈30, R̄≈0.7.
+
+        Corrected formula (n ≥ 10):
+          Z = n · R̄²
+          p ≈ exp(−Z) × (1 + (2Z − Z²)/4n − (24Z − 132Z² + 76Z³ − 9Z⁴)/288n²)
+
+        For n < 10 the series expansion is unreliable and we fall back to
+        the simple exp(−Z) approximation, noting the result is conservative
+        (slightly over-estimates p).
         """
         n = len(angles)
         if n < 2:
             return 1.0
         R_bar = PolarAnalysisWindow._mrl(angles)
-        return float(np.clip(np.exp(-n * R_bar**2), 0.0, 1.0))
+        Z     = n * R_bar**2
+        p     = np.exp(-Z)
+        if n >= 10:
+            p *= (1.0
+                  + (2*Z - Z**2) / (4*n)
+                  - (24*Z - 132*Z**2 + 76*Z**3 - 9*Z**4) / (288*n**2))
+        return float(np.clip(p, 0.0, 1.0))
 
     # ── plotting ──────────────────────────────────────────────────────────────
 
+    def _refresh_display(self):
+        """Re-render the figure from cached datasets (no data recomputation).
+        Called by display-option checkboxes to show/hide annotation / legend."""
+        if self._last_datasets:
+            self._render_figure(self._last_datasets)
+
     def _compute_and_plot(self):
         """
-        Read parameters, gather per-file vector data, render the polar figure.
-
-        One polar axes is produced.  Every active file (filtered by the chosen
-        gate / region) is drawn as a semi-transparent rose histogram using the
-        same FILE_COLORS palette as the main scatter plot.  The mean-direction
-        arrow and per-file statistics are overlaid.
-        All artists are left non-rasterized so PDF / SVG exports are
-        true vector graphics.
+        Collect per-file vector data for visible files, render polar figure,
+        and populate the statistics treeview.
         """
         # ── Parse parameters ──────────────────────────────────────────────
         try:
-            mrl_thresh = float(self._mrl_thresh_var.get())
-            n_bins     = max(4, int(self._n_bins_var.get()))
-            bar_alpha  = float(np.clip(float(self._alpha_var.get()), 0.05, 1.0))
+            float(self._mrl_thresh_var.get())
+            max(4, int(self._n_bins_var.get()))
+            float(np.clip(float(self._alpha_var.get()), 0.05, 1.0))
         except ValueError:
             messagebox.showerror("Polar Analysis",
                 "Invalid parameter value(s).", parent=self)
@@ -1790,39 +1859,54 @@ class PolarAnalysisWindow(tk.Toplevel):
         # ── Validate column selection ─────────────────────────────────────
         if not all([self._cx1_var.get(), self._cy1_var.get(),
                     self._cx2_var.get(), self._cy2_var.get()]):
-            messagebox.showerror("Polar Analysis",
-                "Please select all four coordinate columns.", parent=self)
+            self._status_var.set("Select all four coordinate columns, then compute")
             return
 
         active = self.app._active()
         if not active:
-            messagebox.showwarning("Polar Analysis",
-                "No data loaded.", parent=self)
+            self._status_var.set("No data loaded")
             return
 
-        # ── Collect per-file data ─────────────────────────────────────────
-        file_keys   = sorted(active.keys())
-        datasets    = []   # list of (angles, mags, short_label, color)
-        for fi, path in enumerate(file_keys):
-            df    = active[path]
-            mask  = self._get_population_mask(df, path)
+        # ── Refresh file list to pick up any new/removed files ────────────
+        self._build_file_list()
+
+        # ── Collect data for visible files ────────────────────────────────
+        visible_paths = self._get_active_paths()
+        datasets = []   # list of (angles, mags, label, color, path)
+        for fi, path in enumerate(sorted(active.keys())):
+            if path not in visible_paths:
+                continue
+            df   = active[path]
+            mask = self._get_population_mask(df, path)
             angles, mags = self._get_vectors_for_df(df, mask)
             if angles is None:
                 continue
             color = FILE_COLORS[fi % len(FILE_COLORS)]
             label = os.path.basename(path)
-            datasets.append((angles, mags, label, color))
+            datasets.append((angles, mags, label, color, path))
 
-        if not datasets or not any(len(a) > 0 for a, _, _, _ in datasets):
-            messagebox.showwarning(
-                "Polar Analysis",
-                "No valid vector data found.\n"
-                "Check that the coordinate columns exist and that the "
-                "selected gate / region contains cells.",
-                parent=self)
+        if not datasets or not any(len(a) > 0 for a, _, _, _, _ in datasets):
+            self._status_var.set(
+                "No valid vector data — check coordinate columns and gate")
+            self._fig.clear()
+            self._canvas.draw()
+            self._last_datasets = []
+            self._update_stats_display()
             return
 
-        # ── Build figure ──────────────────────────────────────────────────
+        self._last_datasets = datasets
+        self._render_figure(datasets)
+        self._update_stats_display()
+
+    def _render_figure(self, datasets: list):
+        """Build and draw the polar figure from pre-collected datasets."""
+        try:
+            mrl_thresh = float(self._mrl_thresh_var.get())
+            n_bins     = max(4, int(self._n_bins_var.get()))
+            bar_alpha  = float(np.clip(float(self._alpha_var.get()), 0.05, 1.0))
+        except ValueError:
+            return
+
         T = self.T
         self._fig.clear()
         self._fig.patch.set_facecolor(T['fig_bg'])
@@ -1843,34 +1927,31 @@ class PolarAnalysisWindow(tk.Toplevel):
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2.0
         bin_width   = 2 * np.pi / n_bins
 
-        # Normalise bar heights across all files so they are visually
-        # comparable: each bar shows the fraction of vectors in that bin.
-        stats_lines = []   # collected for the annotation text
+        stats_lines = []
 
-        for angles, mags, label, color in datasets:
+        for angles, mags, label, color, path in datasets:
             if len(angles) == 0:
                 continue
 
             counts, _ = np.histogram(angles, bins=bin_edges)
-            # Normalise to fraction so multi-file overlay is comparable
-            fracs = counts / len(angles)
+            fracs     = counts / len(angles)   # normalised fraction
 
-            # Rose bars — non-rasterized (vector PDF)
+            # Rose bars — non-rasterised for vector PDF export
+            short_lbl = os.path.splitext(label)[0]
+            short_lbl = (short_lbl[:26] + '…') if len(short_lbl) > 27 else short_lbl
             ax.bar(bin_centers, fracs,
                    width=bin_width, bottom=0.0,
                    color=color, alpha=bar_alpha,
                    edgecolor=T['spine'], linewidth=0.5,
-                   label=f'{os.path.splitext(label)[0][:28]}  (n={len(angles):,})',
+                   label=f'{short_lbl}  (n={len(angles):,})',
                    zorder=2)
 
-            # Statistics
             mrl   = self._mrl(angles)
             p_val = self._rayleigh_p(angles)
 
             # Mean-direction arrow when MRL meets threshold
             if mrl >= mrl_thresh and fracs.max() > 0:
                 mean_dir = self._mean_dir(angles)
-                # Arrow length scaled to 80 % of the tallest bar
                 arrow_r  = fracs.max() * 0.82
                 ax.annotate(
                     '', xy=(mean_dir, arrow_r), xytext=(0, 0),
@@ -1878,16 +1959,14 @@ class PolarAnalysisWindow(tk.Toplevel):
                                     lw=2.0, shrinkA=0, shrinkB=0),
                     zorder=5)
 
-            p_fmt = f'{p_val:.4f}' if p_val >= 0.0001 else '< 0.0001'
-            sig   = '✓ sig.' if p_val < 0.05 else 'n.s.'
-            short = os.path.splitext(label)[0]
-            short = (short[:30] + '…') if len(short) > 31 else short
+            p_fmt = f'p={p_val:.4f}' if p_val >= 0.0001 else 'p=< 0.0001'
+            sig   = '\u2713 sig.' if (p_val < 0.05 and mrl >= mrl_thresh) else 'n.s.'
             stats_lines.append(
-                f'{short}\n'
-                f'  n={len(angles):,}   MRL={mrl:.3f}   p={p_fmt}   {sig}')
+                f'{short_lbl}\n'
+                f'  n={len(angles):,}   MRL={mrl:.3f}   {p_fmt}   {sig}')
 
-        # ── Statistics annotation ─────────────────────────────────────────
-        if stats_lines:
+        # ── Stats annotation on plot (optional) ───────────────────────────
+        if stats_lines and self._show_stats_ann_var.get():
             stats_txt = '\n'.join(stats_lines)
             ax.text(0.01, 0.01, stats_txt,
                     transform=ax.transAxes,
@@ -1898,8 +1977,8 @@ class PolarAnalysisWindow(tk.Toplevel):
                               alpha=0.82, linewidth=0),
                     zorder=10)
 
-        # ── Legend ────────────────────────────────────────────────────────
-        if len(datasets) > 1 or datasets:
+        # ── Legend (optional) ─────────────────────────────────────────────
+        if self._show_legend_var.get() and datasets:
             ax.legend(fontsize=7, loc='upper right',
                       facecolor=T['legend_bg'], labelcolor=T['fg'],
                       framealpha=0.75)
@@ -1910,18 +1989,87 @@ class PolarAnalysisWindow(tk.Toplevel):
         pop_info   = (f'{gate_lbl} / {region_lbl}'
                       if gate_lbl != 'All cells' else 'All cells')
         self._fig.suptitle(
-            f'Vector directionality  —  {pop_info}',
+            f'Vector directionality  \u2014  {pop_info}',
             color=T['fg'], fontsize=10, y=1.01)
 
         self._fig.tight_layout()
         self._canvas.draw()
 
-        # ── Status bar ────────────────────────────────────────────────────
-        total_vecs = sum(len(a) for a, _, _, _ in datasets)
+        total_vecs = sum(len(a) for a, _, _, _, _ in datasets)
         self._status_var.set(
-            f"{total_vecs:,} vectors  ·  {len(datasets)} file(s)  "
-            f"·  population: {pop_info}  "
-            f"·  bins: {n_bins}  ·  MRL-arrow threshold: {mrl_thresh}")
+            f"{total_vecs:,} vectors  \u00b7  {len(datasets)} file(s)  "
+            f"\u00b7  {pop_info}  "
+            f"\u00b7  bins: {n_bins}  \u00b7  MRL-arrow \u2265 {mrl_thresh}")
+
+    # ── Statistics treeview ───────────────────────────────────────────────────
+
+    def _update_stats_display(self):
+        """Populate the statistics treeview from _last_datasets."""
+        for item in self._stats_tree.get_children():
+            self._stats_tree.delete(item)
+
+        datasets = self._last_datasets
+        if not datasets:
+            return
+
+        mode = self._stats_mode_var.get()
+
+        # Read MRL threshold once — used for both significance tests and arrow
+        try:
+            mrl_thresh = float(self._mrl_thresh_var.get())
+        except ValueError:
+            mrl_thresh = 0.3
+
+        if mode == 'merged':
+            # Concatenate all angles and compute combined stats
+            all_angles = np.concatenate(
+                [a for a, _, _, _, _ in datasets if len(a) > 0])
+            if len(all_angles) == 0:
+                return
+            mrl      = self._mrl(all_angles)
+            p_val    = self._rayleigh_p(all_angles)
+            mean_deg = float(np.degrees(self._mean_dir(all_angles)))
+            sig      = '\u2713' if (p_val < 0.05 and mrl >= mrl_thresh) else 'n.s.'
+            p_disp   = f'{p_val:.4f}' if p_val >= 0.0001 else '<0.0001'
+            self._stats_tree.insert(
+                '', 'end',
+                text=f'  All files merged',
+                values=(f'{len(all_angles):,}',
+                        f'{mrl:.3f}',
+                        p_disp,
+                        f'{mean_deg:.1f}',
+                        sig),
+                open=False)
+        else:
+            # Per-file rows
+            for fi, (angles, mags, label, color, path) in enumerate(datasets):
+                if len(angles) == 0:
+                    name  = os.path.splitext(os.path.basename(path))[0]
+                    short = (name[:24] + '\u2026') if len(name) > 25 else name
+                    self._stats_tree.insert(
+                        '', 'end',
+                        text=f'  {short}',
+                        values=('0', '\u2014', '\u2014', '\u2014', '\u2014'))
+                    continue
+                mrl      = self._mrl(angles)
+                p_val    = self._rayleigh_p(angles)
+                mean_deg = float(np.degrees(self._mean_dir(angles)))
+                sig      = '\u2713' if (p_val < 0.05 and mrl >= mrl_thresh) else 'n.s.'
+                p_disp   = f'{p_val:.4f}' if p_val >= 0.0001 else '<0.0001'
+                name     = os.path.splitext(os.path.basename(path))[0]
+                short    = (name[:24] + '\u2026') if len(name) > 25 else name
+                tag      = f'fc{fi % len(FILE_COLORS)}'
+                self._stats_tree.tag_configure(
+                    tag, foreground=FILE_COLORS[fi % len(FILE_COLORS)])
+                self._stats_tree.insert(
+                    '', 'end',
+                    text=f'  {short}',
+                    values=(f'{len(angles):,}',
+                            f'{mrl:.3f}',
+                            p_disp,
+                            f'{mean_deg:.1f}',
+                            sig),
+                    tags=(tag,))
 
     # ── export ────────────────────────────────────────────────────────────────
 
@@ -1945,6 +2093,7 @@ class PolarAnalysisWindow(tk.Toplevel):
     def _export_stats(self):
         """
         Compute per-file vector statistics and save a CSV.
+        Uses the corrected Rayleigh p-value (Zar 2010).
         Columns: File, Gate, Region, N_vectors, MRL, Rayleigh_p,
                  Mean_dir_deg, Significant, X_Ch1, Y_Ch1, X_Ch2, Y_Ch2
         """
@@ -1955,8 +2104,7 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         active = self.app._active()
         if not active:
-            messagebox.showwarning("Export Stats",
-                "No data loaded.", parent=self)
+            messagebox.showwarning("Export Stats", "No data loaded.", parent=self)
             return
         if not all([self._cx1_var.get(), self._cy1_var.get(),
                     self._cx2_var.get(), self._cy2_var.get()]):
@@ -1984,7 +2132,8 @@ class PolarAnalysisWindow(tk.Toplevel):
             if angles is None or len(angles) == 0:
                 rows.append({
                     'File': fname, 'Gate': gate_lbl, 'Region': region_lbl,
-                    'N_vectors': 0, 'MRL': None, 'Rayleigh_p': None,
+                    'N_vectors': 0,
+                    'MRL': None, 'Rayleigh_p': None,
                     'Mean_dir_deg': None, 'Significant': None,
                     'X_Ch1': self._cx1_var.get(), 'Y_Ch1': self._cy1_var.get(),
                     'X_Ch2': self._cx2_var.get(), 'Y_Ch2': self._cy2_var.get(),
@@ -1994,7 +2143,7 @@ class PolarAnalysisWindow(tk.Toplevel):
             mrl      = self._mrl(angles)
             p_val    = self._rayleigh_p(angles)
             mean_dir = float(np.degrees(self._mean_dir(angles)))
-            sig      = p_val < 0.05 and mrl >= mrl_thresh
+            sig      = bool(p_val < 0.05 and mrl >= mrl_thresh)
 
             rows.append({
                 'File':         fname,
@@ -2012,15 +2161,13 @@ class PolarAnalysisWindow(tk.Toplevel):
             })
 
         if not rows:
-            messagebox.showwarning("Export Stats",
-                "No vector data found.", parent=self)
+            messagebox.showwarning("Export Stats", "No vector data.", parent=self)
             return
 
         try:
             pd.DataFrame(rows).to_csv(path_out, index=False)
             messagebox.showinfo("Export Stats",
-                f"Stats saved ({len(rows)} file(s)):\n{path_out}",
-                parent=self)
+                f"Stats saved ({len(rows)} file(s)):\n{path_out}", parent=self)
         except Exception as e:
             messagebox.showerror("Export Stats", str(e), parent=self)
 
