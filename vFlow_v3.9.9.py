@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Flow Cytometry Visualization Tool - v3.9.5
+Flow Cytometry Visualization Tool - v3.9.9
 @author: vincentpb
 
 Changelog v3.9.2 → v3.9.3
@@ -700,68 +700,6 @@ def derivative_threshold(data: np.ndarray, min_prominence: float = 5.0,
             return float(x[i])
     return float(np.percentile(data, 5))
 
-
-def all_kde_valleys(data: np.ndarray,
-                    min_peak_fraction: float = 0.05,
-                    min_prominence: float = 4.0,
-                    bw_factor: float = 1.0,
-                    min_peak_frac: float = 0.01) -> list:
-    """
-    Find ALL significant KDE valleys in a 1D distribution.
-
-    Used by the Multi-Valley Crosshair auto-gate to place thresholds at
-    every real gap between population peaks on a given axis.
-
-    Parameters
-    ----------
-    data              : 1D array in transform (display) space
-    min_peak_fraction : a peak must be at least this fraction of the
-                        global maximum to count (filters tiny noise humps)
-    min_prominence    : both flanking peaks must be ≥ this × valley depth
-                        (filters shoulders, not true gaps)
-
-    Returns
-    -------
-    Sorted list of threshold values (may be empty for unimodal distributions).
-    """
-    data = data[np.isfinite(data)]
-    if len(data) < 10:
-        return []
-
-    # Subsample for speed — KDE valley positions are stable above ~10k points
-    _KDE_MAX = 30_000
-    if len(data) > _KDE_MAX:
-        data = data[np.random.default_rng(7).choice(len(data), _KDE_MAX, replace=False)]
-
-    kde = gaussian_kde(data, bw_method='scott')
-    if bw_factor != 1.0:
-        kde.set_bandwidth(bw_method=kde.factor * bw_factor)
-    x   = np.linspace(data.min(), data.max(), 2048)
-    y   = kde(x)
-    win = min(51, max(5, (len(y) // 10) | 1))
-    y_s = savgol_filter(y, window_length=win, polyorder=3)
-    dy  = np.gradient(y_s, x)
-    peak_val = float(np.max(y_s))
-
-    peak_idx   = np.where(np.diff(np.sign(dy)) < 0)[0]
-    valley_idx = np.where(np.diff(np.sign(dy)) > 0)[0]
-
-    # Filter peaks that are too small (noise) — controlled by min_peak_frac
-    sig_peaks = peak_idx[y_s[peak_idx] >= min_peak_frac * peak_val]
-
-    thresholds = []
-    for vi in valley_idx:
-        left_peaks  = sig_peaks[sig_peaks < vi]
-        right_peaks = sig_peaks[sig_peaks > vi]
-        if len(left_peaks) == 0 or len(right_peaks) == 0:
-            continue
-        vdepth = max(float(y_s[vi]), 1e-12)
-        lbest  = float(y_s[left_peaks [np.argmax(y_s[left_peaks ])]])
-        rbest  = float(y_s[right_peaks[np.argmax(y_s[right_peaks])]])
-        if lbest >= min_prominence * vdepth and rbest >= min_prominence * vdepth:
-            thresholds.append(float(x[vi]))
-
-    return sorted(thresholds)
 
 
 def otsu_threshold(data: np.ndarray, n_bins: int = 512,
@@ -2191,7 +2129,7 @@ class FlowApp:
         # In standalone mode, build directly into root.
         # In tab mode, build into the supplied container frame.
         if container is None:
-            root.title("vFlow 3.9.5")
+            root.title("vFlow 3.9.9")
             root.geometry("1500x960")
             self._theme_name = 'dark'
             self.T = THEMES['dark']
@@ -2582,15 +2520,32 @@ class FlowApp:
         ttk.Label(p, text=(
             '  GMM: max populations  |  KDE/Valley: valley depth\n'
             '  Multi-Valley: min gap  |  Otsu: min class size'),
-            style='Dim.TLabel').pack(anchor='w', padx=8, pady=(0, 4))
+            style='Dim.TLabel').pack(anchor='w', padx=8, pady=(0, 2))
+
+        # ── Per-axis GMM population count (for GMM Multi method) ─────────────
+        gmm_row = ttk.Frame(p, style='TFrame')
+        gmm_row.pack(fill=tk.X, padx=8, pady=(0, 6))
+        ttk.Label(gmm_row, text='GMM pops — X:', style='Dim.TLabel'
+                  ).pack(side=tk.LEFT)
+        self.gmm_max_x_var = tk.IntVar(value=3)
+        ttk.Spinbox(gmm_row, from_=1, to=8, width=3, font=('Arial', 8),
+                    textvariable=self.gmm_max_x_var
+                    ).pack(side=tk.LEFT, padx=(2, 10))
+        ttk.Label(gmm_row, text='Y:', style='Dim.TLabel'
+                  ).pack(side=tk.LEFT)
+        self.gmm_max_y_var = tk.IntVar(value=3)
+        ttk.Spinbox(gmm_row, from_=1, to=8, width=3, font=('Arial', 8),
+                    textvariable=self.gmm_max_y_var
+                    ).pack(side=tk.LEFT, padx=(2, 0))
+        ttk.Label(gmm_row, text='  (GMM Multi only)', style='Dim.TLabel'
+                  ).pack(side=tk.LEFT, padx=(4, 0))
 
         # Auto-gate buttons
-        self._btn("2D GMM  (joint X,Y space)",       self.auto_gate_2d_gmm,          'Indigo.TButton')
-        self._btn("KDE Valley  (X + Y)",             self.auto_gate_derivative,      'Orange.TButton')
-        self._btn("Multi-Valley Grid  (KDE X+Y)",    self.auto_gate_multi_valley,    'Cyan.TButton')
-        self._btn("Otsu  (X + Y)",                   self.auto_gate_otsu,            'Teal.TButton')
-        self._btn("Mixed  (GMM X + KDE Y)",          self.auto_gate_both,            'Brown.TButton')
-        self._btn("Cluster Polygons  (HDBSCAN 2D)",   self.auto_gate_cluster_polygons,'Olive.TButton')
+        self._btn("GMM Multi  (all crossings, X+Y indep.)", self.auto_gate_gmm_multi,       'Purple.TButton')
+        self._btn("KDE Valley  (X + Y)",                    self.auto_gate_derivative,      'Orange.TButton')
+        self._btn("Otsu  (X + Y)",                          self.auto_gate_otsu,            'Teal.TButton')
+        self._btn("Mixed  (GMM X + KDE Y)",                 self.auto_gate_both,            'Brown.TButton')
+        self._btn("Cluster Polygons  (HDBSCAN 2D)",         self.auto_gate_cluster_polygons,'Olive.TButton')
         self._btn("Clear Selected Gate",             self.clear_gate,                'Gray.TButton')
         self._btn("Clear All Gates",                 self.clear_all_gates,           'Gray.TButton')
 
@@ -3161,7 +3116,67 @@ class FlowApp:
                                dot_size, alpha)
 
             if self.ax_top and self.ax_right:
-                self._plot_marginals(x_raw, y_raw, xt, yt, valid, color)
+                xr_full, yr_full, x_edges, y_edges = self._plot_marginals(
+                    x_raw, y_raw, xt, yt, valid, color)
+
+        # ── GMM overlay on marginal histograms ───────────────────────────────
+        # Drawn once, after all files' histograms, using the first applied GMM
+        # gate (gmm_multi).  Controlled by show_legend_var so the user can
+        # toggle it off together with the rest of the plot legend.
+        if (self.ax_top and self.ax_right
+                and self.show_legend_var.get()):
+            gmm_gate = next(
+                (g for g in self.gates
+                 if g.get('applied') and g.get('auto_method') == 'gmm_multi'),
+                None)
+            if gmm_gate is not None:
+                # Collect all valid raw values across all display files for scaling
+                x_all_parts: list = []
+                y_all_parts: list = []
+                for _path, _df in display.items():
+                    if (self.x_channel not in _df.columns
+                            or self.y_channel not in _df.columns):
+                        continue
+                    _xr = _df[self.x_channel].values.astype(float)
+                    _yr = _df[self.y_channel].values.astype(float)
+                    _xt, _yt, _v = self._transform_xy_cached(_path, _xr, _yr)
+                    if _v.any():
+                        x_all_parts.append(_xr[_v])
+                        y_all_parts.append(_yr[_v])
+                if x_all_parts:
+                    x_all_raw = np.concatenate(x_all_parts)
+                    y_all_raw = np.concatenate(y_all_parts)
+                    # Recompute bin edges matching _plot_marginals logic
+                    x_t_all = self._fwd(x_all_raw, self.x_scale)
+                    y_t_all = self._fwd(y_all_raw, self.y_scale)
+                    xv_all  = x_t_all[np.isfinite(x_t_all)]
+                    yv_all  = y_t_all[np.isfinite(y_t_all)]
+                    if len(xv_all) > 1:
+                        _bt_x  = np.linspace(xv_all.min(), xv_all.max(), 121)
+                        _be_x  = self._inv(_bt_x, self.x_scale)
+                    else:
+                        _be_x = None
+                    if len(yv_all) > 1:
+                        _bt_y  = np.linspace(yv_all.min(), yv_all.max(), 121)
+                        _be_y  = self._inv(_bt_y, self.y_scale)
+                    else:
+                        _be_y = None
+                    gxp = gmm_gate.get('gmm_x_params')
+                    gyp = gmm_gate.get('gmm_y_params')
+                    try:
+                        if gxp is not None and _be_x is not None:
+                            self._plot_gmm_overlay(
+                                self.ax_top, gxp,
+                                'horizontal', x_all_raw, _be_x)
+                    except Exception:
+                        pass
+                    try:
+                        if gyp is not None and _be_y is not None:
+                            self._plot_gmm_overlay(
+                                self.ax_right, gyp,
+                                'vertical', y_all_raw, _be_y)
+                    except Exception:
+                        pass
 
         # Draw ALL applied gate outlines + handles for selected gate.
         # _clear_preview no longer calls draw_idle(); refresh_plot owns the
@@ -3349,7 +3364,7 @@ class FlowApp:
         self.ax.contourf(xg_raw, yg_raw, Z, levels=12,
                          cmap='viridis', alpha=0.35)
         c = self.ax.contour(xg_raw, yg_raw, Z, levels=[lv],
-                             colors=[color], linewidths=1.8)
+                             colors=[color], linewidths=0.5)
         self.ax.clabel(c, fmt={lv: f'{prob_level*100:.0f}%'},
                         fontsize=8, colors=[color])
 
@@ -3444,17 +3459,112 @@ class FlowApp:
             xv_h = xv[idx]; yv_h = yv[idx]
         else:
             xr_h = xr; yr_h = yr; xv_h = xv; yv_h = yv
+        x_edges = y_edges = None
         if len(xv_h) > 1 and self.ax_top:
             bt = np.linspace(xv.min(), xv.max(), 121)   # bins from full range
             br = self._inv(bt, self.x_scale)
-            self.ax_top.hist(xr_h, bins=br, color=color, alpha=0.55,
-                             histtype='stepfilled', linewidth=0.5)
+            _, x_edges, _ = self.ax_top.hist(
+                xr_h, bins=br, color=color, alpha=0.55,
+                histtype='stepfilled', linewidth=0.5)
         if len(yv_h) > 1 and self.ax_right:
             bt = np.linspace(yv.min(), yv.max(), 121)
             br = self._inv(bt, self.y_scale)
-            self.ax_right.hist(yr_h, bins=br, color=color, alpha=0.55,
-                               histtype='stepfilled',
-                               orientation='horizontal', linewidth=0.5)
+            _, y_edges, _ = self.ax_right.hist(
+                yr_h, bins=br, color=color, alpha=0.55,
+                histtype='stepfilled',
+                orientation='horizontal', linewidth=0.5)
+        return xr, yr, x_edges, y_edges
+
+    def _plot_gmm_overlay(self, ax, gmm_params: dict,
+                          orientation: str, hist_data_raw: np.ndarray,
+                          bin_edges_raw: np.ndarray):
+        """
+        Draw per-component Gaussian curves on a marginal histogram axis,
+        scaled to match the histogram counts.
+
+        Strategy: the GMM was fitted in transform space where bins are
+        *uniform* (linspace).  The scale factor is therefore simple:
+            counts = pdf_transform(x_t) × n_total × bin_width_transform
+        The curve is evaluated on a dense transform-space grid, then
+        back-transformed to raw space for plotting (matching the x-axis
+        already used by the histogram).  No Jacobian needed.
+
+        The legend is placed outside the histogram bars — anchored to the
+        top-right corner of the axes bounding box via bbox_to_anchor so it
+        never overlaps the data.
+        """
+        from scipy.stats import norm as _norm
+
+        means_t   = gmm_params['means_t']
+        means_raw = gmm_params['means_raw']
+        weights   = gmm_params['weights']
+        stds_t    = gmm_params['stds_t']
+        scale     = gmm_params['scale']
+        lo_t, hi_t = gmm_params['data_range_t']
+        n_comp    = len(means_t)
+
+        # Dense grid in transform space (where the GMM lives) → raw for x-axis
+        x_t   = np.linspace(lo_t, hi_t, 1024)
+        x_raw = self._inv(x_t, scale)
+
+        # Scale factor: transform-space bin width (bins were linspace → uniform)
+        # The histogram used 120 bins over [lo_t, hi_t], so:
+        n_bins   = 120
+        bw_t     = (hi_t - lo_t) / n_bins          # uniform bin width in transform space
+        n_total  = len(hist_data_raw)
+        scale_f  = n_total * bw_t                   # pdf_t × scale_f → counts
+
+        component_colors = [
+            '#ff6b6b', '#74d7e8', '#ffd93d', '#6bcb77', '#c77dff',
+            '#ff9a3c', '#4d96ff', '#ff6bcd', '#4ecdc4', '#a3e048',
+        ]
+        legend_handles = []
+
+        for i in range(n_comp):
+            pdf_t     = weights[i] * _norm.pdf(x_t, means_t[i], stds_t[i])
+            pdf_count = pdf_t * scale_f
+
+            col = component_colors[i % len(component_colors)]
+            mu_r = means_raw[i]
+            lbl  = f'C{i+1}  μ={mu_r:,.0f}  w={weights[i]:.2f}'
+
+            if orientation == 'horizontal':
+                ax.plot(x_raw, pdf_count, color=col, lw=1.0, ls='--', zorder=5)
+            else:
+                ax.plot(pdf_count, x_raw, color=col, lw=1.0, ls='--', zorder=5)
+            legend_handles.append(
+                mlines.Line2D([], [], color=col, lw=1.0, ls='--', label=lbl))
+
+        T   = self.T
+        ncol = 2 if n_comp > 3 else 1
+
+        # Anchor legend to the top-left corner of the axes (outside the tallest
+        # histogram bars which tend to be on the right for flow data).
+        # bbox_to_anchor=(0, 1) = top-left corner of axes in axes coordinates;
+        # loc='upper left' makes the legend box grow downward from that corner.
+        # For the vertical (right) histogram, bars grow leftward from the y-axis,
+        # so the empty space is at the bottom — anchor there instead.
+        if orientation == 'horizontal':
+            bbox  = (0.0, 1.0)
+            loc   = 'upper left'
+        else:
+            bbox  = (1.0, 0.0)
+            loc   = 'lower right'
+
+        ax.legend(
+            handles=legend_handles,
+            fontsize=5.5,
+            loc=loc,
+            bbox_to_anchor=bbox,
+            bbox_transform=ax.transAxes,
+            framealpha=0.75,
+            facecolor=T['legend_bg'],
+            labelcolor=T['fg'],
+            handlelength=1.6,
+            borderpad=0.5,
+            labelspacing=0.25,
+            ncol=ncol,
+        )
 
     # ── Fluorophore / population naming ─────────────────────────────────────────
 
@@ -3652,7 +3762,7 @@ class FlowApp:
             'auto_method': auto_method,          # None = manual; str = auto tag
             'color': color,
             'linestyle': '-',    # '-' | '--' | ':'
-            'linewidth': 1.8,    # float
+            'linewidth': 0.5,    # float
             # crosshair
             'x_boundaries': [], 'y_boundary': None,
             'x_thresh_vars': [], 'y_thresh_var': None,
@@ -3785,7 +3895,7 @@ class FlowApp:
                 self.schedule_refresh(120)   # redraws colored cells with new outline
             ls_var.trace_add('write', _on_ls)
             # Linewidth
-            lw_var = tk.DoubleVar(value=gate.get('linewidth', 1.8))
+            lw_var = tk.DoubleVar(value=gate.get('linewidth', 0.5))
             ttk.Label(style_row, text='w:', style='Dim.TLabel').pack(side=tk.LEFT)
             lw_sb  = ttk.Spinbox(style_row, from_=0.5, to=5.0, increment=0.5,
                                   textvariable=lw_var, width=4,
@@ -4347,7 +4457,7 @@ class FlowApp:
                 marker = 's' if is_dragged else 'o'
                 ms     = 9  if is_dragged else (8 if pinned else 7)
                 mfc    = color if is_dragged else ('none' if not pinned else color+'55')
-                mew    = 2.0 if pinned else 1.8
+                mew    = 2.0 if pinned else 0.5
                 a, = self.ax.plot(h['x'], h['y'],
                                   marker=marker, ms=ms,
                                   markerfacecolor=mfc,
@@ -4600,7 +4710,7 @@ class FlowApp:
             c    = gate.get('color', GATE_PALETTE[0])
             sel  = (gate['id'] == self._sel_gate_id)
             ls   = gate.get('linestyle', '-') if gate.get('applied') else '--'
-            base_lw = gate.get('linewidth', 1.8)
+            base_lw = gate.get('linewidth', 0.5)
             lw   = base_lw + 0.8 if sel else base_lw
             gt   = gate.get('type', 'crosshair')
 
@@ -4989,136 +5099,6 @@ class FlowApp:
             f"✓ KDE Valley: X @ {xb_raw:,.0f} ({pct_x:.1f}% below)"
             f"  |  Y @ {yb_raw:,.0f} ({pct_y:.1f}% below)")
 
-    def auto_gate_2d_gmm(self):
-        """
-        2D GMM: fit a multivariate Gaussian mixture on the JOINT (X, Y) transform
-        space from all currently selected (overlaid) files merged together.
-
-        Why this is better than 1D GMM for your data:
-        - 1D GMM on Y marginal sees ALL cells projected onto Y, which can produce
-          a confusing multi-modal marginal (e.g., TH- cells with background VGLUT,
-          TH+ cells with no VGLUT, TH+ cells with VGLUT — three Y humps).
-        - 2D GMM identifies the actual 2D clusters (e.g., the TH+/VGLUT1+ island
-          in the upper-right quadrant) and then PROJECTS the cluster structure onto
-          each axis to find the correct axis-aligned separation.
-
-        Algorithm:
-          1. Collect paired (X_t, Y_t) from every cell in all active files.
-          2. Fit GMM with k=2..4 components in the 2D joint space (BIC selection).
-          3. Project each 2D component onto the X axis: marginal is N(μ_xi, σ_xi).
-             Find the deepest inter-component valley on X → x_boundaries.
-          4. Same projection onto Y → y_boundary (single deepest valley).
-          5. Convert transform-space thresholds back to raw coordinates.
-        """
-        if not HAS_SKLEARN:
-            messagebox.showerror("2D GMM",
-                "scikit-learn required: pip install scikit-learn"); return
-        active = self._active()
-        if not active or not self.x_channel or not self.y_channel:
-            messagebox.showwarning("Auto-Gate",
-                "Load data and select axes first."); return
-
-        self._last_auto_gate_fn = self.auto_gate_2d_gmm
-        sp = self._sens_params()
-        # 2D GMM: k range 2..max_comp (sensitivity expands how many clusters to try)
-        k_max = sp['gmm_max_comp'] + 1  # slightly wider range for 2D
-
-        data_2d = self._collect_2d_transform()
-        if len(data_2d) < 10:
-            messagebox.showwarning("2D GMM", "Not enough valid data."); return
-
-        # Subsample for speed — 50k points is statistically sufficient
-        MAX_FIT = 50_000
-        rng = np.random.default_rng(42)
-        data_fit = (data_2d[rng.choice(len(data_2d), MAX_FIT, replace=False)]
-                    if len(data_2d) > MAX_FIT else data_2d)
-
-        # BIC-best 2D GMM with k = 2..k_max
-        best_bic, best_gmm, best_n = np.inf, None, 2
-        for n in range(2, k_max + 1):
-            try:
-                g = GaussianMixture(n_components=n, n_init=5,
-                                    covariance_type='full', random_state=42)
-                g.fit(data_fit)
-                b = g.bic(data_fit)
-                if b < best_bic:
-                    best_bic, best_gmm, best_n = b, g, n
-            except Exception:
-                pass
-
-        if best_gmm is None:
-            messagebox.showerror("2D GMM", "GMM fitting failed."); return
-
-        means   = best_gmm.means_        # (k, 2)
-        weights = best_gmm.weights_      # (k,)
-        covs    = best_gmm.covariances_  # (k, 2, 2)
-
-        from scipy.stats import norm as _norm
-
-        def _project_thresholds(ax_idx):
-            """Project 2D components onto one axis and find valley thresholds."""
-            ax_means = means[:, ax_idx]
-            ax_stds  = np.sqrt(np.clip(covs[:, ax_idx, ax_idx], 1e-12, None))
-            order    = np.argsort(ax_means)
-            m_s = ax_means[order]; s_s = ax_stds[order]; w_s = weights[order]
-            thresholds = []
-            for i in range(best_n - 1):
-                lo_x   = m_s[i]     - 3 * s_s[i]
-                hi_x   = m_s[i + 1] + 3 * s_s[i + 1]
-                x_grid = np.linspace(lo_x, hi_x, 2000)
-                dens   = sum(w_s[j] * _norm.pdf(x_grid, m_s[j], s_s[j])
-                             for j in range(best_n))
-                lo_idx = int(np.searchsorted(x_grid, m_s[i]))
-                hi_idx = int(np.searchsorted(x_grid, m_s[i + 1]))
-                if hi_idx > lo_idx:
-                    thresholds.append(
-                        float(x_grid[lo_idx + np.argmin(dens[lo_idx:hi_idx])]))
-                else:
-                    thresholds.append(float((m_s[i] + m_s[i + 1]) / 2.0))
-            return thresholds
-
-        x_thresh_t = _project_thresholds(0)
-        y_thresh_t = _project_thresholds(1)
-
-        # Convert thresholds from transform space back to raw data coordinates
-        if x_thresh_t:
-            xbs_raw = [float(self._inv(np.array([t]), self.x_scale)[0])
-                       for t in x_thresh_t]
-        else:
-            # 2D GMM saw only one X cluster — use KDE valley
-            all_xt = self._collect_x_transform()
-            xbs_raw = [float(self._inv(
-                np.array([derivative_threshold(all_xt[np.isfinite(all_xt)],
-                                               bw_factor=sp['bw_factor'],
-                                               min_peak_frac=sp['min_peak_frac'])]),
-                self.x_scale)[0])]
-
-        if y_thresh_t:
-            # Deepest Y valley = most prominent biological Y separation
-            yb_t   = self._deepest_gmm_threshold(data_2d[:, 1], y_thresh_t)
-            yb_raw = float(self._inv(np.array([yb_t]), self.y_scale)[0])
-        else:
-            all_yt = self._collect_y_transform()
-            yb_raw = float(self._inv(
-                np.array([derivative_threshold(all_yt[np.isfinite(all_yt)],
-                                               bw_factor=sp['bw_factor'],
-                                               min_peak_frac=sp['min_peak_frac'])]),
-                self.y_scale)[0])
-
-        self._apply_gate_and_refresh(xbs_raw, yb_raw, auto_method='2d_gmm')
-
-        all_y_raw = np.concatenate([df[self.y_channel].dropna().values
-                                    for df in active.values()])
-        pct_y = float(np.mean(all_y_raw < yb_raw)) * 100
-        nx = len(xbs_raw)
-        msg = (f"2D GMM found {best_n} populations in joint (X,Y) space.\n\n"
-               f"X ({self.x_channel}): {nx} threshold(s)\n"
-               + "\n".join(f"  T{i+1} = {t:,.1f}" for i, t in enumerate(xbs_raw))
-               + f"\n\nY ({self.y_channel}): {yb_raw:,.2f}\n"
-               f"  ({pct_y:.1f}% of cells below)")
-        self.status_var.set(
-            f"✓ 2D GMM gate applied  |  IN: {msg.split(chr(10))[0] if msg else ''}")
-
     def auto_gate_otsu(self):
         """
         Otsu threshold on each axis independently, using ALL selected files merged.
@@ -5209,78 +5189,174 @@ class FlowApp:
             + (f" @ {xbs_raw[0]:,.0f}" if n_x == 1 else "")
             + f"  |  Y @ {yb_raw:,.0f}")
 
-    def auto_gate_multi_valley(self):
+    def auto_gate_gmm_multi(self):
         """
-        Multi-Valley Grid (KDE X+Y) — finds ALL significant KDE valleys on
-        each axis independently and places threshold lines at each one.
+        GMM Multi (v3.9.7) — fit independent 1-D GMMs on X and Y with
+        user-specified component counts, then place ALL equal-density
+        thresholds into the existing multi-threshold crosshair system.
 
-        This is exactly what the user described: manually looking at the
-        1D histogram on X, placing lines at every visible gap, then doing the
-        same for Y — producing a full N×M grid of cell populations.
+        Workflow
+        --------
+        1.  Read 'GMM pops — X' and 'Y' spinboxes (set independently).
+        2.  Fit a GaussianMixture with exactly that many components on
+            each axis in transform space (no BIC selection — user decides).
+        3.  Compute every equal-density crossing between adjacent
+            components (N-1 crossings for N components).
+        4.  Store ALL crossings as x_thresh_vars / y_thresh_vars so they
+            appear as individual checkboxes in the Threshold panel.
+        5.  User unchecks any crossings they do not want.
 
-        - X: all_kde_valleys() finds every peak-to-peak gap
-        - Y: all_kde_valleys() finds every peak-to-peak gap
-        - Result: one crosshair gate with N x-lines and M y-lines
-        - Each intersection zone gets its own population label in the stats
+        Why 'exact N' instead of BIC-best up to N
+        ------------------------------------------
+        BIC penalises complexity — it almost always prefers fewer
+        components than the user can visually identify (e.g. it merges
+        a small negative cloud into the dominant positive population).
+        Giving the user direct control over the component count makes
+        the negative sub-populations discoverable by simply increasing
+        the spinbox and observing where new crossings appear.
 
-        If an axis is unimodal (no real valley), no threshold is placed for
-        that axis (equivalent to an X-only or Y-only gate).
+        Negative population detection tip
+        ----------------------------------
+        Increase the X or Y spinbox by 1 at a time.  Each extra
+        component adds one more crossing.  Start with the value that
+        produces crossings that match the visible histogram peaks, then
+        uncheck any crossings that sit inside a population (not between
+        populations).
         """
+        if not HAS_SKLEARN:
+            messagebox.showerror(
+                "GMM Multi",
+                "scikit-learn is required:\n  pip install scikit-learn")
+            return
         active = self._active()
         if not active or not self.x_channel or not self.y_channel:
-            messagebox.showwarning("Auto-Gate",
-                "Load data and select axes first."); return
-
-        # Collect transform-space data for each axis
-        all_xt = self._collect_x_transform()
-        all_xt = all_xt[np.isfinite(all_xt)]
-        all_yt = self._collect_y_transform()
-        all_yt = all_yt[np.isfinite(all_yt)]
-
-        if len(all_xt) < 10 or len(all_yt) < 10:
-            messagebox.showwarning("Multi-Valley Grid", "Not enough data."); return
-
-        self._last_auto_gate_fn = self.auto_gate_multi_valley
-        sp = self._sens_params()
-
-        # Find all valleys on each axis using sensitivity-controlled prominence
-        x_thresh_t = all_kde_valleys(all_xt, min_prominence=sp['mv_prominence'], bw_factor=sp['bw_factor'], min_peak_frac=sp['min_peak_frac'])
-        y_thresh_t = all_kde_valleys(all_yt, min_prominence=sp['mv_prominence'], bw_factor=sp['bw_factor'], min_peak_frac=sp['min_peak_frac'])
-
-        if not x_thresh_t and not y_thresh_t:
-            self.status_var.set(
-                "✗ Multi-Valley Grid: no significant valleys found on either axis "
-                "(data may be unimodal — try 1D GMM or KDE Valley instead)")
+            messagebox.showwarning(
+                "GMM Multi", "Load data and select axes first.")
             return
 
-        # Back-transform to raw data space
-        xbs_raw = [float(self._inv(np.array([t]), self.x_scale)[0])
-                   for t in x_thresh_t]
-        ybs_raw = [float(self._inv(np.array([t]), self.y_scale)[0])
-                   for t in y_thresh_t]
+        self._last_auto_gate_fn = self.auto_gate_gmm_multi
 
-        # Apply to gate — reuse existing multi_valley gate or create new one
+        n_x = max(1, min(8, int(self.gmm_max_x_var.get())))
+        n_y = max(1, min(8, int(self.gmm_max_y_var.get())))
+
+        from scipy.stats import norm as _norm
+
+        def _fit_and_cross(data_t, n_comp, scale_name):
+            """
+            Fit exactly n_comp Gaussian components, return
+            (thresholds_raw, component_summary_str, gmm_params).
+
+            gmm_params is a dict with keys 'means_t', 'weights', 'stds_t',
+            'scale', 'data_range_t' suitable for overlay curve rendering.
+
+            Uses multiple random seeds (n_init=15) to avoid local
+            minima — especially important when one component is small
+            (negative cloud) and the default kmeans init may miss it.
+            """
+            data_t = data_t[np.isfinite(data_t)]
+            if len(data_t) < max(10, n_comp * 3):
+                return [], "not enough data", None
+
+            # Subsample for speed; GMM is stable well above 10k points
+            _MAX = 30_000
+            rng  = np.random.default_rng(42)
+            if len(data_t) > _MAX:
+                data_t = data_t[rng.choice(len(data_t), _MAX, replace=False)]
+
+            d2 = data_t.reshape(-1, 1)
+            # Try both kmeans and random inits and keep the best log-likelihood
+            best_ll, best_gmm = -np.inf, None
+            for seed in range(5):          # 5 seeds × n_init=3 each = 15 fits
+                for init in ('kmeans', 'random'):
+                    try:
+                        g = GaussianMixture(
+                            n_components=n_comp,
+                            covariance_type='full',
+                            n_init=3,
+                            init_params=init,
+                            random_state=seed)
+                        g.fit(d2)
+                        ll = g.score(d2)   # mean log-likelihood
+                        if ll > best_ll:
+                            best_ll, best_gmm = ll, g
+                    except Exception:
+                        pass
+
+            if best_gmm is None:
+                return [], "fit failed", None
+
+            order   = np.argsort(best_gmm.means_.flatten())
+            means   = best_gmm.means_.flatten()[order]
+            weights = best_gmm.weights_[order]
+            stds    = np.sqrt(
+                best_gmm.covariances_.reshape(n_comp, -1)[:, 0][order])
+
+            # Equal-density crossing between every pair of adjacent components
+            thresh_raw = []
+            for i in range(n_comp - 1):
+                xs  = np.linspace(means[i], means[i + 1], 5000)
+                d1  = weights[i]     * _norm.pdf(xs, means[i],     stds[i])
+                d2_ = weights[i + 1] * _norm.pdf(xs, means[i + 1], stds[i + 1])
+                t_t = float(xs[np.argmin(np.abs(d1 - d2_))])
+                t_r = float(self._inv(np.array([t_t]), scale_name)[0])
+                thresh_raw.append(t_r)
+
+            summary = "  |  ".join(
+                f"C{i+1} μ≈{float(self._inv(np.array([means[i]]), scale_name)[0]):,.0f}"
+                f" w={weights[i]:.0%}"
+                for i in range(n_comp))
+
+            # Build params needed to reconstruct PDF curves during plot rendering.
+            # Means are stored as back-transformed raw values so the renderer can
+            # build legend labels without knowing the scale; stds remain in
+            # transform space because the histogram bins are in raw space and the
+            # PDF is evaluated in transform space then mapped back.
+            gmm_params = {
+                'means_t':      [float(m) for m in means],
+                'means_raw':    [float(self._inv(np.array([m]), scale_name)[0])
+                                 for m in means],
+                'weights':      [float(w) for w in weights],
+                'stds_t':       [float(s) for s in stds],
+                'scale':        scale_name,
+                'data_range_t': (float(data_t.min()), float(data_t.max())),
+                'n_data':       len(data_t),
+            }
+            return thresh_raw, summary, gmm_params
+
+        # ── X axis ────────────────────────────────────────────────────────────
+        all_xt = self._collect_x_transform()
+        xbs_raw, x_summary, gmm_x_params = _fit_and_cross(all_xt, n_x, self.x_scale)
+
+        # ── Y axis ────────────────────────────────────────────────────────────
+        all_yt = self._collect_y_transform()
+        ybs_raw, y_summary, gmm_y_params = _fit_and_cross(all_yt, n_y, self.y_scale)
+
+        if not xbs_raw and not ybs_raw:
+            messagebox.showwarning(
+                "GMM Multi",
+                "Could not fit GMM on either axis.\n"
+                "Check that enough data is loaded.")
+            return
+
+        # ── Reuse or create gate (same pattern as multi_valley) ───────────────
         target = None
         for g in self.gates:
-            if g.get('auto_method') == 'multi_valley':
+            if g.get('auto_method') == 'gmm_multi':
                 target = g
                 break
         if target is None:
-            sel = self._sel_gate()
-            if sel and sel.get('type') == 'crosshair' and not sel.get('auto_method'):
-                target = None   # don't overwrite manual gate
             target = self._add_gate(auto_type='crosshair',
-                                    auto_method='multi_valley')
+                                    auto_method='gmm_multi')
 
-        # Gate geometry will change → _gmc self-invalidates via _gate_sig()
-        target['auto_method']   = 'multi_valley'
+        target['auto_method']   = 'gmm_multi'
         target['type']          = 'crosshair'
         target['x_boundaries']  = xbs_raw
         target['x_thresh_vars'] = [tk.BooleanVar(value=True) for _ in xbs_raw]
 
         if ybs_raw:
             target['y_boundaries']  = ybs_raw
-            target['y_thresh_vars'] = [tk.BooleanVar(value=True) for _ in ybs_raw]
+            target['y_thresh_vars'] = [tk.BooleanVar(value=True)
+                                        for _ in ybs_raw]
             target['y_boundary']    = None
             target['y_thresh_var']  = None
         else:
@@ -5289,23 +5365,23 @@ class FlowApp:
             target['y_boundary']    = None
             target['y_thresh_var']  = None
 
-        target['applied'] = True
-        self._sel_gate_id = target['id']
-        self._gate_hint_var.set('Multi-Valley Gate placed  |  Right-drag handles to reshape')
+        target['applied']     = True
+        target['gmm_x_params'] = gmm_x_params   # None if fit failed
+        target['gmm_y_params'] = gmm_y_params   # None if fit failed
+        self._sel_gate_id     = target['id']
+        self._gate_hint_var.set(
+            f'GMM Multi placed — uncheck crossings you do not want')
         self._compute_gate_stats_for(target)
         self._rebuild_gate_manager()
         self._rebuild_thresh_panel()
         self.refresh_plot()
         self._update_stats_display()
 
-        # Status message
-        nx = len(xbs_raw)
-        ny = len(ybs_raw)
-        x_msg = (f"{nx} X threshold(s): " +
-                 ', '.join(f'{v:,.0f}' for v in xbs_raw)) if xbs_raw else "X: unimodal"
-        y_msg = (f"{ny} Y threshold(s): " +
-                 ', '.join(f'{v:,.0f}' for v in ybs_raw)) if ybs_raw else "Y: unimodal"
-        self.status_var.set(f"✓ Multi-Valley Grid — {x_msg}  |  {y_msg}")
+        nx = len(xbs_raw); ny = len(ybs_raw)
+        self.status_var.set(
+            f"✓ GMM Multi — X: {n_x} comp → {nx} crossing(s)  "
+            f"|  Y: {n_y} comp → {ny} crossing(s)  "
+            f"|  Uncheck unwanted thresholds in the Threshold panel")
 
     def auto_gate_cluster_polygons(self):
         """
@@ -5836,7 +5912,7 @@ class FlowApp:
                 'applied':    g.get('applied', False),
                 'color':      g.get('color', '#e74c3c'),
                 'linestyle':  g.get('linestyle', '-'),
-                'linewidth':  g.get('linewidth', 1.8),
+                'linewidth':  g.get('linewidth', 0.5),
                 # crosshair thresholds
                 'x_boundaries':     g.get('x_boundaries', []),
                 'y_boundary':       g.get('y_boundary'),
@@ -5916,7 +5992,7 @@ class FlowApp:
                 'applied':     d.get('applied', False),
                 'color':       d.get('color', '#e74c3c'),
                 'linestyle':   d.get('linestyle', '-'),
-                'linewidth':   float(d.get('linewidth', 1.8)),
+                'linewidth':   float(d.get('linewidth', 0.5)),
                 'x_boundaries':  list(xbs),
                 'y_boundary':    d.get('y_boundary'),
                 'x_thresh_vars': [tk.BooleanVar(value=bool(a)) for a in xta],
@@ -6444,7 +6520,7 @@ class FlowTabManager:
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        root.title("vFlow 3.9.5")
+        root.title("vFlow 3.9.9")
         root.geometry("1500x960")
 
         self._theme_name = 'dark'
