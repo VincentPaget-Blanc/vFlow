@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 900 580" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;">
-    <path d="M900,10C900,4.481 895.519,0 890,0L10,0C4.481,0 0,4.481 0,10L0,570C0,575.519 4.481,580 10,580L890,580C895.519,580 900,575.519 900,570L900,10Z" style="fill:rgb(30,30,30);"/>
+<svg width="100%" height="100%" viewBox="0 0 900 599" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;">
+    <path d="M900,10C900,4.481 895.519,0 890,0L10,0C4.481,0 0,4.481 0,10L0,589C0,594.519 4.481,599 10,599L890,599C895.519,599 900,594.519 900,589L900,10Z" style="fill:rgb(30,30,30);"/>
     <path d="M210,16C210,12.689 207.311,10 204,10L16,10C12.689,10 10,12.689 10,16L10,564C10,567.311 12.689,570 16,570L204,570C207.311,570 210,567.311 210,564L210,16Z" style="fill:rgb(43,43,43);"/>
     <path d="M202,22C202,19.792 200.208,18 198,18L22,18C19.792,18 18,19.792 18,22L18,36C18,38.208 19.792,40 22,40L198,40C200.208,40 202,38.208 202,36L202,22Z" style="fill:rgb(60,63,65);"/>
     <g transform="matrix(1,0,0,1,110,33)">
@@ -100,40 +100,46 @@
     <g transform="matrix(1,0,0,1,110,408)">
         <text x="-61.517px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:9px;fill:white;">Cluster Polygons  (HDBSCAN)</text>
     </g>
-    <rect x="10" y="418" width="200" height="14" style="fill:rgb(60,63,65);"/>
-    <g transform="matrix(1,0,0,1,18,429)">
+    <!-- GMM Multi button — new in v3.9.7 -->
+    <path d="M202,418C202,416.344 200.656,415 199,415L21,415C19.344,415 18,416.344 18,418L18,428C18,429.656 19.344,431 21,431L199,431C200.656,431 202,429.656 202,428L202,418Z" style="fill:rgb(94,44,130);"/>
+    <g transform="matrix(1,0,0,1,110,427)">
+        <text x="-65px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:9px;fill:white;">GMM Multi  (all crossings, X+Y indep.)</text>
+    </g>
+    <!-- GATE MANAGER and below shifted +19px -->
+    <rect x="10" y="437" width="200" height="14" style="fill:rgb(60,63,65);"/>
+    <g transform="matrix(1,0,0,1,18,448)">
         <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:9px;fill:rgb(170,170,170);">GA<tspan x="12.832px 18.33px " y="0px 0px ">TE</tspan> MANAGER</text>
     </g>
-    <path d="M202,437C202,435.344 200.656,434 199,434L21,434C19.344,434 18,435.344 18,437L18,447C18,448.656 19.344,450 21,450L199,450C200.656,450 202,448.656 202,447L202,437Z" style="fill:rgb(74,144,217);"/>
-    <g transform="matrix(1,0,0,1,110,446)">
+    <path d="M202,456C202,454.344 200.656,453 199,453L21,453C19.344,453 18,454.344 18,456L18,466C18,467.656 19.344,469 21,469L199,469C200.656,469 202,467.656 202,466L202,456Z" style="fill:rgb(74,144,217);"/>
+    <g transform="matrix(1,0,0,1,110,465)">
         <text x="-22.643px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:9px;fill:white;">+ <tspan x="-15.383px -9.38px " y="0px 0px ">Ad</tspan>d Gate</text>
     </g>
-    <path d="M22,454C22,453.448 21.552,453 21,453L15,453C14.448,453 14,453.448 14,454L14,464C14,464.552 14.448,465 15,465L21,465C21.552,465 22,464.552 22,464L22,454Z" style="fill:rgb(231,76,60);"/>
-    <g transform="matrix(1,0,0,1,26,463)">
+    <path d="M22,473C22,472.448 21.552,472 21,472L15,472C14.448,472 14,472.448 14,473L14,483C14,483.552 14.448,484 15,484L21,484C21.552,484 22,483.552 22,483L22,473Z" style="fill:rgb(231,76,60);"/>
+    <g transform="matrix(1,0,0,1,26,482)">
         <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:9px;fill:rgb(204,204,204);">▸</text>
-        <text x="7.273px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:9px;fill:rgb(204,204,204);">Gate 1  [crosshair]</text>
+        <text x="7.273px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:9px;fill:rgb(204,204,204);">Gate 1   [crosshair]</text>
     </g>
-    <g transform="matrix(1,0,0,1,160,463)">
+    <g transform="matrix(1,0,0,1,160,482)">
     </g>
-    <rect x="10" y="470" width="200" height="14" style="fill:rgb(60,63,65);"/>
-    <g transform="matrix(1,0,0,1,18,481)">
+    <rect x="10" y="489" width="200" height="14" style="fill:rgb(60,63,65);"/>
+    <g transform="matrix(1,0,0,1,18,500)">
         <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:9px;fill:rgb(170,170,170);">ST<tspan x="10.833px 16.664px 22.162px " y="0px 0px 0px ">ATI</tspan>STICS</text>
     </g>
-    <path d="M202,490C202,488.344 200.656,487 199,487L21,487C19.344,487 18,488.344 18,490L18,524C18,525.656 19.344,527 21,527L199,527C200.656,527 202,525.656 202,524L202,490Z" style="fill:rgb(30,30,30);"/>
-    <g transform="matrix(1,0,0,1,24,500)">
+    <path d="M202,509C202,507.344 200.656,506 199,506L21,506C19.344,506 18,507.344 18,509L18,543C18,544.656 19.344,546 21,546L199,546C200.656,546 202,544.656 202,543L202,509Z" style="fill:rgb(30,30,30);"/>
+    <g transform="matrix(1,0,0,1,24,519)">
         <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:8px;fill:rgb(228,26,28);">Channel1+/Channel2+   349   21.0%</text>
     </g>
-    <g transform="matrix(1,0,0,1,24,510)">
+    <g transform="matrix(1,0,0,1,24,529)">
         <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:8px;fill:rgb(55,126,184);">Channel1+/Channel2−   532   32.0%</text>
     </g>
-    <g transform="matrix(1,0,0,1,24,520)">
+    <g transform="matrix(1,0,0,1,24,539)">
         <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:8px;fill:rgb(77,175,74);">Channel1−/Channel2+   780   47.0%</text>
     </g>
-    <rect x="10" y="534" width="200" height="14" style="fill:rgb(60,63,65);"/>
-    <g transform="matrix(1,0,0,1,18,545)">
+    <rect x="10" y="553" width="200" height="14" style="fill:rgb(60,63,65);"/>
+    <g transform="matrix(1,0,0,1,18,564)">
         <text x="0px" y="0px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:9px;fill:rgb(170,170,170);">EXPORT</text>
     </g>
-    <g transform="matrix(1,0,0,1,18,560)">
+    <g transform="matrix(1,0,0,1,18,579)">
         <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:8px;fill:rgb(136,136,136);">Save Gates  ·  Export Stats  ·  Batch Stats</text>
     </g>
     <g transform="matrix(1.23155,0,0,1.39663,209.355,76.034)">
