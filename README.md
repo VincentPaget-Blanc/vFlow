@@ -4,8 +4,8 @@
 
 vFlow is a desktop application for interactive 2D gating, visualisation, and quantification of single-particle immunofluorescence data. It is designed for two complementary experimental contexts:
 
-- **Flow cytometry** standard `.fcs` or `.csv` list-mode files from any flow cytometer
-- **Widefield immunofluorescence of nano/microparticles**  specifically the CSV outputs produced by the [IJ-Toolset SynaptosomesMacro](https://github.com/fabricecordelieres/IJ-Toolset_SynaptosomesMacro) for ImageJ/Fiji
+- **Flow cytometry** — standard `.fcs` or `.csv` list-mode files from any flow cytometer
+- **Widefield immunofluorescence of nano/microparticles** — specifically the CSV outputs produced by the [IJ-Toolset SynaptosomesMacro](https://github.com/fabricecordelieres/IJ-Toolset_SynaptosomesMacro) for ImageJ/Fiji
 
 In both cases the unit of analysis is the same: one row = one particle, columns = measured channels. vFlow treats these files identically and provides the gating, population quantification, and batch statistics that standard flow cytometry software provides for FCS data, applied to any single-particle measurement table.
 
@@ -15,47 +15,82 @@ In both cases the unit of analysis is the same: one row = one particle, columns 
 
 ## Changelog
 
-### v3.9.9 Export Gated Data
+### v4.0.2  Dead-code cleanup
 
-- **Export Gated Data → CSV**  a new export action that writes the raw particle-level data for all gated populations to a single CSV file. For every active file × every applied gate, each particle falling inside at least one gate region is included once (assigned to the region of the first matching gate in gate-manager order). Four annotation columns are appended: `Source_File` (basename of the originating file), `Gate_Name`, `Gate_Region` (e.g. `IN`, `Ch1+/Ch2+`), and `Gate_Type` (`crosshair` | `rectangle` | `ellipse` | `polygon`). Particles outside all gates are excluded by default. If no gates are applied the function falls back to a plain full-dataset dump with `Source_File` only. Useful for downstream statistical testing in R, Python, or Prism using particle-level data from a specific population without needing to re-implement the gate geometry externally.
+Ten methods that had become unreachable since earlier refactoring were removed (105 lines):
+
+- `_plot_gated` — superseded by `_plot_gated_multi`; never called
+- `_compute_gate_stats` — thin wrapper around `_compute_gate_stats_for`; never called
+- `_new_thresh_vars` / `_new_y_thresh_var` — BooleanVars are now created inline; never called
+- `_gate_mask` / `_gate_mask_for_id` — convenience aliases for `_gate_mask_for`; never called
+- `_region_display_name` — region names built inline in `_region_masks`; never called
+- `_collect_2d_transform` / `_deepest_gmm_threshold` — were part of the 2D GMM path removed in v4.0.0; never called
+- `BatchPlotWindow._refresh_display` — defined but never wired; `_schedule_replot` replaced it
+
+The **Compute & Plot** button was also removed from the Polar Analysis and Batch Plots windows. Every parameter change already triggers an automatic debounced replot — the button had become pure redundancy.
+
+### v4.0.1  Auto-replot in analysis windows
+
+Both the **Polar Analysis** and **Batch Plots** windows now replot automatically whenever any parameter changes. There is no longer a **Compute & Plot** button in either window. A 300–350 ms debounce ensures that rapid interactions (typing in an entry box, quickly ticking files) collapse into a single replot fired once the user pauses.
+
+Controls that now trigger a live replot:
+
+| Window | Triggers |
+|--------|---------|
+| Polar Analysis | Gate, region, all four centroid column combos, bins / alpha / MRL entries, file checkboxes, display checkboxes |
+| Batch Plots | Gate, region, distribution column, plot style, sample order, all checkboxes, file checkboxes, Auto: Intensity / Distance buttons |
+
+### v4.0.0  Batch Plots window, population shading, dead code and cleanup
+
+**New: Batch Plots window**
+
+A dedicated analysis window (opened via **📊 Batch Plots…** in the sidebar) that reproduces the core "Batch Export Stats — Folder Mode" figure directly inside the application without writing any files.
+
+- **Left panel: violin / box / points** — one shape per sample showing the full distribution of any chosen numeric column (intensity, distance, etc.). White dot = median, thick bar = IQR, thin whiskers = p5–p95.
+- **Right panel: 100 % stacked bar** — one bar per sample showing gate population percentages (Ch1+/Ch2+, Ch1−/Ch2+, etc.) for the applied gate.
+- **Sample identity is auto-detected:** if any loaded file contains a `Source_File` column (produced by the Folder Scanner concatenation), each unique value in that column becomes one sample. Otherwise each loaded file is one sample with the same colour as in the scatter view.
+- **Gate / region filtering** uses the same `_gate_mask_for` logic as all other windows — fresh per sample, no stale-cache risk.
+- **Distribution styles:** violin, box, or points-only (jittered strip plot).
+- **Export:** figure (PDF / PNG / SVG) and stats CSV (n, mean, median, std, IQR, p5, p95 per sample plus population % columns).
+
+**New: population band shading on marginal histograms**
+
+When a KDE Valley or Otsu gate is applied and marginal histograms are shown, each population band (positive, negative, intermediate) is shaded and labelled on both marginals with the same colour-coding used for gate regions. This gives the same visual feedback that GMM Multi provides via its Gaussian component curves.
+
+**Removed: "Mixed (GMM X + KDE Y)" auto-gate**
+
+The **Mixed** button and its underlying `auto_gate_both` method have been removed. GMM Multi, KDE Valley, Otsu, and Cluster Polygons remain fully intact and unchanged.
+
+---
+
+### v3.9.9  Export Gated Data
+
+- **Export Gated Data → CSV** — a new export action that writes the raw particle-level data for all gated populations to a single CSV file. For every active file × every applied gate, each particle falling inside at least one gate region is included once (assigned to the region of the first matching gate in gate-manager order). Four annotation columns are appended: `Source_File`, `Gate_Name`, `Gate_Region` (e.g. `IN`, `Ch1+/Ch2+`), and `Gate_Type` (`crosshair` | `rectangle` | `ellipse` | `polygon`). Particles outside all gates are excluded by default. If no gates are applied the function falls back to a plain full-dataset dump with `Source_File` only.
 
 ### v3.9.8  GMM overlay curves on marginal histograms
 
-- **Per-component Gaussian curves on marginal histograms**  when a GMM Multi gate is applied, the fitted Gaussian components are drawn as coloured overlaid curves on the top (X) and right (Y) marginal histogram axes. Each curve is scaled to match the histogram bin counts and labelled with its component mean (in raw data units) and weight. The overlay is toggled by the **Legend** checkbox so it can be hidden for clean export. The legend is placed outside the histogram bars to avoid overlapping the data.
+- **Per-component Gaussian curves on marginal histograms** — when a GMM Multi gate is applied, the fitted Gaussian components are drawn as coloured overlaid curves on the top (X) and right (Y) marginal histogram axes. Each curve is scaled to match the histogram bin counts and labelled with its component mean (in raw data units) and weight. The overlay is toggled by the **Legend** checkbox.
 
 ### v3.9.7  GMM Multi auto-gate
 
-- **GMM Multi  (all crossings, X+Y indep.)**  a new auto-gate method that fits independent 1-D Gaussian Mixture Models on each axis with a **user-specified component count** (GMM pops  X and Y spinboxes, range 1–8, default 3). Every equal-density crossing between adjacent components is placed as an individual threshold line; all crossings appear as independently toggleable checkboxes in the Threshold panel so unwanted boundaries can be deactivated without rerunning the fit. Uses exact-N fitting rather than BIC selection because BIC almost always underestimates visually identifiable populations  particularly small negative sub-clouds. Fitting strategy: 5 seeds × 2 inits (kmeans + random) per seed = 10 fits per axis; the run with the highest mean log-likelihood is kept. Requires `scikit-learn`.
+- **GMM Multi (all crossings, X+Y indep.)** — fits independent 1-D Gaussian Mixture Models on each axis with a user-specified component count (GMM pops X and Y spinboxes, range 1–8, default 3). Every equal-density crossing between adjacent components is placed as an individual threshold line; all crossings appear as independently toggleable checkboxes in the Threshold panel. Requires `scikit-learn`.
 
 ### v3.9.6  Rectangle and Ellipse gate shapes
 
-- **Rectangle (▬) gate type**  click-drag to define a rectangular gate; right-drag corner handles to resize. The IN region covers all particles strictly inside the rectangle.
-- **Ellipse (⬭) gate type**  click-drag to define an elliptical gate; right-drag handles to resize. Better suited to the elliptical clusters typical in immunofluorescence scatter plots.
-- Both shape gate types: appear in Batch Stats, Export Stats, and the sub-gate workflow identically to crosshair and polygon gates; `Gate_Type` column in exported CSVs reports `rectangle` or `ellipse` accordingly.
-- `gate_types.svg` documentation diagram added to `docs/` showing all four gate types side by side.
+- **Rectangle (▬)** and **Ellipse (⬭)** gate types added. Both integrate with Batch Stats, Export Stats, and the sub-gate workflow identically to crosshair and polygon gates.
 
 ### v3.9.5  Concatenate & Export
 
-- **Folder Scanner  Concatenate & Export section**  a new panel at the bottom of the Load from Folder dialog allows selected CSV files to be concatenated into a single pooled file without leaving the dialog:
-  - **Save Only**  concatenates the ticked files, adds a `Source_File` column (basename of each source), and writes the result to a user-chosen folder and filename. The dialog stays open so additional files can still be loaded individually.
-  - **Save & Load**  performs the same concatenation, saves the file, then immediately loads it into the main app as a single pooled dataset. Equivalent to manually merging files in a spreadsheet tool and then loading the result, but in one click.
-  - FCS files are automatically skipped during concatenation (CSV-only) with a warning. Layout variants (unnamed leading index column vs. clean header) are both handled automatically.
-  - Useful for combining per-acquisition `___CytoFile.csv` files from a single condition into a `Pooled_CytoFile.csv` directly within vFlow, without needing an external step.
+- **Folder Scanner — Concatenate & Export section** — selected CSV files can be concatenated into a single pooled file directly from the Load from Folder dialog (Save Only or Save & Load), adding a `Source_File` column without needing an external merge step.
 
 ### v3.9.4  Bug fixes
 
-- **Stats panel empty after gate placement**  root cause identified and fixed: `_gate_sig()`, the function that hashes gate geometry to form persistent cache keys, had two bugs introduced in v3.9.2:
-  - **TypeError crash** (`tuple(None)`): `y_boundaries` is initialised to `None` for every manually-drawn crosshair gate; calling `tuple()` on that value raised `TypeError`, which silently aborted the entire `_finish_gate()` chain before the stats panel, cell colouring, or gate-manager row could be updated.
-  - **Wrong cache-key fields**: the function read `x_thresh_active` / `y_thresh_active` (JSON serialisation keys) instead of reading the live `BooleanVar` objects stored under `x_thresh_vars` / `y_thresh_var`. Threshold toggle state was therefore never included in the cache key, so toggling a threshold left a stale cached mask in `_gmc` and stats / cell colours did not update.
-  - Both issues now fixed; `_gate_sig` correctly reads `BooleanVar.get()` for live gates and falls back to plain `bool` for loaded/serialised gates, with all `tuple()` calls guarded against `None`.
+- **Stats panel empty after gate placement** — `_gate_sig()` had a `TypeError` crash on `tuple(None)` and read the wrong dict keys for threshold toggle state; both fixed.
 
 ### v3.9.3  Bug fixes and Polar Analysis redesign
 
-- **Region % labels not appearing after gating**  `_draw_region_labels()` was called before `_set_axis_scale()`, so text positions were resolved under the wrong coordinate transform; moved to after both `_set_axis_scale()` and "Fit axes to data"; added unconditional `canvas.draw_idle()` at end of `refresh_plot`.
-- **Polar analysis: gate filter silently ignored**  `_get_population_mask` passed `_cache_path` to `_gate_mask_for`; cache entries built against the full DataFrame were returned unchanged for filtered sub-gate DataFrames of different length; now always computes fresh, with a length-safety guard in the cache.
-- **Premature repaint in `_clear_preview`**  removed `draw_idle()` from `_clear_preview`; each interactive caller issues its own explicit flush.
-- **Polar Analysis window redesigned**  one polar axes, files overlaid with `FILE_COLORS`, MRL + Rayleigh stats annotated per file, all output non-rasterised for true vector PDF/SVG export; removed below/above-threshold subplots, magnitude subplot, and view-mode switcher.
-- **`_auto_detect_channels` robustness**  clears stale values before re-detection; updates combo value lists before `var.set()`; adds `centroid_x`/`centroid_y` fallback naming; removes duplicate `startswith` condition.
+- **Region % labels not appearing after gating** — `_draw_region_labels()` now called after `_set_axis_scale()`.
+- **Polar Analysis window redesigned** — single polar axes, files overlaid with `FILE_COLORS`, MRL + Rayleigh stats annotated per file, all output non-rasterised for true vector PDF/SVG export.
 
 ---
 
@@ -73,7 +108,7 @@ The [IJ-Toolset SynaptosomesMacro](https://github.com/fabricecordelieres/IJ-Tool
    - Distance between channel centroids (a sub-resolution colocalization metric, calibrated in µm)
    - Local background from a donut-shaped ROI around each structure
 5. Saves per-acquisition results as `___CytoFile.csv` and pools all acquisitions of a condition into `_Pooled_CytoFile.csv`
-6. Optionally runs Monte Carlo randomization (via the RandomizerColocalization plugin) to produce a null-distribution colocalization reference in `Analysis_RandomizationResults.csv`
+6. Optionally runs Monte Carlo randomization to produce a null-distribution colocalization reference
 
 **vFlow is a downstream tool.** It reads those CytoFiles directly, provides the full 2D gating and population quantification workflow, and adds batch processing across all acquisitions of an experiment in a single operation.
 
@@ -108,21 +143,21 @@ Exact column names depend on the labelling tags entered in the toolset GUI and t
 | pandas | any | Data loading |
 | matplotlib | any | Rendering |
 | scipy | any | KDE, signal processing, interpolation |
-| scikit-learn | ≥ 1.3 | GMM auto-gating, HDBSCAN clustering |
+| scikit-learn | ≥ 1.3 | GMM Multi auto-gating, HDBSCAN clustering |
 | tkinter | bundled | GUI (standard library) |
 
 ```bash
 pip install numpy pandas matplotlib scipy scikit-learn
 ```
 
-scikit-learn is only required for the 2D GMM and Cluster Polygons auto-gate methods. All other features work without it.
+scikit-learn is only required for the GMM Multi and Cluster Polygons auto-gate methods. All other features work without it.
 
 ---
 
 ## Quick Start
 
 ```bash
-python vFlow_v3_9_9.py
+python vFlow_v4_0_2.py
 ```
 
 1. Click **Load Files** or **Load from Folder** to open your `___CytoFile.csv`, `_Pooled_CytoFile.csv`, or `.fcs` files.
@@ -131,7 +166,8 @@ python vFlow_v3_9_9.py
 4. Switch to **Density** or **Contour Plot** mode to reveal population structure.
 5. Use one of the **Auto-Gate** buttons or draw a gate manually in **Draw** mode.
 6. Read per-region counts and percentages in the **Statistics** panel.
-7. Use **Batch Stats → Folder** to process an entire experiment folder and get one row per acquisition in a single CSV.
+7. Use **Batch Plots…** to visualise intensity/distance distributions and gate population percentages per sample across all loaded files.
+8. Use **Batch Stats → Folder** to process an entire experiment folder and get one row per acquisition in a single CSV.
 
 ---
 
@@ -157,18 +193,18 @@ Standard comma-separated files. Each column is a channel; each row is one partic
 Opens a file picker. Multiple files can be selected at once. Each file gets a distinct colour and appears as a checkbox row in the **FILES** panel. Uncheck a file to remove it from the plot without losing it.
 
 ### Load from Folder
-Opens the **Folder Scanner** dialog. Select a root directory and optionally a filename suffix filter  the default `___CytoFile` matches the SynaptosomesMacro naming convention directly. The tool recursively scans all subfolders and lists every matching file. Use **Select All** / **Deselect All** or tick individual files before confirming.
+Opens the **Folder Scanner** dialog. Select a root directory and optionally a filename suffix filter — the default `___CytoFile` matches the SynaptosomesMacro naming convention directly. The tool recursively scans all subfolders and lists every matching file. Use **Select All** / **Deselect All** or tick individual files before confirming.
 
 #### Concatenate & Export *(v3.9.5)*
 The Folder Scanner dialog includes a **⊞ Concatenate & Export** panel at the bottom. After ticking the files you want:
 
-- **Save Only**  concatenates the selected CSV files into a single pooled file (with a `Source_File` column identifying each row's origin) and saves it to a chosen folder. The dialog remains open.
-- **Save & Load**  performs the same concatenation, saves, then immediately loads the result into the app as a single merged dataset.
+- **Save Only** — concatenates the selected CSV files into a single pooled file (with a `Source_File` column identifying each row's origin) and saves it to a chosen folder. The dialog remains open.
+- **Save & Load** — performs the same concatenation, saves, then immediately loads the result into the app as a single merged dataset.
 
 This replaces a common manual step of merging CSV files in a spreadsheet before loading into vFlow.
 
 ### Exclude / Restore
-Each file row has an **✕** button. Excluded files move to the **EXCLUDED FILES** panel and can be restored at any time. Exclusion also propagates to Batch Stats: any file sharing an experiment-level filename prefix with an excluded file is automatically skipped  particularly useful for excluding a `_Pooled_CytoFile` without having to individually exclude every acquisition from the same condition.
+Each file row has an **✕** button. Excluded files move to the **EXCLUDED FILES** panel and can be restored at any time. Exclusion also propagates to Batch Stats: any file sharing an experiment-level filename prefix with an excluded file is automatically skipped — particularly useful for excluding a `_Pooled_CytoFile` without having to individually exclude every acquisition from the same condition.
 
 ### Clear All Files
 Removes all loaded and excluded files after confirmation. Gates are preserved.
@@ -177,9 +213,9 @@ Removes all loaded and excluded files after confirmation. Gates are preserved.
 
 ## View Modes
 
-**Overlay**  all active (checked) files are plotted simultaneously on the same axes, each in its own colour. Useful for comparing conditions or acquisitions side by side.
+**Overlay** — all active (checked) files are plotted simultaneously on the same axes, each in its own colour. Useful for comparing conditions or acquisitions side by side.
 
-**Cycle through**  displays one file at a time. Use **◀ Prev** / **Next ▶** to navigate. Useful for inspecting individual acquisitions before deciding to pool them.
+**Cycle through** — displays one file at a time. Use **◀ Prev** / **Next ▶** to navigate. Useful for inspecting individual acquisitions before deciding to pool them.
 
 ---
 
@@ -209,19 +245,19 @@ Five axis scale types, independently selectable for X and Y:
 Each particle is drawn as a single dot, coloured by file. Subsampled to 50,000 points for display when files are larger; all statistics use the full dataset.
 
 ### Density Plot
-Points are coloured by local 2D density (dark blue = sparse, red = dense) using a Gaussian KDE evaluated on a 128×128 grid then interpolated per-point. Display is capped at 50,000 randomly sampled points so sparse outlier populations are never hidden. Useful for identifying the main particle cloud and its subpopulations at a glance.
+Points are coloured by local 2D density (dark blue = sparse, red = dense) using a Gaussian KDE evaluated on a 128×128 grid then interpolated per-point. Display is capped at 50,000 randomly sampled points so sparse outlier populations are never hidden.
 
 ### Contour Plot
-Filled viridis contour levels with an outer boundary at a user-chosen probability level (2 %, 5 %, 10 %, or 20 %). Particles outside the boundary are drawn as individual dots so outlier populations remain visible. Good for presenting cytofluorograms directly comparable to those output by the SynaptosomesMacro toolset.
+Filled viridis contour levels with an outer boundary at a user-chosen probability level (2 %, 5 %, 10 %, or 20 %). Particles outside the boundary are drawn as individual dots so outlier populations remain visible.
 
 ### Display Options (checkboxes)
 | Option | Default | Effect |
 |--------|---------|--------|
-| Marginal histograms | On | Histogram panels above and to the right of the scatter plot |
+| Marginal histograms | On | Histogram panels above and to the right of the scatter plot; also shows population band shading for KDE/Otsu gates and GMM component curves for GMM Multi gates |
 | Region % labels on plot | On | IN / OUT counts and percentages drawn directly on the plot |
-| Legend | On | File-name legend in the lower-left corner; also toggles per-component GMM curves on marginal histograms when GMM Multi has been run |
+| Legend | On | File-name legend; also toggles per-component GMM curves on marginal histograms |
 | Grid | On | Background grid |
-| Fit axes to data | Off | Zooms to p0.5–p99.5 of the visible data with 5 % breathing room, centring the particle cloud in the viewport |
+| Fit axes to data | Off | Zooms to p0.5–p99.5 of the visible data with 5 % breathing room |
 
 ---
 
@@ -234,7 +270,7 @@ Enable **Draw** mode with the radio button, then select a gate type.
 <img src="docs/gate_types.svg" alt="Four gate types side by side: crosshair (quadrant grid), rectangle, ellipse, and polygon with vertex handles" width="100%"/>
 
 **Crosshair (✛)**
-One or more vertical X thresholds and one or more horizontal Y thresholds, dividing the plot into a rectangular grid. Each region is labelled with its channel combination (e.g. `Ch1+/Ch2+`). The natural gate type for classic quadrant analysis  separating single-positive, double-positive, and negative populations.
+One or more vertical X thresholds and one or more horizontal Y thresholds, dividing the plot into a rectangular grid. Each region is labelled with its channel combination (e.g. `Ch1+/Ch2+`). The natural gate type for classic quadrant analysis — separating single-positive, double-positive, and negative populations.
 
 **Rectangle (▬)**
 Click-drag to define a rectangular gate. Resize by right-dragging corner handles.
@@ -243,44 +279,35 @@ Click-drag to define a rectangular gate. Resize by right-dragging corner handles
 Click-drag to define an elliptical gate. Better suited to the elliptical clusters typical in fluorescence scatter plots.
 
 **Polygon (⬠)**
-Click to place vertices one by one. Close with **✓ Close Polygon** or by double-clicking near the first vertex. Any shape  useful for irregularly shaped populations or for drawing around a visually identified cluster.
+Click to place vertices one by one. Close with **✓ Close Polygon** or by double-clicking near the first vertex. Any shape — useful for irregularly shaped populations.
 
 ### Interaction
-- **Left-drag in Draw mode**  creates or extends a gate
-- **Right-drag on any handle**  reshapes the gate (works in any mode, including Off)
-- **Double-click a region label**  opens that population in a new sub-gate tab
-- **Gate mode Off**  disables accidental creation; double-click sub-gating still works
+- **Left-drag in Draw mode** — creates or extends a gate
+- **Right-drag on any handle** — reshapes the gate (works in any mode, including Off)
+- **Double-click a region label** — opens that population in a new sub-gate tab
+- **Gate mode Off** — disables accidental creation; double-click sub-gating still works
 
 ---
 
 ## Auto-Gating
 
-Seven automatic gate methods, all tunable via the **Sensitivity** slider (1–10, default 7). Moving the slider live re-runs the last-used method with a short debounce delay.
+Four automatic gate methods, all tunable via the **Sensitivity** slider (1–10, default 7). Moving the slider live re-runs the last-used method with a short debounce delay.
 
-### 2D GMM  Joint X,Y space
-Fits a Gaussian Mixture Model in the 2D transformed space, using the BIC to select 1–3 components. Thresholds at the valleys between component means. Best for well-separated elliptical populations  typical for clearly distinct Ch1+/Ch1− subpopulations.
+### KDE Valley  (X + Y)
+Detects the deepest KDE valley between two populations independently on each axis. Validated by requiring both flanking peaks to be substantially taller than the valley. Falls back to the 5 % left-tail edge for unimodal distributions. A reliable first choice for bimodal channels. Population band shading on marginal histograms shows positive/negative regions visually.
 
-### KDE Valley  X + Y
-Detects the deepest KDE valley between two populations independently on each axis. Validated by requiring both flanking peaks to be substantially taller than the valley. Falls back to the 5 % left-tail edge for unimodal distributions. A reliable first choice for bimodal channels.
+### Otsu  (X + Y)
+Maximises between-class variance to find one threshold per axis. Fast and robust for clearly bimodal distributions (20/80 to 80/20 splits). Population band shading is shown on marginal histograms.
 
-### Multi-Valley Grid  KDE X+Y
-Finds all significant KDE valleys on each axis and places a full crosshair grid gate. Use when a channel has more than two populations (negative, dim-positive, bright-positive).
+### GMM Multi  (all crossings, X+Y independent)
+Fits independent 1-D Gaussian Mixture Models on X and Y with a **user-specified component count** (set via the **GMM pops X** and **Y** spinboxes in the sidebar, range 1–8, default 3). Places every equal-density crossing between adjacent components as individual threshold lines, all toggleable independently in the **Threshold** panel.
 
-### Otsu  X + Y
-Maximises between-class variance to find one threshold per axis. Fast and robust for clearly bimodal distributions.
-
-### Mixed  GMM X + KDE Y
-GMM on X, KDE valley on Y. Useful when one channel separates populations more cleanly than the other.
-
-### GMM Multi  All crossings, X+Y independent *(v3.9.7)*
-Fits independent 1-D GMMs on X and Y with a **user-specified component count** (set via the **GMM pops  X** and **Y** spinboxes in the sidebar). Places every equal-density crossing between adjacent components as individual threshold lines, all toggleable independently in the **Threshold** panel.
-
-- **Why user-specified N instead of BIC?** BIC penalises complexity  it almost always merges a small negative cloud into the dominant positive population. Giving direct control over component count makes rare sub-populations discoverable: increase the spinbox by 1 at a time and observe where new crossings appear, then uncheck any that sit inside a single population.
+- **Why user-specified N instead of BIC?** BIC penalises complexity — it almost always merges a small negative cloud into the dominant positive population. Giving direct control over component count makes rare sub-populations discoverable: increase the spinbox by 1 at a time and observe where new crossings appear, then uncheck any that sit inside a single population.
 - **Per-component GMM curves** are drawn as overlays on the marginal histograms (toggleable via the **Legend** checkbox). Each component is labelled with its mean (in raw data units) and weight.
 - Requires `scikit-learn`. Falls back gracefully with an error dialog if not installed.
 
-### Cluster Polygons  HDBSCAN 2D
-Clusters all visible particles in 2D using HDBSCAN, wraps each cluster in a convex-hull polygon gate. Sensitivity controls minimum cluster size (high sensitivity = finds smaller subpopulations). Ideal for discovering unexpected subpopulations or for non-elliptical cluster shapes  for example, separating particle aggregates from single particles.
+### Cluster Polygons  (HDBSCAN 2D)
+Clusters all visible particles in 2D using HDBSCAN, wraps each cluster in a convex-hull polygon gate. Sensitivity controls minimum cluster size (high sensitivity = finds smaller subpopulations). Ideal for discovering unexpected subpopulations or for non-elliptical cluster shapes. Requires `scikit-learn ≥ 1.3`.
 
 ---
 
@@ -301,7 +328,7 @@ Any applied gate region can be opened as a **sub-gate tab**:
 2. Apply a gate so region labels appear on the plot
 3. Double-click any region label (e.g. `Ch1+ ⤵`)
 
-A new tab opens pre-loaded with only the particles from that region. The sub-gate tab is a fully independent vFlow instance with its own axes, scale, plot mode, auto-gate, statistics, and export. This enables hierarchical gating  for example, first gate on FSC-H vs FM4-64-H to select intact synaptosomes, then sub-gate the positive population on Ch1 vs Ch2 to quantify co-labelled structures.
+A new tab opens pre-loaded with only the particles from that region. The sub-gate tab is a fully independent vFlow instance with its own axes, scale, plot mode, auto-gate, statistics, and export. This enables hierarchical gating — for example, first gate on FSC-H vs FM4-64-H to select intact synaptosomes, then sub-gate the positive population on Ch1 vs Ch2 to quantify co-labelled structures.
 
 Right-click a sub-gate tab header to close it. The Main tab cannot be closed.
 
@@ -311,9 +338,9 @@ Right-click a sub-gate tab header to close it. The Main tab cannot be closed.
 
 Counts and percentages for all regions of the currently selected gate across all active files.
 
-**Per file**  each file as a collapsible tree node. Useful for comparing individual acquisitions before pooling.
+**Per file** — each file as a collapsible tree node. Useful for comparing individual acquisitions before pooling.
 
-**Merged**  sums all active files into a single breakdown. The appropriate view for a fully pooled `_Pooled_CytoFile`.
+**Merged** — sums all active files into a single breakdown. The appropriate view for a fully pooled `_Pooled_CytoFile`.
 
 When multiple gates are applied the panel shows every Venn combination (exclusive regions, overlaps, outside-all).
 
@@ -321,28 +348,25 @@ When multiple gates are applied the panel shows every Venn combination (exclusiv
 
 ## Vector / Polar Analysis
 
-The **Vector Analysis** window computes displacement vectors from paired centroid columns (e.g. `X_Ch1_microns`, `Y_Ch1_microns`, `X_Ch2_microns`, `Y_Ch2_microns`) and visualises their angular distribution as a polar rose histogram.
+The **🧭 Polar / Vector Analysis…** window computes displacement vectors from paired centroid columns (e.g. `X_Ch1_microns`, `Y_Ch1_microns`, `X_Ch2_microns`, `Y_Ch2_microns`) and visualises their angular distribution as a polar rose histogram.
 
 <img src="docs/polar_analysis.svg" alt="Polar analysis window showing overlaid rose histograms for three files with mean-direction arrows and per-file MRL and Rayleigh p-value statistics" width="100%"/>
 
 ### Workflow
 
 1. Apply a gate in the main window to select a population of interest (e.g. `Ch1+/Ch2+` double-positive structures).
-2. Click **Vector Analysis** in the EXPORT section.
+2. Click **🧭 Polar / Vector Analysis…** in the VECTOR ANALYSIS section.
 3. Select the gate and region in the **POPULATION** section of the sidebar.
-4. Confirm or manually assign the four centroid columns under **CHANNEL MAPPING** (`X Ch1`, `Y Ch1`, `X Ch2`, `Y Ch2`). Click **⟳ Auto-detect**  the tool looks for columns matching `X_*_microns` / `Y_*_microns` naming automatically.
-5. Set histogram bins (default 36), bar alpha, and MRL threshold (default 0.3).
-6. Press **🔄 Compute & Plot**.
+4. Confirm or manually assign the four centroid columns under **CHANNEL MAPPING**. Click **⟳ Auto-detect** — the tool looks for columns matching `X_*_microns` / `Y_*_microns` naming automatically.
+5. Adjust histogram bins, bar alpha, and MRL threshold as needed.
+
+The plot updates automatically whenever any parameter changes. No "Compute" button is needed.
 
 ### What is plotted
 
-For each active file, the displacement vector `(Δx, Δy) = Ch2 centroid − Ch1 centroid` is computed per row. The angular distribution of these vectors is rendered as a normalised polar rose histogram (each bar = fraction of vectors in that angular bin, so multi-file overlays are directly comparable regardless of cell count). All rendering is non-rasterised  PDF and SVG exports are true vector graphics.
-
-Files are coloured with the same `FILE_COLORS` palette used in the main scatter plot, so the same experiment colours carry through to the polar figure.
+For each active file, the displacement vector `(Δx, Δy) = Ch2 centroid − Ch1 centroid` is computed per row. The angular distribution is rendered as a normalised polar rose histogram (each bar = fraction of vectors in that angular bin, so multi-file overlays are directly comparable regardless of cell count). All rendering is non-rasterised — PDF and SVG exports are true vector graphics.
 
 ### Statistics
-
-Two circular statistics are computed per file and displayed as an annotation on the plot:
 
 | Statistic | Description |
 |-----------|-------------|
@@ -352,21 +376,52 @@ Two circular statistics are computed per file and displayed as an annotation on 
 A mean-direction arrow is drawn when `MRL ≥ threshold` (configurable, default 0.3).
 
 ### Export
-- **Export figure**  saves as PDF (vector), SVG (vector), or PNG. PDF/SVG output is fully resolution-independent.
-- **Export stats → CSV**  one row per file with `N_vectors`, `MRL`, `Rayleigh_p`, `Mean_dir_deg`, `Significant`, and the four centroid column names.
+- **Export figure** — PDF (vector), SVG (vector), or PNG.
+- **Export stats → CSV** — one row per file with `N_vectors`, `MRL`, `Rayleigh_p`, `Mean_dir_deg`, `Significant`, and the four centroid column names.
+
+---
+
+## Batch Plots *(v4.0.0)*
+
+The **📊 Batch Plots…** window visualises per-sample distributions and gate population percentages directly inside the application, without needing to run a Batch Stats export first.
+
+<img src="docs/batch_plots.svg" alt="Batch Plots window showing violin distributions on the left and 100% stacked population bars on the right, one column per sample" width="100%"/>
+
+### Sample identity
+
+The window auto-detects which mode to use:
+
+- **Concatenated-file mode** — if any loaded file contains a `Source_File` column (produced by the Folder Scanner concatenation), each unique value in that column becomes one sample. This lets you load a single pooled CSV and still see per-acquisition breakdowns.
+- **Individual-files mode** — if no `Source_File` column is present, each loaded+checked file is one sample, coloured to match the scatter view.
+
+### Left panel: distributions
+
+Violin, box, or points-only (jittered strip) plot for any numeric column in the data — intensity, distance, or any other measured value. Select from the **DISTRIBUTION COLUMN** dropdown or use the **Auto: Intensity** / **Auto: Distance** quick-select buttons.
+
+- White dot = median, thick bar = IQR, thin whiskers = p5–p95 (violin/box modes)
+- Optional jittered point overlay for all individual values (up to 500 per sample shown)
+- Gate + region filtering: only particles matching the selected gate and region contribute to the distribution
+
+### Right panel: population percentages
+
+100 % stacked bar chart showing gate region percentages per sample. Rendered only when a gate is selected (otherwise only the distribution panel is shown). Optional percentage labels inside bars (for segments ≥ 5 %).
+
+### Export
+- **Export figure** — PDF / PNG / SVG
+- **Export stats → CSV** — per-sample rows with n, mean, median, std, IQR, p5, p95, and one column per gate region percentage
 
 ---
 
 ## Export
 
 ### Save Gates → JSON
-Saves all gate geometry, type, name, colour, and threshold toggle states to a `.json` file. Reload later and apply to files from a different condition with the same channel structure  useful for applying a gate defined on pooled data back to individual acquisitions.
+Saves all gate geometry, type, name, colour, and threshold toggle states to a `.json` file. Reload later and apply to files from a different condition with the same channel structure.
 
 ### Load Gates ← JSON
 Restores gates from a `.json` file. Existing gates are replaced after confirmation.
 
 ### Export Stats → CSV
-Saves the current statistics panel to CSV  one row per region per file, with count and percentage columns.
+Saves the current statistics panel to CSV — one row per region per file, with count and percentage columns.
 
 ### Export Gated Data → CSV *(v3.9.9)*
 Saves the raw particle-level data for all gated populations. Each row is one particle with additional columns: `Source_File`, `Gate_Name`, `Gate_Region`, `Gate_Type`. Particles outside all gates are excluded. If no gates are applied, all particles from all active files are exported with a `Source_File` column only.
@@ -376,17 +431,17 @@ Saves the raw particle-level data for all gated populations. Each row is one par
 The primary workflow for processing a complete SynaptosomesMacro experiment.
 
 1. Select a root folder (auto-detected from loaded files, or browsable)
-2. Set the suffix filter  default `___CytoFile` matches the SynaptosomesMacro output naming exactly  and file type (CSV, FCS, or both)
+2. Set the suffix filter — default `___CytoFile` matches the SynaptosomesMacro output naming exactly — and file type (CSV, FCS, or both)
 3. The tool scans the folder tree recursively, applies the current gates to every matching file, and writes one wide-format CSV with **one row per acquisition, one column per gate × region combination**
 
 Excluded files are skipped at two levels:
-- **Direct exclusion**  any file whose path matches the excluded-files list
-- **Family exclusion**  any file sharing an experiment-level filename prefix with an excluded file. For example, excluding `20241122_DA-FASS_Pooled_CytoFile` automatically skips all `…_1___CytoFile`, `…_2___CytoFile`, … from the same acquisition set, without needing to exclude each individually
+- **Direct exclusion** — any file whose path matches the excluded-files list
+- **Family exclusion** — any file sharing an experiment-level filename prefix with an excluded file (e.g. excluding `20241122_DA-FASS_Pooled_CytoFile` automatically skips all `…_1___CytoFile`, `…_2___CytoFile`, … from the same acquisition set)
 
-A companion `_excluded.csv` log is always written alongside the main results, listing every skipped file and the reason.
+A companion `_excluded.csv` log is always written alongside the main results.
 
 ### Export Figure → PDF / PNG / SVG
-Saves the current scatter plot at 300 dpi. For vector formats (PDF, SVG, EPS) scatter points are automatically de-rasterised before saving for crisp output at any zoom level, then restored to rasterised state for normal interactive performance.
+Saves the current scatter plot at 300 dpi. For vector formats (PDF, SVG, EPS) scatter points are automatically de-rasterised before saving for crisp output at any zoom level.
 
 ---
 
@@ -410,6 +465,7 @@ vFlow is designed to remain responsive at the dataset sizes typical in single-pa
 | Marginal histograms | Binned from ≤ 30,000 subsampled values; bin edges from full data range |
 | Sensitivity slider | Debounced at 350 ms; live re-runs the last auto-gate without a button click |
 | Dot-size / alpha sliders | Debounced at 80 ms |
+| Analysis windows (Polar, Batch Plots) | Debounced at 300–350 ms; replot fires automatically on any parameter change |
 
 ---
 
@@ -426,7 +482,7 @@ vFlow is designed to remain responsive at the dataset sizes typical in single-pa
 
 ---
 
-## Typical Workflow  SynaptosomesMacro Experiment
+## Typical Workflow — SynaptosomesMacro Experiment
 
 ```
 Upstream  (ImageJ/Fiji  IJ-Toolset SynaptosomesMacro)
@@ -447,7 +503,7 @@ Downstream  (vFlow)
 7.  Load from Folder → suffix ___CytoFile
     → select all acquisitions from one condition
     Optional: use ⊞ Concatenate & Export → Save & Load to merge them
-    into a single pooled file in one step  (new in v3.9.5)
+    into a single pooled file in one step
 
 8.  Apply axes:
       X → Bkgd_Corr_Intensity_Ch1      (channel 1 background-corrected)
@@ -456,7 +512,7 @@ Downstream  (vFlow)
 9.  Set both scales to asinh, cofactor 150–300
     Enable Density or Contour Plot to reveal population structure
 
-10. Run KDE Valley or 2D GMM auto-gate for an initial threshold,
+10. Run KDE Valley or GMM Multi auto-gate for an initial threshold,
     fine-tune by dragging handles
     Optional: use GMM Multi with pops-X/Y spinboxes to separate
     dim-positive sub-populations; uncheck unwanted crossings
@@ -472,16 +528,21 @@ Downstream  (vFlow)
 
 13. Export Stats → CSV for the gate breakdown
     Export Gated Data → CSV for particle-level data with Gate_Name /
-    Gate_Region / Gate_Type columns  (new in v3.9.9)
+    Gate_Region / Gate_Type columns
     (import to R / Python / Prism for statistical testing)
 
 14. Back in the main tab:
     Batch Stats → Folder → suffix ___CytoFile → experiment root
     → one output CSV, one row per acquisition, across all conditions
 
-15. Optional  Vector Analysis:
+15. Batch Plots → visualise distance/intensity distributions per
+    acquisition side by side (violin/box/points), and gate population
+    % stacked bars — works directly on the concatenated CSV or on
+    individually loaded files
+
+16. Optional  Vector Analysis:
     Select Ch1+/Ch2+ gate → map X_Ch1_microns/Y_Ch1_microns
-    and X_Ch2_microns/Y_Ch2_microns → Compute & Plot
+    and X_Ch2_microns/Y_Ch2_microns
     → polar rose histogram per condition with MRL and Rayleigh p
     → Export figure (PDF/SVG) or stats CSV
 ```
@@ -490,17 +551,19 @@ Downstream  (vFlow)
 
 ## Architecture
 
-vFlow is a single-file Python application (~6,660 lines, v3.9.9).
+vFlow is a single-file Python application (~7,600 lines, v4.0.2).
 
-**`FlowApp`**  complete analysis environment for one dataset view. Owns the matplotlib figure, all gate state, all file state, and the control panel. Runs standalone or embedded as a tab inside `FlowTabManager`.
+**`FlowApp`** — complete analysis environment for one dataset view. Owns the matplotlib figure, all gate state, all file state, and the control panel. Runs standalone or embedded as a tab inside `FlowTabManager`.
 
-**`FlowTabManager`**  manages a `ttk.Notebook` of multiple independent `FlowApp` instances. Handles sub-gate tab creation and passes filtered particle data from parent to child.
+**`FlowTabManager`** — manages a `ttk.Notebook` of multiple independent `FlowApp` instances. Handles sub-gate tab creation and passes filtered particle data from parent to child.
 
-**`PolarAnalysisWindow`**  dedicated `tk.Toplevel` for vector directionality analysis. Reads paired centroid columns, computes displacement vectors, renders a polar rose histogram with one overlay per active file. All output is non-rasterised.
+**`PolarAnalysisWindow`** — dedicated `tk.Toplevel` for vector directionality analysis. Reads paired centroid columns, computes displacement vectors, renders a polar rose histogram with one overlay per active file. Replots automatically on any parameter change (300 ms debounce). All output is non-rasterised.
 
-**`FolderScanDialog`**  modal dialog for recursive folder scanning with suffix filtering. Includes the Concatenate & Export panel for merging selected CSV files into a single pooled dataset.
+**`BatchPlotWindow`** — dedicated `tk.Toplevel` for per-sample distribution and population % visualisation. Auto-detects whether samples come from individual files or from a `Source_File` column in a concatenated CSV. Replots automatically on any parameter change (300 ms debounce).
 
-**`BatchStatsDialog`**  modal dialog for configuring and previewing a batch statistics run.
+**`FolderScanDialog`** — modal dialog for recursive folder scanning with suffix filtering. Includes the Concatenate & Export panel for merging selected CSV files into a single pooled dataset.
+
+**`BatchStatsDialog`** — modal dialog for configuring and previewing a batch statistics run.
 
 Custom matplotlib scale classes (`BiexpScale`, `AsinhScale`, `LogicleScale`) are registered globally and work as first-class axis scales.
 
