@@ -1,10 +1,159 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Flow Cytometry Visualization Tool - v4.0.2
+Flow Cytometry Visualization Tool - v4.0.12
 @author: vincentpb
 
-Changelog v4.0.1 → v4.0.2
+Changelog v4.0.9 -> v4.0.12
+---------------------------
+BUG FIX
+  1. Sub-gate tab: placing a gate no longer zooms out to full scale
+       * After opening a sub-gate tab the data occupies only a small
+         region of the full instrument range (e.g. 10^5-10^6 out of
+         -10^5 to 10^6).  When a crosshair or shape gate was drawn,
+         refresh_plot re-applied _set_axis_scale() which reset the
+         view to the full biexp/asinh range, shrinking the visible
+         population to a tiny speck in one corner.
+       * Fix: _load_filtered now sets app.fit_axes_var = True for
+         every sub-gate tab on creation.  The existing "Fit axes to
+         data" logic (p0.5/p99.5 with 5% padding in transform space)
+         already handles this perfectly -- it just was not enabled.
+         The checkbox remains visible in the sidebar so the user can
+         still disable it and see the full scale if needed.
+       * No logic changes in refresh_plot or _set_axis_scale.
+
+Changelog v4.0.8 -> v4.0.9
+--------------------------
+BUG FIX
+  1. Sub-gate tab: changing X / Y axis now takes effect
+       * _update_channel_menus replaced the combobox values list on every
+         file-toggle but did NOT re-sync the StringVars when x_channel was
+         already set (non-None).  On certain platforms a ttk readonly
+         Combobox blanks its displayed text when its 'values' list is
+         replaced even if the current value is still present in the new
+         list.  As a result the combobox appeared correct but the internal
+         StringVar was cleared, so Apply Axes had nothing to act on.
+       * Fix: _update_channel_menus now always calls x_var.set(x_channel)
+         / y_var.set(y_channel) after rebuilding the values list, keeping
+         the displayed selection and the StringVar in sync at all times.
+       * Additional: apply_axes now clears self._tc (transform cache)
+         whenever the channel selection actually changes, preventing a
+         stale cached transform from being served for the new columns.
+
+IMPROVEMENTS
+  2. Vector / Polar window: channel mapping UI regrouped by channel
+       * The four centroid column selectors were ordered Y-Ch1, X-Ch1,
+         Y-Ch2, X-Ch2 -- an axis-first layout that made it easy to
+         accidentally assign Ch1 X to the Ch2 X slot.
+       * Fix: selectors are now ordered Ch1-X, Ch1-Y, Ch2-X, Ch2-Y
+         (channel-first) with a note stating "Direction: Ch1 -> Ch2;
+         map X and Y separately for each channel."
+       * The vector direction formula (dx = X_Ch2 - X_Ch1,
+         dy = Y_Ch2 - Y_Ch1) is unchanged; the axis convention is now
+         explicit in every label.
+
+  3. Vector / Polar window: radial scale now explained in title and
+     status bar
+       * The polar rose plot radial axis was unlabelled.  It now states
+         "Radial scale = fraction of vectors per bin" in the figure
+         suptitle and the status bar, so it is clear that each bar
+         height is a proportion (0-1) not a raw count.
+       * The mean-direction arrow threshold is also shown inline:
+         "Arrow shown when MRL >= <threshold>".
+
+  4. Folder dialogs: last-used directory persisted within the session
+       * Every askdirectory / askopenfilenames call opened the OS
+         native picker at the home directory regardless of previous use.
+       * Fix: a module-level _last_folder_dir string is updated whenever
+         the user confirms a folder selection in FolderScanDialog,
+         BatchExportDialog, or FlowApp.load_files.  Subsequent opens of
+         any of those dialogs start at the same directory, eliminating
+         repeated navigation across a session.
+
+Changelog v4.0.7 -> v4.0.8
+--------------------------
+BUG FIXES (BatchPlotWindow only)
+  1. Box plot: outlier dots now match their box colour
+       * flierprops previously set a single fixed colour (T['fg_dim']) for
+         all outlier points regardless of which sample they belonged to.
+       * Fix: after boxplot() returns, each bp['fliers'][i] element is
+         updated with colors_ordered[i] so outlier dots are coloured
+         identically to their parent box.
+
+  2. Strip / "points only" view: y-axis scale no longer shifts between
+     renders
+       * _get_rng(42) returns a cached, stateful Generator -- calling it
+         across multiple renders advanced its internal state, producing
+         different subsample indices and jitter values each time, which
+         caused matplotlib to autoscale to a different data range every
+         render.
+       * Fix: the strip-plot block now creates a local
+         np.random.default_rng(42) each time _render_figure() is called
+         so subsampling and jitter are identical on every redraw.
+       * Additional fix: y-limits are explicitly set from the full data
+         range (not the subsample) before scatter() is called, so the
+         axis scale is pinned and cannot drift.
+
+  3. Stacked bar legend no longer overlaps bars
+       * Legend was drawn at loc='upper right' inside the axes bounding
+         box, covering the tallest bars.
+       * Fix: legend is now anchored outside the axes at
+         bbox_to_anchor=(1.01, 1.0) with loc='upper left', and the
+         figure right margin is reduced (right=0.82 / 0.87) to leave
+         room for the legend panel.
+
+PERFORMANCE (BatchPlotWindow)
+  4. _compute_and_plot: halved gate-mask computation per sample
+       * Previously _get_population_mask and _get_region_pcts_and_n each
+         called self.app._gate_mask_for independently -- two full gate
+         evaluations per sample.
+       * Fix: _compute_and_plot now calls _gate_mask_for exactly once per
+         sample, builds the population mask and the region-pct dict from
+         that single result, and accumulates the SEM cache inline.
+         _get_population_mask and _get_region_pcts_and_n are retained as
+         helpers for other callers but are no longer invoked from the
+         hot compute path.
+
+
+Changelog v4.0.5 -> v4.0.6
+--------------------------
+BUG FIXES
+  1. BatchPlotWindow: per-bar binomial SEM for stacked population chart
+       • _pop_sem_cache previously stored one SEM per region computed as
+         std(all_samples)/sqrt(n_samples) — a global cross-sample aggregate
+         drawn identically on every bar regardless of sample size.
+       • Fix: SEM is now computed per bar as the binomial standard error
+         sqrt(p*(1-p)/n) where p is that sample's proportion and n is its
+         cell count.  Stored as {(label, region_name): sem_pct} so each bar
+         carries its own uncertainty estimate.
+       • _get_region_pcts_and_n() added to return (pct, n_total) pairs;
+         _get_region_pcts() now wraps it for backward compatibility.
+
+  2. BatchPlotWindow: staggered x-axis label misalignment (properly fixed)
+       • The custom annotate-based _draw_staggered_xlabels helper mixed
+         data-space x coordinates with axes-space y offsets expressed in
+         points.  This coordinate-space mismatch caused labels to drift
+         away from their tick marks depending on figure size, DPI, and
+         label length — ha='right' or ha='center' both produced incorrect
+         placement.
+       • Fix: replaced the entire custom helper with _set_rotated_xlabels,
+         which calls the standard ax.set_xticklabels(labels, rotation=45,
+         ha='right', rotation_mode='anchor').  This pins the top-right
+         corner of each label exactly at its tick mark — the canonical
+         matplotlib approach that is robust to any figure size or label
+         length.
+       • bottom_margin increased from 0.32 → 0.38 to give rotated labels
+         sufficient vertical clearance.
+
+  2. BatchPlotWindow: removed Zoom X / Zoom Y toolbar
+       • The zoom buttons (−/+/Reset for both axes) have been removed
+         from the batch-plot panel.  The scrollable canvas already
+         provides panning; the zoom controls were non-intuitive and
+         cluttered the toolbar.  Internal _zoom_x / _zoom_y variables
+         are retained at their default value (1.0) so _render_figure
+         is unchanged.
+
+Changelog v4.0.1 → v4.0.4
 ──────────────────────────
 Dead code removed (10 methods, 105 lines):
   • _plot_gated            — superseded by _plot_gated_multi; never called
@@ -93,6 +242,7 @@ BUG FIXES
 
 import os
 import sys
+import functools
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
@@ -102,7 +252,7 @@ from tkinter import filedialog, messagebox, ttk
 if __name__ == '__main__':
     try:
         from vflow_splash import SplashScreen as _SplashScreen
-        _splash = _SplashScreen(version="4.0.2", total_steps=7)
+        _splash = _SplashScreen(version="4.0.12", total_steps=7)
     except Exception:
         _splash = None
 
@@ -383,14 +533,38 @@ ALL_SCALES = ['linear', 'log', 'biexp', 'asinh', 'logicle']
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _hex_to_rgba(hex_color: str, alpha: float) -> np.ndarray:
-    """Convert a '#rrggbb' hex string to a (4,) float32 RGBA array."""
+    """Convert a '#rrggbb' hex string to a (4,) float32 RGBA array.
+    Result is cached: same (color, alpha) → same array object reused."""
+    return _HEX_RGBA_CACHE(hex_color, alpha)
+
+@functools.lru_cache(maxsize=256)
+def _hex_to_rgba_cached(hex_color: str, alpha: float) -> np.ndarray:
     h = hex_color.lstrip('#')
     if len(h) == 3:
         h = h[0]*2 + h[1]*2 + h[2]*2
     r = int(h[0:2], 16) / 255.0
     g = int(h[2:4], 16) / 255.0
     b = int(h[4:6], 16) / 255.0
-    return np.array([r, g, b, float(alpha)], dtype=np.float32)
+    arr = np.array([r, g, b, float(alpha)], dtype=np.float32)
+    arr.flags.writeable = False   # make immutable so callers can't corrupt cache
+    return arr
+
+# Alias used everywhere — thin wrapper that returns immutable cached array.
+# Callers that need a mutable copy (rgba[:] = ...) do arr.copy() implicitly
+# when they assign into a slice.
+_HEX_RGBA_CACHE = _hex_to_rgba_cached
+
+# ── Module-level RNG singletons ───────────────────────────────────────────────
+# np.random.default_rng() allocates a PCG64 state object (~5µs each).
+# Creating one per render call across 8 hot-path sites wastes meaningful time.
+# Fixed seeds → reproducible subsampling; dict lookup replaces allocation.
+_RNG: dict = {}
+
+def _get_rng(seed: int) -> np.random.Generator:
+    """Return a cached Generator for *seed*. Creates once, reuses thereafter."""
+    if seed not in _RNG:
+        _RNG[seed] = np.random.default_rng(seed)
+    return _RNG[seed]
 
 
 def _gate_sig(gate: dict) -> int:
@@ -602,6 +776,8 @@ FILE_COLORS = [
     '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
     '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
 ]
+# Session-persistent last-used folder for all askdirectory dialogs.
+_last_folder_dir: str = ''
 REGION_COLORS = [
     '#e41a1c', '#377eb8', '#4daf4a', '#ff7f00',
     '#984ea3', '#a65628', '#f781bf', '#aaaaaa',
@@ -635,7 +811,7 @@ def gmm_thresholds(data: np.ndarray, max_components: int = 3) -> list:
     # Subsample for speed — GMM result is statistically stable at 30k points
     GMM_MAX_FIT = 30_000
     if len(data) > GMM_MAX_FIT:
-        rng = np.random.default_rng(42)
+        rng = _get_rng(42)
         data = data[rng.choice(len(data), GMM_MAX_FIT, replace=False)]
     data = data.reshape(-1, 1)
 
@@ -706,7 +882,7 @@ def derivative_threshold(data: np.ndarray, min_prominence: float = 5.0,
     # Subsample for speed — KDE is stable above ~10k; fitting on 100k is slow
     _KDE_MAX = 30_000
     if len(data) > _KDE_MAX:
-        data = data[np.random.default_rng(7).choice(len(data), _KDE_MAX, replace=False)]
+        data = data[_get_rng(7).choice(len(data), _KDE_MAX, replace=False)]
 
     kde = gaussian_kde(data, bw_method='scott')
     if bw_factor != 1.0:
@@ -823,7 +999,7 @@ class FolderScanDialog(tk.Toplevel):
         self.configure(bg=T['sidebar_bg'])
         self.resizable(True, True)
         self.result = []
-        self._folder            = tk.StringVar()
+        self._folder            = tk.StringVar(value=_last_folder_dir)
         self._pattern           = tk.StringVar()
         self._vars              = []
         # ── Concatenate section state ─────────────────────────────────────
@@ -946,9 +1122,15 @@ class FolderScanDialog(tk.Toplevel):
     # ── Browsing ──────────────────────────────────────────────────────────
 
     def _browse(self):
-        d = filedialog.askdirectory(parent=self, title="Select root folder")
+        global _last_folder_dir
+        init = (self._folder.get().strip()
+                or _last_folder_dir
+                or os.path.expanduser('~'))
+        d = filedialog.askdirectory(parent=self, title="Select root folder",
+                                    initialdir=init)
         if not d:
             return
+        _last_folder_dir = d
         self._folder.set(d)
         # Auto-fill the concat output folder to the same directory
         if not self._concat_out_folder.get().strip():
@@ -1308,8 +1490,14 @@ class BatchStatsDialog(tk.Toplevel):
                   font=('Arial', 8)).pack(side=tk.BOTTOM, padx=10, pady=(0, 2))
 
     def _browse_folder(self):
-        d = filedialog.askdirectory(parent=self, title="Select root folder")
+        global _last_folder_dir
+        init = (self._folder_var.get().strip()
+                or _last_folder_dir
+                or os.path.expanduser('~'))
+        d = filedialog.askdirectory(parent=self, title="Select root folder",
+                                    initialdir=init)
         if d:
+            _last_folder_dir = d
             self._folder_var.set(d)
             self._refresh_preview()
 
@@ -1519,22 +1707,30 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         # ── CHANNEL MAPPING ───────────────────────────────────────────────
         _sec("CHANNEL MAPPING")
+        # Vectors run Ch1->Ch2. X cols = horizontal centroid,
+        # Y cols = vertical centroid. Always pair X with X and
+        # Y with Y so axes are never mixed across channels.
         cols = self._get_columns()
-        _lbl("Y  Ch1 (centroid):")
-        self._cy1_combo = _combo(self._cy1_var, cols)
-        self._cy1_combo.bind('<<ComboboxSelected>>',
-                             lambda _e: self._schedule_replot())
-        _lbl("X  Ch1 (centroid):")
+        ttk.Label(p,
+                  text="  Direction: Ch1 centroid → Ch2 centroid\n"
+                       "  Map X and Y separately for each channel.",
+                  style='Dim.TLabel', wraplength=230,
+                  justify='left').pack(anchor='w', padx=8, pady=(0, 4))
+        _lbl("Channel 1  —  X centroid (horizontal):")
         self._cx1_combo = _combo(self._cx1_var, cols)
         self._cx1_combo.bind('<<ComboboxSelected>>',
                              lambda _e: self._schedule_replot())
-        _lbl("Y  Ch2 (centroid):")
-        self._cy2_combo = _combo(self._cy2_var, cols)
-        self._cy2_combo.bind('<<ComboboxSelected>>',
+        _lbl("Channel 1  —  Y centroid (vertical):")
+        self._cy1_combo = _combo(self._cy1_var, cols)
+        self._cy1_combo.bind('<<ComboboxSelected>>',
                              lambda _e: self._schedule_replot())
-        _lbl("X  Ch2 (centroid):")
+        _lbl("Channel 2  —  X centroid (horizontal):")
         self._cx2_combo = _combo(self._cx2_var, cols)
         self._cx2_combo.bind('<<ComboboxSelected>>',
+                             lambda _e: self._schedule_replot())
+        _lbl("Channel 2  —  Y centroid (vertical):")
+        self._cy2_combo = _combo(self._cy2_var, cols)
+        self._cy2_combo.bind('<<ComboboxSelected>>',
                              lambda _e: self._schedule_replot())
         _btn("⟳  Auto-detect columns", self._auto_detect_channels, 'Gray.TButton')
 
@@ -1777,8 +1973,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         if (not xch or not ych or
                 xch not in df.columns or ych not in df.columns):
             return np.ones(n, bool)
-        xa = df[xch].values.astype(float)
-        ya = df[ych].values.astype(float)
+        xa = df[xch].to_numpy(dtype=float, copy=False)
+        ya = df[ych].to_numpy(dtype=float, copy=False)
         try:
             regions, _ = self.app._gate_mask_for(gate, xa, ya)
         except Exception:
@@ -1804,8 +2000,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         sub = df[mask]
         if len(sub) == 0:
             return np.array([]), np.array([])
-        dx = sub[cx2].values.astype(float) - sub[cx1].values.astype(float)
-        dy = sub[cy2].values.astype(float) - sub[cy1].values.astype(float)
+        dx = sub[cx2].to_numpy(dtype=float, copy=False) - sub[cx1].to_numpy(dtype=float, copy=False)
+        dy = sub[cy2].to_numpy(dtype=float, copy=False) - sub[cy1].to_numpy(dtype=float, copy=False)
         return np.arctan2(dy, dx), np.sqrt(dx**2 + dy**2)
 
     # ── circular statistics ───────────────────────────────────────────────────
@@ -2015,8 +2211,10 @@ class PolarAnalysisWindow(tk.Toplevel):
         pop_info   = (f'{gate_lbl} / {region_lbl}'
                       if gate_lbl != 'All cells' else 'All cells')
         self._fig.suptitle(
-            f'Vector directionality  \u2014  {pop_info}',
-            color=T['fg'], fontsize=10, y=1.01)
+            f'Vector directionality  \u2014  {pop_info}\n'
+            f'Radial scale = fraction of vectors per bin  |  '
+            f'Arrow = mean direction (shown when MRL \u2265 {mrl_thresh})',
+            color=T['fg'], fontsize=9, y=1.02)
 
         self._fig.tight_layout()
         self._canvas.draw()
@@ -2025,7 +2223,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         self._status_var.set(
             f"{total_vecs:,} vectors  \u00b7  {len(datasets)} file(s)  "
             f"\u00b7  {pop_info}  "
-            f"\u00b7  bins: {n_bins}  \u00b7  MRL-arrow \u2265 {mrl_thresh}")
+            f"\u00b7  bins: {n_bins}  \u00b7  MRL-arrow \u2265 {mrl_thresh}  "
+            f"\u00b7  radial scale: fraction of vectors per bin")
 
     # ── Statistics treeview ───────────────────────────────────────────────────
 
@@ -2217,7 +2416,7 @@ class FlowApp:
         # In standalone mode, build directly into root.
         # In tab mode, build into the supplied container frame.
         if container is None:
-            root.title("vFlow 4.0.2")
+            root.title("vFlow 4.0.12")
             root.geometry("1500x960")
             self._theme_name = 'dark'
             self.T = THEMES['dark']
@@ -2236,6 +2435,12 @@ class FlowApp:
         self.excluded_files: dict = {}   # path → df (excluded from analysis)
         self.file_vars:      dict = {}
         self.file_colors:  dict = {}
+
+        # Sub-gate context (set by FlowTabManager._load_filtered for sub-gate tabs;
+        # None on the main tab).  batch_export_stats uses these to pre-filter each
+        # raw file through the parent gate before applying the sub-gate's own gates.
+        self.parent_gate:   dict = None   # gate dict from parent tab
+        self.parent_region: str  = None   # region name that was double-clicked
 
         # ── Performance caches ────────────────────────────────────────────
         # _tc  : transform cache  — {(path, x_ch, y_ch, x_sc, y_sc, cof): (xt, yt, valid)}
@@ -2337,12 +2542,12 @@ class FlowApp:
                       style='Section.TLabel').pack(fill=tk.X, side=tk.TOP)
 
         # Scrollable sidebar
-        side_outer = ttk.Frame(C, style='TFrame', width=305)
+        side_outer = ttk.Frame(C, style='TFrame', width=340)
         side_outer.pack(side=tk.LEFT, fill=tk.Y)
         side_outer.pack_propagate(False)
 
         self._side_canvas = tk.Canvas(side_outer, bg=T['sidebar_bg'],
-                                       highlightthickness=0, width=303)
+                                       highlightthickness=0, width=338)
         vsb = ttk.Scrollbar(side_outer, orient='vertical',
                              command=self._side_canvas.yview)
         self._side_canvas.configure(yscrollcommand=vsb.set)
@@ -2351,7 +2556,7 @@ class FlowApp:
 
         self.sidebar = ttk.Frame(self._side_canvas, style='TFrame')
         self._side_canvas.create_window(
-            (0, 0), window=self.sidebar, anchor='nw', width=288)
+            (0, 0), window=self.sidebar, anchor='nw', width=320)
         self.sidebar.bind('<Configure>',
             lambda e: self._side_canvas.configure(
                 scrollregion=self._side_canvas.bbox('all')))
@@ -2414,14 +2619,34 @@ class FlowApp:
                    command=self.clear_all_files,
                    style='Gray.TButton').pack(side=tk.LEFT)
         self._btn("+ Load from Folder…", self.load_from_folder, 'DarkBlue.TButton')
+
+        # ── Select All / Unselect All ──
+        sel_row = ttk.Frame(p, style='TFrame')
+        sel_row.pack(fill=tk.X, padx=8, pady=(1, 2))
+        ttk.Button(sel_row, text='☑  Select All',
+                   command=self._select_all,
+                   style='Gray.TButton').pack(side=tk.LEFT, padx=(0, 2))
+        ttk.Button(sel_row, text='☐  Unselect All',
+                   command=self._unselect_all,
+                   style='Gray.TButton').pack(side=tk.LEFT)
+
         self.file_list_frame = ttk.Frame(p, style='TFrame')
         self.file_list_frame.pack(fill=tk.X, padx=8)
 
         # ── EXCLUDED FILES ──
         self._section("EXCLUDED FILES")
+        excl_btn_row = ttk.Frame(p, style='TFrame')
+        excl_btn_row.pack(fill=tk.X, padx=8, pady=(0, 2))
+        ttk.Button(excl_btn_row, text='💾 Save List',
+                   command=self.save_excluded_list,
+                   style='Gray.TButton').pack(side=tk.LEFT, padx=(0, 2))
+        ttk.Button(excl_btn_row, text='📂 Load List',
+                   command=self.load_excluded_list,
+                   style='Gray.TButton').pack(side=tk.LEFT)
         self.excluded_list_frame = ttk.Frame(p, style='TFrame')
         self.excluded_list_frame.pack(fill=tk.X, padx=8)
-        ttk.Label(self.excluded_list_frame, text="(none)", style='Dim.TLabel').pack(anchor='w')
+        ttk.Label(self.excluded_list_frame,
+                  text="(none)", style='Dim.TLabel').pack(anchor='w')
 
         # ── VIEW MODE ──
         self._section("VIEW MODE")
@@ -2673,6 +2898,9 @@ class FlowApp:
         self.stats_tree.column('count', width=62,  anchor='e')
         self.stats_tree.column('pct',   width=50,  anchor='e')
         self.stats_tree.pack(fill=tk.X, padx=8, pady=(0, 4))
+        # Configure region-color tags once here — no need to repeat on every refresh
+        for _i, _c in enumerate(REGION_COLORS):
+            self.stats_tree.tag_configure(f'rc{_i}', foreground=_c)
 
         # ── EXPORT ──
         self._section("EXPORT")
@@ -2771,12 +2999,17 @@ class FlowApp:
     # ── File management ───────────────────────────────────────────────────────
 
     def load_files(self):
+        global _last_folder_dir
+        init = _last_folder_dir or os.path.expanduser('~')
         paths = filedialog.askopenfilenames(
             title="Select CSV or FCS Files",
+            initialdir=init,
             filetypes=[("Flow data", "*.csv *.fcs *.FCS"),
                        ("CSV files", "*.csv"),
                        ("FCS files", "*.fcs *.FCS"),
                        ("All files", "*.*")])
+        if paths:
+            _last_folder_dir = os.path.dirname(list(paths)[0])
         self._load_paths(list(paths))
 
     def load_from_folder(self):
@@ -2816,18 +3049,22 @@ class FlowApp:
         row   = ttk.Frame(self.file_list_frame, style='TFrame')
         row.pack(fill=tk.X, pady=1)
         tk.Label(row, bg=color, width=2, relief='raised'
-                 ).pack(side=tk.LEFT, padx=(0, 4))
+                 ).pack(side=tk.LEFT, padx=(0, 4), anchor='n', pady=2)
         # ✕ exclude button
         ttk.Button(row, text='✕', width=2,
                    command=lambda p=path: self._exclude_file(p),
-                   style='Gray.TButton').pack(side=tk.RIGHT, padx=(2, 0))
-        var  = tk.BooleanVar(value=True)
-        self.file_vars[path] = var
+                   style='Gray.TButton').pack(side=tk.RIGHT, padx=(2, 0), anchor='n')
+        # Preserve existing checkbox state; create new var only for genuinely new files.
+        # Without this guard _exclude_file → re-builds all rows → each rebuild called
+        # BooleanVar(value=True), silently reselecting every surviving file.
+        if path not in self.file_vars:
+            self.file_vars[path] = tk.BooleanVar(value=True)
+        var  = self.file_vars[path]
         name = os.path.basename(path)
-        disp = (name[:22] + '…') if len(name) > 23 else name
-        ttk.Checkbutton(row, text=disp, variable=var,
+        ttk.Checkbutton(row, text=name, variable=var,
                         command=self._on_active_files_changed,
-                        style='TCheckbutton').pack(side=tk.LEFT)
+                        style='TCheckbutton').pack(side=tk.LEFT,
+                                                   fill=tk.X, expand=True)
 
     def _on_active_files_changed(self):
         """Called whenever a file checkbox is toggled or new files loaded.
@@ -2839,6 +3076,18 @@ class FlowApp:
                     self._compute_gate_stats_for(g)
             self._update_stats_display()
         self.refresh_plot()
+
+    def _select_all(self):
+        """Check all file checkboxes."""
+        for v in self.file_vars.values():
+            v.set(True)
+        self._on_active_files_changed()
+
+    def _unselect_all(self):
+        """Uncheck all file checkboxes."""
+        for v in self.file_vars.values():
+            v.set(False)
+        self._on_active_files_changed()
 
     def clear_all_files(self):
         """Unload every loaded file and reset the UI."""
@@ -2873,10 +3122,21 @@ class FlowApp:
         self._on_active_files_changed()
 
     def _restore_file(self, path: str):
-        """Move a file from the excluded list back into the active list."""
+        """Move a file from the excluded list back into the active list.
+
+        If the entry was registered via load_excluded_list() without the file
+        being loaded (df is None), just drop it from the exclusion dict —
+        there is nothing to restore to the active list.
+        """
         if path not in self.excluded_files:
             return
-        self.loaded_files[path] = self.excluded_files.pop(path)
+        df = self.excluded_files.pop(path)
+        if df is None:
+            # Path was registered from a saved list but never loaded in this
+            # session — simply un-register it from the exclusion set.
+            self._rebuild_excluded_list()
+            return
+        self.loaded_files[path] = df
         self._add_file_row(path)
         self._rebuild_excluded_list()
         self._on_active_files_changed()
@@ -2895,26 +3155,126 @@ class FlowApp:
             # Restore button
             ttk.Button(row, text='↩', width=2,
                        command=lambda p=path: self._restore_file(p),
-                       style='Green.TButton').pack(side=tk.LEFT, padx=(0, 4))
+                       style='Green.TButton').pack(side=tk.LEFT, padx=(0, 4), anchor='n')
             name = os.path.basename(path)
-            disp = (name[:22] + '…') if len(name) > 23 else name
-            ttk.Label(row, text=disp,
-                      style='Dim.TLabel').pack(side=tk.LEFT)
+            ttk.Label(row, text=name,
+                      style='Dim.TLabel', wraplength=220,
+                      justify='left').pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+    def save_excluded_list(self):
+        """Save the current excluded-file paths to a CSV for later reuse.
+
+        The CSV has a single column 'Path' containing absolute paths.
+        It can be loaded back via load_excluded_list() in any session,
+        in either a main tab or a sub-gate tab.
+        """
+        if not self.excluded_files:
+            messagebox.showinfo("Save Excluded List",
+                                "No files are currently excluded.")
+            return
+        global _last_folder_dir
+        init = (_last_folder_dir or
+                os.path.dirname(next(iter(self.excluded_files))) or
+                os.path.expanduser('~'))
+        path = filedialog.asksaveasfilename(
+            parent=self.root,
+            title="Save excluded file list",
+            initialdir=init,
+            initialfile="excluded_files.csv",
+            defaultextension=".csv",
+            filetypes=[("CSV", "*.csv"), ("All files", "*")])
+        if not path:
+            return
+        try:
+            pd.DataFrame({'Path': list(self.excluded_files.keys())}
+                         ).to_csv(path, index=False)
+            self.status_var.set(
+                f"Excluded list saved: {len(self.excluded_files)} file(s) → "
+                f"{os.path.basename(path)}")
+        except Exception as e:
+            messagebox.showerror("Save Error", str(e), parent=self.root)
+
+    def load_excluded_list(self):
+        """Load a previously saved excluded-file list CSV.
+
+        For each path in the CSV:
+          • If the file is currently in loaded_files → _exclude_file() moves it
+            to the excluded panel and updates the UI normally.
+          • If the file is not loaded (e.g. a different session, or the file
+            was never opened) → the path is recorded in excluded_files with a
+            None DataFrame so that batch_export_stats still skips it.
+
+        Paths that are already excluded are silently skipped.
+        """
+        global _last_folder_dir
+        init = _last_folder_dir or os.path.expanduser('~')
+        path = filedialog.askopenfilename(
+            parent=self.root,
+            title="Load excluded file list",
+            initialdir=init,
+            filetypes=[("CSV", "*.csv"), ("All files", "*")])
+        if not path:
+            return
+        try:
+            df_csv = pd.read_csv(path)
+        except Exception as e:
+            messagebox.showerror("Load Error", str(e), parent=self.root)
+            return
+
+        if 'Path' not in df_csv.columns:
+            messagebox.showerror(
+                "Load Error",
+                "CSV must have a 'Path' column.\n"
+                "Use a list saved by 'Save List'.",
+                parent=self.root)
+            return
+
+        paths      = df_csv['Path'].dropna().astype(str).tolist()
+        moved      = 0   # excluded via _exclude_file (were loaded)
+        registered = 0   # added directly (not currently loaded)
+        already    = 0   # already in excluded_files
+
+        for p in paths:
+            if p in self.excluded_files:
+                already += 1
+                continue
+            if p in self.loaded_files:
+                # Proper move: removes from UI list, adds to excluded panel
+                self._exclude_file(p)
+                moved += 1
+            else:
+                # Not loaded — register as excluded so batch export skips it.
+                # DataFrame is None; the batch exclusion logic uses path keys,
+                # not DataFrame contents, so None is safe here.
+                self.excluded_files[p] = None
+                registered += 1
+
+        self._rebuild_excluded_list()
+        self._on_active_files_changed()
+
+        parts = []
+        if moved:      parts.append(f"{moved} moved to excluded")
+        if registered: parts.append(f"{registered} registered (not loaded)")
+        if already:    parts.append(f"{already} already excluded")
+        self.status_var.set("Excluded list loaded: " + ", ".join(parts) if parts
+                            else "Excluded list loaded: nothing new to exclude.")
 
     def _active(self) -> dict:
         return {p: df for p, df in self.loaded_files.items()
                 if self.file_vars[p].get()}
 
-    def _display_files(self) -> dict:
-        active = self._active()
+    def _display_files(self, active: dict = None) -> dict:
+        if active is None:
+            active = self._active()
         if self.view_mode_var.get() == 'cycle' and active:
             keys = list(active.keys())
             idx  = self.cycle_idx % len(keys)
             return {keys[idx]: active[keys[idx]]}
         return active
 
-    def _update_cycle_label(self):
-        active = self._active()
+    def _update_cycle_label(self, active: dict = None):
+        if active is None:
+            active = self._active()
         if self.view_mode_var.get() == 'cycle' and active:
             keys = list(active.keys())
             idx  = self.cycle_idx % len(keys)
@@ -2951,8 +3311,22 @@ class FlowApp:
         self.x_menu['values'] = cols
         self.y_menu['values'] = cols
         if self.x_channel is None and len(cols) >= 2:
+            # First-time initialisation
             self.x_var.set(cols[0]); self.y_var.set(cols[1])
             self.x_channel = cols[0]; self.y_channel = cols[1]
+        else:
+            # Channels already assigned (e.g. sub-gate tab).
+            # Re-sync StringVars after the values list is replaced so a
+            # ttk readonly Combobox does not blank out on platforms where
+            # replacing 'values' clears the displayed text.
+            if self.x_channel and self.x_channel in cols:
+                self.x_var.set(self.x_channel)
+            elif self.x_channel and cols:
+                self.x_channel = cols[0]; self.x_var.set(cols[0])
+            if self.y_channel and self.y_channel in cols:
+                self.y_var.set(self.y_channel)
+            elif self.y_channel and cols:
+                self.y_channel = cols[0]; self.y_var.set(cols[0])
 
     # ── Scale helpers ─────────────────────────────────────────────────────────
 
@@ -3003,7 +3377,13 @@ class FlowApp:
         if not x or not y:
             messagebox.showwarning("Axes", "Select both X and Y channels.")
             return
+        if x == self.x_channel and y == self.y_channel:
+            self.refresh_plot()
+            return
         self.x_channel, self.y_channel = x, y
+        # Flush transform cache: new channels need fresh computation,
+        # not stale entries keyed on the previous (path, x_ch, y_ch).
+        self._tc.clear()
         self.refresh_plot()
 
     def _apply_scales(self):
@@ -3101,6 +3481,9 @@ class FlowApp:
     def refresh_plot(self):
         if not self.x_channel or not self.y_channel: return
         T = self.T
+        # Compute active-file dict once — reused by _update_cycle_label,
+        # _display_files, and the status bar at the bottom of this method.
+        active = self._active()
 
         need_marg = self.show_marginals_var.get()
         if (self.ax_top is not None) != need_marg:
@@ -3116,8 +3499,8 @@ class FlowApp:
                 self.ax_right.set_facecolor(T['ax_bg'])
                 for sp in self.ax_right.spines.values(): sp.set_color(T['spine'])
 
-        self._update_cycle_label()
-        display = self._display_files()
+        self._update_cycle_label(active)
+        display = self._display_files(active)
 
         # Collect all *effective* applied gates (filter out disabled crosshairs)
         applied_gates = []
@@ -3152,9 +3535,13 @@ class FlowApp:
         total_cells = 0
         # In gated mode we build a legend entry per file (not per region)
         gated_legend_handles = []
-        # Accumulators for "Fit axes to data" percentile computation
+        # Accumulators for "Fit axes to data" and GMM overlay (reused below)
         _fit_x_all: list = []
         _fit_y_all: list = []
+        # Always accumulate valid raw parts — reused by the GMM overlay block
+        # so it doesn't need a second pass through display files.
+        _raw_x_parts: list = []
+        _raw_y_parts: list = []
 
         for path, df in display.items():
             if self.x_channel not in df.columns or \
@@ -3162,11 +3549,14 @@ class FlowApp:
             color  = self.file_colors[path]
             lbl    = os.path.basename(path)
             lbl_s  = (lbl[:28] + '…') if len(lbl) > 30 else lbl
-            x_raw  = df[self.x_channel].values.astype(float)
-            y_raw  = df[self.y_channel].values.astype(float)
+            x_raw  = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            y_raw  = df[self.y_channel].to_numpy(dtype=float, copy=False)
             xt, yt, valid = self._transform_xy_cached(path, x_raw, y_raw)
             n_cells = int(valid.sum())
             total_cells += n_cells
+            if valid.any():
+                _raw_x_parts.append(x_raw[valid])
+                _raw_y_parts.append(y_raw[valid])
             # Accumulate finite raw values for "Fit axes to data"
             if self.fit_axes_var.get() and valid.any():
                 _fit_x_all.append(x_raw[valid])
@@ -3218,54 +3608,41 @@ class FlowApp:
                 (g for g in self.gates
                  if g.get('applied') and g.get('auto_method') == 'gmm_multi'),
                 None)
-            if gmm_gate is not None:
-                # Collect all valid raw values across all display files for scaling
-                x_all_parts: list = []
-                y_all_parts: list = []
-                for _path, _df in display.items():
-                    if (self.x_channel not in _df.columns
-                            or self.y_channel not in _df.columns):
-                        continue
-                    _xr = _df[self.x_channel].values.astype(float)
-                    _yr = _df[self.y_channel].values.astype(float)
-                    _xt, _yt, _v = self._transform_xy_cached(_path, _xr, _yr)
-                    if _v.any():
-                        x_all_parts.append(_xr[_v])
-                        y_all_parts.append(_yr[_v])
-                if x_all_parts:
-                    x_all_raw = np.concatenate(x_all_parts)
-                    y_all_raw = np.concatenate(y_all_parts)
-                    # Recompute bin edges matching _plot_marginals logic
-                    x_t_all = self._fwd(x_all_raw, self.x_scale)
-                    y_t_all = self._fwd(y_all_raw, self.y_scale)
-                    xv_all  = x_t_all[np.isfinite(x_t_all)]
-                    yv_all  = y_t_all[np.isfinite(y_t_all)]
-                    if len(xv_all) > 1:
-                        _bt_x  = np.linspace(xv_all.min(), xv_all.max(), 121)
-                        _be_x  = self._inv(_bt_x, self.x_scale)
-                    else:
-                        _be_x = None
-                    if len(yv_all) > 1:
-                        _bt_y  = np.linspace(yv_all.min(), yv_all.max(), 121)
-                        _be_y  = self._inv(_bt_y, self.y_scale)
-                    else:
-                        _be_y = None
-                    gxp = gmm_gate.get('gmm_x_params')
-                    gyp = gmm_gate.get('gmm_y_params')
-                    try:
-                        if gxp is not None and _be_x is not None:
-                            self._plot_gmm_overlay(
-                                self.ax_top, gxp,
-                                'horizontal', x_all_raw, _be_x)
-                    except Exception:
-                        pass
-                    try:
-                        if gyp is not None and _be_y is not None:
-                            self._plot_gmm_overlay(
-                                self.ax_right, gyp,
-                                'vertical', y_all_raw, _be_y)
-                    except Exception:
-                        pass
+            if gmm_gate is not None and _raw_x_parts:
+                # Reuse the raw parts already gathered in the main render loop
+                # — no second pass through display files needed.
+                x_all_raw = np.concatenate(_raw_x_parts)
+                y_all_raw = np.concatenate(_raw_y_parts)
+                x_t_all = self._fwd(x_all_raw, self.x_scale)
+                y_t_all = self._fwd(y_all_raw, self.y_scale)
+                xv_all  = x_t_all[np.isfinite(x_t_all)]
+                yv_all  = y_t_all[np.isfinite(y_t_all)]
+                if len(xv_all) > 1:
+                    _bt_x = np.linspace(xv_all.min(), xv_all.max(), 121)
+                    _be_x = self._inv(_bt_x, self.x_scale)
+                else:
+                    _be_x = None
+                if len(yv_all) > 1:
+                    _bt_y = np.linspace(yv_all.min(), yv_all.max(), 121)
+                    _be_y = self._inv(_bt_y, self.y_scale)
+                else:
+                    _be_y = None
+                gxp = gmm_gate.get('gmm_x_params')
+                gyp = gmm_gate.get('gmm_y_params')
+                try:
+                    if gxp is not None and _be_x is not None:
+                        self._plot_gmm_overlay(
+                            self.ax_top, gxp,
+                            'horizontal', x_all_raw, _be_x)
+                except Exception:
+                    pass
+                try:
+                    if gyp is not None and _be_y is not None:
+                        self._plot_gmm_overlay(
+                            self.ax_right, gyp,
+                            'vertical', y_all_raw, _be_y)
+                except Exception:
+                    pass
 
         # ── Population shading on marginals for KDE / Otsu gates ──────────────
         # If a KDE Valley or Otsu crosshair gate is applied and marginals are
@@ -3360,7 +3737,7 @@ class FlowApp:
                                    labelcolor=fg)
 
         self.status_var.set(
-            f"Shown: {len(display)}/{len(self._active())} files  │  "
+            f"Shown: {len(display)}/{len(active)} files  │  "
             f"Cells: {total_cells:,}  │  "
             f"{self.x_channel} vs {self.y_channel}  │  "
             f"Scale: {self.x_scale}/{self.y_scale}"
@@ -3376,7 +3753,7 @@ class FlowApp:
         xv = x_raw[valid]; yv = y_raw[valid]
         n  = len(xv)
         if n > RENDER_CAP:
-            idx = np.random.default_rng(2).choice(n, RENDER_CAP, replace=False)
+            idx = _get_rng(2).choice(n, RENDER_CAP, replace=False)
             xv, yv = xv[idx], yv[idx]
         self.ax.scatter(xv, yv, s=dot_size, alpha=alpha, color=color,
                         label=f'{label} (n={valid.sum():,})',
@@ -3396,14 +3773,14 @@ class FlowApp:
 
         # ── Fit KDE on subsample ──────────────────────────────────────────
         if n > KDE_SUBSAMPLE:
-            idx  = np.random.default_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
+            idx  = _get_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
             kern = gaussian_kde(np.vstack([xc[idx], yc[idx]]))
         else:
             kern = gaussian_kde(np.vstack([xc, yc]))
 
         # ── Evaluate on a 128×128 grid (fast) then interpolate per-cell ──
         # This replaces kern(all_points) which is O(n×k) → now O(grid + n·log·grid)
-        GRID = 128
+        GRID = 96
         xg = np.linspace(xlo, xhi, GRID)
         yg = np.linspace(ylo, yhi, GRID)
         xmg, ymg = np.meshgrid(xg, yg, indexing='ij')
@@ -3420,7 +3797,7 @@ class FlowApp:
         xr = x_raw[valid]; yr = y_raw[valid]
         n_valid = len(xr)
         if n_valid > RENDER_CAP:
-            rng  = np.random.default_rng(3)
+            rng  = _get_rng(3)
             keep = rng.choice(n_valid, RENDER_CAP, replace=False)
             xr   = xr[keep]; yr = yr[keep]
             dens_plot = density[keep]
@@ -3443,13 +3820,13 @@ class FlowApp:
             return self._plot_dot(x_raw, y_raw, valid, color, label,
                                   dot_size, alpha)
         if n > KDE_SUBSAMPLE:
-            idx  = np.random.default_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
+            idx  = _get_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
             kern = gaussian_kde(np.vstack([xv[idx], yv[idx]]))
         else:
             kern = gaussian_kde(np.vstack([xv, yv]))
 
         # Grid evaluation for contour surface (fast; no per-point KDE call)
-        GRID = 128
+        GRID = 96
         xg_t = np.linspace(xv.min(), xv.max(), GRID)
         yg_t = np.linspace(yv.min(), yv.max(), GRID)
         xmg, ymg = np.meshgrid(xg_t, yg_t, indexing='ij')
@@ -3478,7 +3855,7 @@ class FlowApp:
         # Render cap on outlier scatter (random subsample preserves coverage)
         xo = x_raw[valid][outside]; yo = y_raw[valid][outside]
         if len(xo) > RENDER_CAP:
-            idx2 = np.random.default_rng(4).choice(len(xo), RENDER_CAP, replace=False)
+            idx2 = _get_rng(4).choice(len(xo), RENDER_CAP, replace=False)
             xo, yo = xo[idx2], yo[idx2]
         self.ax.scatter(xo, yo,
                         s=dot_size, color=color, alpha=alpha, linewidths=0,
@@ -3532,7 +3909,7 @@ class FlowApp:
             out_idx = np.where(~in_any)[0]
             budget  = max(0, RENDER_CAP - len(in_idx))
             if budget < len(out_idx):
-                rng     = np.random.default_rng(1)
+                rng     = _get_rng(1)
                 out_idx = rng.choice(out_idx, budget, replace=False)
             keep    = np.concatenate([in_idx, out_idx])
             xa, ya, rgba = xa[keep], ya[keep], rgba[keep]
@@ -3551,7 +3928,7 @@ class FlowApp:
         # visually identical above ~30k points, but hist() slows with 100k+
         MARG_MAX = 30_000
         if len(xr) > MARG_MAX:
-            idx = np.random.default_rng(5).choice(len(xr), MARG_MAX, replace=False)
+            idx = _get_rng(5).choice(len(xr), MARG_MAX, replace=False)
             xr_h = xr[idx]; yr_h = yr[idx]
             xv_h = xv[idx]; yv_h = yv[idx]
         else:
@@ -3755,10 +4132,12 @@ class FlowApp:
     # ── Fluorophore / population naming ─────────────────────────────────────────
 
     @staticmethod
+    @functools.lru_cache(maxsize=64)
     def _fluor(channel: str) -> str:
         """Extract fluorophore from last _-separated segment.
         e.g. 'Bkgd_Corr_Intensity_TH' → 'TH'
              'CD3' → 'CD3' (no underscore → use whole name)
+        Cached: channel names are fixed per session.
         """
         parts = channel.rsplit('_', 1)
         return parts[-1] if parts[-1] else channel
@@ -4103,8 +4482,14 @@ class FlowApp:
         if not gate or not gate.get('applied'):
             return {}, []
 
-        xa = np.asarray(xa, float)
-        ya = np.asarray(ya, float)
+        # Callers in the hot render path (_plot_gated_multi, _compute_gate_stats_for)
+        # always pass float64 ndarrays.  np.asarray is a no-op on those but still
+        # takes ~1µs to check the dtype.  We guard the rare case (e.g. list input
+        # from a test or _open_subgate) with a fast isinstance check instead.
+        if not isinstance(xa, np.ndarray) or xa.dtype != np.float64:
+            xa = np.asarray(xa, float)
+        if not isinstance(ya, np.ndarray) or ya.dtype != np.float64:
+            ya = np.asarray(ya, float)
 
         # ── Persistent cache lookup ───────────────────────────────────────
         if _cache_path is not None:
@@ -4172,7 +4557,12 @@ class FlowApp:
         # ── Store in persistent cache ─────────────────────────────────────
         if _cache_path is not None:
             if len(self._gmc) >= _GMC_MAX:
-                self._gmc.clear()
+                # Partial eviction: drop oldest 50 % so hot entries survive.
+                # Avoids the cold-cache cliff where a full .clear() forces
+                # every gate mask to be recomputed on the very next render.
+                evict = list(self._gmc)[: _GMC_MAX // 2]
+                for k in evict:
+                    del self._gmc[k]
             self._gmc[ck] = result
 
         return result
@@ -4187,6 +4577,31 @@ class FlowApp:
         mx = float(self._inv(np.array([float(np.median(fx))]), self.x_scale)[0])
         my = float(self._inv(np.array([float(np.median(fy))]), self.y_scale)[0])
         return mx, my
+
+    @staticmethod
+    def _crosshair_corner(rname: str):
+        """Map a two-sign crosshair quadrant name (e.g. 'TH+/D1R-') to an
+        axes-space corner position so the label is pinned to the matching
+        corner of the plot instead of being placed on top of the data cloud.
+
+        Returns (x_ax, y_ax, ha, va) for use with ax.transAxes, or None when
+        the name does not encode a simple ± quadrant (e.g. mid-band names
+        like 'TH(m)/D1R+' fall back to the centroid path).
+        """
+        if '/' not in rname:
+            return None
+        y_part, x_part = rname.split('/', 1)
+        y_plus  = y_part.endswith('+')
+        y_minus = y_part.endswith('-')
+        x_plus  = x_part.endswith('+')
+        x_minus = x_part.endswith('-')
+        if not ((y_plus or y_minus) and (x_plus or x_minus)):
+            return None
+        x_ax = 0.98 if x_plus  else 0.02
+        y_ax = 0.97 if y_plus  else 0.03
+        ha   = 'right' if x_plus  else 'left'
+        va   = 'top'   if y_plus  else 'bottom'
+        return x_ax, y_ax, ha, va
 
     def _draw_region_labels(self, applied_gates: list = None):
         """
@@ -4209,8 +4624,8 @@ class FlowApp:
         for path, df in display.items():
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns: continue
-            x_parts.append(df[self.x_channel].values.astype(float))
-            y_parts.append(df[self.y_channel].values.astype(float))
+            x_parts.append(df[self.x_channel].to_numpy(dtype=float, copy=False))
+            y_parts.append(df[self.y_channel].to_numpy(dtype=float, copy=False))
         if not x_parts: return
         xa = np.concatenate(x_parts)
         ya = np.concatenate(y_parts)
@@ -4219,25 +4634,42 @@ class FlowApp:
 
         # ── Single gate: classic IN / OUT labels ─────────────────────────
         if len(applied_gates) == 1:
-            gate = applied_gates[0]
-            c    = gate.get('color', GATE_PALETTE[0])
+            gate         = applied_gates[0]
+            c            = gate.get('color', GATE_PALETTE[0])
+            is_crosshair = gate['type'] == 'crosshair'
             regions, _ = self._gate_mask_for(gate, xa, ya)
             for rname, mask in regions.items():
                 cnt = int(mask.sum())
                 if cnt == 0 or (rname == 'OUT' and cnt == total): continue
-                pct = cnt / total * 100
-                mx, my = self._label_centroid(xa, ya, mask)
-                if mx is None: continue
-                hint = ' ⤵' if self.manager and rname != 'OUT' else ''
-                self.ax.text(mx, my,
-                             f'{rname}{hint}\n{pct:.1f}%\n({cnt:,})',
-                             ha='center', va='center', fontsize=7.5,
-                             fontweight='bold', color=T['label_txt'],
-                             linespacing=1.4,
-                             bbox=dict(boxstyle='round,pad=0.35',
-                                       facecolor=c if gate['type'] != 'crosshair'
-                                                  else T['label_box'],
-                                       alpha=0.82, linewidth=0))
+                pct       = cnt / total * 100
+                hint      = ' ⤵' if self.manager and rname != 'OUT' else ''
+                label_txt = f'{rname}{hint}\n{pct:.1f}%\n({cnt:,})'
+
+                # Crosshair quadrants: pin label to the matching plot corner so
+                # it never obscures the data cloud.  Non-simple quadrant names
+                # (mid-bands with '(m)') fall back to the centroid path.
+                corner = self._crosshair_corner(rname) if is_crosshair else None
+                if corner is not None:
+                    cx, cy, ha, va = corner
+                    self.ax.text(cx, cy, label_txt,
+                                 ha=ha, va=va, fontsize=7.5,
+                                 fontweight='bold', color=T['label_txt'],
+                                 linespacing=1.4,
+                                 transform=self.ax.transAxes,
+                                 bbox=dict(boxstyle='round,pad=0.3',
+                                           facecolor=T['label_box'],
+                                           alpha=0.65, linewidth=0))
+                else:
+                    mx, my = self._label_centroid(xa, ya, mask)
+                    if mx is None: continue
+                    self.ax.text(mx, my, label_txt,
+                                 ha='center', va='center', fontsize=7.5,
+                                 fontweight='bold', color=T['label_txt'],
+                                 linespacing=1.4,
+                                 bbox=dict(boxstyle='round,pad=0.35',
+                                           facecolor=c if not is_crosshair
+                                                      else T['label_box'],
+                                           alpha=0.82, linewidth=0))
             return
 
         # ── Multiple gates: Venn partition labels ────────────────────────
@@ -4980,8 +5412,8 @@ class FlowApp:
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns:
                 continue
-            xa = df[self.x_channel].values.astype(float)
-            ya = df[self.y_channel].values.astype(float)
+            xa = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya = df[self.y_channel].to_numpy(dtype=float, copy=False)
             reg, _ = self._gate_mask_for(target_gate, xa, ya)
             if clicked_region in reg:
                 sub_df = df[reg[clicked_region]].reset_index(drop=True)
@@ -4996,7 +5428,9 @@ class FlowApp:
         self.manager.open_subgate_tab(
             label=clicked_region, filtered_data=filtered,
             parent_x=self.x_channel, parent_y=self.y_channel,
-            total_cells=total)
+            total_cells=total,
+            parent_gate=target_gate, parent_region=clicked_region,
+            excluded_files=dict(self.excluded_files))
 
     def clear_gate(self):
         """Clear the currently selected gate."""
@@ -5097,7 +5531,7 @@ class FlowApp:
         parts = []
         for df in self._active().values():
             if self.x_channel not in df.columns: continue
-            x = df[self.x_channel].values.astype(float)
+            x = df[self.x_channel].to_numpy(dtype=float, copy=False)
             xt = self._fwd(x, self.x_scale)
             parts.append(xt[np.isfinite(xt)])
         return np.concatenate(parts) if parts else np.array([])
@@ -5106,7 +5540,7 @@ class FlowApp:
         parts = []
         for df in self._active().values():
             if self.y_channel not in df.columns: continue
-            y = df[self.y_channel].values.astype(float)
+            y = df[self.y_channel].to_numpy(dtype=float, copy=False)
             yt = self._fwd(y, self.y_scale)
             parts.append(yt[np.isfinite(yt)])
         return np.concatenate(parts) if parts else np.array([])
@@ -5326,7 +5760,7 @@ class FlowApp:
 
             # Subsample for speed; GMM is stable well above 10k points
             _MAX = 30_000
-            rng  = np.random.default_rng(42)
+            rng  = _get_rng(42)
             if len(data_t) > _MAX:
                 data_t = data_t[rng.choice(len(data_t), _MAX, replace=False)]
 
@@ -5524,7 +5958,7 @@ class FlowApp:
 
         # ── Subsample for speed (HDBSCAN is fast, but cap at 10k) ────────────
         MAX_PTS = 10_000
-        rng = np.random.default_rng(42)
+        rng = _get_rng(42)
         if n_total > MAX_PTS:
             idx    = rng.choice(n_total, MAX_PTS, replace=False)
             xt_s, yt_s = xt[idx], yt[idx]
@@ -5635,23 +6069,12 @@ class FlowApp:
             xbs  = gate.get('x_boundaries', [])
             yb   = gate.get('y_boundary')
             ybs  = gate.get('y_boundaries')   # multi-Y list
-            if xbs:
-                ttk.Label(self.thresh_panel, text="X thresholds:",
-                          style='Dim.TLabel').pack(anchor='w')
-                tvs = gate.get('x_thresh_vars', [])
-                for i, xb in enumerate(xbs):
-                    var = tvs[i] if i < len(tvs) else tk.BooleanVar(value=True)
-                    row = ttk.Frame(self.thresh_panel, style='TFrame')
-                    row.pack(fill=tk.X, pady=1)
-                    ttk.Checkbutton(row, variable=var,
-                                    command=self._on_thresh_toggle,
-                                    style='TCheckbutton').pack(side=tk.LEFT)
-                    ttk.Label(row, text=f'T{i+1}:  {xb:>12,.1f}',
-                              style='Mono.TLabel').pack(side=tk.LEFT)
+
+            # ── Y first ──────────────────────────────────────────────────
             # Multi-Y (from multi-valley gate)
             if ybs:
                 ttk.Label(self.thresh_panel, text="Y thresholds:",
-                          style='Dim.TLabel').pack(anchor='w', pady=(6,0))
+                          style='Dim.TLabel').pack(anchor='w')
                 y_tvs = gate.get('y_thresh_vars', [])
                 for i, yb_val in enumerate(ybs):
                     var = y_tvs[i] if i < len(y_tvs) else tk.BooleanVar(value=True)
@@ -5664,7 +6087,7 @@ class FlowApp:
                               style='Mono.TLabel').pack(side=tk.LEFT)
             elif yb is not None:
                 ttk.Label(self.thresh_panel, text="Y threshold:",
-                          style='Dim.TLabel').pack(anchor='w', pady=(6,0))
+                          style='Dim.TLabel').pack(anchor='w')
                 ytv = gate.get('y_thresh_var') or tk.BooleanVar(value=True)
                 row = ttk.Frame(self.thresh_panel, style='TFrame')
                 row.pack(fill=tk.X, pady=1)
@@ -5673,6 +6096,21 @@ class FlowApp:
                                 style='TCheckbutton').pack(side=tk.LEFT)
                 ttk.Label(row, text=f'Y  :  {yb:>12,.1f}',
                           style='Mono.TLabel').pack(side=tk.LEFT)
+
+            # ── X second ─────────────────────────────────────────────────
+            if xbs:
+                ttk.Label(self.thresh_panel, text="X thresholds:",
+                          style='Dim.TLabel').pack(anchor='w', pady=(6, 0))
+                tvs = gate.get('x_thresh_vars', [])
+                for i, xb in enumerate(xbs):
+                    var = tvs[i] if i < len(tvs) else tk.BooleanVar(value=True)
+                    row = ttk.Frame(self.thresh_panel, style='TFrame')
+                    row.pack(fill=tk.X, pady=1)
+                    ttk.Checkbutton(row, variable=var,
+                                    command=self._on_thresh_toggle,
+                                    style='TCheckbutton').pack(side=tk.LEFT)
+                    ttk.Label(row, text=f'X{i+1}:  {xb:>12,.1f}',
+                              style='Mono.TLabel').pack(side=tk.LEFT)
 
         elif gt == 'rectangle':
             x0,y0 = gate.get('x0',0), gate.get('y0',0)
@@ -5728,14 +6166,13 @@ class FlowApp:
         for path, df in self._active().items():
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns: continue
-            xa    = df[self.x_channel].values.astype(float)
-            ya    = df[self.y_channel].values.astype(float)
+            xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
             total = len(xa)
             regions, _ = self._gate_mask_for(gate, xa, ya, _cache_path=path)
             self.gate_stats[gid][path] = {
                 'stats': {
-                    rname: {'count': int(m.sum()),
-                            'pct':   m.sum()/total*100 if total else 0.0}
+                    rname: {'count': (c := int(m.sum())), 'pct': c/total*100 if total else 0.0}
                     for rname, m in regions.items()},
                 'total': total}
 
@@ -5775,9 +6212,6 @@ class FlowApp:
         """
         for item in self.stats_tree.get_children():
             self.stats_tree.delete(item)
-
-        for i, c in enumerate(REGION_COLORS):
-            self.stats_tree.tag_configure(f'rc{i}', foreground=c)
 
         applied = [g for g in self.gates if g.get('applied')]
         if not applied: return
@@ -5876,8 +6310,8 @@ class FlowApp:
             merged_parts = {}
             for df in active.values():
                 if self.x_channel not in df.columns or                    self.y_channel not in df.columns: continue
-                xa = df[self.x_channel].values.astype(float)
-                ya = df[self.y_channel].values.astype(float)
+                xa = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya = df[self.y_channel].to_numpy(dtype=float, copy=False)
                 total += len(xa)
                 for k, v in _partition_data(xa, ya).items():
                     merged_parts[k] = merged_parts.get(k, 0) + v
@@ -5902,8 +6336,8 @@ class FlowApp:
         else:
             for path, df in active.items():
                 if self.x_channel not in df.columns or                    self.y_channel not in df.columns: continue
-                xa    = df[self.x_channel].values.astype(float)
-                ya    = df[self.y_channel].values.astype(float)
+                xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
                 total = len(xa)
                 parts = _partition_data(xa, ya)
                 name  = os.path.basename(path)
@@ -6290,6 +6724,15 @@ class FlowApp:
         all_rows = []
         errors   = []
 
+        # Sub-gate context: if this FlowApp was opened by double-clicking a
+        # gate region in the parent tab, batch stats must first filter each
+        # raw file through that parent gate/region before applying the
+        # sub-gate's own gates — otherwise we'd be computing stats against
+        # the full unfiltered population instead of the sub-gate population.
+        is_subgate    = self.parent_gate is not None
+        p_gate        = self.parent_gate
+        p_region      = self.parent_region
+
         for fi, fpath in enumerate(target_files):
             self.status_var.set(
                 f"Batch stats: {fi+1} / {len(target_files)} — {os.path.basename(fpath)}")
@@ -6306,8 +6749,25 @@ class FlowApp:
                     f"'{self.x_channel}' or '{self.y_channel}'")
                 continue
 
-            xa    = df[self.x_channel].values.astype(float)
-            ya    = df[self.y_channel].values.astype(float)
+            # ── Sub-gate pre-filter ───────────────────────────────────────
+            # Restrict to the same parent-gate region that was double-clicked
+            # so the percentages are relative to that sub-population, not to
+            # all cells in the file.
+            if is_subgate:
+                xa_all = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya_all = df[self.y_channel].to_numpy(dtype=float, copy=False)
+                p_regions, _ = self._gate_mask_for(p_gate, xa_all, ya_all,
+                                                    _cache_path=fpath)
+                p_mask = p_regions.get(p_region)
+                if p_mask is None or not p_mask.any():
+                    errors.append(
+                        f"{os.path.basename(fpath)}: no cells in parent region "
+                        f"'{p_region}' — skipped")
+                    continue
+                df = df[p_mask].reset_index(drop=True)
+
+            xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
             total = len(xa)
             stem  = os.path.splitext(os.path.basename(fpath))[0]
 
@@ -6441,9 +6901,9 @@ class FlowApp:
                 continue
 
             # ── Build per-gate masks ────────────────────────────────────────
-            xa = df[self.x_channel].values.astype(float) \
+            xa = df[self.x_channel].to_numpy(dtype=float, copy=False) \
                  if self.x_channel and self.x_channel in df.columns else None
-            ya = df[self.y_channel].values.astype(float) \
+            ya = df[self.y_channel].to_numpy(dtype=float, copy=False) \
                  if self.y_channel and self.y_channel in df.columns else None
 
             if xa is None or ya is None:
@@ -6572,6 +7032,23 @@ class FlowApp:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  Rotated x-label helper for dense categorical axes
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _set_rotated_xlabels(ax, labels: list, fontsize: int = 7) -> None:
+    """
+    Apply 45 ° rotated x-tick labels using standard matplotlib tick machinery.
+
+    ha='right' pins the top-right corner of each label exactly at its tick
+    mark so every label — regardless of length — aligns consistently with
+    its bar/violin.  This is the canonical matplotlib approach and avoids
+    the coordinate-mixing issues of the previous annotate-based helper.
+    """
+    ax.set_xticklabels(labels, rotation=45, ha='right',
+                       fontsize=fontsize, rotation_mode='anchor')
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Batch Plot Window
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -6671,6 +7148,21 @@ class BatchPlotWindow(tk.Toplevel):
         self._replot_pending = None
         self._compute_and_plot()
 
+    def _zoom(self, dx: float, dy: float):
+        """Adjust horizontal or vertical zoom and re-render."""
+        if dx:
+            self._zoom_x.set(max(0.25, min(4.0, self._zoom_x.get() + dx)))
+        if dy:
+            self._zoom_y.set(max(0.25, min(4.0, self._zoom_y.get() + dy)))
+        if self._sample_labels:
+            self._render_figure()
+
+    def _zoom_reset(self):
+        self._zoom_x.set(1.0)
+        self._zoom_y.set(1.0)
+        if self._sample_labels:
+            self._render_figure()
+
     # ── helpers ───────────────────────────────────────────────────────────────
 
     @staticmethod
@@ -6678,16 +7170,20 @@ class BatchPlotWindow(tk.Toplevel):
         """
         Derive a short, readable sample name from a Source_File value.
 
-        Strategy:
-          1. Strip directory path and extension.
-          2. Drop the longest common prefix shared across all files in the
-             dataset (done externally — this method only strips path/ext).
-          3. Replace triple-underscore separators (___) with a single space.
-          4. Cap at 20 characters with ellipsis.
+        Strips directory path, extension, and common instrument/pipeline
+        suffixes so the label carries only the biologically meaningful part.
         """
         stem = os.path.splitext(os.path.basename(str(source_file_value)))[0]
-        # Replace ___Results, ___CytoFile, etc. tail
-        for tail in ('___Results', '___CytoFile', '__Results', '__CytoFile'):
+        # Order matters: longest / most-specific tails first
+        _TAILS = (
+            '_TH-488_Pooled_CytoFile',
+            '_TH-488_Pooled',
+            '_Pooled_CytoFile',
+            '___Results', '___CytoFile',
+            '__Results',  '__CytoFile',
+            '_Results',   '_CytoFile',
+        )
+        for tail in _TAILS:
             if stem.endswith(tail):
                 stem = stem[: -len(tail)]
                 break
@@ -6695,21 +7191,18 @@ class BatchPlotWindow(tk.Toplevel):
 
     def _shorten_labels(self, raw_labels: list) -> list:
         """
-        Remove the longest common prefix from a list of label strings so the
-        per-sample tick labels are as short as possible while remaining unique.
+        Strip the longest common underscore-delimited prefix so labels are
+        as short as possible while still being unique.  No newlines, no
+        truncation — staggered rendering handles visual separation.
         """
         if len(raw_labels) <= 1:
             return list(raw_labels)
         prefix = os.path.commonprefix(raw_labels)
-        # Trim to last underscore boundary
         if '_' in prefix:
             prefix = prefix[:prefix.rfind('_') + 1]
         if len(prefix) > 4:
-            short = [lbl[len(prefix):] or lbl for lbl in raw_labels]
-        else:
-            short = list(raw_labels)
-        # Final cap
-        return [(s[:18] + '…') if len(s) > 19 else s for s in short]
+            return [lbl[len(prefix):] or lbl for lbl in raw_labels]
+        return list(raw_labels)
 
     def _is_concat_mode(self) -> bool:
         """True if any active file has a Source_File column."""
@@ -6760,7 +7253,7 @@ class BatchPlotWindow(tk.Toplevel):
                 color = self._SAMPLE_COLORS[fi % len(self._SAMPLE_COLORS)]
                 samples.append((lbl, grp.reset_index(drop=True), color))
         else:
-            raw_labels = [os.path.splitext(os.path.basename(p))[0]
+            raw_labels = [self._make_sample_label(p)
                           for p in sorted(active_paths)]
             short_labels = self._shorten_labels(raw_labels)
             samples = []
@@ -6796,8 +7289,8 @@ class BatchPlotWindow(tk.Toplevel):
         if (not xch or not ych
                 or xch not in df.columns or ych not in df.columns):
             return np.ones(n, bool)
-        xa = df[xch].values.astype(float)
-        ya = df[ych].values.astype(float)
+        xa = df[xch].to_numpy(dtype=float, copy=False)
+        ya = df[ych].to_numpy(dtype=float, copy=False)
         try:
             regions, _ = self.app._gate_mask_for(gate, xa, ya)
         except Exception:
@@ -6813,9 +7306,11 @@ class BatchPlotWindow(tk.Toplevel):
             return combined
         return regions.get(region_sel, np.ones(n, bool))
 
-    def _get_region_pcts(self, df: pd.DataFrame) -> 'dict[str, float]':
+    def _get_region_pcts_and_n(self, df: pd.DataFrame) -> 'dict[str, tuple]':
         """
-        Return {region_name: pct} for the selected gate on one sample's df.
+        Return {region_name: (pct, n_total)} for the selected gate on one
+        sample's DataFrame.  n_total is the total cell count for that sample
+        and is needed to compute the per-sample binomial SEM.
         Returns {} if no gate is selected or gate cannot be applied.
         """
         name = self._gate_var.get()
@@ -6830,8 +7325,8 @@ class BatchPlotWindow(tk.Toplevel):
         if (not xch or not ych
                 or xch not in df.columns or ych not in df.columns):
             return {}
-        xa    = df[xch].values.astype(float)
-        ya    = df[ych].values.astype(float)
+        xa    = df[xch].to_numpy(dtype=float, copy=False)
+        ya    = df[ych].to_numpy(dtype=float, copy=False)
         total = len(xa)
         if total == 0:
             return {}
@@ -6839,8 +7334,16 @@ class BatchPlotWindow(tk.Toplevel):
             regions, _ = self.app._gate_mask_for(gate, xa, ya)
         except Exception:
             return {}
-        return {rname: float(mask.sum()) / total * 100.0
+        return {rname: (float(mask.sum()) / total * 100.0, total)
                 for rname, mask in regions.items()}
+
+    def _get_region_pcts(self, df: pd.DataFrame) -> 'dict[str, float]':
+        """
+        Return {region_name: pct} — convenience wrapper around
+        _get_region_pcts_and_n that drops the cell-count component.
+        """
+        return {rname: pct
+                for rname, (pct, _n) in self._get_region_pcts_and_n(df).items()}
 
     # ── UI construction ───────────────────────────────────────────────────────
 
@@ -6970,14 +7473,61 @@ class BatchPlotWindow(tk.Toplevel):
 
         ttk.Frame(p, style='TFrame', height=12).pack()
 
-        # ── plot area ─────────────────────────────────────────────────────
+        # ── plot area — scrollable in both directions, with zoom controls ──
         self._plot_frame = tk.Frame(self, bg=T['plot_bg'])
         self._plot_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self._fig = Figure(figsize=(13, 6), facecolor=T['fig_bg'])
-        self._canvas = FigureCanvasTkAgg(self._fig, master=self._plot_frame)
+        # Zoom scale factor (multiplier on per-sample width)
+        self._zoom_x = tk.DoubleVar(value=1.0)   # horizontal zoom
+        self._zoom_y = tk.DoubleVar(value=1.0)   # vertical zoom (figure height)
+
+        # ── scrollbars ───────────────────────────────────────────────────
+        h_scroll = tk.Scrollbar(self._plot_frame, orient='horizontal',
+                                bg=T['sidebar_bg'])
+        h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+
+        v_scroll = tk.Scrollbar(self._plot_frame, orient='vertical',
+                                bg=T['sidebar_bg'])
+        v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self._plot_canvas_widget = tk.Canvas(
+            self._plot_frame,
+            bg=T['plot_bg'],
+            highlightthickness=0,
+            xscrollcommand=h_scroll.set,
+            yscrollcommand=v_scroll.set,
+        )
+        self._plot_canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        h_scroll.config(command=self._plot_canvas_widget.xview)
+        v_scroll.config(command=self._plot_canvas_widget.yview)
+
+        # Matplotlib figure lives inside a plain Frame embedded in the Canvas
+        self._fig_frame = tk.Frame(self._plot_canvas_widget, bg=T['plot_bg'])
+        self._fig_frame_id = self._plot_canvas_widget.create_window(
+            (0, 0), window=self._fig_frame, anchor='nw')
+
+        self._fig = Figure(figsize=(max(13, len(self._sample_labels) * 0.55 + 4), 6),
+                           facecolor=T['fig_bg'])
+        self._canvas = FigureCanvasTkAgg(self._fig, master=self._fig_frame)
         self._canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-        tf = tk.Frame(self._plot_frame, bg=T['sidebar_bg'])
+
+        # Keep scroll region in sync whenever the inner frame is resized
+        def _on_fig_frame_configure(event):
+            self._plot_canvas_widget.configure(
+                scrollregion=self._plot_canvas_widget.bbox('all'))
+        self._fig_frame.bind('<Configure>', _on_fig_frame_configure)
+
+        # Mouse-wheel: vertical scroll; Shift+wheel: horizontal scroll
+        def _vscroll(event):
+            self._plot_canvas_widget.yview_scroll(
+                int(-1 * (event.delta / 120)), 'units')
+        def _hscroll(event):
+            self._plot_canvas_widget.xview_scroll(
+                int(-1 * (event.delta / 120)), 'units')
+        self._plot_canvas_widget.bind('<MouseWheel>',       _vscroll)
+        self._plot_canvas_widget.bind('<Shift-MouseWheel>', _hscroll)
+
+        tf = tk.Frame(self._fig_frame, bg=T['sidebar_bg'])
         tf.pack(fill=tk.X)
         tb = NavigationToolbar2Tk(self._canvas, tf)
         tb.config(background=T['sidebar_bg'])
@@ -7002,12 +7552,16 @@ class BatchPlotWindow(tk.Toplevel):
             row = ttk.Frame(self._file_list_frame, style='TFrame')
             row.pack(fill=tk.X, pady=1)
             tk.Label(row, bg=color, width=2,
-                     relief='raised').pack(side=tk.LEFT, padx=(0, 4))
+                     relief='raised').pack(side=tk.LEFT, padx=(0, 4),
+                                           anchor='n', pady=2)
             name = os.path.basename(path)
-            disp = (name[:22] + '…') if len(name) > 23 else name
-            ttk.Checkbutton(row, text=disp, variable=var,
+            # Use wraplength so the name flows onto as many lines as needed
+            # instead of being truncated. 220 px fits inside the 254 px sidebar
+            # after the colour swatch.
+            ttk.Checkbutton(row, text=name, variable=var,
                             command=self._schedule_replot,
-                            style='TCheckbutton').pack(side=tk.LEFT)
+                            style='TCheckbutton').pack(side=tk.LEFT,
+                                                       fill=tk.X, expand=True)
 
     def _populate_dropdowns(self):
         # ── Gate dropdown ──────────────────────────────────────────────────
@@ -7103,34 +7657,73 @@ class BatchPlotWindow(tk.Toplevel):
             self._status_var.set("No data — check file selection.")
             return
 
-        dist_col = self._dist_col_var.get()
+        dist_col     = self._dist_col_var.get()
+        gate_name    = self._gate_var.get()
+        region_sel   = self._region_var.get()
+        gate         = next((g for g in self.app.gates
+                             if g['name'] == gate_name and g.get('applied')), None)
+        xch          = self.app.x_channel
+        ych          = self.app.y_channel
 
-        # ── per-sample distribution values (respecting region mask) ───────
-        self._dist_cache = {}
+        self._dist_cache     = {}
+        self._pop_cache      = {}
+        self._pop_sem_cache  = {}
+
         for lbl, df, color in samples:
-            mask = self._get_population_mask(df)
+            n_total = len(df)
+
+            # ── Single _gate_mask_for call per sample ─────────────────────
+            regions: dict = {}
+            if (gate is not None and gate_name != 'All cells'
+                    and xch and ych
+                    and xch in df.columns and ych in df.columns):
+                xa = df[xch].to_numpy(dtype=float, copy=False)
+                ya = df[ych].to_numpy(dtype=float, copy=False)
+                try:
+                    regions, _ = self.app._gate_mask_for(gate, xa, ya)
+                except Exception:
+                    regions = {}
+
+            # ── Population mask for distribution filtering ────────────────
+            if not regions:
+                pop_mask = np.ones(n_total, bool)
+            elif region_sel == 'All regions':
+                pop_mask = np.zeros(n_total, bool)
+                for rname, mask in regions.items():
+                    if gate.get('type', 'crosshair') != 'crosshair' and rname == 'OUT':
+                        continue
+                    pop_mask |= mask
+            else:
+                pop_mask = regions.get(region_sel, np.ones(n_total, bool))
+
+            # ── Distribution values ───────────────────────────────────────
             if dist_col and dist_col in df.columns:
-                vals = df[dist_col].values.astype(float)[mask]
+                vals = df[dist_col].to_numpy(dtype=float, copy=False)[pop_mask]
                 vals = vals[np.isfinite(vals)]
             else:
                 vals = np.array([])
             self._dist_cache[lbl] = (vals, color)
 
-        # ── per-sample gate population % ──────────────────────────────────
-        self._pop_cache = {}
-        for lbl, df, _color in samples:
-            self._pop_cache[lbl] = self._get_region_pcts(df)
+            # ── Population percentages + binomial SEM ─────────────────────
+            if regions and n_total > 0:
+                pct_map = {rname: float(mask.sum()) / n_total * 100.0
+                           for rname, mask in regions.items()}
+                self._pop_cache[lbl] = pct_map
+                for rname, pct in pct_map.items():
+                    p = pct / 100.0
+                    self._pop_sem_cache[(lbl, rname)] = float(
+                        np.sqrt(p * (1.0 - p) / n_total) * 100.0)
+            else:
+                self._pop_cache[lbl] = {}
 
         self._sample_labels = [lbl for lbl, _, _ in samples]
 
         self._render_figure()
         self._update_stats()
 
-        gate_lbl = self._gate_var.get()
-        n_samp   = len(samples)
-        mode     = 'concat-mode' if self._is_concat_mode() else 'file-mode'
+        mode = 'concat-mode' if self._is_concat_mode() else 'file-mode'
         self._status_var.set(
-            f"{n_samp} sample(s)  ·  {mode}  ·  gate: {gate_lbl}"
+            f"{len(samples)} sample(s)  ·  {mode}  ·  gate: {gate_name}"
             + (f"  ·  col: {dist_col}" if dist_col else ""))
 
     # ── render ────────────────────────────────────────────────────────────────
@@ -7141,6 +7734,15 @@ class BatchPlotWindow(tk.Toplevel):
         if not labels:
             return
 
+        # Resize figure using zoom factors
+        n_samples     = len(labels)
+        zoom_x        = getattr(self, '_zoom_x', tk.DoubleVar(value=1.0)).get()
+        zoom_y        = getattr(self, '_zoom_y', tk.DoubleVar(value=1.0)).get()
+        bottom_margin = 0.38
+        fig_w  = max(13, n_samples * 0.6 * zoom_x + 4)
+        fig_h  = 6 * zoom_y
+        self._fig.set_size_inches(fig_w, fig_h)
+
         self._fig.clear()
         self._fig.patch.set_facecolor(T['fig_bg'])
 
@@ -7150,20 +7752,20 @@ class BatchPlotWindow(tk.Toplevel):
 
         if has_dist and has_pop:
             gs = self._fig.add_gridspec(1, 2, wspace=0.35,
-                                         left=0.06, right=0.97,
-                                         top=0.90, bottom=0.18)
+                                         left=0.06, right=0.87,
+                                         top=0.90, bottom=bottom_margin)
             ax_vio = self._fig.add_subplot(gs[0])
             ax_bar = self._fig.add_subplot(gs[1])
         elif has_dist:
             ax_vio = self._fig.add_subplot(1, 1, 1)
             self._fig.subplots_adjust(left=0.08, right=0.97,
-                                       top=0.90, bottom=0.18)
+                                       top=0.90, bottom=bottom_margin)
             ax_bar = None
         elif has_pop:
             ax_vio = None
             ax_bar = self._fig.add_subplot(1, 1, 1)
-            self._fig.subplots_adjust(left=0.08, right=0.97,
-                                       top=0.90, bottom=0.18)
+            self._fig.subplots_adjust(left=0.08, right=0.82,
+                                       top=0.90, bottom=bottom_margin)
         else:
             self._canvas.draw()
             return
@@ -7209,11 +7811,8 @@ class BatchPlotWindow(tk.Toplevel):
                     vals, col_c = self._dist_cache[lbl]
                     if len(vals) < 2:
                         continue
-                    med = float(np.median(vals))
-                    q1  = float(np.percentile(vals, 25))
-                    q3  = float(np.percentile(vals, 75))
-                    p5  = float(np.percentile(vals, 5))
-                    p95 = float(np.percentile(vals, 95))
+                    med              = float(np.median(vals))
+                    p5, q1, q3, p95  = np.percentile(vals, [5, 25, 75, 95])
                     ax_vio.vlines(xi, p5,  p95, color='white', lw=1.2, zorder=4)
                     ax_vio.vlines(xi, q1,  q3,  color='white', lw=3.5, zorder=5)
                     ax_vio.scatter([xi], [med], s=28, color='white',
@@ -7232,11 +7831,17 @@ class BatchPlotWindow(tk.Toplevel):
                         whiskerprops=dict(color=T['fg_dim'], lw=0.8),
                         capprops=dict(color=T['fg_dim'], lw=0.8),
                         flierprops=dict(marker='.', markersize=2,
-                                        color=T['fg_dim'], alpha=0.4))
+                                        markerfacecolor=T['fg_dim'],
+                                        markeredgecolor='none', alpha=0.4))
                     for i, patch in enumerate(bp['boxes']):
                         patch.set_facecolor(colors_ordered[i])
                         patch.set_alpha(0.75)
                         patch.set_edgecolor(T['spine'])
+                    # Color flier dots to match their box color
+                    for i, flier in enumerate(bp['fliers']):
+                        flier.set_markerfacecolor(colors_ordered[i])
+                        flier.set_markeredgecolor('none')
+                        flier.set_alpha(0.5)
                 except Exception:
                     pass
 
@@ -7247,17 +7852,40 @@ class BatchPlotWindow(tk.Toplevel):
             # Individual points — always on for 'points only', optional for others
             show_pts = self._show_points_var.get() or kind == 'points only'
             if show_pts:
-                rng = np.random.default_rng(42)
+                # Use a fresh Generator with a fixed seed each render so
+                # subsampling and jitter are identical across re-draws and
+                # the y-axis scale does not shift between views.
+                _rng_pts = np.random.default_rng(42)
+                # Collect all visible values first to set stable y-limits
+                _all_sub_vals: list = []
+                MAX_PTS = 500
+                _per_sample: list = []
                 for xi, lbl in enumerate(labels):
                     vals, col_c = self._dist_cache[lbl]
                     if len(vals) == 0:
+                        _per_sample.append((xi, col_c, np.array([]), np.array([])))
                         continue
-                    MAX_PTS = 500
                     if len(vals) > MAX_PTS:
-                        sub = vals[rng.choice(len(vals), MAX_PTS, replace=False)]
+                        idx = _rng_pts.choice(len(vals), MAX_PTS, replace=False)
+                        sub = vals[idx]
                     else:
-                        sub = vals
-                    jitter = rng.uniform(-0.18, 0.18, size=len(sub))
+                        sub = vals.copy()
+                    jitter = _rng_pts.uniform(-0.18, 0.18, size=len(sub))
+                    _per_sample.append((xi, col_c, sub, jitter))
+                    _all_sub_vals.append(sub)
+                # Pin y-limits from the full data range (not just the subsample)
+                # to prevent axis rescaling when switching between modes.
+                _all_full = np.concatenate(
+                    [v for v, _ in self._dist_cache.values() if len(v) > 0]
+                ) if self._dist_cache else np.array([0.0])
+                if len(_all_full) > 0 and np.isfinite(_all_full).any():
+                    _ymin = float(np.nanmin(_all_full))
+                    _ymax = float(np.nanmax(_all_full))
+                    _pad  = (_ymax - _ymin) * 0.05 if _ymax > _ymin else 1.0
+                    ax_vio.set_ylim(_ymin - _pad, _ymax + _pad)
+                for xi, col_c, sub, jitter in _per_sample:
+                    if len(sub) == 0:
+                        continue
                     ax_vio.scatter(xi + jitter, sub,
                                    s=5, color=col_c, alpha=0.55,
                                    linewidths=0, zorder=7)
@@ -7277,8 +7905,7 @@ class BatchPlotWindow(tk.Toplevel):
 
             ax_vio.set_xticks(x_pos)
             short = self._shorten_labels(labels)
-            ax_vio.set_xticklabels(short, rotation=40, ha='right',
-                                   fontsize=7, color=T['fg'])
+            _set_rotated_xlabels(ax_vio, short)
             # Use the full column name for both y-label and title
             ax_vio.set_ylabel(col, color=T['fg'], fontsize=8)
             ax_vio.set_title(f'{col}  —  Distribution per Sample',
@@ -7314,27 +7941,56 @@ class BatchPlotWindow(tk.Toplevel):
                                         ha='center', va='center',
                                         fontsize=6.5, color='white',
                                         fontweight='bold', clip_on=True)
+
+                # Per-bar binomial SEM: each sample gets its own error bar
+                # looked up by (sample_label, region_name) key.
+                sem_cache = getattr(self, '_pop_sem_cache', {})
+                for xi, (lbl_xi, h, b) in enumerate(
+                        zip(labels, heights, bottoms)):
+                    if h >= 3.0:
+                        sem_bar = sem_cache.get((lbl_xi, rname), 0.0)
+                        if sem_bar > 0:
+                            top_y = b + h
+                            ax_bar.errorbar(
+                                xi, top_y,
+                                yerr=sem_bar,
+                                fmt='none',
+                                ecolor='white',
+                                elinewidth=1.2,
+                                capsize=3.5,
+                                capthick=1.2,
+                                zorder=6,
+                            )
                 bottoms += heights
 
             ax_bar.set_ylim(0, 100)
             ax_bar.set_xticks(x_pos)
             short2 = self._shorten_labels(labels)
-            ax_bar.set_xticklabels(short2, rotation=40, ha='right',
-                                   fontsize=7, color=T['fg'])
+            _set_rotated_xlabels(ax_bar, short2)
             ax_bar.set_ylabel('Population (%)', color=T['fg'], fontsize=9)
             gate_lbl = self._gate_var.get()
             ax_bar.set_title(f'Gate Population % — Per Sample  [{gate_lbl}]',
                               color=T['fg'], fontsize=9)
 
             if self._show_legend_var.get() and all_regions:
-                ax_bar.legend(fontsize=7, loc='upper right',
-                              bbox_to_anchor=(1.0, 1.0),
+                ax_bar.legend(fontsize=7,
+                              loc='upper left',
+                              bbox_to_anchor=(1.01, 1.0),
+                              borderaxespad=0,
                               facecolor=T['legend_bg'],
                               labelcolor=T['fg'],
-                              framealpha=0.75)
+                              framealpha=0.85)
 
         self._fig.suptitle('Batch Plots', color=T['fg'], fontsize=10)
         self._canvas.draw()
+
+        # Update the scrollable canvas scroll region to match the new figure size
+        dpi = self._fig.get_dpi()
+        pw = int(fig_w * dpi)
+        ph = int(fig_h * dpi)
+        self._canvas.get_tk_widget().config(width=pw, height=ph)
+        self._plot_canvas_widget.configure(
+            scrollregion=(0, 0, pw, ph))
 
     # ── display-only refresh ──────────────────────────────────────────────────
 
@@ -7359,9 +8015,10 @@ class BatchPlotWindow(tk.Toplevel):
             if n == 0:
                 med = mean = iqr = float('nan')
             else:
-                med  = float(np.median(vals))
-                mean = float(np.mean(vals))
-                iqr  = float(np.percentile(vals, 75) - np.percentile(vals, 25))
+                med        = float(np.median(vals))
+                mean       = float(np.mean(vals))
+                q25, q75   = np.percentile(vals, [25, 75])
+                iqr        = float(q75 - q25)
             short = (lbl[:24] + '…') if len(lbl) > 25 else lbl
             self._stats_tree.insert(
                 '', 'end', text=f'  {short}',
@@ -7401,19 +8058,20 @@ class BatchPlotWindow(tk.Toplevel):
         for lbl in self._sample_labels:
             vals, _ = self._dist_cache.get(lbl, (np.array([]), None))
             n    = len(vals)
+            if n:
+                _q5, _q25, _q75, _q95 = np.percentile(vals, [5, 25, 75, 95])
             base = {
                 'Sample':  lbl,
                 'Col':     self._dist_col_var.get(),
                 'Gate':    self._gate_var.get(),
                 'Region':  self._region_var.get(),
                 'N':       n,
-                'Mean':    round(float(np.mean(vals)),   4) if n else '',
-                'Median':  round(float(np.median(vals)), 4) if n else '',
+                'Mean':    round(float(np.mean(vals)),        4) if n else '',
+                'Median':  round(float(np.median(vals)),      4) if n else '',
                 'Std':     round(float(np.std(vals, ddof=1)), 4) if n > 1 else '',
-                'IQR':     round(float(np.percentile(vals,75) -
-                                       np.percentile(vals,25)), 4) if n else '',
-                'p5':      round(float(np.percentile(vals,  5)), 4) if n else '',
-                'p95':     round(float(np.percentile(vals, 95)), 4) if n else '',
+                'IQR':     round(float(_q75 - _q25),          4) if n else '',
+                'p5':      round(float(_q5),                  4) if n else '',
+                'p95':     round(float(_q95),                 4) if n else '',
             }
             pops = self._pop_cache.get(lbl, {})
             for rname, pct in pops.items():
@@ -7450,7 +8108,7 @@ class FlowTabManager:
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        root.title("vFlow 4.0.2")
+        root.title("vFlow 4.0.12")
         root.geometry("1500x960")
 
         self._theme_name = 'dark'
@@ -7473,7 +8131,8 @@ class FlowTabManager:
     # ── Tab lifecycle ─────────────────────────────────────────────────────────
 
     def _new_tab(self, title, parent_label, filtered_data,
-                 default_x, default_y):
+                 default_x, default_y,
+                 parent_gate=None, parent_region=None, excluded_files=None):
         frame = ttk.Frame(self.notebook, style='TFrame')
         self.notebook.add(frame, text=title)
 
@@ -7503,14 +8162,45 @@ class FlowTabManager:
         app = FlowApp(self.root, container=inner,
                       parent_label=parent_label, manager=self)
         if filtered_data:
-            self._load_filtered(app, filtered_data, default_x, default_y)
+            self._load_filtered(app, filtered_data, default_x, default_y,
+                                parent_gate=parent_gate,
+                                parent_region=parent_region,
+                                excluded_files=excluded_files or {})
         self._apps.append(app)
         self.notebook.select(frame)
         return app
 
     @staticmethod
-    def _load_filtered(app, filtered_data, default_x, default_y):
-        """Pre-load filtered DataFrames into a FlowApp and select axes."""
+    def _load_filtered(app, filtered_data, default_x, default_y,
+                       parent_gate=None, parent_region=None, excluded_files=None):
+        """Pre-load filtered DataFrames into a FlowApp and select axes.
+
+        Sub-gate tabs contain only the cells that passed the parent gate,
+        so there is no meaningful data outside that cluster.  We enable
+        fit_axes_var so every render (including after placing a new gate)
+        automatically zooms to the data range instead of showing the full
+        scale which would leave the population as a tiny speck in one corner.
+        The user can still uncheck 'Fit axes to data' in the sidebar.
+
+        parent_gate / parent_region are stored on the app so that
+        batch_export_stats can re-apply the parent filter to each raw file
+        before computing sub-gate statistics.
+
+        excluded_files is a snapshot of the parent's exclusion dict;
+        it is copied into the child so batch_export_stats excludes the same
+        files as the parent analysis did.
+        """
+        # Propagate parent-gate context for batch stats
+        app.parent_gate   = parent_gate    # gate dict (or None for main tab)
+        app.parent_region = parent_region  # region name (or None)
+
+        # Inherit exclusion list from parent tab
+        if excluded_files:
+            app.excluded_files = dict(excluded_files)
+            # Refresh the EXCLUDED FILES panel so it shows the inherited list
+            # instead of the default "(none)" label.
+            app._rebuild_excluded_list()
+
         for path, df in filtered_data.items():
             if path in app.loaded_files:
                 continue
@@ -7536,16 +8226,25 @@ class FlowTabManager:
         elif len(cols) > 1:
             app.y_var.set(cols[1]);   app.y_channel = cols[1]
 
+        # Sub-gate tabs: always fit the view to the actual data range.
+        # The parent gate filtered out everything outside the selection,
+        # so showing the full instrument scale would be misleading.
+        app.fit_axes_var.set(True)
+
         app.refresh_plot()
 
     def open_subgate_tab(self, label: str, filtered_data: dict,
-                         parent_x: str, parent_y: str, total_cells: int):
+                         parent_x: str, parent_y: str, total_cells: int,
+                         parent_gate: dict = None, parent_region: str = None,
+                         excluded_files: dict = None):
         """Called by a FlowApp when the user double-clicks a gated region."""
         short     = label[:22]
         tab_title = f' ↳ {short}  ({total_cells:,}) '
         self._new_tab(title=tab_title, parent_label=label,
                       filtered_data=filtered_data,
-                      default_x=parent_x, default_y=parent_y)
+                      default_x=parent_x, default_y=parent_y,
+                      parent_gate=parent_gate, parent_region=parent_region,
+                      excluded_files=excluded_files or {})
 
     # ── Tab closure ───────────────────────────────────────────────────────────
 
