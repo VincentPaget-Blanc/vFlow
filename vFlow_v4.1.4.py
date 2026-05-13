@@ -1,61 +1,399 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Flow Cytometry Visualization Tool - v3.9.9
+Flow Cytometry Visualization Tool - v4.1.4
 @author: vincentpb
 
-Changelog v3.9.2 → v3.9.3
-──────────────────────────
+Changelog v4.1.3 -> v4.1.4
+------------------------------
+PERFORMANCE
+
+  Perf 1  Blit acceleration extended to handle-corner drag and gate drawing
+             v4.1.2 introduced blit for gate-body move only.  The same
+             three-part pattern (background capture → per-frame restore+blit
+             → release on drop) is now applied to the two remaining
+             interactive paths that previously used draw_idle() on every
+             motion event:
+
+             (a) Handle-corner / vertex resize drag (_handle_drag)
+                 At right-click press on a handle, _start_blit_drag()
+                 captures the scatter-only pixel buffer once.  Each motion
+                 event throttles at 60 fps, calls _preview_gate(skip_cache)
+                 to rebuild only the gate outline artists, restores the
+                 saved buffer, composites those artists with draw_artist(),
+                 and flushes with canvas.blit().  The scatter layer is never
+                 re-rendered during the drag.  Frozen axis limits are
+                 snapshotted into _handle_drag at press time and restored
+                 after each preview, preventing autoscale expansion when a
+                 corner is dragged to the axes edge.  _end_blit_drag() is
+                 called in _on_release before _finish_gate().
+
+             (b) Gate drawing (rectangle, ellipse, crosshair, polygon)
+                 When the user clicks to begin drawing a new gate,
+                 _start_blit_drag() captures the scatter background once.
+                 Rectangle/ellipse/crosshair: each motion event throttles at
+                 60 fps, updates the corner coordinate, calls
+                 _preview_gate(skip_cache), restores frozen axis limits, and
+                 blits.  Polygon: the background is captured at the first
+                 vertex click; each rubber-band motion event throttles and
+                 blits the partial polygon + tentative segment without a full
+                 redraw; subsequent vertex clicks reuse the captured
+                 background (the scatter hasn't changed) and blit immediately.
+                 _end_blit_drag() is called in _poly_finish() (polygon close
+                 or double-click) and in _on_release for other gate types.
+
+             In both cases the draw_idle() fallback is retained: if
+             _drag_bg is None (canvas not yet fully rendered at press time)
+             the motion handler falls back to the previous draw_idle() path.
+
+  Perf 2  _drag_handle_update no longer calls _preview_gate / draw_idle
+             These calls have been moved to _on_motion so the throttle and
+             blit logic live in one place.  _drag_handle_update now only
+             updates gate geometry and evicts stale caches; rendering is
+             always the caller's responsibility.
+
+  Perf 3  New _blit_render() helper
+             The restore_region → draw_artist loop → canvas.blit / draw_idle
+             fallback sequence was previously duplicated in the _gate_move
+             block and is now needed in five further locations.  Extracted
+             into a single _blit_render() method called by all three drag
+             paths and the polygon vertex-click path.
+
+Changelog v4.1.2 -> v4.1.3
+------------------------------
 BUG FIXES
-  1. Region % labels on plot not appearing after gating
-       • _draw_region_labels() was called BEFORE _set_axis_scale().
-         Moving it to AFTER ensures the custom axis transform (asinh /
-         biexp / logicle) is fully in place when label positions are
-         resolved, preventing clipping or misplacement caused by the
-         axis autoscale range being recalculated for the new scale type.
-       • Added an unconditional canvas.draw_idle() at the very end of
-         refresh_plot so every code path (no gate, gate but labels off,
-         gate + labels) flushes exactly once after all changes.
-       • Wrapped _draw_region_labels call in try/except so a label
-         error can never crash the full plot refresh.
 
-  2. Polar analysis: X/Y centroid columns not loading from gated population
-       • _get_population_mask in PolarAnalysisWindow passed _cache_path
-         to _gate_mask_for.  The gate-mask cache was built against the
-         full-file DataFrame; if the polar window operated on a filtered
-         (sub-gate) DataFrame the cached boolean arrays had a different
-         length, raising an exception that was silently swallowed, causing
-         the gate filter to be ignored (all cells used instead).
-       • Fix: _get_population_mask no longer passes _cache_path — it
-         always triggers a fresh, correct computation.
-       • Additional safety: _gate_mask_for now validates cached mask length
-         before using it; a length mismatch forces a recompute.
+  Bug 1  Loaded gates: corner resize broken (deepcopy crash on Tkinter objects)
+             _hit_test_handles() built the 'orig' snapshot of a gate with
+             copy.deepcopy(gate).  Loaded gates can store tk.BooleanVar /
+             tk.Variable objects as gate-dict values (e.g. applied flags).
+             copy.deepcopy raises a TypeError on Tkinter objects.  Because
+             this deepcopy happened after the try/except block that only
+             wraps transData.transform(), the exception propagated out of
+             _hit_test_handles uncaught, making the function return None
+             for every right-click on a loaded-gate handle.  The click then
+             fell through to the body-move or line-pin path instead — making
+             all corner and vertex resizing appear completely broken for any
+             gate that was loaded from a JSON file.
 
-  3. _clear_preview() called canvas.draw_idle() prematurely
-       • _clear_preview is invoked at the very start of _preview_gate(),
-         which is itself called early in refresh_plot (before gate outlines,
-         labels, scale, and limits are set).  The premature draw_idle()
-         could fire a repaint while the canvas was still in an incomplete
-         state.  Removed draw_idle() from _clear_preview(); all interactive
-         callers of _preview_gate() already issued their own draw_idle().
+             Fix: replaced copy.deepcopy(gate) with the same Tkinter-safe
+             shallow dict comprehension introduced for _gate_move in v4.1.0:
+               {k: v for k, v in gate.items()
+                if not isinstance(v, (tk.BooleanVar, tk.Variable))}
+             The only values actually read from 'orig' inside
+             _drag_handle_update are plain floats (x0, x1, y0, y1), so a
+             shallow copy is fully correct.  This fix applies to all
+             resizable gate types (rectangle, ellipse, polygon) identically.
 
-  4. _auto_detect_channels improvements
-       • Removed duplicate startswith condition (case-insensitive check
-         already subsumed the case-sensitive one).
-       • StringVars are now cleared before re-detection so stale column
-         names from a previous session do not survive if detection fails.
-       • Combo value lists are updated BEFORE var.set() to avoid the
-         ttk readonly-Combobox display glitch where a new value is not
-         shown until the widget is interacted with.
-       • Added fallback detection for 'centroid_x'/'centroid_y' naming
-         conventions used by some analysis pipelines.
+Changelog v4.1.1 -> v4.1.2
+------------------------------
+PERFORMANCE
+  Perf 1  Gate body-drag now uses matplotlib blitting — scatter is never
+          re-rendered during a drag
+             Previously every motion event called canvas.draw_idle(), which
+             re-rendered the full scene: scatter points, axes, ticks, legend.
+             With 10 k points and a typical renderer this costs 30–150 ms per
+             frame, making drag feel sluggish even with the 60 fps throttle.
+
+             New approach — three cooperating parts:
+             (a) _start_blit_drag() — called once at right-click press.
+                 Clears gate outline artists, does one synchronous canvas.draw()
+                 to commit the scatter-only state, then captures the pixel buffer
+                 with canvas.copy_from_bbox(fig.bbox).  The full render happens
+                 exactly once per drag; the momentary press latency is far less
+                 perceptible than per-frame lag during the motion.
+             (b) Motion frames — restore_region() restores the captured buffer,
+                 draw_artist() composites only the updated gate outline artists
+                 on top, canvas.blit() flushes just those changed pixels to the
+                 screen.  The scatter layer is never touched mid-drag.
+             (c) _end_blit_drag() — called in _on_release before _finish_gate().
+                 Releases the background snapshot; the next refresh_plot() does a
+                 normal full render to reconcile the final gate position.
+             Fallback: if copy_from_bbox fails (canvas not yet fully initialised),
+             _drag_bg is set to None and the motion handler falls back to the
+             previous draw_idle() path — no crash, just the old behaviour.
+
+  Perf 2  Motion-event throttle — redraws capped at ~60 fps
+             A 16 ms minimum interval between frames (time.monotonic()) prevents
+             event pile-up when the mouse moves faster than the renderer.
+             _drag_last_draw is reset to 0.0 at every drag-start so the very
+             first frame is never dropped.
+
+  Perf 3  _rebuild_handle_px_cache() skipped during body drag
+             This call transforms every gate handle vertex to display pixels
+             after each preview rebuild.  During a body-drag, hover hit-testing
+             is never reached (motion handler returns at the _gate_move block),
+             making the rebuild pure overhead.  A skip_cache kwarg on
+             _preview_gate() suppresses it without affecting any other caller.
+             The cache is rebuilt correctly on mouse-release via the normal
+             refresh_plot() → _preview_gate() path.
+
+Changelog v4.1.0 -> v4.1.1
+------------------------------
+BUG FIXES (superseding all previous v4.1.0 attempts)
+
+  Bug 1  Hover detection broken for ALL gates after 4.1.0 changes
+             v4.1.0 replaced _hover_test_handles / _cursor_for_hover /
+             new_hover_handle_key with live transData.transform calls,
+             intending to eliminate stale-cache issues.  This BROKE hover:
+             after ax.clear() + set_xscale(), viewLim is at its default
+             (0,1) and autoscale has not yet committed.  Live-transform
+             calls before draw_idle() actually renders return pixel coords
+             based on the (0,1) viewport — far from where handles appear.
+             Fix: reverted all three to _handle_px_cache-based lookup
+             (original 4.0.21 approach).  The draw_event callback
+             (added in 4.1.0) ensures the cache is rebuilt with the
+             fully-committed transform after every render, making it
+             reliable for all scales (linear, log, biexp, asinh, logicle).
+
+  Bug 2  Loaded gates: corner resize dead zone (original 4.0.21 bug)
+             _hover_test_handles used a 30 px threshold (HANDLE_PX * 2.5)
+             but _hit_test_handles (click path) used only 12 px (HANDLE_PX).
+             The user could see a highlighted handle (hover fired at 20 px),
+             right-click exactly on it, and have the click fall through to
+             _hit_test_gate_line (pin) instead of grabbing the handle —
+             because the click was outside the 12 px radius.
+             Fix: _hit_test_handles now uses HANDLE_PX * 2.5 = 30 px,
+             matching hover exactly.  If hover shows a handle, a click
+             there is guaranteed to grab it.
+
+  Bug 3  axis_lock broke gate body move (introduced and removed in 4.1.0)
+             Fully removed — gate body moves are free 2-D.
+
+  Bug 4  Axis limits expand during gate body drag
+             _preview_gate() calls ax.plot() which participates in
+             matplotlib autoscale.  Axis limits are now snapshotted into
+             _gate_move['frozen_xlim'/'frozen_ylim'] at drag-start and
+             restored after each _preview_gate() during the drag.
+
+Changelog v4.0.21 -> v4.1.0
+------------------------------
+NEW FEATURE
+  Feat 1  Axis-limits frozen during gate-body right-drag
+             When right-dragging a gate body to reposition it, the plot
+             axis limits are now locked for the duration of the drag.
+             Previously, _preview_gate() calling ax.plot() / add_patch()
+             participated in matplotlib's autoscale, causing the view to
+             zoom out unexpectedly when gate vertices moved close to or
+             beyond the current axis edges.
+             Implementation: frozen_xlim / frozen_ylim are snapshotted into
+             the _gate_move state dict at the moment of the right-click press
+             and restored after every _preview_gate() call during the drag.
+             The limits are re-evaluated normally by the next refresh_plot()
+             on mouse release.
+
+BUG FIXES
+  Bug 1  Loaded gates: corner resize appeared broken (click dead-zone)
+             _hover_test_handles used a 30 px radius (HANDLE_PX * 2.5) to
+             decide whether to highlight a handle, but _hit_test_handles (the
+             click path) used only 12 px (HANDLE_PX).  This created a dead
+             zone of 13-29 px: the user saw a handle highlighted and right-
+             clicked exactly on it, but the click fell through to the
+             interior-move path instead of starting a resize drag — making
+             corner reshaping appear completely broken for loaded gates.
+             Fix: _hit_test_handles now uses the same HANDLE_PX * 2.5 = 30 px
+             threshold, eliminating the dead zone.  The hover and click radii
+             are now always in sync: if hover shows a handle, a click there
+             is guaranteed to grab it.
+
+  Bug 2  Loaded gates / all gates: gate move appeared broken (axis_lock)
+             The axis_lock feature committed the drag to H or V after just
+             5 px of travel.  For any diagonal movement the perpendicular
+             component was permanently zeroed, making the gate appear to slide
+             only in one direction — or appear stationary if the user dragged
+             roughly orthogonal to the committed axis.  This misfeature was
+             also the cause of the user-reported "nothing happens" when trying
+             to move a loaded gate.  The H/V direction lock was never
+             requested; the user asked for axis-LIMITS to stay frozen during
+             the move (Feat 1 above), not for movement direction to be
+             constrained.
+             Fix: the axis_lock key and its entire logic block have been
+             removed from _gate_move and _on_motion.  Gate body moves are
+             now fully free 2-D translations.
+
+  Bug 3  Loaded gates: handle pixel cache stale on non-linear axes
+             _hover_test_handles, _cursor_for_hover, and the hover_handle_key
+             block in _on_motion all used _handle_px_cache, which was built
+             by _rebuild_handle_px_cache() immediately after _set_axis_scale()
+             in refresh_plot().  Because matplotlib's transform tree is lazy,
+             the cache was still stale at that point.  All three now use the
+             live transData.transform on every event.  _rebuild_handle_px_cache
+             is retained as a draw_event callback (belt-and-suspenders) but no
+             longer drives interactive hit-testing.
+
+  Bug 4  clear_all_gates() left _gate_move and _interior_hover_gate_id
+             stale — added explicit None resets matching the existing pattern
+             for _handle_drag and _hover_gate_id.
+
+Changelog v4.0.19 -> v4.0.20
+------------------------------
+BUG FIXES
+  Bug 1  Top-Y lock buttons: + and − were swapped
+             yt+ (+, expand up) was placed BELOW yt- (−, shrink), the
+             opposite of the intuitive direction.  Swapped so + sits at
+             the top of the pair (closest to the axis top, expands
+             upward) and − sits below it (shrinks the top limit).
+             Bottom-Y pair was already correct (+ below −).
+
+  Bug 2  X-axis lock buttons: vertical offset increased
+             y_xbtn = ax_bot_tk + 26 left the buttons clipping into the
+             tick-label row on linear scales where labels render taller.
+             Increased to ax_bot_tk + 36 for reliable clearance.
+
+Changelog v4.0.18 -> v4.0.19
+------------------------------
+BUG FIXES
+  Bug 1  Lock-scale buttons now truly visible in dark mode on all platforms
+             tk.Button ignores bg/fg on macOS because native Aqua rendering
+             overrides Python colour options — buttons rendered as plain grey
+             squares with invisible text.  Replaced all eight lock-scale
+             tk.Button widgets with tk.Label widgets bound to <Button-1>.
+             tk.Label always respects bg/fg on every platform (macOS, Linux,
+             Windows).  Hover effect is implemented via <Enter>/<Leave>
+             bindings that swap bg ↔ accent colour.  Stored _bg/_fg/_act
+             attributes on each label allow _reposition_lock_buttons and
+             toggle_theme to update hover colours after a theme switch.
+
+  Bug 2  toggle_theme now uses the high-contrast lock-button palette
+             The theme-switch path in toggle_theme still called b.configure()
+             with header_bg/fg (old dim palette) and passed activebackground
+             which is not a tk.Label attribute.  Updated to use the same
+             #3a4255/#ffffff (dark) and #c8ccd4/#1a1a1a (light) palette and
+             to rebind <Enter>/<Leave> so hover colours also update on switch.
+
+UI
+  UI 1  Y lock buttons shifted further left — clear of tick labels
+             Previous offset ax_left − BW − 6 px left the buttons inside the
+             tick-label band (labels can be 35–45 px wide on biexp/logicle
+             scales).  New offset: max(4, ax_left − BW − 50), placing buttons
+             well into the left figure margin with a guaranteed 4 px floor.
+
+Changelog v4.0.17 -> v4.0.18
+------------------------------
+UI
+  UI 1  Lock-scale Y buttons moved to LEFT spine, stacked vertically
+             Y buttons now sit just to the left of the scatter axes left
+             spine (x = ax_left − BW − 6 px) rather than in the right
+             figure margin.  Each pair is stacked vertically (one button
+             above the other) at the top and bottom of the Y axis, matching
+             the layout shown in the reference screenshot.
+
+  UI 2  Lock-scale +/− buttons: high-contrast colours in dark mode
+             Replaced the theme-fg / header_bg palette (which gave
+             insufficient contrast against the dark plot background) with a
+             dedicated high-contrast palette:
+               dark mode  → #ffffff text on #3a4255 slate-blue background
+               light mode → #1a1a1a text on #c8ccd4 grey background
+             The same palette is applied both at button creation time and on
+             every repositioning pass (theme-toggle safe).  Font size raised
+             from 8 → 9 pt bold for extra legibility.
+
+Changelog v4.0.16 -> v4.0.17
+------------------------------
+BUG FIXES
+  Bug 1  Minor ticks now always visible on non-linear axes
+             Previously _apply_lock_minor_ticks() / _remove_lock_minor_ticks()
+             were called inside the lock-scale if/else block, so decade-
+             subdivision ticks only appeared while "Lock & Adjust Scale" was
+             enabled.  The two methods have been merged into a single
+             _apply_minor_ticks() that is called unconditionally from
+             refresh_plot() after _set_axis_scale(), regardless of lock state.
+             The dead for…pass loop that was inside _apply_lock_minor_ticks
+             has also been removed.
+
+  Bug 2  Lock-scale +/− buttons no longer overlap axis labels
+             X buttons: y-offset raised from +4 px → +26 px, clearing the
+             ~20 px x-tick label row.
+             Y buttons: moved from the LEFT side of the axes (where they sat
+             directly on top of labels like "−10⁵") to the RIGHT figure margin
+             at ax_right + 30 px, which is always free of tick labels regardless
+             of whether the marginal histogram is visible.
+
+  Bug 3  Spurious f-prefix removed from 10 static strings
+             f'…' literals with no {} placeholder emit SyntaxWarning on
+             Python ≥ 3.12 and mislead readers into thinking interpolation
+             occurs.  All 10 instances removed:
+             lines 1555–56 (concatenation warning), 2464 (suptitle),
+             2476 (status bar), 2510 (stats tree), 6724 (hint var),
+             6735 (status bar), 7291 (save dialog), 7321 (load dialog),
+             9111 (tab menu).
+
+PERFORMANCE
+  Perf 1  _hex_to_rgba — collapsed redundant wrapper + alias chain.
+             _hex_to_rgba_cached and _HEX_RGBA_CACHE alias removed; the
+             single @lru_cache(256) function is now called directly.
+             Saves one extra Python function-call frame per RGBA lookup.
+
+  Perf 2  _flow_fmt — added @functools.lru_cache(128).
+             Tick formatter is called on a small fixed set of values
+             (the _FLOW_TICKS grid); after warm-up every label is a
+             dict hit with no log10 / string-format work.
+
+  Perf 3  _apply_minor_ticks — FixedLocator result cached in
+             self._minor_loc_cache keyed on (scale, lo, hi).
+             On stable renders the ~120-item list comprehension over
+             _FLOW_MINOR_TICKS is skipped entirely.  Cache cleared
+             in _apply_scales() and _on_lock_scale_toggle().
+
+  Perf 4  _N_FILE_COLORS / _N_REGION_COLORS — module-level constants
+             replace 16 repeated len() calls inside file and region
+             colour-index loops.
+
+  Perf 5  _plot_gated_multi RGBA loop — three micro-optimisations:
+             • Short-circuit continue on empty regions dict.
+             • Shared _empty_bool sentinel replaces per-iteration
+               np.zeros(n, bool) allocation for shape-gate fallback.
+             • in_any |= mask (vectorised OR) replaces in_any[mask]=True
+               (indexed boolean write).
+
+  Perf 6  _plot_dot / _plot_contour — eliminated redundant array
+             reductions in scatter legend labels.
+             _plot_dot:    n = len(xv) already equals valid.sum(); label
+                           now uses n directly.
+             _plot_contour: n_outside = len(xo) pre-computed; also
+                            reused as argument to rng.choice(), removing
+                            a second len() call.
+
+  Perf 7  Fit-axes transform — batched 8 single-element _fwd/_inv
+             calls into 2 two-element array calls, halving the number
+             of Python→NumPy dispatch round-trips on every refresh when
+             "Fit axes to data" is active.
+
+  Perf 8  Cache eviction — all three caches (_tc, _gmc, _scatter_cache)
+             now use itertools.islice instead of list(cache)[:n] to build
+             the eviction list.  islice stops after n steps; the old pattern
+             built a full copy of all keys then sliced it.  itertools is
+             now imported at module level (was inline in three hot paths).
+
+  Perf 9  self.T attribute caching — local T = self.T alias added in
+             FlowApp.__init__, FlowTabManager.__init__, and _new_tab so
+             the dict-theme is not re-fetched from the instance __dict__
+             on every widget creation during startup.
+
+  Perf 10 _label_centroid — removed double float() boxing around
+             np.median() before passing it to np.array(); np.array
+             accepts a scalar directly.
 """
 
 import os
 import sys
+import time
+import functools
+import itertools
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
+# ── Splash screen — shown BEFORE heavy imports so the user sees feedback ──────
+# matplotlib, numpy, scipy each take ~0.5-2 s to import on first launch.
+# By starting the splash here we show progress during that dead time.
+if __name__ == '__main__':
+    try:
+        from vflow_splash import SplashScreen as _SplashScreen
+        _splash = _SplashScreen(version="4.1.4", total_steps=7)
+    except Exception:
+        _splash = None
+
+# ── Heavy imports (each one advances the splash bar) ─────────────────────────
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.lines as mlines
@@ -70,19 +408,26 @@ from matplotlib import scale as mscale
 from matplotlib.ticker import FuncFormatter, FixedLocator
 from matplotlib.path import Path as MplPath
 from matplotlib.patches import Rectangle as MplRect, Ellipse as MplEllipse
+if __name__ == '__main__' and _splash: _splash.step("matplotlib")
 
 import copy
 import numpy as np
+if __name__ == '__main__' and _splash: _splash.step("numpy")
+
 import pandas as pd
+if __name__ == '__main__' and _splash: _splash.step("pandas")
+
 from scipy.stats import gaussian_kde
 from scipy.signal import savgol_filter
 from scipy.interpolate import RegularGridInterpolator
+if __name__ == '__main__' and _splash: _splash.step("scipy")
 
 try:
     from sklearn.mixture import GaussianMixture
     HAS_SKLEARN = True
 except ImportError:
     HAS_SKLEARN = False
+if __name__ == '__main__' and _splash: _splash.step("scikit-learn")
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Theme palettes
@@ -247,7 +592,9 @@ _FLOW_LABELS = ['-10⁶', '-10⁵', '-10⁴', '-10³', '-10²', '0',
                 '10²', '10³', '10⁴', '10⁵', '10⁶']
 _TICK_MAP = dict(zip(_FLOW_TICKS, _FLOW_LABELS))
 
+@functools.lru_cache(maxsize=128)
 def _flow_fmt(x, pos):
+    # pos is always None from FuncFormatter; cached on x alone.
     if x in _TICK_MAP: return _TICK_MAP[x]
     if x == 0: return '0'
     ax = abs(x)
@@ -321,18 +668,76 @@ for _cls in (BiexpScale, AsinhScale, LogicleScale):
 ALL_SCALES = ['linear', 'log', 'biexp', 'asinh', 'logicle']
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  Lock-scale: snap grid and minor-tick values
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Snap-to grid for the lock-scale +/− buttons (raw data space).
+# Covers from -10^7 to 10^7 in decade steps; the list is used as the set of
+# "legal" limit positions so one button press always moves by exactly one
+# meaningful flow-cytometry tick unit.
+_LOCK_SNAP: list = sorted({
+    0,
+    *[s * 10**e for e in range(1, 8) for s in (1, 2, 5)],
+    *[-s * 10**e for e in range(1, 8) for s in (1, 2, 5)],
+})
+
+# Minor-tick positions for flow-cytometry (biexp / asinh / logicle / log)
+# scales: 2×, 3×, …, 9× between each pair of adjacent decades.
+_FLOW_MINOR_TICKS: list = sorted({
+    m * 10**(e - 1)
+    for e in range(2, 8)          # decades 10^2 … 10^7
+    for m in range(2, 10)         # multiples 2–9
+} | {
+    -m * 10**(e - 1)
+    for e in range(2, 8)
+    for m in range(2, 10)
+})
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Performance helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
+@functools.lru_cache(maxsize=256)
 def _hex_to_rgba(hex_color: str, alpha: float) -> np.ndarray:
-    """Convert a '#rrggbb' hex string to a (4,) float32 RGBA array."""
+    """Convert a '#rrggbb' hex string to an immutable (4,) float32 RGBA array.
+
+    Result is LRU-cached: same (color, alpha) pair always returns the same
+    array object.  Callers that need a writable copy for in-place assignment
+    (e.g. ``rgba[:] = _hex_to_rgba(...)``) get an implicit copy from NumPy's
+    broadcast rules — no extra .copy() call required.
+    """
     h = hex_color.lstrip('#')
     if len(h) == 3:
         h = h[0]*2 + h[1]*2 + h[2]*2
     r = int(h[0:2], 16) / 255.0
     g = int(h[2:4], 16) / 255.0
     b = int(h[4:6], 16) / 255.0
-    return np.array([r, g, b, float(alpha)], dtype=np.float32)
+    arr = np.array([r, g, b, float(alpha)], dtype=np.float32)
+    arr.flags.writeable = False   # immutable: protects the cache from mutation
+    return arr
+
+# ── Module-level RNG singletons ───────────────────────────────────────────────
+# np.random.default_rng() allocates a PCG64 state object (~5µs each).
+# Creating one per render call across 8 hot-path sites wastes meaningful time.
+# Fixed seeds → reproducible subsampling; dict lookup replaces allocation.
+_RNG: dict = {}
+
+def _get_rng(seed: int) -> np.random.Generator:
+    """Return a cached Generator for *seed*. Creates once, reuses thereafter."""
+    if seed not in _RNG:
+        _RNG[seed] = np.random.default_rng(seed)
+    return _RNG[seed]
+
+
+def _set_spines_color(ax, color: str) -> None:
+    """Set all four spine colours on *ax* in one call.
+
+    Replaces the repeated ``for sp in ax.spines.values(): sp.set_color(c)``
+    pattern across FlowApp, PolarAnalysisWindow, and BatchPlotWindow.
+    Module-level so every class can call it without inheritance.
+    """
+    for sp in ax.spines.values():
+        sp.set_color(color)
 
 
 def _gate_sig(gate: dict) -> int:
@@ -360,7 +765,17 @@ def _gate_sig(gate: dict) -> int:
          (same hash) so stats and cell colours did not update.
     The fix reads BooleanVar.get() for live gates and falls back to plain
     bool for serialised gates.  All tuple() calls are guarded against None.
+
+    BUG FIXED v4.0.14 (Bug 5):
+    Polygon vertices are now rounded to _VERTEX_PREC decimal places before
+    hashing.  Raw float tuples are session-stable but can differ after a
+    JSON save/load round-trip due to float serialisation precision drift,
+    causing false cache misses (needless recompute) or, rarer, false cache
+    hits (stale mask served for a slightly different gate).  8 d.p. ≈ 10^-8
+    instrument units — far below any meaningful gate movement.
     """
+    _VERTEX_PREC = 8  # decimal places for polygon vertex coordinate rounding
+
     gt = gate.get('type', 'crosshair')
     if gt == 'crosshair':
         # ── X threshold active-state ──────────────────────────────────────
@@ -408,7 +823,15 @@ def _gate_sig(gate: dict) -> int:
                gate.get('x0'), gate.get('y0'),
                gate.get('x1'), gate.get('y1'))
     elif gt == 'polygon':
-        key = (gt, tuple(tuple(v) for v in (gate.get('vertices') or [])))
+        # FIX BUG 5: Round vertex coordinates to _VERTEX_PREC decimal places
+        # for a stable hash across save/load cycles.  Raw float tuples are
+        # session-stable but can differ after JSON round-trip.
+        raw_verts = gate.get('vertices') or []
+        rounded   = tuple(
+            (round(float(x), _VERTEX_PREC), round(float(y), _VERTEX_PREC))
+            for x, y in raw_verts
+        )
+        key = (gt, rounded)
     else:
         key = (gt,)
     return hash(key)
@@ -423,15 +846,28 @@ def read_fcs(path: str):
     """
     Read an FCS file and return (DataFrame, metadata_dict).
 
-    Column names prefer $PnS (stain/marker name, e.g. "TH-488") over
-    $PnN (short technical name, e.g. "FITC-A").  Falls back to "Ch{n}".
+    Column names prefer $PnS (stain/marker name) over $PnN (short technical
+    name).  Falls back to "Ch{n}" if neither is present.
 
     Handles:
       - FCS 2.0 / 3.0 / 3.1
-      - DATATYPE F (float32), D (float64), I (integer, 8/16/32-bit)
+      - DATATYPE F (float32), D (float64), I (integer, per-channel bit widths)
       - Big-endian and little-endian byte order
       - $PnE log-decade encoding for integer data
-      - $BEGINDATA / $ENDDATA override for non-standard writers
+      - $BEGINDATA / $ENDDATA override for non-standard writers and large files
+      - Mixed per-channel $PnB widths (8 / 16 / 32 / 64-bit) in DATATYPE I
+
+    Fixed in v4.0.14 (Bugs 1, 2, 3, 6):
+      Bug 1: DATATYPE I now builds a per-channel structured dtype so mixed
+             bit-widths (e.g. Time=64-bit + fluorescence=16-bit) are read
+             correctly rather than misaligned via a uniform max-bits dtype.
+      Bug 2: Data-bytes slice guard now evaluated AFTER $BEGINDATA/$ENDDATA
+             override, not before; previously large-file header zeros caused
+             the guard to fire the wrong branch.
+      Bug 3: $PnE f2==0 handled with explicit float comparison (not truthiness)
+             to match FCS 3.1 §3.3 unambiguously.
+      Bug 6: data_end==0 is treated as "read to EOF" even after override,
+             preventing a 0:1 slice when both offsets legitimately absent.
     """
     with open(path, 'rb') as f:
         raw = f.read()
@@ -446,6 +882,9 @@ def read_fcs(path: str):
 
     text_start = _hdr_int(raw[10:18])
     text_end   = _hdr_int(raw[18:26])
+    # Read header offsets — may be zero for large (>99 MB) FCS 3.1 files.
+    # Real offsets for those files live in $BEGINDATA / $ENDDATA in the TEXT
+    # segment; we store the header values here and override below.
     data_start = _hdr_int(raw[26:34])
     data_end   = _hdr_int(raw[34:42])
 
@@ -453,8 +892,8 @@ def read_fcs(path: str):
     text_raw = raw[text_start:text_end + 1].decode('latin-1', errors='replace')
     if not text_raw:
         raise ValueError("FCS TEXT segment is empty")
-    delim    = text_raw[0]
-    parts    = text_raw[1:].split(delim)
+    delim = text_raw[0]
+    parts = text_raw[1:].split(delim)
     if parts and parts[-1] == '':
         parts = parts[:-1]
     meta: dict = {}
@@ -472,7 +911,6 @@ def read_fcs(path: str):
         short = meta.get(f'$P{i}N', f'Ch{i}').strip()
         stain = meta.get(f'$P{i}S', '').strip()
         name  = stain if stain else short
-        # Deduplicate
         if name in seen:
             seen[name] += 1
             name = f'{name}_{seen[name]}'
@@ -481,12 +919,18 @@ def read_fcs(path: str):
         channels.append(name)
 
     # ── Locate DATA segment ($BEGINDATA / $ENDDATA override header) ───────
+    # FIX BUG 2 + BUG 6: Override MUST happen before the data_bytes slice is
+    # computed.  Original code evaluated the slice guard before this block.
     if '$BEGINDATA' in meta:
-        try: data_start = int(meta['$BEGINDATA'])
-        except ValueError: pass
+        try:
+            data_start = int(meta['$BEGINDATA'])
+        except ValueError:
+            pass
     if '$ENDDATA' in meta:
-        try: data_end = int(meta['$ENDDATA'])
-        except ValueError: pass
+        try:
+            data_end = int(meta['$ENDDATA'])
+        except ValueError:
+            pass
 
     # ── Determine dtype ───────────────────────────────────────────────────
     data_type  = meta.get('$DATATYPE', 'F').upper()
@@ -495,40 +939,121 @@ def read_fcs(path: str):
     endian     = '>' if big_endian else '<'
 
     if data_type == 'F':
-        dtype = endian + 'f4'; bpp = 4
+        dtype = np.dtype(endian + 'f4')
+        bpp   = 4
+        uniform_width = True
+
     elif data_type == 'D':
-        dtype = endian + 'f8'; bpp = 8
+        dtype = np.dtype(endian + 'f8')
+        bpp   = 8
+        uniform_width = True
+
     elif data_type == 'I':
-        max_bits = max(int(meta.get(f'$P{i}B', '32')) for i in range(1, n_params + 1))
-        if   max_bits <=  8: dtype = endian + 'u1'; bpp = 1
-        elif max_bits <= 16: dtype = endian + 'u2'; bpp = 2
-        else:                dtype = endian + 'u4'; bpp = 4
+        # FIX BUG 1: FCS 3.1 §3.1 states each parameter may have an independent
+        # $PnB value.  The original code used max($PnB) for ALL channels, which
+        # misaligns the byte stream whenever channels differ in width.
+        # Build one dtype entry per channel using a numpy structured dtype.
+        bits_per_param = []
+        for i in range(1, n_params + 1):
+            try:
+                b = int(meta.get(f'$P{i}B', '32'))
+            except ValueError:
+                b = 32
+            bits_per_param.append(b)
+
+        # Check whether all channels share the same width — if so we can use
+        # the fast frombuffer/reshape path; otherwise use the structured dtype.
+        unique_widths = set(bits_per_param)
+        if len(unique_widths) == 1:
+            # Fast path: uniform width
+            max_bits = bits_per_param[0]
+            if   max_bits <=  8: dtype = np.dtype(endian + 'u1'); bpp = 1
+            elif max_bits <= 16: dtype = np.dtype(endian + 'u2'); bpp = 2
+            elif max_bits <= 32: dtype = np.dtype(endian + 'u4'); bpp = 4
+            else:                dtype = np.dtype(endian + 'u8'); bpp = 8
+            uniform_width = True
+        else:
+            # Mixed-width path: numpy structured dtype with one field per channel
+            fields   = []
+            row_bytes_struct = 0
+            for i, bits in enumerate(bits_per_param):
+                if   bits <=  8: t = 'u1'; w = 1
+                elif bits <= 16: t = 'u2'; w = 2
+                elif bits <= 32: t = 'u4'; w = 4
+                else:            t = 'u8'; w = 8
+                fields.append((f'_f{i}', np.dtype(endian + t)))
+                row_bytes_struct += w
+            struct_dtype  = np.dtype(fields)
+            uniform_width = False
+            bpp = None  # not used in mixed path; row_bytes_struct used instead
+
     else:
         raise ValueError(f"Unsupported FCS $DATATYPE: {data_type!r}")
 
-    # ── Read DATA ─────────────────────────────────────────────────────────
+    # ── Slice DATA bytes ──────────────────────────────────────────────────
+    # FIX BUG 2 + BUG 3: Evaluate the slice AFTER the $BEGINDATA/$ENDDATA
+    # override.  Guard: data_end must be strictly positive AND > data_start.
+    # When both are 0 (unset in header AND absent from TEXT), fall back to
+    # reading from data_start to EOF.
+    if data_end > 0 and data_end > data_start:
+        data_bytes = raw[data_start : data_end + 1]  # FCS byte ranges are inclusive
+    else:
+        data_bytes = raw[data_start:]
+
+    # ── Compute event count ───────────────────────────────────────────────
     total_events = int(meta.get('$TOT', '0'))
-    data_bytes   = raw[data_start:data_end + 1] if data_end > data_start else raw[data_start:]
-    row_bytes    = n_params * bpp
+
+    if data_type == 'I' and not uniform_width:
+        # Mixed-width: row size comes from the structured dtype
+        row_bytes = struct_dtype.itemsize
+    else:
+        row_bytes = n_params * bpp if bpp else 0
+
     if row_bytes > 0:
         n_fit = len(data_bytes) // row_bytes
         if total_events == 0 or n_fit < total_events:
+            # Trust the byte count over $TOT when they disagree — some writers
+            # truncate the file or report $TOT before writing all events.
             total_events = n_fit
 
-    arr = np.frombuffer(data_bytes[:total_events * row_bytes],
-                        dtype=np.dtype(dtype)).reshape(total_events, n_params).astype(np.float64)
+    # ── Read DATA array ───────────────────────────────────────────────────
+    payload = data_bytes[:total_events * row_bytes]
+
+    if data_type in ('F', 'D'):
+        arr = np.frombuffer(payload, dtype=dtype).reshape(
+            total_events, n_params).astype(np.float64)
+
+    elif data_type == 'I' and uniform_width:
+        arr = np.frombuffer(payload, dtype=dtype).reshape(
+            total_events, n_params).astype(np.float64)
+
+    else:
+        # Mixed per-channel widths: unpack via structured dtype then stack
+        arr_struct = np.frombuffer(payload, dtype=struct_dtype)
+        arr = np.column_stack(
+            [arr_struct[f'_f{i}'].astype(np.float64)
+             for i in range(n_params)]
+        )
 
     # ── Apply $PnE (log-decade) scaling for integer channels ─────────────
+    # FIX BUG 3 (minor): FCS spec says f2=0 means "use f2=1".
+    # Use an explicit float comparison rather than truthiness to be
+    # unambiguous for IEEE edge cases.
     if data_type == 'I':
         for i in range(n_params):
             pne = meta.get(f'$P{i+1}E', '0,0')
             try:
-                f1, f2 = (float(x) for x in pne.split(','))
-                rng    = float(meta.get(f'$P{i+1}R', '1024'))
-                if f1 > 0 and rng > 0:
-                    arr[:, i] = 10.0 ** (f1 * arr[:, i] / rng) * (f2 if f2 else 1.0)
+                f1_str, f2_str = pne.split(',')
+                f1 = float(f1_str)
+                f2 = float(f2_str)
+                rng_val = float(meta.get(f'$P{i+1}R', '1024'))
+                if f1 > 0 and rng_val > 0:
+                    # FCS 3.1 §3.3: channel_value = f2 × 10^(f1 × raw / range)
+                    # When f2 == 0, the spec requires treating f2 as 1.
+                    f2_eff = f2 if f2 != 0.0 else 1.0
+                    arr[:, i] = f2_eff * (10.0 ** (f1 * arr[:, i] / rng_val))
             except Exception:
-                pass
+                pass  # malformed $PnE — leave channel as raw integer counts
 
     return pd.DataFrame(arr, columns=channels), meta
 
@@ -544,14 +1069,19 @@ FILE_COLORS = [
     '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
     '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
 ]
+_N_FILE_COLORS = len(FILE_COLORS)   # pre-computed; avoids repeated len() in hot loops
+# Session-persistent last-used folder for all askdirectory dialogs.
+_last_folder_dir: str = ''
 REGION_COLORS = [
     '#e41a1c', '#377eb8', '#4daf4a', '#ff7f00',
     '#984ea3', '#a65628', '#f781bf', '#aaaaaa',
     '#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3',
     '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3',
 ]
+_N_REGION_COLORS = len(REGION_COLORS)   # pre-computed; avoids repeated len() in hot loops
 KDE_SUBSAMPLE = 30_000   # max pts used to FIT a KDE (auto-gating + density)
-RENDER_CAP    = 50_000   # max pts DRAWN per file (stats always on full data)
+RENDER_CAP    = 10_000   # max pts DRAWN per file (stats always on full data)
+                         # gate boundaries stay visibly sharp at higher densities
 # Gate-mask cache: bound size to prevent unbounded growth over long sessions
 _GMC_MAX      = 400      # max entries in persistent gate-mask cache
 
@@ -577,7 +1107,7 @@ def gmm_thresholds(data: np.ndarray, max_components: int = 3) -> list:
     # Subsample for speed — GMM result is statistically stable at 30k points
     GMM_MAX_FIT = 30_000
     if len(data) > GMM_MAX_FIT:
-        rng = np.random.default_rng(42)
+        rng = _get_rng(42)
         data = data[rng.choice(len(data), GMM_MAX_FIT, replace=False)]
     data = data.reshape(-1, 1)
 
@@ -648,7 +1178,7 @@ def derivative_threshold(data: np.ndarray, min_prominence: float = 5.0,
     # Subsample for speed — KDE is stable above ~10k; fitting on 100k is slow
     _KDE_MAX = 30_000
     if len(data) > _KDE_MAX:
-        data = data[np.random.default_rng(7).choice(len(data), _KDE_MAX, replace=False)]
+        data = data[_get_rng(7).choice(len(data), _KDE_MAX, replace=False)]
 
     kde = gaussian_kde(data, bw_method='scott')
     if bw_factor != 1.0:
@@ -765,7 +1295,7 @@ class FolderScanDialog(tk.Toplevel):
         self.configure(bg=T['sidebar_bg'])
         self.resizable(True, True)
         self.result = []
-        self._folder            = tk.StringVar()
+        self._folder            = tk.StringVar(value=_last_folder_dir)
         self._pattern           = tk.StringVar()
         self._vars              = []
         # ── Concatenate section state ─────────────────────────────────────
@@ -815,7 +1345,7 @@ class FolderScanDialog(tk.Toplevel):
         btn_fr.pack(side=tk.BOTTOM, fill=tk.X, padx=8, pady=6)
         ttk.Button(btn_fr, text="Select All",
                    command=self._sel_all, style='Gray.TButton').pack(side=tk.LEFT, padx=2)
-        ttk.Button(btn_fr, text="Deselect All",
+        ttk.Button(btn_fr, text="Unselect All",
                    command=self._desel_all, style='Gray.TButton').pack(side=tk.LEFT, padx=2)
         ttk.Button(btn_fr, text="Load Selected",
                    command=self._confirm, style='Accent.TButton').pack(side=tk.RIGHT, padx=2)
@@ -888,9 +1418,15 @@ class FolderScanDialog(tk.Toplevel):
     # ── Browsing ──────────────────────────────────────────────────────────
 
     def _browse(self):
-        d = filedialog.askdirectory(parent=self, title="Select root folder")
+        global _last_folder_dir
+        init = (self._folder.get().strip()
+                or _last_folder_dir
+                or os.path.expanduser('~'))
+        d = filedialog.askdirectory(parent=self, title="Select root folder",
+                                    initialdir=init)
         if not d:
             return
+        _last_folder_dir = d
         self._folder.set(d)
         # Auto-fill the concat output folder to the same directory
         if not self._concat_out_folder.get().strip():
@@ -1063,8 +1599,8 @@ class FolderScanDialog(tk.Toplevel):
 
         if skipped:
             messagebox.showwarning("Concatenate",
-                f"FCS files are excluded from concatenation "
-                f"(CSV only):\n" + "\n".join(skipped), parent=self)
+                "FCS files are excluded from concatenation "
+                "(CSV only):\n" + "\n".join(skipped), parent=self)
 
         if not frames:
             messagebox.showwarning("Concatenate",
@@ -1250,8 +1786,14 @@ class BatchStatsDialog(tk.Toplevel):
                   font=('Arial', 8)).pack(side=tk.BOTTOM, padx=10, pady=(0, 2))
 
     def _browse_folder(self):
-        d = filedialog.askdirectory(parent=self, title="Select root folder")
+        global _last_folder_dir
+        init = (self._folder_var.get().strip()
+                or _last_folder_dir
+                or os.path.expanduser('~'))
+        d = filedialog.askdirectory(parent=self, title="Select root folder",
+                                    initialdir=init)
         if d:
+            _last_folder_dir = d
             self._folder_var.set(d)
             self._refresh_preview()
 
@@ -1325,7 +1867,7 @@ class PolarAnalysisWindow(tk.Toplevel):
     CHANNEL MAP   X/Y Ch1, X/Y Ch2 centroid column combos + auto-detect
     SETTINGS      histogram bins, bar alpha, MRL threshold for arrow
     DISPLAY       show/hide stats annotation on plot, legend
-    ACTIONS       Compute & Plot, Export figure, Export stats CSV
+    ACTIONS       Export figure, Export stats CSV
     STATISTICS    per-file / merged treeview (n, MRL, p, mean dir°, sig)
 
     Statistics
@@ -1381,6 +1923,7 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         # last computed datasets for stats refresh without replot
         self._last_datasets: list = []   # [(angles, mags, label, color, path)]
+        self._replot_pending: str = None  # after() id for debounced replot
 
         self._build_ui()
         self._build_file_list()
@@ -1449,6 +1992,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         self._gate_combo.bind('<<ComboboxSelected>>', self._on_gate_changed)
         _lbl("Region:")
         self._region_combo = _combo(self._region_var, ['All regions'])
+        self._region_combo.bind('<<ComboboxSelected>>',
+                                lambda _e: self._schedule_replot())
 
         # ── FILES ─────────────────────────────────────────────────────────
         _sec("FILES")
@@ -1458,25 +2003,44 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         # ── CHANNEL MAPPING ───────────────────────────────────────────────
         _sec("CHANNEL MAPPING")
+        # Vectors run Ch1->Ch2. X cols = horizontal centroid,
+        # Y cols = vertical centroid. Always pair X with X and
+        # Y with Y so axes are never mixed across channels.
         cols = self._get_columns()
-        _lbl("Y  Ch1 (centroid):")
-        self._cy1_combo = _combo(self._cy1_var, cols)
-        _lbl("X  Ch1 (centroid):")
+        ttk.Label(p,
+                  text="  Direction: Ch1 centroid → Ch2 centroid\n"
+                       "  Map X and Y separately for each channel.",
+                  style='Dim.TLabel', wraplength=230,
+                  justify='left').pack(anchor='w', padx=8, pady=(0, 4))
+        _lbl("Channel 1  —  X centroid (horizontal):")
         self._cx1_combo = _combo(self._cx1_var, cols)
-        _lbl("Y  Ch2 (centroid):")
-        self._cy2_combo = _combo(self._cy2_var, cols)
-        _lbl("X  Ch2 (centroid):")
+        self._cx1_combo.bind('<<ComboboxSelected>>',
+                             lambda _e: self._schedule_replot())
+        _lbl("Channel 1  —  Y centroid (vertical):")
+        self._cy1_combo = _combo(self._cy1_var, cols)
+        self._cy1_combo.bind('<<ComboboxSelected>>',
+                             lambda _e: self._schedule_replot())
+        _lbl("Channel 2  —  X centroid (horizontal):")
         self._cx2_combo = _combo(self._cx2_var, cols)
+        self._cx2_combo.bind('<<ComboboxSelected>>',
+                             lambda _e: self._schedule_replot())
+        _lbl("Channel 2  —  Y centroid (vertical):")
+        self._cy2_combo = _combo(self._cy2_var, cols)
+        self._cy2_combo.bind('<<ComboboxSelected>>',
+                             lambda _e: self._schedule_replot())
         _btn("⟳  Auto-detect columns", self._auto_detect_channels, 'Gray.TButton')
 
         # ── SETTINGS ──────────────────────────────────────────────────────
         _sec("SETTINGS")
         _lbl("Histogram bins (rose):")
-        _entry(self._n_bins_var)
+        e_bins = _entry(self._n_bins_var)
+        e_bins.bind('<KeyRelease>', lambda _e: self._schedule_replot())
         _lbl("Bar alpha (0–1):")
-        _entry(self._alpha_var)
+        e_alpha = _entry(self._alpha_var)
+        e_alpha.bind('<KeyRelease>', lambda _e: self._schedule_replot())
         _lbl("MRL threshold (arrow + sig.):")
-        _entry(self._mrl_thresh_var)
+        e_mrl = _entry(self._mrl_thresh_var)
+        e_mrl.bind('<KeyRelease>', lambda _e: self._schedule_replot())
         ttk.Label(p, text="  ✓ sig. requires p<0.05 AND MRL ≥ threshold",
                   style='Dim.TLabel').pack(anchor='w', padx=8, pady=(0, 4))
 
@@ -1492,7 +2056,6 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         # ── ACTIONS ───────────────────────────────────────────────────────
         _sec("ACTIONS")
-        _btn("🔄  Compute & Plot",     self._compute_and_plot, 'Accent.TButton')
         _btn("💾  Export figure",      self._export_current,   'Green.TButton')
         _btn("📋  Export stats → CSV", self._export_stats,     'Blue2.TButton')
 
@@ -1538,12 +2101,25 @@ class PolarAnalysisWindow(tk.Toplevel):
         tb.config(background=T['sidebar_bg'])
         tb.update()
 
-        self._status_var = tk.StringVar(
-            value="Opening  …  auto-computing")
+        self._status_var = tk.StringVar(value="Opening  …  auto-computing")
         tk.Label(self._plot_frame, textvariable=self._status_var,
                  bg=T['header_bg'], fg=T['fg_dim'],
                  anchor='w', font=('Arial', 8), padx=6
                  ).pack(side=tk.BOTTOM, fill=tk.X)
+
+    def _schedule_replot(self, delay_ms: int = 350):
+        """Debounced replot — cancels any pending call and re-schedules.
+        Entries (bins, alpha, MRL) call this so rapid typing only fires once."""
+        if self._replot_pending:
+            try:
+                self.after_cancel(self._replot_pending)
+            except Exception:
+                pass
+        self._replot_pending = self.after(delay_ms, self._do_replot)
+
+    def _do_replot(self):
+        self._replot_pending = None
+        self._compute_and_plot()
 
     # ── File list ─────────────────────────────────────────────────────────────
 
@@ -1561,7 +2137,7 @@ class PolarAnalysisWindow(tk.Toplevel):
             if path not in self._file_vars:
                 self._file_vars[path] = tk.BooleanVar(value=True)
             var   = self._file_vars[path]
-            color = FILE_COLORS[fi % len(FILE_COLORS)]
+            color = FILE_COLORS[fi % _N_FILE_COLORS]
             row   = ttk.Frame(self._file_list_frame, style='TFrame')
             row.pack(fill=tk.X, pady=1)
             tk.Label(row, bg=color, width=2, relief='raised'
@@ -1569,7 +2145,7 @@ class PolarAnalysisWindow(tk.Toplevel):
             name  = os.path.basename(path)
             disp  = (name[:20] + '…') if len(name) > 21 else name
             ttk.Checkbutton(row, text=disp, variable=var,
-                            command=self._compute_and_plot,
+                            command=self._schedule_replot,
                             style='TCheckbutton').pack(side=tk.LEFT)
         if not file_keys:
             ttk.Label(self._file_list_frame, text="(no files loaded)",
@@ -1646,16 +2222,19 @@ class PolarAnalysisWindow(tk.Toplevel):
         if name == 'All cells':
             self._region_combo['values'] = ['All regions']
             self._region_var.set('All regions')
+            self._schedule_replot()
             return
         gate = next((g for g in self.app.gates
                      if g['name'] == name and g.get('applied')), None)
         if gate is None:
+            self._schedule_replot()
             return
         xch = self.app.x_channel
         ych = self.app.y_channel
         if not xch or not ych:
             self._region_combo['values'] = ['All regions']
             self._region_var.set('All regions')
+            self._schedule_replot()
             return
         dummy_x = np.array([0.0]); dummy_y = np.array([0.0])
         try:
@@ -1666,6 +2245,7 @@ class PolarAnalysisWindow(tk.Toplevel):
         self._region_combo['values'] = rnames
         if self._region_var.get() not in rnames:
             self._region_var.set('All regions')
+        self._schedule_replot()
 
     # ── data retrieval ────────────────────────────────────────────────────────
 
@@ -1689,8 +2269,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         if (not xch or not ych or
                 xch not in df.columns or ych not in df.columns):
             return np.ones(n, bool)
-        xa = df[xch].values.astype(float)
-        ya = df[ych].values.astype(float)
+        xa = df[xch].to_numpy(dtype=float, copy=False)
+        ya = df[ych].to_numpy(dtype=float, copy=False)
         try:
             regions, _ = self.app._gate_mask_for(gate, xa, ya)
         except Exception:
@@ -1716,8 +2296,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         sub = df[mask]
         if len(sub) == 0:
             return np.array([]), np.array([])
-        dx = sub[cx2].values.astype(float) - sub[cx1].values.astype(float)
-        dy = sub[cy2].values.astype(float) - sub[cy1].values.astype(float)
+        dx = sub[cx2].to_numpy(dtype=float, copy=False) - sub[cx1].to_numpy(dtype=float, copy=False)
+        dy = sub[cy2].to_numpy(dtype=float, copy=False) - sub[cy1].to_numpy(dtype=float, copy=False)
         return np.arctan2(dy, dx), np.sqrt(dx**2 + dy**2)
 
     # ── circular statistics ───────────────────────────────────────────────────
@@ -1819,7 +2399,7 @@ class PolarAnalysisWindow(tk.Toplevel):
             angles, mags = self._get_vectors_for_df(df, mask)
             if angles is None:
                 continue
-            color = FILE_COLORS[fi % len(FILE_COLORS)]
+            color = FILE_COLORS[fi % _N_FILE_COLORS]
             label = os.path.basename(path)
             datasets.append((angles, mags, label, color, path))
 
@@ -1851,8 +2431,7 @@ class PolarAnalysisWindow(tk.Toplevel):
 
         ax = self._fig.add_subplot(111, projection='polar')
         ax.set_facecolor(T['ax_bg'])
-        for sp in ax.spines.values():
-            sp.set_color(T['spine'])
+        _set_spines_color(ax, T['spine'])
         ax.tick_params(colors=T['fg'], labelsize=7)
         ax.grid(True, color=T['grid'], alpha=0.45)
         ax.set_xticks(np.linspace(0, 2 * np.pi, 8, endpoint=False))
@@ -1927,8 +2506,10 @@ class PolarAnalysisWindow(tk.Toplevel):
         pop_info   = (f'{gate_lbl} / {region_lbl}'
                       if gate_lbl != 'All cells' else 'All cells')
         self._fig.suptitle(
-            f'Vector directionality  \u2014  {pop_info}',
-            color=T['fg'], fontsize=10, y=1.01)
+            f'Vector directionality  \u2014  {pop_info}\n'
+            'Radial scale = fraction of vectors per bin  |  '
+            f'Arrow = mean direction (shown when MRL \u2265 {mrl_thresh})',
+            color=T['fg'], fontsize=9, y=1.02)
 
         self._fig.tight_layout()
         self._canvas.draw()
@@ -1937,7 +2518,8 @@ class PolarAnalysisWindow(tk.Toplevel):
         self._status_var.set(
             f"{total_vecs:,} vectors  \u00b7  {len(datasets)} file(s)  "
             f"\u00b7  {pop_info}  "
-            f"\u00b7  bins: {n_bins}  \u00b7  MRL-arrow \u2265 {mrl_thresh}")
+            f"\u00b7  bins: {n_bins}  \u00b7  MRL-arrow \u2265 {mrl_thresh}  "
+            "\u00b7  radial scale: fraction of vectors per bin")
 
     # ── Statistics treeview ───────────────────────────────────────────────────
 
@@ -1971,7 +2553,7 @@ class PolarAnalysisWindow(tk.Toplevel):
             p_disp   = f'{p_val:.4f}' if p_val >= 0.0001 else '<0.0001'
             self._stats_tree.insert(
                 '', 'end',
-                text=f'  All files merged',
+                text='  All files merged',
                 values=(f'{len(all_angles):,}',
                         f'{mrl:.3f}',
                         p_disp,
@@ -1996,9 +2578,9 @@ class PolarAnalysisWindow(tk.Toplevel):
                 p_disp   = f'{p_val:.4f}' if p_val >= 0.0001 else '<0.0001'
                 name     = os.path.splitext(os.path.basename(path))[0]
                 short    = (name[:24] + '\u2026') if len(name) > 25 else name
-                tag      = f'fc{fi % len(FILE_COLORS)}'
+                tag      = f'fc{fi % _N_FILE_COLORS}'
                 self._stats_tree.tag_configure(
-                    tag, foreground=FILE_COLORS[fi % len(FILE_COLORS)])
+                    tag, foreground=FILE_COLORS[fi % _N_FILE_COLORS])
                 self._stats_tree.insert(
                     '', 'end',
                     text=f'  {short}',
@@ -2129,14 +2711,15 @@ class FlowApp:
         # In standalone mode, build directly into root.
         # In tab mode, build into the supplied container frame.
         if container is None:
-            root.title("vFlow 3.9.9")
+            root.title("vFlow 4.1.4")
             root.geometry("1500x960")
             self._theme_name = 'dark'
             self.T = THEMES['dark']
             _apply_ttk_style(self.T)
-            root.configure(bg=self.T['sidebar_bg'])
+            T = self.T   # local alias for the init block below
+            root.configure(bg=T['sidebar_bg'])
             # Wrap in a frame so _build_ui always has a Frame container
-            self.container = tk.Frame(root, bg=self.T['sidebar_bg'])
+            self.container = tk.Frame(root, bg=T['sidebar_bg'])
             self.container.pack(fill=tk.BOTH, expand=True)
         else:
             self.container   = container
@@ -2149,13 +2732,27 @@ class FlowApp:
         self.file_vars:      dict = {}
         self.file_colors:  dict = {}
 
+        # Sub-gate context (set by FlowTabManager._load_filtered for sub-gate tabs;
+        # None on the main tab).  batch_export_stats uses these to pre-filter each
+        # raw file through the parent gate before applying the sub-gate's own gates.
+        self.parent_gate:   dict = None   # gate dict from parent tab
+        self.parent_region: str  = None   # region name that was double-clicked
+
         # ── Performance caches ────────────────────────────────────────────
         # _tc  : transform cache  — {(path, x_ch, y_ch, x_sc, y_sc, cof): (xt, yt, valid)}
         #        self-invalidating: different settings → different key → cache miss
         # _gmc : gate-mask cache  — {(path, x_ch, y_ch, gid, sig): (regions, colors)}
         #        self-invalidating: gate geometry change → sig changes → cache miss
-        self._tc:  dict = {}
-        self._gmc: dict = {}
+        # _scatter_cache : scatter payload cache —
+        #        {(path, x_ch, y_ch, gate_sigs, dot_size, alpha, color, overlay):
+        #         (xa_visible, ya_visible, rgba_visible)}
+        #        Stores the already-subsampled, visibility-filtered arrays so
+        #        _plot_gated_multi can skip RGBA construction + contains_points
+        #        entirely on redraws where nothing has changed.
+        #        Invalidated explicitly by _finish_gate and _drag_handle_update.
+        self._tc:            dict = {}
+        self._gmc:           dict = {}
+        self._scatter_cache: dict = {}
 
         # Plot state
         self.x_channel = None
@@ -2184,13 +2781,36 @@ class FlowApp:
         self._poly_cursor:     tuple = None
 
         # Handle-editing state
-        self._handle_drag:     dict  = None  # {gate_id, handle, idx, ox, oy}
-        self._hover_gate_id:   int   = None  # gate whose handles are visible via hover
-        self._pinned_gate_id:  int   = None  # gate whose handles are pinned via right-click
+        self._handle_drag:            dict  = None  # {gate_id, handle, idx, ox, oy}
+        self._gate_move:              dict  = None  # {gate_id, gate, orig, press_px, orig_px}
+        self._drag_bg:                object = None  # pixel snapshot for blit drag (copy_from_bbox)
+        self._drag_last_draw:         float  = 0.0  # monotonic timestamp of last drag redraw (throttle)
+        # Axis-limit snapshots for gate-draw and handle-drag blit paths.
+        # Captured at press/click time; restored after each _preview_gate() frame
+        # to prevent autoscale expansion when geometry reaches the axes edge.
+        self._draw_frozen_xlim:       list   = None
+        self._draw_frozen_ylim:       list   = None
+        self._hover_gate_id:          int   = None  # gate whose handles are visible via hover
+        self._hover_handle_key:       tuple = None  # (gate_id, handle_name, idx) of nearest hovered handle
+        self._interior_hover_gate_id: int   = None  # gate body hovered in draw mode (all-handles = move signal)
+        self._pinned_gate_id:         int   = None  # gate whose handles are pinned via right-click
         # Debounce: pending after_id for throttled refresh_plot calls
         self._refresh_pending:   str   = None
         self._last_auto_gate_fn        = None   # callable: last-used auto-gate method
         self._sens_rerun_pending: str  = None   # debounce after_id for slider re-run
+
+        # ── Lock-scale state ──────────────────────────────────────────────────
+        # Captured axis limits (raw data space) when lock is active; None otherwise.
+        # These override both matplotlib autoscale and "Fit axes to data".
+        self._locked_xlim: list = None   # [lo, hi] or None
+        self._locked_ylim: list = None   # [lo, hi] or None
+        # tk.Button widgets overlaid directly on the matplotlib canvas.
+        # Keys: 'xl-' 'xl+' 'xr-' 'xr+' 'yb-' 'yb+' 'yt-' 'yt+'
+        self._lock_btns:   dict = {}
+        # FixedLocator cache for minor ticks: key=(scale, lo, hi) → locator.
+        # Avoids rebuilding the list comprehension on every render when limits
+        # are stable.  Cleared whenever the axis scale type changes.
+        self._minor_loc_cache: dict = {}
         # Cached handle pixel coords: {gate_id: [(px,py,handle,idx),...]}
         # Rebuilt after every full plot redraw, used by _hover_test_handles
         self._handle_px_cache: dict  = {}
@@ -2222,6 +2842,25 @@ class FlowApp:
         _apply_ttk_style(self.T)
         self._apply_theme_to_tk_widgets()
         self.refresh_plot()
+        # Recolour the overlay lock buttons to match the new theme.
+        # _reposition_lock_buttons handles this when lock is active;
+        # run it unconditionally so colours update even before next draw.
+        if self._lock_btns:
+            T = self.T
+            _is_dark = T.get('plot_bg', '#ffffff') != '#ffffff'
+            _btn_bg  = '#3a4255' if _is_dark else '#c8ccd4'
+            _btn_fg  = '#ffffff' if _is_dark else '#1a1a1a'
+            _btn_act = T.get('sel_bg', '#4a90d9')
+            for b in self._lock_btns.values():
+                try:
+                    b._bg  = _btn_bg
+                    b._fg  = _btn_fg
+                    b._act = _btn_act
+                    b.config(bg=_btn_bg, fg=_btn_fg)
+                    b.bind('<Enter>', lambda e, w=b: w.config(bg=w._act, fg='white'))
+                    b.bind('<Leave>', lambda e, w=b: w.config(bg=w._bg,  fg=w._fg))
+                except Exception:
+                    pass
 
     def _apply_theme_to_tk_widgets(self):
         T = self.T
@@ -2249,12 +2888,12 @@ class FlowApp:
                       style='Section.TLabel').pack(fill=tk.X, side=tk.TOP)
 
         # Scrollable sidebar
-        side_outer = ttk.Frame(C, style='TFrame', width=305)
+        side_outer = ttk.Frame(C, style='TFrame', width=340)
         side_outer.pack(side=tk.LEFT, fill=tk.Y)
         side_outer.pack_propagate(False)
 
         self._side_canvas = tk.Canvas(side_outer, bg=T['sidebar_bg'],
-                                       highlightthickness=0, width=303)
+                                       highlightthickness=0, width=338)
         vsb = ttk.Scrollbar(side_outer, orient='vertical',
                              command=self._side_canvas.yview)
         self._side_canvas.configure(yscrollcommand=vsb.set)
@@ -2263,7 +2902,7 @@ class FlowApp:
 
         self.sidebar = ttk.Frame(self._side_canvas, style='TFrame')
         self._side_canvas.create_window(
-            (0, 0), window=self.sidebar, anchor='nw', width=288)
+            (0, 0), window=self.sidebar, anchor='nw', width=320)
         self.sidebar.bind('<Configure>',
             lambda e: self._side_canvas.configure(
                 scrollregion=self._side_canvas.bbox('all')))
@@ -2326,14 +2965,34 @@ class FlowApp:
                    command=self.clear_all_files,
                    style='Gray.TButton').pack(side=tk.LEFT)
         self._btn("+ Load from Folder…", self.load_from_folder, 'DarkBlue.TButton')
+
+        # ── Select All / Unselect All ──
+        sel_row = ttk.Frame(p, style='TFrame')
+        sel_row.pack(fill=tk.X, padx=8, pady=(1, 2))
+        ttk.Button(sel_row, text='☑  Select All',
+                   command=self._select_all,
+                   style='Gray.TButton').pack(side=tk.LEFT, padx=(0, 2))
+        ttk.Button(sel_row, text='☐  Unselect All',
+                   command=self._unselect_all,
+                   style='Gray.TButton').pack(side=tk.LEFT)
+
         self.file_list_frame = ttk.Frame(p, style='TFrame')
         self.file_list_frame.pack(fill=tk.X, padx=8)
 
         # ── EXCLUDED FILES ──
         self._section("EXCLUDED FILES")
+        excl_btn_row = ttk.Frame(p, style='TFrame')
+        excl_btn_row.pack(fill=tk.X, padx=8, pady=(0, 2))
+        ttk.Button(excl_btn_row, text='💾 Save List',
+                   command=self.save_excluded_list,
+                   style='Gray.TButton').pack(side=tk.LEFT, padx=(0, 2))
+        ttk.Button(excl_btn_row, text='📂 Load List',
+                   command=self.load_excluded_list,
+                   style='Gray.TButton').pack(side=tk.LEFT)
         self.excluded_list_frame = ttk.Frame(p, style='TFrame')
         self.excluded_list_frame.pack(fill=tk.X, padx=8)
-        ttk.Label(self.excluded_list_frame, text="(none)", style='Dim.TLabel').pack(anchor='w')
+        ttk.Label(self.excluded_list_frame,
+                  text="(none)", style='Dim.TLabel').pack(anchor='w')
 
         # ── VIEW MODE ──
         self._section("VIEW MODE")
@@ -2440,6 +3099,16 @@ class FlowApp:
                             command=self.refresh_plot,
                             style='TCheckbutton').pack(anchor='w', padx=8)
 
+        # ── Lock & adjust scale ───────────────────────────────────────────────
+        # Mutually exclusive with "Fit axes to data": enabling lock captures the
+        # current limits and disables auto-scaling; the overlay +/− buttons then
+        # allow the user to nudge each axis end independently.
+        self.lock_scale_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(p, text='🔒 Lock & adjust scale',
+                        variable=self.lock_scale_var,
+                        command=self._on_lock_scale_toggle,
+                        style='TCheckbutton').pack(anchor='w', padx=8)
+
         # ── GATING ──
         self._section("GATING")
 
@@ -2544,7 +3213,6 @@ class FlowApp:
         self._btn("GMM Multi  (all crossings, X+Y indep.)", self.auto_gate_gmm_multi,       'Purple.TButton')
         self._btn("KDE Valley  (X + Y)",                    self.auto_gate_derivative,      'Orange.TButton')
         self._btn("Otsu  (X + Y)",                          self.auto_gate_otsu,            'Teal.TButton')
-        self._btn("Mixed  (GMM X + KDE Y)",                 self.auto_gate_both,            'Brown.TButton')
         self._btn("Cluster Polygons  (HDBSCAN 2D)",         self.auto_gate_cluster_polygons,'Olive.TButton')
         self._btn("Clear Selected Gate",             self.clear_gate,                'Gray.TButton')
         self._btn("Clear All Gates",                 self.clear_all_gates,           'Gray.TButton')
@@ -2586,6 +3254,9 @@ class FlowApp:
         self.stats_tree.column('count', width=62,  anchor='e')
         self.stats_tree.column('pct',   width=50,  anchor='e')
         self.stats_tree.pack(fill=tk.X, padx=8, pady=(0, 4))
+        # Configure region-color tags once here — no need to repeat on every refresh
+        for _i, _c in enumerate(REGION_COLORS):
+            self.stats_tree.tag_configure(f'rc{_i}', foreground=_c)
 
         # ── EXPORT ──
         self._section("EXPORT")
@@ -2600,11 +3271,21 @@ class FlowApp:
         self._section("VECTOR ANALYSIS")
         ttk.Label(
             p,
-            text="  Requires X/Y centroid columns\n  for two channels in the data.",
+            text="  Requires X/Y centroid columns for two channels in the data.",
             style='Dim.TLabel', justify='left'
         ).pack(anchor='w', padx=8, pady=(0, 4))
         self._btn("🧭 Polar / Vector Analysis…",
                   self.open_polar_analysis, 'Purple.TButton')
+
+        # ── BATCH PLOTS ──
+        self._section("BATCH PLOTS")
+        ttk.Label(
+            p,
+            text="  Violin/box/points distributions + stacked gate-population % per sample. Works from individual files or a concatenated CSV.",
+            style='Dim.TLabel', justify='left', wraplength=240
+        ).pack(anchor='w', padx=8, pady=(0, 4))
+        self._btn("📊 Batch Plots…",
+                  self.open_batch_plots, 'Cyan.TButton')
 
         ttk.Frame(p, style='TFrame', height=20).pack()
 
@@ -2625,6 +3306,20 @@ class FlowApp:
         self.canvas.mpl_connect('motion_notify_event',  self._on_motion)
         self.canvas.mpl_connect('button_release_event', self._on_release)
 
+        # Create overlay lock-scale buttons (hidden until lock is enabled).
+        # Must be called AFTER the canvas widget is packed so winfo_* works.
+        self._create_lock_buttons()
+        # Reposition lock buttons after every canvas redraw (handles resize,
+        # marginal toggle, DPI changes, etc.).
+        self.canvas.mpl_connect('draw_event', self._reposition_lock_buttons)
+        # FIX Bug 1 (belt-and-suspenders): rebuild handle pixel cache after
+        # every full canvas render.  At draw_event time all matplotlib
+        # transforms are definitively committed, so the pixel coords are
+        # guaranteed to match the displayed handle positions regardless of
+        # axis scale (asinh / biexp / logicle).  This is critical for loaded
+        # gates whose cache is otherwise built before _set_axis_scale() runs.
+        self.canvas.mpl_connect('draw_event', self._rebuild_handle_px_cache)
+
     def _build_status_bar(self):
         T = self.T
         self.status_var = tk.StringVar(value="No data loaded")
@@ -2641,6 +3336,7 @@ class FlowApp:
         self.fig.clear()
         self.fig.patch.set_facecolor(T['fig_bg'])
         self._preview_artists = []
+        spine_c = T['spine']
 
         if self.show_marginals_var.get():
             gs = gridspec.GridSpec(
@@ -2653,7 +3349,7 @@ class FlowApp:
             self.ax_right = self.fig.add_subplot(gs[1, 1], sharey=self.ax)
             for a in (self.ax_top, self.ax_right):
                 a.set_facecolor(T['ax_bg'])
-                for sp in a.spines.values(): sp.set_color(T['spine'])
+                _set_spines_color(a, spine_c)
                 a.tick_params(colors=T['fg'], labelsize=6)
             # Replace plt.setp() with direct tick-label control
             for lbl in self.ax_top.get_xticklabels():   lbl.set_visible(False)
@@ -2668,18 +3364,23 @@ class FlowApp:
             self.ax_right = None
 
         self.ax.set_facecolor(T['ax_bg'])
-        for sp in self.ax.spines.values(): sp.set_color(T['spine'])
+        _set_spines_color(self.ax, spine_c)
         self.ax.tick_params(colors=T['fg'], labelsize=8)
 
     # ── File management ───────────────────────────────────────────────────────
 
     def load_files(self):
+        global _last_folder_dir
+        init = _last_folder_dir or os.path.expanduser('~')
         paths = filedialog.askopenfilenames(
             title="Select CSV or FCS Files",
+            initialdir=init,
             filetypes=[("Flow data", "*.csv *.fcs *.FCS"),
                        ("CSV files", "*.csv"),
                        ("FCS files", "*.fcs *.FCS"),
                        ("All files", "*.*")])
+        if paths:
+            _last_folder_dir = os.path.dirname(list(paths)[0])
         self._load_paths(list(paths))
 
     def load_from_folder(self):
@@ -2690,47 +3391,132 @@ class FlowApp:
 
     def _load_paths(self, paths: list):
         cidx = len(self.loaded_files)
+        rename_notices: list = []   # accumulate per-file rename summaries
         for path in paths:
             if path in self.loaded_files: continue
             try:
                 df = self._read_data_file(path)
+
+                # ── Case-insensitive column-name normalisation ─────────────
+                # Problem: if one file has 'Intensity_VGAT' and another has
+                # 'Intensity_vGAT', the strict set-intersection in
+                # _update_channel_menus silently drops BOTH columns from the
+                # axis menus, making those files appear to have no usable data.
+                #
+                # Fix: when loading a new file, compare its column names
+                # case-insensitively against every column already established
+                # by previously loaded files.  If a match is found that
+                # differs only in case, rename the new file's column to match
+                # the already-loaded spelling so the intersection is preserved.
+                # The first-loaded file sets the canonical spelling; subsequent
+                # files conform to it.  No existing DataFrame is modified.
+                if self.loaded_files:
+                    ref_lower: dict = {}   # lowercase → first-seen canonical name
+                    for ref_df in self.loaded_files.values():
+                        for col in ref_df.columns:
+                            ref_lower.setdefault(col.lower(), col)
+                    rename_map = {
+                        col: ref_lower[col.lower()]
+                        for col in df.columns
+                        if col.lower() in ref_lower
+                        and col != ref_lower[col.lower()]
+                    }
+                    if rename_map:
+                        df = df.rename(columns=rename_map)
+                        rename_notices.append(
+                            f"{os.path.basename(path)}: "
+                            + ", ".join(f"'{k}'→'{v}'"
+                                        for k, v in rename_map.items()))
+
                 self.loaded_files[path] = df
-                self.file_colors[path]  = FILE_COLORS[cidx % len(FILE_COLORS)]
+                self.file_colors[path]  = FILE_COLORS[cidx % _N_FILE_COLORS]
                 cidx += 1
                 self._add_file_row(path)
             except Exception as e:
                 messagebox.showerror("Load Error",
                     f"Could not read {os.path.basename(path)}:\n{e}")
-        self._update_channel_menus()
+
+        self._update_channel_menus()   # may set self._col_mismatch_msg
         self._on_active_files_changed()
+
+        # Append any warnings to the status bar AFTER refresh_plot has set it,
+        # so the messages are the last thing the user reads.
+        suffix_parts = []
+        if rename_notices:
+            suffix_parts.append(
+                "⚠ Column case corrected: " + "  |  ".join(rename_notices))
+        mismatch = getattr(self, '_col_mismatch_msg', '')
+        if mismatch:
+            suffix_parts.append(mismatch)
+        if suffix_parts:
+            try:
+                self.status_var.set(
+                    self.status_var.get()
+                    + "  │  " + "  │  ".join(suffix_parts))
+            except Exception:
+                pass
 
     @staticmethod
     def _read_data_file(path: str) -> 'pd.DataFrame':
-        """Load a CSV or FCS file and return a DataFrame."""
+        """Load a CSV or FCS file and return a DataFrame.
+
+        For CSV files, handles the two layouts produced by image-analysis
+        exporters — exactly the same detection used by
+        FolderScanDialog._smart_read_csv for the Concatenate feature, so
+        files behave identically regardless of how they are loaded.
+
+        Layout A — first column has a name (e.g. 'Label', 'Label_2_'):
+            Label,Intensity_TH,...
+            1,10742176,...
+            → read with pd.read_csv as-is.
+
+        Layout B — unnamed integer row-index as first column:
+             ,Label,Intensity_TH,...
+            1,1,10742176,...
+            → discard via index_col=0 so 'Unnamed: 0' never pollutes the
+              column set and breaks the intersection logic.
+        """
         ext = os.path.splitext(path)[1].lower()
         if ext == '.fcs':
             df, _ = read_fcs(path)
             return df
+        # Peek at the first column header to decide the layout.
+        # encoding='utf-8-sig' strips a BOM if present.
+        try:
+            with open(path, newline='', encoding='utf-8-sig') as fh:
+                first_col = fh.readline().split(',')[0].strip()
+        except Exception:
+            first_col = 'data'   # safe fallback → treat as Layout A
+        if first_col == '':
+            # Layout B — unnamed leading column is a row index; discard it.
+            df = pd.read_csv(path, index_col=0)
+            df.index = range(len(df))   # clean 0-based RangeIndex
         else:
-            return pd.read_csv(path)
+            # Layout A — all columns are meaningful data columns.
+            df = pd.read_csv(path)
+        return df
 
     def _add_file_row(self, path: str):
         color = self.file_colors[path]
         row   = ttk.Frame(self.file_list_frame, style='TFrame')
         row.pack(fill=tk.X, pady=1)
         tk.Label(row, bg=color, width=2, relief='raised'
-                 ).pack(side=tk.LEFT, padx=(0, 4))
+                 ).pack(side=tk.LEFT, padx=(0, 4), anchor='n', pady=2)
         # ✕ exclude button
         ttk.Button(row, text='✕', width=2,
                    command=lambda p=path: self._exclude_file(p),
-                   style='Gray.TButton').pack(side=tk.RIGHT, padx=(2, 0))
-        var  = tk.BooleanVar(value=True)
-        self.file_vars[path] = var
+                   style='Gray.TButton').pack(side=tk.RIGHT, padx=(2, 0), anchor='n')
+        # Preserve existing checkbox state; create new var only for genuinely new files.
+        # Without this guard _exclude_file → re-builds all rows → each rebuild called
+        # BooleanVar(value=True), silently reselecting every surviving file.
+        if path not in self.file_vars:
+            self.file_vars[path] = tk.BooleanVar(value=True)
+        var  = self.file_vars[path]
         name = os.path.basename(path)
-        disp = (name[:22] + '…') if len(name) > 23 else name
-        ttk.Checkbutton(row, text=disp, variable=var,
+        ttk.Checkbutton(row, text=name, variable=var,
                         command=self._on_active_files_changed,
-                        style='TCheckbutton').pack(side=tk.LEFT)
+                        style='TCheckbutton').pack(side=tk.LEFT,
+                                                   fill=tk.X, expand=True)
 
     def _on_active_files_changed(self):
         """Called whenever a file checkbox is toggled or new files loaded.
@@ -2742,6 +3528,18 @@ class FlowApp:
                     self._compute_gate_stats_for(g)
             self._update_stats_display()
         self.refresh_plot()
+
+    def _select_all(self):
+        """Check all file checkboxes."""
+        for v in self.file_vars.values():
+            v.set(True)
+        self._on_active_files_changed()
+
+    def _unselect_all(self):
+        """Uncheck all file checkboxes."""
+        for v in self.file_vars.values():
+            v.set(False)
+        self._on_active_files_changed()
 
     def clear_all_files(self):
         """Unload every loaded file and reset the UI."""
@@ -2776,10 +3574,21 @@ class FlowApp:
         self._on_active_files_changed()
 
     def _restore_file(self, path: str):
-        """Move a file from the excluded list back into the active list."""
+        """Move a file from the excluded list back into the active list.
+
+        If the entry was registered via load_excluded_list() without the file
+        being loaded (df is None), just drop it from the exclusion dict —
+        there is nothing to restore to the active list.
+        """
         if path not in self.excluded_files:
             return
-        self.loaded_files[path] = self.excluded_files.pop(path)
+        df = self.excluded_files.pop(path)
+        if df is None:
+            # Path was registered from a saved list but never loaded in this
+            # session — simply un-register it from the exclusion set.
+            self._rebuild_excluded_list()
+            return
+        self.loaded_files[path] = df
         self._add_file_row(path)
         self._rebuild_excluded_list()
         self._on_active_files_changed()
@@ -2798,26 +3607,126 @@ class FlowApp:
             # Restore button
             ttk.Button(row, text='↩', width=2,
                        command=lambda p=path: self._restore_file(p),
-                       style='Green.TButton').pack(side=tk.LEFT, padx=(0, 4))
+                       style='Green.TButton').pack(side=tk.LEFT, padx=(0, 4), anchor='n')
             name = os.path.basename(path)
-            disp = (name[:22] + '…') if len(name) > 23 else name
-            ttk.Label(row, text=disp,
-                      style='Dim.TLabel').pack(side=tk.LEFT)
+            ttk.Label(row, text=name,
+                      style='Dim.TLabel', wraplength=220,
+                      justify='left').pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+    def save_excluded_list(self):
+        """Save the current excluded-file paths to a CSV for later reuse.
+
+        The CSV has a single column 'Path' containing absolute paths.
+        It can be loaded back via load_excluded_list() in any session,
+        in either a main tab or a sub-gate tab.
+        """
+        if not self.excluded_files:
+            messagebox.showinfo("Save Excluded List",
+                                "No files are currently excluded.")
+            return
+        global _last_folder_dir
+        init = (_last_folder_dir or
+                os.path.dirname(next(iter(self.excluded_files))) or
+                os.path.expanduser('~'))
+        path = filedialog.asksaveasfilename(
+            parent=self.root,
+            title="Save excluded file list",
+            initialdir=init,
+            initialfile="excluded_files.csv",
+            defaultextension=".csv",
+            filetypes=[("CSV", "*.csv"), ("All files", "*")])
+        if not path:
+            return
+        try:
+            pd.DataFrame({'Path': list(self.excluded_files.keys())}
+                         ).to_csv(path, index=False)
+            self.status_var.set(
+                f"Excluded list saved: {len(self.excluded_files)} file(s) → "
+                f"{os.path.basename(path)}")
+        except Exception as e:
+            messagebox.showerror("Save Error", str(e), parent=self.root)
+
+    def load_excluded_list(self):
+        """Load a previously saved excluded-file list CSV.
+
+        For each path in the CSV:
+          • If the file is currently in loaded_files → _exclude_file() moves it
+            to the excluded panel and updates the UI normally.
+          • If the file is not loaded (e.g. a different session, or the file
+            was never opened) → the path is recorded in excluded_files with a
+            None DataFrame so that batch_export_stats still skips it.
+
+        Paths that are already excluded are silently skipped.
+        """
+        global _last_folder_dir
+        init = _last_folder_dir or os.path.expanduser('~')
+        path = filedialog.askopenfilename(
+            parent=self.root,
+            title="Load excluded file list",
+            initialdir=init,
+            filetypes=[("CSV", "*.csv"), ("All files", "*")])
+        if not path:
+            return
+        try:
+            df_csv = pd.read_csv(path)
+        except Exception as e:
+            messagebox.showerror("Load Error", str(e), parent=self.root)
+            return
+
+        if 'Path' not in df_csv.columns:
+            messagebox.showerror(
+                "Load Error",
+                "CSV must have a 'Path' column.\n"
+                "Use a list saved by 'Save List'.",
+                parent=self.root)
+            return
+
+        paths      = df_csv['Path'].dropna().astype(str).tolist()
+        moved      = 0   # excluded via _exclude_file (were loaded)
+        registered = 0   # added directly (not currently loaded)
+        already    = 0   # already in excluded_files
+
+        for p in paths:
+            if p in self.excluded_files:
+                already += 1
+                continue
+            if p in self.loaded_files:
+                # Proper move: removes from UI list, adds to excluded panel
+                self._exclude_file(p)
+                moved += 1
+            else:
+                # Not loaded — register as excluded so batch export skips it.
+                # DataFrame is None; the batch exclusion logic uses path keys,
+                # not DataFrame contents, so None is safe here.
+                self.excluded_files[p] = None
+                registered += 1
+
+        self._rebuild_excluded_list()
+        self._on_active_files_changed()
+
+        parts = []
+        if moved:      parts.append(f"{moved} moved to excluded")
+        if registered: parts.append(f"{registered} registered (not loaded)")
+        if already:    parts.append(f"{already} already excluded")
+        self.status_var.set("Excluded list loaded: " + ", ".join(parts) if parts
+                            else "Excluded list loaded: nothing new to exclude.")
 
     def _active(self) -> dict:
         return {p: df for p, df in self.loaded_files.items()
                 if self.file_vars[p].get()}
 
-    def _display_files(self) -> dict:
-        active = self._active()
+    def _display_files(self, active: dict = None) -> dict:
+        if active is None:
+            active = self._active()
         if self.view_mode_var.get() == 'cycle' and active:
             keys = list(active.keys())
             idx  = self.cycle_idx % len(keys)
             return {keys[idx]: active[keys[idx]]}
         return active
 
-    def _update_cycle_label(self):
-        active = self._active()
+    def _update_cycle_label(self, active: dict = None):
+        if active is None:
+            active = self._active()
         if self.view_mode_var.get() == 'cycle' and active:
             keys = list(active.keys())
             idx  = self.cycle_idx % len(keys)
@@ -2851,11 +3760,42 @@ class FlowApp:
         cols = sorted(set.intersection(*all_cols)) if all_cols else []
         if not cols:
             cols = list(next(iter(self.loaded_files.values())).columns)
+
+        # ── Detect columns absent from ≥ 1 file ───────────────────────────
+        # Columns that are not shared by every loaded file are silently hidden
+        # from the axis menus, which can make a file appear to produce no data.
+        # Store a human-readable message so _load_paths can append it to the
+        # status bar after refresh_plot has run, making it visible to the user.
+        self._col_mismatch_msg = ''
+        if len(self.loaded_files) > 1:
+            all_union = set.union(*all_cols)
+            hidden    = sorted(all_union - set(cols))
+            if hidden:
+                sample = ', '.join(f"'{c}'" for c in hidden[:5])
+                more   = f' … +{len(hidden) - 5} more' if len(hidden) > 5 else ''
+                self._col_mismatch_msg = (
+                    f"⚠ {len(hidden)} column(s) not shared across all files "
+                    f"(hidden from axis menus): {sample}{more}")
+
         self.x_menu['values'] = cols
         self.y_menu['values'] = cols
         if self.x_channel is None and len(cols) >= 2:
+            # First-time initialisation
             self.x_var.set(cols[0]); self.y_var.set(cols[1])
             self.x_channel = cols[0]; self.y_channel = cols[1]
+        else:
+            # Channels already assigned (e.g. sub-gate tab).
+            # Re-sync StringVars after the values list is replaced so a
+            # ttk readonly Combobox does not blank out on platforms where
+            # replacing 'values' clears the displayed text.
+            if self.x_channel and self.x_channel in cols:
+                self.x_var.set(self.x_channel)
+            elif self.x_channel and cols:
+                self.x_channel = cols[0]; self.x_var.set(cols[0])
+            if self.y_channel and self.y_channel in cols:
+                self.y_var.set(self.y_channel)
+            elif self.y_channel and cols:
+                self.y_channel = cols[0]; self.y_var.set(cols[0])
 
     # ── Scale helpers ─────────────────────────────────────────────────────────
 
@@ -2895,7 +3835,7 @@ class FlowApp:
         # Partial eviction (drop oldest half) to avoid a cold-cache cliff
         # where all 200 entries clear at once and the next 200 all miss.
         if len(self._tc) >= 200:
-            evict = list(self._tc)[:100]
+            evict = list(itertools.islice(self._tc, 100))
             for k in evict:
                 del self._tc[k]
         self._tc[key] = result
@@ -2906,12 +3846,20 @@ class FlowApp:
         if not x or not y:
             messagebox.showwarning("Axes", "Select both X and Y channels.")
             return
+        if x == self.x_channel and y == self.y_channel:
+            self.refresh_plot()
+            return
         self.x_channel, self.y_channel = x, y
+        # Flush transform cache: new channels need fresh computation,
+        # not stale entries keyed on the previous (path, x_ch, y_ch).
+        self._tc.clear()
         self.refresh_plot()
 
     def _apply_scales(self):
         self.x_scale = self.x_scale_var.get()
         self.y_scale = self.y_scale_var.get()
+        # Scale type changed → old (scale, lo, hi) cache keys are stale.
+        self._minor_loc_cache.clear()
         try: self.cofactor = float(self.cofactor_str.get())
         except Exception: self.cofactor = 150.0
         self.refresh_plot()
@@ -2936,14 +3884,6 @@ class FlowApp:
                 except Exception: pass
 
     # ── Threshold helpers ─────────────────────────────────────────────────────
-
-    def _new_thresh_vars(self, n: int) -> list:
-        """Create n fresh BooleanVar(True) for X thresholds."""
-        return [tk.BooleanVar(value=True) for _ in range(n)]
-
-    def _new_y_thresh_var(self) -> tk.BooleanVar:
-        """Create a fresh BooleanVar(True) for the Y threshold."""
-        return tk.BooleanVar(value=True)
 
     def _active_xbs_for(self, g: dict) -> list:
         """Return enabled X boundaries for a specific crosshair gate dict."""
@@ -3009,9 +3949,334 @@ class FlowApp:
         self._refresh_pending = None
         self.refresh_plot()
 
+    # ── Lock & Adjust Scale ───────────────────────────────────────────────────
+
+    def _on_lock_scale_toggle(self):
+        """Called when the 'Lock & adjust scale' checkbox is toggled.
+
+        Enabling:
+          • Captures the current axis limits as the locked limits.
+          • Disables "Fit axes to data" (the two modes are incompatible).
+          • Shows the eight overlay +/− buttons.
+        Disabling:
+          • Clears the locked limits so autoscale resumes.
+          • Hides the overlay buttons.
+        A refresh is issued in both cases so the plot state is consistent.
+        Minor ticks are now always applied via refresh_plot → _apply_minor_ticks
+        regardless of lock state, so no separate add/remove call is needed here.
+        """
+        # Invalidate locator cache: limits will change after toggle
+        self._minor_loc_cache.clear()
+        if self.lock_scale_var.get():
+            # Capture current limits before the next refresh overwrites them
+            self._locked_xlim = list(self.ax.get_xlim())
+            self._locked_ylim = list(self.ax.get_ylim())
+            # Disable fit-axes so lock has sole control over limits
+            self.fit_axes_var.set(False)
+            self._show_lock_buttons(True)
+        else:
+            self._locked_xlim = None
+            self._locked_ylim = None
+            self._show_lock_buttons(False)
+        self.refresh_plot()
+
+    # ── Snap helpers ──────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _snap_outward(value: float, direction: int,
+                      scale: str, current_range: float) -> float:
+        """Return the next snap-grid value outward from *value*.
+
+        direction = +1  → snap to the next LARGER value
+        direction = -1  → snap to the next SMALLER value
+
+        For biexp / asinh / logicle / log scales the snap grid is
+        _LOCK_SNAP (decade + 2×/5× subdivisions) so each click moves by
+        one visually meaningful flow unit.
+        For linear scale a step of ~10 % of the current range is used.
+        """
+        if scale in ('biexp', 'asinh', 'logicle', 'log'):
+            if direction > 0:
+                candidates = [v for v in _LOCK_SNAP if v > value + 1e-9]
+                return min(candidates) if candidates else value * 2 + 1
+            else:
+                candidates = [v for v in _LOCK_SNAP if v < value - 1e-9]
+                return max(candidates) if candidates else value * 2 - 1
+        else:
+            # Linear: step ≈ 10 % of the current visible range
+            step = max(abs(current_range) * 0.10, 1.0)
+            return value + direction * step
+
+    def _nudge_axis(self, axis: str, end: str, sign: int):
+        """Move one end of the locked view by one snap unit.
+
+        axis : 'x' or 'y'
+        end  : 'lo' or 'hi'   (which limit to move)
+        sign : +1 = expand outward, -1 = contract inward
+
+        The expansion convention matches the screenshot annotations:
+          • right-end [+]  → hi grows rightward  (sign = +1)
+          • right-end [−]  → hi shrinks leftward  (sign = -1)
+          • left-end  [−]  → lo shrinks rightward (sign = +1, moves lo up)
+          • left-end  [+]  → lo grows leftward    (sign = -1, moves lo down)
+        """
+        if not self.lock_scale_var.get():
+            return
+
+        xlim = list(self._locked_xlim or self.ax.get_xlim())
+        ylim = list(self._locked_ylim or self.ax.get_ylim())
+
+        if axis == 'x':
+            lim   = xlim
+            scale = self.x_scale
+        else:
+            lim   = ylim
+            scale = self.y_scale
+
+        current_range = lim[1] - lim[0]
+
+        if end == 'lo':
+            # Moving the lower limit; sign convention: +1 = expand (go lower)
+            lim[0] = self._snap_outward(lim[0], -sign, scale, current_range)
+        else:
+            # Moving the upper limit; sign convention: +1 = expand (go higher)
+            lim[1] = self._snap_outward(lim[1], sign, scale, current_range)
+
+        # Safety: never let lo >= hi (would flip or collapse axis)
+        if lim[0] >= lim[1]:
+            return
+
+        if axis == 'x':
+            self._locked_xlim = lim
+        else:
+            self._locked_ylim = lim
+
+        self.refresh_plot()
+
+    def _apply_locked_limits(self):
+        """Enforce the stored locked limits on the axes (called from refresh_plot)."""
+        if self._locked_xlim:
+            try:
+                self.ax.set_xlim(self._locked_xlim[0], self._locked_xlim[1])
+            except Exception:
+                pass
+        if self._locked_ylim:
+            try:
+                self.ax.set_ylim(self._locked_ylim[0], self._locked_ylim[1])
+            except Exception:
+                pass
+
+    # ── Minor ticks ───────────────────────────────────────────────────────────
+
+    def _apply_minor_ticks(self):
+        """Apply minor ticks to both axes based on their current scale type.
+
+        Always called from refresh_plot() after _set_axis_scale() — minor
+        ticks are visible regardless of whether lock-scale mode is active.
+
+        Non-linear (biexp/asinh/logicle/log): _FLOW_MINOR_TICKS filtered to
+        the current visible range via FixedLocator, integrated cleanly with
+        the custom major-tick formatters already on each axis.
+        Linear: standard AutoMinorLocator with 5 subdivisions.
+
+        A per-instance locator cache (_minor_loc_cache) avoids rebuilding the
+        FixedLocator on every render when the axis limits have not changed.
+        """
+        fg = self.T.get('fg', '#cccccc')
+
+        def _set_minor(mpl_axis, scale, lim):
+            lo, hi = min(lim), max(lim)
+            if scale in ('biexp', 'asinh', 'logicle', 'log'):
+                cache_key = (scale, lo, hi)
+                if cache_key not in self._minor_loc_cache:
+                    visible = [t for t in _FLOW_MINOR_TICKS if lo <= t <= hi]
+                    self._minor_loc_cache[cache_key] = FixedLocator(visible)
+                mpl_axis.set_minor_locator(self._minor_loc_cache[cache_key])
+                mpl_axis.set_minor_formatter(mticker.NullFormatter())
+            else:
+                mpl_axis.set_minor_locator(mticker.AutoMinorLocator(5))
+            mpl_axis.set_tick_params(which='minor',
+                                     length=3, width=0.7, color=fg)
+
+        try:
+            _set_minor(self.ax.xaxis, self.x_scale, self.ax.get_xlim())
+            _set_minor(self.ax.yaxis, self.y_scale, self.ax.get_ylim())
+        except Exception:
+            pass
+
+    # ── Overlay button management ─────────────────────────────────────────────
+
+    def _create_lock_buttons(self):
+        """Create the eight overlay tk.Button widgets on the canvas widget.
+
+        Buttons are created once, hidden by default, and repositioned after
+        every draw_event by _reposition_lock_buttons().  Using tk place()
+        keeps them completely separate from matplotlib's artist tree so they
+        never interfere with gate drawing, panning, or zooming.
+
+        Button map (key → action):
+          'xl-' = X left  shrink  (lo → higher, contracts left edge)
+          'xl+' = X left  expand  (lo → lower, expands left edge)
+          'xr-' = X right shrink  (hi → lower, contracts right edge)
+          'xr+' = X right expand  (hi → higher, expands right edge)
+          'yb-' = Y bottom shrink (lo → higher, contracts bottom edge)
+          'yb+' = Y bottom expand (lo → lower, expands bottom edge)
+          'yt-' = Y top shrink    (hi → lower, contracts top edge)
+          'yt+' = Y top expand    (hi → higher, expands top edge)
+        """
+        tk_widget = self.canvas.get_tk_widget()
+        T = self.T
+
+        # High-contrast colours regardless of theme:
+        #   dark mode  → white text on slate-blue, always readable on dark canvas
+        #   light mode → near-black text on soft grey slab
+        # tk.Label is used instead of tk.Button because macOS native (Aqua)
+        # rendering ignores Python bg/fg options on tk.Button, causing the
+        # symbols to be invisible.  tk.Label always honours bg/fg everywhere.
+        _is_dark  = T.get('plot_bg', '#ffffff') != '#ffffff'
+        _btn_bg   = '#3a4255' if _is_dark else '#c8ccd4'
+        _btn_fg   = '#ffffff' if _is_dark else '#1a1a1a'
+        _btn_act  = T.get('sel_bg', '#4a90d9')
+
+        def _make(key, text, cmd):
+            b = tk.Label(
+                tk_widget, text=text,
+                bg=_btn_bg, fg=_btn_fg,
+                font=('Arial', 9, 'bold'),
+                relief='raised', bd=1,
+                cursor='hand2',
+                padx=3, pady=1)
+            # Store theme palette on the widget so hover bindings and future
+            # theme-toggle passes can reference up-to-date colours.
+            b._bg  = _btn_bg
+            b._fg  = _btn_fg
+            b._act = _btn_act
+            b.bind('<Button-1>', lambda e, c=cmd: c())
+            b.bind('<Enter>',    lambda e, w=b: w.config(bg=w._act, fg='white'))
+            b.bind('<Leave>',    lambda e, w=b: w.config(bg=w._bg,  fg=w._fg))
+            b.place_forget()   # hidden initially
+            self._lock_btns[key] = b
+
+        # X-axis: left end (lo limit)
+        _make('xl+', '−', lambda: self._nudge_axis('x', 'lo', +1))  # expand left
+        _make('xl-', '+', lambda: self._nudge_axis('x', 'lo', -1))  # shrink left
+        # X-axis: right end (hi limit)
+        _make('xr-', '−', lambda: self._nudge_axis('x', 'hi', -1))  # shrink right
+        _make('xr+', '+', lambda: self._nudge_axis('x', 'hi', +1))  # expand right
+        # Y-axis: bottom end (lo limit)
+        _make('yb+', '−', lambda: self._nudge_axis('y', 'lo', +1))  # expand down
+        _make('yb-', '+', lambda: self._nudge_axis('y', 'lo', -1))  # shrink bottom
+        # Y-axis: top end (hi limit)
+        _make('yt-', '−', lambda: self._nudge_axis('y', 'hi', -1))  # shrink top
+        _make('yt+', '+', lambda: self._nudge_axis('y', 'hi', +1))  # expand up
+
+    def _show_lock_buttons(self, visible: bool):
+        """Show or hide all lock-scale overlay buttons."""
+        if visible:
+            self._reposition_lock_buttons()
+        else:
+            for b in self._lock_btns.values():
+                try:
+                    b.place_forget()
+                except Exception:
+                    pass
+
+    def _reposition_lock_buttons(self, event=None):
+        """Place the eight overlay buttons at the correct pixel positions.
+
+        Called after every draw_event so buttons track the axes bbox even
+        when the window is resized or marginals are toggled.  If lock is
+        not active, all buttons are hidden immediately.
+        """
+        if not self.lock_scale_var.get():
+            self._show_lock_buttons(False)
+            return
+
+        try:
+            tk_widget = self.canvas.get_tk_widget()
+            # Get axes bounding box in figure-pixel coordinates
+            # (origin at bottom-left of figure).
+            bbox = self.ax.get_position()
+            fig_w = self.fig.get_figwidth()  * self.fig.dpi
+            fig_h = self.fig.get_figheight() * self.fig.dpi
+
+            # Convert figure-fraction bbox to pixel coords with tk origin
+            # at TOP-left (tk y is inverted relative to matplotlib).
+            ax_left   = int(bbox.x0 * fig_w)
+            ax_right  = int(bbox.x1 * fig_w)
+            # matplotlib y0 = bottom of axes; tk y0 = top of widget
+            ax_top_tk = int((1.0 - bbox.y1) * fig_h)
+            ax_bot_tk = int((1.0 - bbox.y0) * fig_h)
+
+            BW = 18   # button width  (px)
+            BH = 16   # button height (px)
+            GAP = 2   # gap between the two buttons at each end
+
+            # ── X-axis buttons: placed below the tick-label row ───────────────
+            # ax_bot_tk is the bottom spine in tk coords.  X tick labels are
+            # typically 20-30 px tall; 36 px clears them reliably on both
+            # linear and log scales where the label row can be taller.
+            y_xbtn = ax_bot_tk + 36
+
+            # Left end: [−][+]  (left button = expand, right button = shrink)
+            self._lock_btns['xl+'].place(
+                x=ax_left,            y=y_xbtn, width=BW, height=BH)
+            self._lock_btns['xl-'].place(
+                x=ax_left + BW + GAP, y=y_xbtn, width=BW, height=BH)
+
+            # Right end: [−][+]  (left button = shrink, right button = expand)
+            self._lock_btns['xr-'].place(
+                x=ax_right - 2*BW - GAP, y=y_xbtn, width=BW, height=BH)
+            self._lock_btns['xr+'].place(
+                x=ax_right - BW,         y=y_xbtn, width=BW, height=BH)
+
+            # ── Y-axis buttons: placed on the LEFT side, stacked vertically ────
+            # Each pair is stacked top-to-bottom (one button above the other)
+            # well into the left figure margin, clear of tick labels.
+            # Tick labels on biexp/logicle scales can be 35–45 px wide, so
+            # we use max(4, ax_left − BW − 50) to guarantee clearance while
+            # keeping a 4 px floor when the figure is very narrow.
+            x_ybtn = max(4, ax_left - BW - 50)
+
+            # Top end: [+] above [−]  (expand on top, shrink below)
+            # + is closest to the axis top → expands the top limit upward.
+            # − is below → shrinks the top limit downward.
+            self._lock_btns['yt+'].place(
+                x=x_ybtn, y=ax_top_tk,            width=BW, height=BH)
+            self._lock_btns['yt-'].place(
+                x=x_ybtn, y=ax_top_tk + BH + GAP, width=BW, height=BH)
+
+            # Bottom end: [+] above [−]  (shrink on top, expand below)
+            self._lock_btns['yb-'].place(
+                x=x_ybtn, y=ax_bot_tk - 2*BH - GAP, width=BW, height=BH)
+            self._lock_btns['yb+'].place(
+                x=x_ybtn, y=ax_bot_tk - BH,          width=BW, height=BH)
+
+            # Apply current theme colours (handles theme toggle after lock-on).
+            # Update _bg/_fg/_act on each Label so the <Enter>/<Leave> bindings
+            # pick up the new palette; Labels have no activebackground option.
+            T = self.T
+            _is_dark = T.get('plot_bg', '#ffffff') != '#ffffff'
+            _btn_bg  = '#3a4255' if _is_dark else '#c8ccd4'
+            _btn_fg  = '#ffffff' if _is_dark else '#1a1a1a'
+            _btn_act = T.get('sel_bg', '#4a90d9')
+            for b in self._lock_btns.values():
+                b._bg  = _btn_bg
+                b._fg  = _btn_fg
+                b._act = _btn_act
+                b.config(bg=_btn_bg, fg=_btn_fg)
+                b.bind('<Enter>', lambda e, w=b: w.config(bg=w._act, fg='white'))
+                b.bind('<Leave>', lambda e, w=b: w.config(bg=w._bg,  fg=w._fg))
+
+        except Exception:
+            pass  # never let positioning errors break the render cycle
+
     def refresh_plot(self):
         if not self.x_channel or not self.y_channel: return
         T = self.T
+        # Compute active-file dict once — reused by _update_cycle_label,
+        # _display_files, and the status bar at the bottom of this method.
+        active = self._active()
 
         need_marg = self.show_marginals_var.get()
         if (self.ax_top is not None) != need_marg:
@@ -3019,16 +4284,16 @@ class FlowApp:
         else:
             self.fig.patch.set_facecolor(T['fig_bg'])
             self.ax.set_facecolor(T['ax_bg'])
-            for sp in self.ax.spines.values(): sp.set_color(T['spine'])
+            _set_spines_color(self.ax, T['spine'])
             if self.ax_top:
                 self.ax_top.set_facecolor(T['ax_bg'])
-                for sp in self.ax_top.spines.values(): sp.set_color(T['spine'])
+                _set_spines_color(self.ax_top, T['spine'])
             if self.ax_right:
                 self.ax_right.set_facecolor(T['ax_bg'])
-                for sp in self.ax_right.spines.values(): sp.set_color(T['spine'])
+                _set_spines_color(self.ax_right, T['spine'])
 
-        self._update_cycle_label()
-        display = self._display_files()
+        self._update_cycle_label(active)
+        display = self._display_files(active)
 
         # Collect all *effective* applied gates (filter out disabled crosshairs)
         applied_gates = []
@@ -3063,9 +4328,12 @@ class FlowApp:
         total_cells = 0
         # In gated mode we build a legend entry per file (not per region)
         gated_legend_handles = []
-        # Accumulators for "Fit axes to data" percentile computation
-        _fit_x_all: list = []
-        _fit_y_all: list = []
+        # Accumulators for "Fit axes to data", GMM overlay, and marginal histograms.
+        # _raw_x_parts / _raw_y_parts collect finite raw values from all display
+        # files.  They are reused for BOTH the fit-axes percentile calc AND the
+        # GMM marginal overlay — one accumulation serves both consumers.
+        _raw_x_parts: list = []
+        _raw_y_parts: list = []
 
         for path, df in display.items():
             if self.x_channel not in df.columns or \
@@ -3073,15 +4341,14 @@ class FlowApp:
             color  = self.file_colors[path]
             lbl    = os.path.basename(path)
             lbl_s  = (lbl[:28] + '…') if len(lbl) > 30 else lbl
-            x_raw  = df[self.x_channel].values.astype(float)
-            y_raw  = df[self.y_channel].values.astype(float)
+            x_raw  = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            y_raw  = df[self.y_channel].to_numpy(dtype=float, copy=False)
             xt, yt, valid = self._transform_xy_cached(path, x_raw, y_raw)
             n_cells = int(valid.sum())
             total_cells += n_cells
-            # Accumulate finite raw values for "Fit axes to data"
-            if self.fit_axes_var.get() and valid.any():
-                _fit_x_all.append(x_raw[valid])
-                _fit_y_all.append(y_raw[valid])
+            if valid.any():
+                _raw_x_parts.append(x_raw[valid])
+                _raw_y_parts.append(y_raw[valid])
 
             if eff_gate:
                 # Render base visualization as chosen (density/contour/dot)
@@ -3129,59 +4396,65 @@ class FlowApp:
                 (g for g in self.gates
                  if g.get('applied') and g.get('auto_method') == 'gmm_multi'),
                 None)
-            if gmm_gate is not None:
-                # Collect all valid raw values across all display files for scaling
-                x_all_parts: list = []
-                y_all_parts: list = []
-                for _path, _df in display.items():
-                    if (self.x_channel not in _df.columns
-                            or self.y_channel not in _df.columns):
-                        continue
-                    _xr = _df[self.x_channel].values.astype(float)
-                    _yr = _df[self.y_channel].values.astype(float)
-                    _xt, _yt, _v = self._transform_xy_cached(_path, _xr, _yr)
-                    if _v.any():
-                        x_all_parts.append(_xr[_v])
-                        y_all_parts.append(_yr[_v])
-                if x_all_parts:
-                    x_all_raw = np.concatenate(x_all_parts)
-                    y_all_raw = np.concatenate(y_all_parts)
-                    # Recompute bin edges matching _plot_marginals logic
-                    x_t_all = self._fwd(x_all_raw, self.x_scale)
-                    y_t_all = self._fwd(y_all_raw, self.y_scale)
-                    xv_all  = x_t_all[np.isfinite(x_t_all)]
-                    yv_all  = y_t_all[np.isfinite(y_t_all)]
-                    if len(xv_all) > 1:
-                        _bt_x  = np.linspace(xv_all.min(), xv_all.max(), 121)
-                        _be_x  = self._inv(_bt_x, self.x_scale)
-                    else:
-                        _be_x = None
-                    if len(yv_all) > 1:
-                        _bt_y  = np.linspace(yv_all.min(), yv_all.max(), 121)
-                        _be_y  = self._inv(_bt_y, self.y_scale)
-                    else:
-                        _be_y = None
-                    gxp = gmm_gate.get('gmm_x_params')
-                    gyp = gmm_gate.get('gmm_y_params')
-                    try:
-                        if gxp is not None and _be_x is not None:
-                            self._plot_gmm_overlay(
-                                self.ax_top, gxp,
-                                'horizontal', x_all_raw, _be_x)
-                    except Exception:
-                        pass
-                    try:
-                        if gyp is not None and _be_y is not None:
-                            self._plot_gmm_overlay(
-                                self.ax_right, gyp,
-                                'vertical', y_all_raw, _be_y)
-                    except Exception:
-                        pass
+            if gmm_gate is not None and _raw_x_parts:
+                # Reuse the raw parts already gathered in the main render loop
+                # — no second pass through display files needed.
+                x_all_raw = np.concatenate(_raw_x_parts)
+                y_all_raw = np.concatenate(_raw_y_parts)
+                x_t_all = self._fwd(x_all_raw, self.x_scale)
+                y_t_all = self._fwd(y_all_raw, self.y_scale)
+                xv_all  = x_t_all[np.isfinite(x_t_all)]
+                yv_all  = y_t_all[np.isfinite(y_t_all)]
+                if len(xv_all) > 1:
+                    _bt_x = np.linspace(xv_all.min(), xv_all.max(), 121)
+                    _be_x = self._inv(_bt_x, self.x_scale)
+                else:
+                    _be_x = None
+                if len(yv_all) > 1:
+                    _bt_y = np.linspace(yv_all.min(), yv_all.max(), 121)
+                    _be_y = self._inv(_bt_y, self.y_scale)
+                else:
+                    _be_y = None
+                gxp = gmm_gate.get('gmm_x_params')
+                gyp = gmm_gate.get('gmm_y_params')
+                try:
+                    if gxp is not None and _be_x is not None:
+                        self._plot_gmm_overlay(
+                            self.ax_top, gxp,
+                            'horizontal', x_all_raw, _be_x)
+                except Exception:
+                    pass
+                try:
+                    if gyp is not None and _be_y is not None:
+                        self._plot_gmm_overlay(
+                            self.ax_right, gyp,
+                            'vertical', y_all_raw, _be_y)
+                except Exception:
+                    pass
 
-        # Draw ALL applied gate outlines + handles for selected gate.
-        # _clear_preview no longer calls draw_idle(); refresh_plot owns the
-        # full draw lifecycle and issues one unconditional flush at the end.
-        self._preview_gate()
+        # ── Population shading on marginals for KDE / Otsu gates ──────────────
+        # If a KDE Valley or Otsu crosshair gate is applied and marginals are
+        # visible, shade each population band between threshold lines so the
+        # user can see which region is positive / negative — the same visual
+        # cue that GMM Multi provides via its Gaussian component curves.
+        if self.ax_top and self.ax_right:
+            _shading_gate = next(
+                (g for g in self.gates
+                 if g.get('applied')
+                 and g.get('type', 'crosshair') == 'crosshair'
+                 and g.get('auto_method') in ('kde', 'otsu')),
+                None)
+            if _shading_gate is not None:
+                self._plot_threshold_shading(
+                    _shading_gate,
+                    self.ax_top, 'horizontal',
+                    self.ax_right, 'vertical')
+
+        # NOTE: _preview_gate() is intentionally NOT called here.
+        # It is moved to AFTER _set_axis_scale() below (FIX Bug 1).
+        # Calling it here (before the scale is applied) would build the
+        # handle pixel cache with a stale linear transform — causing hover
+        # detection to fail on loaded gates on non-linear axes.
 
         fg = T['fg']
         self.fig.suptitle(f'{self.x_channel}  ×  {self.y_channel}',
@@ -3207,22 +4480,28 @@ class FlowApp:
         # After _set_axis_scale so the scale type is already applied.
         # Uses p0.5 / p99.5 of all valid raw values with a 5 % margin so the
         # population is centred with a small breathing room on each side.
-        if self.fit_axes_var.get() and _fit_x_all:
-            all_x = np.concatenate(_fit_x_all)
-            all_y = np.concatenate(_fit_y_all)
+        # Skipped when lock-scale is active (lock takes priority).
+        # _raw_x_parts already contains exactly the finite raw values needed —
+        # no separate _fit_x_all accumulator required.
+        if (self.fit_axes_var.get()
+                and not self.lock_scale_var.get()
+                and _raw_x_parts):
+            all_x = np.concatenate(_raw_x_parts)
+            all_y = np.concatenate(_raw_y_parts)
             xlo_r, xhi_r = np.nanpercentile(all_x, [0.5, 99.5])
             ylo_r, yhi_r = np.nanpercentile(all_y, [0.5, 99.5])
-            # Add 5 % breathing room in transform space to avoid edge clipping
-            xt_lo = self._fwd(np.array([xlo_r]), self.x_scale)[0]
-            xt_hi = self._fwd(np.array([xhi_r]), self.x_scale)[0]
-            yt_lo = self._fwd(np.array([ylo_r]), self.y_scale)[0]
-            yt_hi = self._fwd(np.array([yhi_r]), self.y_scale)[0]
+            # Add 5 % breathing room in transform space to avoid edge clipping.
+            # Batch the scalar transforms: 2 _fwd calls (one per axis, each on a
+            # 2-element array) instead of 4 single-element calls — halves the
+            # number of Python→numpy dispatch round-trips.
+            xt_lo, xt_hi = self._fwd(np.array([xlo_r, xhi_r]), self.x_scale)
+            yt_lo, yt_hi = self._fwd(np.array([ylo_r, yhi_r]), self.y_scale)
             x_pad = (xt_hi - xt_lo) * 0.05
             y_pad = (yt_hi - yt_lo) * 0.05
-            x_margin_lo = float(self._inv(np.array([xt_lo - x_pad]), self.x_scale)[0])
-            x_margin_hi = float(self._inv(np.array([xt_hi + x_pad]), self.x_scale)[0])
-            y_margin_lo = float(self._inv(np.array([yt_lo - y_pad]), self.y_scale)[0])
-            y_margin_hi = float(self._inv(np.array([yt_hi + y_pad]), self.y_scale)[0])
+            x_margin_lo, x_margin_hi = self._inv(
+                np.array([xt_lo - x_pad, xt_hi + x_pad]), self.x_scale)
+            y_margin_lo, y_margin_hi = self._inv(
+                np.array([yt_lo - y_pad, yt_hi + y_pad]), self.y_scale)
             try:
                 self.ax.set_xlim(x_margin_lo, x_margin_hi)
                 self.ax.set_ylim(y_margin_lo, y_margin_hi)
@@ -3253,11 +4532,36 @@ class FlowApp:
                                    labelcolor=fg)
 
         self.status_var.set(
-            f"Shown: {len(display)}/{len(self._active())} files  │  "
+            f"Shown: {len(display)}/{len(active)} files  │  "
             f"Cells: {total_cells:,}  │  "
             f"{self.x_channel} vs {self.y_channel}  │  "
             f"Scale: {self.x_scale}/{self.y_scale}"
             + (f"  │  {len(applied_gates)} gate(s) ON" if eff_gate else ""))
+
+        # ── Lock-scale: enforce captured limits ───────────────────────────────
+        # Must run after _set_axis_scale() and after the fit-axes block so the
+        # lock wins over both.  Minor ticks are applied unconditionally below
+        # (they do not depend on lock state).
+        if self.lock_scale_var.get():
+            self._apply_locked_limits()
+
+        # ── Minor ticks — always on for non-linear scales ─────────────────────
+        # _set_axis_scale() resets the minor locator to NullLocator each time
+        # the scale is applied; _apply_minor_ticks() reinstates decade-
+        # subdivision ticks for biexp/asinh/logicle/log and AutoMinorLocator
+        # for linear.  Called unconditionally so ticks are visible even when
+        # lock-scale is off.
+        self._apply_minor_ticks()
+
+        # ── FIX Bug 1: Draw gate outlines + handles AFTER all transforms are
+        # finalised.  _preview_gate() calls _rebuild_handle_px_cache() which
+        # records handle positions in display pixels.  Those pixels must be
+        # computed with the FINAL transform (scale + fit-axes + lock applied)
+        # or hover hit-testing will misplace handles on non-linear axes,
+        # making loaded gates impossible to interact with.
+        # Previously this call lived before _set_axis_scale() — the cache was
+        # always built with a stale linear transform after ax.clear().
+        self._preview_gate()
 
         # Single unconditional flush — renders scatter + gate outlines +
         # labels + axis styling all at once, avoiding partial repaints.
@@ -3267,12 +4571,12 @@ class FlowApp:
 
     def _plot_dot(self, x_raw, y_raw, valid, color, label, dot_size, alpha):
         xv = x_raw[valid]; yv = y_raw[valid]
-        n  = len(xv)
+        n  = len(xv)   # == valid.sum(); already computed by boolean indexing
         if n > RENDER_CAP:
-            idx = np.random.default_rng(2).choice(n, RENDER_CAP, replace=False)
+            idx = _get_rng(2).choice(n, RENDER_CAP, replace=False)
             xv, yv = xv[idx], yv[idx]
         self.ax.scatter(xv, yv, s=dot_size, alpha=alpha, color=color,
-                        label=f'{label} (n={valid.sum():,})',
+                        label=f'{label} (n={n:,})',
                         rasterized=True, linewidths=0)
 
     def _plot_density(self, x_raw, y_raw, xt, yt, valid,
@@ -3289,14 +4593,14 @@ class FlowApp:
 
         # ── Fit KDE on subsample ──────────────────────────────────────────
         if n > KDE_SUBSAMPLE:
-            idx  = np.random.default_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
+            idx  = _get_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
             kern = gaussian_kde(np.vstack([xc[idx], yc[idx]]))
         else:
             kern = gaussian_kde(np.vstack([xc, yc]))
 
         # ── Evaluate on a 128×128 grid (fast) then interpolate per-cell ──
         # This replaces kern(all_points) which is O(n×k) → now O(grid + n·log·grid)
-        GRID = 128
+        GRID = 96
         xg = np.linspace(xlo, xhi, GRID)
         yg = np.linspace(ylo, yhi, GRID)
         xmg, ymg = np.meshgrid(xg, yg, indexing='ij')
@@ -3313,20 +4617,20 @@ class FlowApp:
         xr = x_raw[valid]; yr = y_raw[valid]
         n_valid = len(xr)
         if n_valid > RENDER_CAP:
-            rng  = np.random.default_rng(3)
+            rng  = _get_rng(3)
             keep = rng.choice(n_valid, RENDER_CAP, replace=False)
             xr   = xr[keep]; yr = yr[keep]
             dens_plot = density[keep]
         else:
             dens_plot = density
         order = np.argsort(dens_plot)           # painter's order: dense on top
-        vlo   = float(np.nanpercentile(density, 1))    # vmin/vmax from ALL data
-        vhi   = float(np.nanpercentile(density, 99))
+        # Batch vmin/vmax into one nanpercentile call on the full density array.
+        vlo, vhi = np.nanpercentile(density, [1, 99])
         self.ax.scatter(xr[order], yr[order],
                         c=dens_plot[order], cmap='jet',
                         s=dot_size, alpha=alpha, rasterized=True, linewidths=0,
                         vmin=vlo, vmax=vhi,
-                        label=f'{label} (n={valid.sum():,})')
+                        label=f'{label} (n={n_valid:,})')
 
     def _plot_contour(self, x_raw, y_raw, xt, yt, valid,
                       color, label, dot_size, alpha, prob_level):
@@ -3336,13 +4640,13 @@ class FlowApp:
             return self._plot_dot(x_raw, y_raw, valid, color, label,
                                   dot_size, alpha)
         if n > KDE_SUBSAMPLE:
-            idx  = np.random.default_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
+            idx  = _get_rng(0).choice(n, KDE_SUBSAMPLE, replace=False)
             kern = gaussian_kde(np.vstack([xv[idx], yv[idx]]))
         else:
             kern = gaussian_kde(np.vstack([xv, yv]))
 
         # Grid evaluation for contour surface (fast; no per-point KDE call)
-        GRID = 128
+        GRID = 96
         xg_t = np.linspace(xv.min(), xv.max(), GRID)
         yg_t = np.linspace(yv.min(), yv.max(), GRID)
         xmg, ymg = np.meshgrid(xg_t, yg_t, indexing='ij')
@@ -3370,23 +4674,14 @@ class FlowApp:
 
         # Render cap on outlier scatter (random subsample preserves coverage)
         xo = x_raw[valid][outside]; yo = y_raw[valid][outside]
-        if len(xo) > RENDER_CAP:
-            idx2 = np.random.default_rng(4).choice(len(xo), RENDER_CAP, replace=False)
+        n_outside = len(xo)   # == outside.sum(); len() is O(1) vs O(n) reduction
+        if n_outside > RENDER_CAP:
+            idx2 = _get_rng(4).choice(n_outside, RENDER_CAP, replace=False)
             xo, yo = xo[idx2], yo[idx2]
         self.ax.scatter(xo, yo,
                         s=dot_size, color=color, alpha=alpha, linewidths=0,
-                        label=f'{label} outliers ({outside.sum():,})',
+                        label=f'{label} outliers ({n_outside:,})',
                         rasterized=True)
-
-    def _plot_gated(self, x_raw, y_raw, dot_size, alpha, gate=None):
-        """Single-gate coloring — kept for backward compat."""
-        xa = np.asarray(x_raw, float)
-        ya = np.asarray(y_raw, float)
-        regions, colors = self._gate_mask_for(gate or self._sel_gate(), xa, ya)
-        for (_, mask), color in zip(regions.items(), colors):
-            self.ax.scatter(xa[mask], ya[mask],
-                            s=dot_size, alpha=alpha, color=color,
-                            rasterized=True)
 
     def _plot_gated_multi(self, x_raw, y_raw, dot_size, alpha,
                           applied_gates: list, file_color: str, path: str = None,
@@ -3402,6 +4697,14 @@ class FlowApp:
           • ALL IN-region cells are always kept (gate boundaries stay sharp).
           • Outside/faded cells are randomly thinned to fill the remaining budget.
         Gate stats are NOT affected — they run on the full array elsewhere.
+
+        Performance: a scatter-payload cache (_scatter_cache) stores the
+        already-subsampled, visibility-filtered (xa, ya, rgba) arrays keyed on
+        everything that can affect visual output.  On unchanged redraws (e.g.
+        marginal histogram update, label refresh) the RGBA build and
+        contains_points calls are skipped entirely.  The cache is invalidated
+        explicitly in _finish_gate and _drag_handle_update whenever gate geometry
+        or selection changes.
         """
         xa = np.asarray(x_raw, float)
         ya = np.asarray(y_raw, float)
@@ -3409,43 +4712,73 @@ class FlowApp:
 
         out_alpha = 0.0 if overlay else max(alpha * 0.25, 0.05)
 
+        # ── Scatter-payload cache lookup ──────────────────────────────────
+        # Key encodes every parameter that affects the visual output.
+        # _gate_sig() covers gate geometry; the rest covers display style.
+        gate_sigs = tuple(_gate_sig(g) for g in applied_gates)
+        sc_key    = (path, self.x_channel, self.y_channel,
+                     gate_sigs, dot_size, alpha, file_color, overlay)
+        if sc_key in self._scatter_cache:
+            xa_v, ya_v, rgba_v = self._scatter_cache[sc_key]
+            if len(xa_v):
+                self.ax.scatter(xa_v, ya_v, c=rgba_v, s=dot_size,
+                                rasterized=True, linewidths=0)
+            return
+
         # ── Build per-cell RGBA array ─────────────────────────────────────
         rgba    = np.empty((n, 4), dtype=np.float32)
         rgba[:] = _hex_to_rgba(file_color, out_alpha)
         in_any  = np.zeros(n, bool)
 
+        _empty_bool = np.zeros(n, bool)   # shared empty mask; never mutated
         for gate in applied_gates:
             regions, colors = self._gate_mask_for(gate, xa, ya,
                                                    _cache_path=path)
+            if not regions:
+                continue
             gt = gate.get('type', 'crosshair')
             if gt == 'crosshair':
                 for (rname, mask), c in zip(regions.items(), colors):
                     rgba[mask] = _hex_to_rgba(c, alpha)
-                    in_any[mask] = True
+                    in_any |= mask
             else:
-                in_mask = regions.get('IN', np.zeros(n, bool))
+                in_mask = regions.get('IN', _empty_bool)
                 c = gate.get('color', colors[0] if colors else file_color)
                 rgba[in_mask] = _hex_to_rgba(c, alpha)
-                in_any[in_mask] = True
+                in_any |= in_mask
 
         # ── Render-cap subsampling ────────────────────────────────────────
         # Always keep all IN cells; thin outside cells to stay under cap.
+        # FIX BUG 4: use a LOCAL rng (not the cached _get_rng) so the
+        # subsample is identical on every render and the scatter does not
+        # visually "shift" between redraws.  Matches the v4.0.8 strip-plot fix.
         if n > RENDER_CAP:
             in_idx  = np.where(in_any)[0]
             out_idx = np.where(~in_any)[0]
             budget  = max(0, RENDER_CAP - len(in_idx))
             if budget < len(out_idx):
-                rng     = np.random.default_rng(1)
-                out_idx = rng.choice(out_idx, budget, replace=False)
+                _local_rng = np.random.default_rng(1)   # local, not cached
+                out_idx    = _local_rng.choice(out_idx, budget, replace=False)
             keep    = np.concatenate([in_idx, out_idx])
             xa, ya, rgba = xa[keep], ya[keep], rgba[keep]
 
         # ── Single scatter call ───────────────────────────────────────────
         visible = rgba[:, 3] > 0
+        xa_v    = xa[visible]
+        ya_v    = ya[visible]
+        rgba_v  = rgba[visible]
         if visible.any():
-            self.ax.scatter(xa[visible], ya[visible],
-                            c=rgba[visible], s=dot_size,
+            self.ax.scatter(xa_v, ya_v, c=rgba_v, s=dot_size,
                             rasterized=True, linewidths=0)
+
+        # ── Store in scatter-payload cache ────────────────────────────────
+        # Cap at 40 entries; partial eviction (oldest half) keeps hot entries
+        # alive and avoids the cold-cache cliff of a full .clear().
+        if len(self._scatter_cache) >= 40:
+            evict = list(itertools.islice(self._scatter_cache, 20))
+            for k in evict:
+                del self._scatter_cache[k]
+        self._scatter_cache[sc_key] = (xa_v, ya_v, rgba_v)
 
     def _plot_marginals(self, x_raw, y_raw, xt, yt, valid, color):
         xv = xt[valid]; yv = yt[valid]
@@ -3454,7 +4787,7 @@ class FlowApp:
         # visually identical above ~30k points, but hist() slows with 100k+
         MARG_MAX = 30_000
         if len(xr) > MARG_MAX:
-            idx = np.random.default_rng(5).choice(len(xr), MARG_MAX, replace=False)
+            idx = _get_rng(5).choice(len(xr), MARG_MAX, replace=False)
             xr_h = xr[idx]; yr_h = yr[idx]
             xv_h = xv[idx]; yv_h = yv[idx]
         else:
@@ -3566,37 +4899,107 @@ class FlowApp:
             ncol=ncol,
         )
 
+    def _plot_threshold_shading(self, gate: dict,
+                                ax_h, orient_h: str,
+                                ax_v, orient_v: str):
+        """
+        Shade population bands on marginal histograms for KDE/Otsu gates.
+
+        For the horizontal (top) histogram (X axis) and the vertical (right)
+        histogram (Y axis), each band between consecutive threshold lines is
+        filled with a semi-transparent colour matching the REGION_COLORS palette
+        and labelled with the population name (e.g. TH+, VGLUT1-).
+
+        This gives the same visual population feedback that GMM Multi provides
+        via Gaussian curve overlays, but for the simpler single-threshold methods.
+        """
+        T = self.T
+
+        xbs = self._active_xbs_for(gate)   # list of active X threshold raw values
+        ybs = self._active_ybs_for(gate)   # list of active Y threshold raw values
+
+        def _shade_axis(ax, thresholds_raw, scale_name, channel, orientation):
+            """Draw region bands on one marginal histogram axis."""
+            if not thresholds_raw:
+                return
+            thresholds_raw = sorted(thresholds_raw)
+
+            # Axis limits from the histogram bars already drawn
+            try:
+                if orientation == 'horizontal':
+                    lo_raw, hi_raw = ax.get_xlim()
+                else:
+                    lo_raw, hi_raw = ax.get_ylim()
+            except Exception:
+                return
+
+            # Build band boundaries: [lo, t1, t2, ..., hi]
+            boundaries = [lo_raw] + list(thresholds_raw) + [hi_raw]
+            n_bands    = len(boundaries) - 1
+
+            # Band label suffixes: first band is "-", last is "+", middle "m"
+            fluor = self._fluor(channel or '')
+            if n_bands == 2:
+                labels = [f'{fluor}−', f'{fluor}+']
+            elif n_bands == 3:
+                labels = [f'{fluor}−', f'{fluor}(m)', f'{fluor}+']
+            else:
+                mids   = [f'{fluor}(m{i})' for i in range(1, n_bands - 1)]
+                labels = [f'{fluor}−'] + mids + [f'{fluor}+']
+
+            for i in range(n_bands):
+                b0 = boundaries[i]
+                b1 = boundaries[i + 1]
+                col = REGION_COLORS[i % _N_REGION_COLORS]
+                try:
+                    if orientation == 'horizontal':
+                        ax.axvspan(b0, b1, alpha=0.13, color=col,
+                                   linewidth=0, zorder=1)
+                        mid = (b0 + b1) / 2.0
+                        y_top = ax.get_ylim()[1]
+                        ax.text(mid, y_top * 0.88, labels[i],
+                                ha='center', va='top', fontsize=6,
+                                color=col, fontweight='bold',
+                                clip_on=True, zorder=6)
+                    else:
+                        ax.axhspan(b0, b1, alpha=0.13, color=col,
+                                   linewidth=0, zorder=1)
+                        mid = (b0 + b1) / 2.0
+                        x_right = ax.get_xlim()[1]
+                        ax.text(x_right * 0.96, mid, labels[i],
+                                ha='right', va='center', fontsize=6,
+                                color=col, fontweight='bold',
+                                rotation=90, clip_on=True, zorder=6)
+                except Exception:
+                    pass
+
+            # Draw threshold lines on the marginal axis
+            for thresh in thresholds_raw:
+                try:
+                    if orientation == 'horizontal':
+                        ax.axvline(thresh, color=T['gate_line'],
+                                   lw=0.8, ls='--', alpha=0.7, zorder=4)
+                    else:
+                        ax.axhline(thresh, color=T['gate_line'],
+                                   lw=0.8, ls='--', alpha=0.7, zorder=4)
+                except Exception:
+                    pass
+
+        _shade_axis(ax_h, xbs, self.x_scale, self.x_channel, 'horizontal')
+        _shade_axis(ax_v, ybs, self.y_scale, self.y_channel, 'vertical')
+
     # ── Fluorophore / population naming ─────────────────────────────────────────
 
     @staticmethod
+    @functools.lru_cache(maxsize=64)
     def _fluor(channel: str) -> str:
         """Extract fluorophore from last _-separated segment.
         e.g. 'Bkgd_Corr_Intensity_TH' → 'TH'
              'CD3' → 'CD3' (no underscore → use whole name)
+        Cached: channel names are fixed per session.
         """
         parts = channel.rsplit('_', 1)
         return parts[-1] if parts[-1] else channel
-
-    def _region_display_name(self, x_pos: bool, y_pos: bool,
-                              has_x: bool, has_y: bool) -> str:
-        """Build 'VGLUT1+/TH-' style label from axis sign booleans.
-
-        has_x / has_y indicate whether that axis has an active threshold.
-        If only one axis is gated, only that fluorophore is shown.
-        """
-        xf = self._fluor(self.x_channel or 'X')
-        yf = self._fluor(self.y_channel or 'Y')
-        xs = '+' if x_pos else '-'
-        ys = '+' if y_pos else '-'
-        if has_x and has_y:
-            return f'{yf}{ys}/{xf}{xs}'
-        if has_x:
-            return f'{xf}{xs}'
-        if has_y:
-            return f'{yf}{ys}'
-        return 'All'
-
-    # ── Region masks ─────────────────────────────────────────────────────────
 
     def _region_masks(self, xa, ya, x_boundaries, y_boundary,
                       y_boundaries=None):
@@ -3606,8 +5009,13 @@ class FlowApp:
         y_boundaries (list, optional): if provided, creates a full X×Y grid.
         y_boundary   (scalar, optional): classic single-Y threshold (backward compat).
         """
-        xa  = np.asarray(xa, float)
-        ya  = np.asarray(ya, float)
+        # Fast-path: callers from the hot render path always supply float64
+        # ndarrays (same guarantee as _gate_mask_for).  isinstance check is
+        # ~10× cheaper than np.asarray on an already-valid array.
+        if not isinstance(xa, np.ndarray) or xa.dtype != np.float64:
+            xa = np.asarray(xa, float)
+        if not isinstance(ya, np.ndarray) or ya.dtype != np.float64:
+            ya = np.asarray(ya, float)
         xbs = sorted(x_boundaries) if x_boundaries else []
 
         # Resolve Y boundaries into a sorted list
@@ -3675,7 +5083,7 @@ class FlowApp:
             for i, (ylbl, ym) in enumerate(
                     zip(reversed(y_band_labels), reversed(y_masks))):
                 regions[ylbl] = ym
-                colors.append(REGION_COLORS[i % len(REGION_COLORS)])
+                colors.append(REGION_COLORS[i % _N_REGION_COLORS])
             return regions, colors
 
         if not has_y:
@@ -3683,7 +5091,7 @@ class FlowApp:
             regions = {}; colors = []
             for i, (xlbl, xm) in enumerate(zip(x_band_labels, x_masks)):
                 regions[xlbl] = xm
-                colors.append(REGION_COLORS[i % len(REGION_COLORS)])
+                colors.append(REGION_COLORS[i % _N_REGION_COLORS])
             return regions, colors
 
         # Both axes: full Y×X grid (Y positive first in legend)
@@ -3694,7 +5102,7 @@ class FlowApp:
             for xi, (xlbl, xm) in enumerate(zip(x_band_labels, x_masks)):
                 lbl = f'{ylbl}/{xlbl}'
                 regions[lbl] = xm & ym
-                colors.append(REGION_COLORS[ci % len(REGION_COLORS)])
+                colors.append(REGION_COLORS[ci % _N_REGION_COLORS])
                 ci += 1
         return regions, colors
 
@@ -3938,8 +5346,14 @@ class FlowApp:
         if not gate or not gate.get('applied'):
             return {}, []
 
-        xa = np.asarray(xa, float)
-        ya = np.asarray(ya, float)
+        # Callers in the hot render path (_plot_gated_multi, _compute_gate_stats_for)
+        # always pass float64 ndarrays.  np.asarray is a no-op on those but still
+        # takes ~1µs to check the dtype.  We guard the rare case (e.g. list input
+        # from a test or _open_subgate) with a fast isinstance check instead.
+        if not isinstance(xa, np.ndarray) or xa.dtype != np.float64:
+            xa = np.asarray(xa, float)
+        if not isinstance(ya, np.ndarray) or ya.dtype != np.float64:
+            ya = np.asarray(ya, float)
 
         # ── Persistent cache lookup ───────────────────────────────────────
         if _cache_path is not None:
@@ -3993,12 +5407,57 @@ class FlowApp:
             verts = gate.get('vertices', [])
             if len(verts) < 3:
                 return {}, []
-            mpl_path = MplPath(verts + [verts[0]])
+
+            # ── BUG FIX: test containment in forward-transform space ──────────
+            # Vertices are stored as raw data values (event.xdata / ydata).
+            # matplotlib draws the polygon outline by mapping raw vertices through
+            # the axis forward transform (_fwd) and then drawing STRAIGHT LINES
+            # between those display-space positions.  On non-linear axes (asinh,
+            # biexp, logicle, log) a straight line in display space is a CURVE in
+            # raw data space, so testing MplPath.contains_points against raw cell
+            # coordinates classifies edge cells incorrectly — they appear to be
+            # inside the visual gate but are counted as OUT, or vice versa.
+            #
+            # Fix: transform both vertices and cell coordinates through _fwd()
+            # before the containment test so the mathematical boundary matches
+            # the visible one exactly.  For linear axes _fwd() is a no-op, so
+            # this path is always safe.
+            vx_t = self._fwd(
+                np.array([v[0] for v in verts], dtype=np.float64), self.x_scale)
+            vy_t = self._fwd(
+                np.array([v[1] for v in verts], dtype=np.float64), self.y_scale)
+
+            # Drop any vertex whose transform is non-finite (e.g. log(0) = -inf)
+            valid_verts = [
+                (float(tx), float(ty))
+                for tx, ty in zip(vx_t, vy_t)
+                if np.isfinite(tx) and np.isfinite(ty)
+            ]
+            if len(valid_verts) < 3:
+                return {}, []
+
+            mpl_path = MplPath(valid_verts + [valid_verts[0]])
+
             fin  = np.isfinite(xa) & np.isfinite(ya)
             mask = np.zeros(len(xa), bool)
             if fin.any():
-                mask[fin] = mpl_path.contains_points(
-                    np.column_stack([xa[fin], ya[fin]]))
+                # Transform cell data into the same space as the vertices
+                xa_t = self._fwd(xa[fin], self.x_scale)
+                ya_t = self._fwd(ya[fin], self.y_scale)
+
+                # A second finite guard handles stray zeros on a log axis where
+                # _fwd returns -inf.  fin2 is indexed relative to xa_t / ya_t
+                # (i.e. relative to the fin-filtered subset).
+                fin2 = np.isfinite(xa_t) & np.isfinite(ya_t)
+                if fin2.any():
+                    # staging is aligned to the fin-subset (size = fin.sum()).
+                    # We write containment results for the fin2 subset into it,
+                    # then broadcast back to the full-length mask via mask[fin].
+                    staging = np.zeros(int(fin.sum()), bool)
+                    staging[fin2] = mpl_path.contains_points(
+                        np.column_stack([xa_t[fin2], ya_t[fin2]]))
+                    mask[fin] = staging
+
             result = {'IN': mask, 'OUT': ~mask}, [c, REGION_COLORS[1]]
 
         else:
@@ -4007,30 +5466,59 @@ class FlowApp:
         # ── Store in persistent cache ─────────────────────────────────────
         if _cache_path is not None:
             if len(self._gmc) >= _GMC_MAX:
-                self._gmc.clear()
+                # Partial eviction: drop oldest 50 % so hot entries survive.
+                # islice avoids materialising the full key list — we only
+                # need the first half, not a copy of all 400 keys.
+                evict = list(itertools.islice(self._gmc, _GMC_MAX // 2))
+                for k in evict:
+                    del self._gmc[k]
             self._gmc[ck] = result
 
         return result
 
-    def _gate_mask(self, xa, ya):
-        """Convenience: gate mask for the currently selected gate."""
-        return self._gate_mask_for(self._sel_gate(), xa, ya)
-
-    # Backward-compat alias used in _open_subgate
-    def _gate_mask_for_id(self, gid, xa, ya):
-        gate = next((g for g in self.gates if g['id'] == gid), None)
-        return self._gate_mask_for(gate, xa, ya)
-
     def _label_centroid(self, xa, ya, mask):
-        """Return (mx, my) data-space centroid for mask, using transform-median."""
+        """Return (mx, my) data-space centroid for mask, using transform-median.
+
+        Fast-path: returns (None, None) immediately for empty masks without
+        paying for the _fwd transform call on a zero-length slice.
+        """
+        if not mask.any():          # fast path — avoids transform on empty mask
+            return None, None
         xt = self._fwd(xa[mask], self.x_scale)
         yt = self._fwd(ya[mask], self.y_scale)
         fx = xt[np.isfinite(xt)]; fy = yt[np.isfinite(yt)]
         if len(fx) == 0 or len(fy) == 0:
             return None, None
-        mx = float(self._inv(np.array([float(np.median(fx))]), self.x_scale)[0])
-        my = float(self._inv(np.array([float(np.median(fy))]), self.y_scale)[0])
+        # _inv expects an array; pass a 1-element view rather than allocating
+        # two temporary arrays via np.array([float(np.median(...))]).
+        mx = float(self._inv(np.array([np.median(fx)]), self.x_scale)[0])
+        my = float(self._inv(np.array([np.median(fy)]), self.y_scale)[0])
         return mx, my
+
+    @staticmethod
+    def _crosshair_corner(rname: str):
+        """Map a two-sign crosshair quadrant name (e.g. 'TH+/D1R-') to an
+        axes-space corner position so the label is pinned to the matching
+        corner of the plot instead of being placed on top of the data cloud.
+
+        Returns (x_ax, y_ax, ha, va) for use with ax.transAxes, or None when
+        the name does not encode a simple ± quadrant (e.g. mid-band names
+        like 'TH(m)/D1R+' fall back to the centroid path).
+        """
+        if '/' not in rname:
+            return None
+        y_part, x_part = rname.split('/', 1)
+        y_plus  = y_part.endswith('+')
+        y_minus = y_part.endswith('-')
+        x_plus  = x_part.endswith('+')
+        x_minus = x_part.endswith('-')
+        if not ((y_plus or y_minus) and (x_plus or x_minus)):
+            return None
+        x_ax = 0.98 if x_plus  else 0.02
+        y_ax = 0.97 if y_plus  else 0.03
+        ha   = 'right' if x_plus  else 'left'
+        va   = 'top'   if y_plus  else 'bottom'
+        return x_ax, y_ax, ha, va
 
     def _draw_region_labels(self, applied_gates: list = None):
         """
@@ -4053,8 +5541,8 @@ class FlowApp:
         for path, df in display.items():
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns: continue
-            x_parts.append(df[self.x_channel].values.astype(float))
-            y_parts.append(df[self.y_channel].values.astype(float))
+            x_parts.append(df[self.x_channel].to_numpy(dtype=float, copy=False))
+            y_parts.append(df[self.y_channel].to_numpy(dtype=float, copy=False))
         if not x_parts: return
         xa = np.concatenate(x_parts)
         ya = np.concatenate(y_parts)
@@ -4063,25 +5551,72 @@ class FlowApp:
 
         # ── Single gate: classic IN / OUT labels ─────────────────────────
         if len(applied_gates) == 1:
-            gate = applied_gates[0]
-            c    = gate.get('color', GATE_PALETTE[0])
-            regions, _ = self._gate_mask_for(gate, xa, ya)
+            gate         = applied_gates[0]
+            c            = gate.get('color', GATE_PALETTE[0])
+            is_crosshair = gate['type'] == 'crosshair'
+
+            # BUG FIX (performance): pass a synthetic cache key so _gmc is
+            # consulted here just as it is in _plot_gated_multi.  Without a
+            # _cache_path the original code bypassed the cache entirely, forcing
+            # a second full contains_points call on the concatenated cell array
+            # every render — easily 50 ms+ for 100 k-event files.
+            # The key encodes all active file paths; the length-check inside
+            # _gate_mask_for catches any stale entry whose mask length differs.
+            _label_ck = '__lbl__' + '|'.join(sorted(display.keys()))
+            regions, _ = self._gate_mask_for(gate, xa, ya,
+                                             _cache_path=_label_ck)
+
             for rname, mask in regions.items():
                 cnt = int(mask.sum())
                 if cnt == 0 or (rname == 'OUT' and cnt == total): continue
-                pct = cnt / total * 100
-                mx, my = self._label_centroid(xa, ya, mask)
-                if mx is None: continue
-                hint = ' ⤵' if self.manager and rname != 'OUT' else ''
-                self.ax.text(mx, my,
-                             f'{rname}{hint}\n{pct:.1f}%\n({cnt:,})',
-                             ha='center', va='center', fontsize=7.5,
-                             fontweight='bold', color=T['label_txt'],
-                             linespacing=1.4,
-                             bbox=dict(boxstyle='round,pad=0.35',
-                                       facecolor=c if gate['type'] != 'crosshair'
-                                                  else T['label_box'],
-                                       alpha=0.82, linewidth=0))
+                pct       = cnt / total * 100
+                hint      = ' ⤵' if self.manager and rname != 'OUT' else ''
+                label_txt = f'{rname}{hint}\n{pct:.1f}%\n({cnt:,})'
+
+                # Crosshair quadrants: pin label to the matching plot corner so
+                # it never obscures the data cloud.  Non-simple quadrant names
+                # (mid-bands with '(m)') fall back to the centroid path.
+                corner = self._crosshair_corner(rname) if is_crosshair else None
+                if corner is not None:
+                    cx, cy, ha, va = corner
+                    self.ax.text(cx, cy, label_txt,
+                                 ha=ha, va=va, fontsize=7.5,
+                                 fontweight='bold', color=T['label_txt'],
+                                 linespacing=1.4,
+                                 transform=self.ax.transAxes,
+                                 bbox=dict(boxstyle='round,pad=0.3',
+                                           facecolor=T['label_box'],
+                                           alpha=0.65, linewidth=0))
+
+                # BUG FIX (visual): shape-gate OUT label was placed at the
+                # centroid of the OUT population.  When a gate captures ~90 %
+                # of events the remaining ~10 % (e.g. doublets at top-right)
+                # have a centroid that visually lands inside the gate boundary,
+                # making the plot unreadable.  Pin the OUT label to the
+                # top-right axes corner instead — the same strategy used by
+                # the crosshair corner labels — so it is always unambiguous.
+                elif rname == 'OUT' and not is_crosshair:
+                    self.ax.text(0.98, 0.97, label_txt,
+                                 ha='right', va='top', fontsize=7.5,
+                                 fontweight='bold', color=T['label_txt'],
+                                 linespacing=1.4,
+                                 transform=self.ax.transAxes,
+                                 bbox=dict(boxstyle='round,pad=0.3',
+                                           facecolor=T['label_box'],
+                                           alpha=0.65, linewidth=0))
+
+                else:
+                    # IN label (and crosshair non-corner fallback): centroid
+                    mx, my = self._label_centroid(xa, ya, mask)
+                    if mx is None: continue
+                    self.ax.text(mx, my, label_txt,
+                                 ha='center', va='center', fontsize=7.5,
+                                 fontweight='bold', color=T['label_txt'],
+                                 linespacing=1.4,
+                                 bbox=dict(boxstyle='round,pad=0.35',
+                                           facecolor=c if not is_crosshair
+                                                      else T['label_box'],
+                                           alpha=0.82, linewidth=0))
             return
 
         # ── Multiple gates: Venn partition labels ────────────────────────
@@ -4165,12 +5700,52 @@ class FlowApp:
             # Try handle drag first (must be within HANDLE_PX)
             hit = self._hit_test_handles(event)
             if hit:
+                # Snapshot axis limits so the view stays frozen during the
+                # resize drag (same reason as _gate_move frozen limits).
+                hit['frozen_xlim'] = list(self.ax.get_xlim())
+                hit['frozen_ylim'] = list(self.ax.get_ylim())
                 self._handle_drag = hit
+                self._drag_last_draw = 0.0   # first frame never dropped
+                self._start_blit_drag()      # capture scatter background once at press
                 if hit['gate_id'] != self._sel_gate_id:
                     self._sel_gate_id = hit['gate_id']
                     self._rebuild_gate_manager()
                     self._rebuild_thresh_panel()
                 return
+            # Right-drag inside gate body moves the whole gate (any mode).
+            # Handle hit-test already returned above, so corner handles always win.
+            # Not active during polygon drawing (_poly_active already handled above).
+            if not self._poly_active:
+                hit_gate = self._hit_test_gate_interior(event)
+                if hit_gate is not None:
+                    # Record press and original gate geometry in display pixels so
+                    # the gate translates rigidly regardless of axis scale (log, biexp…).
+                    orig_px = self._gate_pts_to_pixels(hit_gate)
+                    self._gate_move = {
+                        'gate_id':     hit_gate['id'],
+                        'gate':        hit_gate,
+                        'orig': {
+                            k: v for k, v in hit_gate.items()
+                            if not isinstance(v, (tk.BooleanVar, tk.Variable))  # Skip Tkinter objects
+                        }, #Replaced copy.deepcopy with a copy method that skips Tkinter objects.
+                        'press_px':    np.array([event.x, event.y], dtype=float),
+                        'orig_px':     orig_px,   # (N,2) display-pixel coords of original gate
+                        # Snapshot current axis limits so the view stays frozen
+                        # during the drag.  _preview_gate() calls ax.plot() / add_patch()
+                        # which participate in matplotlib autoscale: if gate vertices
+                        # reach beyond the current view the axes would zoom out mid-drag.
+                        # Restoring these limits each frame keeps the view pixel-stable.
+                        'frozen_xlim': list(self.ax.get_xlim()),
+                        'frozen_ylim': list(self.ax.get_ylim()),
+                    }
+                    self._drag_last_draw = 0.0   # reset throttle: first frame never dropped
+                    self._start_blit_drag()       # capture scatter background once at press
+                    self._interior_hover_gate_id = None
+                    if hit_gate['id'] != self._sel_gate_id:
+                        self._sel_gate_id = hit_gate['id']
+                        self._rebuild_gate_manager()
+                        self._rebuild_thresh_panel()
+                    return
             # Try line hit: right-click on a gate line pins/unpins handles
             line_gid = self._hit_test_gate_line(event, threshold_px=10)
             if line_gid is not None:
@@ -4206,11 +5781,13 @@ class FlowApp:
                 self._draw_gate_id = gate['id']
                 gate['vertices'] = [(x, y)]
                 self._poly_active = True
+                self._drag_last_draw = 0.0   # first rubber-band frame never dropped
+                self._start_blit_drag()      # capture scatter background once for polygon session
             else:
                 draw['vertices'].append((x, y))
             self._update_poly_close_btn()
-            self._preview_gate()
-            self.canvas.draw_idle()
+            self._preview_gate(skip_cache=True)
+            self._blit_render()
             return
 
         if draw is None or draw.get('applied'):
@@ -4246,8 +5823,12 @@ class FlowApp:
             gate['x1'] = x; gate['y1'] = y
 
         self.moving_gate = True
-        self._preview_gate()
-        self.canvas.draw_idle()
+        self._drag_last_draw = 0.0   # first frame never dropped
+        self._draw_frozen_xlim = list(self.ax.get_xlim())
+        self._draw_frozen_ylim = list(self.ax.get_ylim())
+        self._start_blit_drag()      # capture scatter background once at press
+        self._preview_gate(skip_cache=True)
+        self._blit_render()
 
     def _on_motion(self, event):
         # ── Handle drag: must work even when cursor moves outside axes ──
@@ -4257,14 +5838,136 @@ class FlowApp:
                 x, y = self.ax.transData.inverted().transform((event.x, event.y))
             except Exception:
                 return
+            # Update geometry on every event (same pattern as _gate_move).
+            # Rendering is throttled below; geometry must always be current so
+            # the next rendered frame uses the latest cursor position.
             self._drag_handle_update(x, y)
+
+            # Throttle: cap redraws at ~60 fps (16 ms minimum between frames).
+            now = time.monotonic()
+            if now - self._drag_last_draw < 0.016:
+                return
+            self._drag_last_draw = now
+
+            self._preview_gate(skip_cache=True)
+
+            # Restore frozen axis limits to prevent autoscale expansion when
+            # a corner handle is dragged near or beyond the current view edge.
+            try:
+                self.ax.set_xlim(self._handle_drag['frozen_xlim'])
+                self.ax.set_ylim(self._handle_drag['frozen_ylim'])
+            except Exception:
+                pass
+
+            self._blit_render()
+            return
+
+        # ── Gate-body move (right-drag inside gate, any mode) ────────────────
+        # Uses display-pixel arithmetic so the gate shape stays visually rigid
+        # on any axis scale (linear, log, biexp).  Each motion event applies a
+        # pixel delta to the pre-computed original pixel coords and batch-inverts
+        # them back to data space — one NumPy call regardless of gate complexity.
+        if self._gate_move:
+            info = self._gate_move
+            gate = info['gate']
+            orig = info['orig']
+            gt   = gate.get('type')
+            gid  = gate['id']
+            # Pixel delta from press point (free 2-D movement, no axis constraint)
+            dpx = event.x - info['press_px'][0]
+            dpy = event.y - info['press_px'][1]
+
+            # Shift original pixel coords and invert to data space in one batch
+            shifted_px = info['orig_px'] + np.array([dpx, dpy])
+            try:
+                new_data = self.ax.transData.inverted().transform(shifted_px)
+            except Exception:
+                return
+            # Evict stale caches (same pattern as _drag_handle_update)
+            stale = [k for k in self._gmc if k[3] == gid]
+            for k in stale:
+                self._gmc.pop(k, None)
+            self._scatter_cache.clear()
+            if gt == 'rectangle':
+                gate['x0'], gate['y0'] = float(new_data[0, 0]), float(new_data[0, 1])
+                gate['x1'], gate['y1'] = float(new_data[1, 0]), float(new_data[1, 1])
+            elif gt == 'ellipse':
+                # Store as the same (x0,y0),(x1,y1) corner convention
+                gate['x0'], gate['y0'] = float(new_data[0, 0]), float(new_data[0, 1])
+                gate['x1'], gate['y1'] = float(new_data[1, 0]), float(new_data[1, 1])
+            elif gt == 'polygon':
+                gate['vertices'] = [(float(new_data[i, 0]), float(new_data[i, 1]))
+                                    for i in range(len(new_data))]
+
+            # Throttle: cap redraws at ~60 fps (16 ms minimum between frames).
+            # Intermediate positions are skipped when the mouse moves faster than
+            # the renderer; _drag_last_draw = 0 at press time so frame 1 never drops.
+            now = time.monotonic()
+            if now - self._drag_last_draw < 0.016:
+                return
+            self._drag_last_draw = now
+
+            # Rebuild gate outline artists with updated geometry.
+            # skip_cache=True: _rebuild_handle_px_cache() is never needed here —
+            # the hover hit-test block is unreachable while _gate_move is active.
+            self._preview_gate(skip_cache=True)
+
+            # Correct axis limits: _preview_gate() calls ax.plot()/add_patch() which
+            # participate in autoscale and can expand the view if a vertex moves near
+            # the axes edge.  Restoring frozen_xlim/ylim keeps the visual context stable
+            # and ensures draw_artist() uses the same transform as the blit background.
+            try:
+                self.ax.set_xlim(info['frozen_xlim'])
+                self.ax.set_ylim(info['frozen_ylim'])
+            except Exception:
+                pass
+
+            self._blit_render()
+            return
+
+        mode = self.gate_mode_var.get()
+        gt   = self.gate_type_var.get()
+
+        # ── FIX BUG 7: Polygon rubber-band update ────────────────────────
+        # Check for active polygon drawing BEFORE the `inaxes` guard so the
+        # preview line tracks the cursor even when it strays outside the axes.
+        # Use event.xdata/ydata when available (cursor is in axes); keep the
+        # last known position when the cursor is outside (xdata is None).
+        if gt == 'polygon' and self._poly_active and mode == 'draw':
+            if event.xdata is not None and event.ydata is not None:
+                # Cursor is inside the axes — use the exact data coordinate.
+                self._poly_cursor = (event.xdata, event.ydata)
+            # else: cursor outside axes — _poly_cursor retains its last value,
+            # so the rubber-band line stays connected to the last in-axes point
+            # rather than freezing or disappearing.
+
+            # Throttle: cap redraws at ~60 fps.
+            now = time.monotonic()
+            if now - self._drag_last_draw < 0.016:
+                return
+            self._drag_last_draw = now
+
+            self._preview_gate(skip_cache=True)
+            self._blit_render()
             return
 
         # ── Hover detection: show/hide handles — skip when actively drawing ──
         if not self.moving_gate and not self._poly_active:
             if event.inaxes == self.ax:
-                # Handle-proximity test first (pure arithmetic on cached coords — fast)
+                # Handle-proximity test (cache-based — see _hover_test_handles)
                 new_hover = self._hover_test_handles(event)
+
+                # Identify the single nearest handle within threshold.
+                # Uses the same cache for consistency with _hover_test_handles.
+                new_hover_handle_key = None
+                if new_hover is not None:
+                    best_h = float('inf')
+                    for (px, py, handle, idx) in self._handle_px_cache.get(new_hover, []):
+                        dist = ((px - event.x)**2 + (py - event.y)**2)**0.5
+                        if dist < HANDLE_PX * 2.5 and dist < best_h:
+                            best_h = dist
+                            new_hover_handle_key = (new_hover, handle, idx)
+
                 # If no handle nearby, test line proximity only when hover state needs update
                 # (line test calls transData.transform per segment — limit to state changes)
                 if new_hover is None and self._hover_gate_id is not None:
@@ -4278,20 +5981,41 @@ class FlowApp:
                     if abs(ex-lx) + abs(ey-ly) > 10:
                         self._last_line_test_pos = (ex, ey)
                         new_hover = self._hit_test_gate_line(event, threshold_px=8)
+
+                # Interior-body hover: only in draw mode when nothing else is close.
+                # Drives the "all handles filled = right-drag will move" visual signal.
+                new_interior = None
+                if mode == 'draw' and new_hover is None:
+                    hit = self._hit_test_gate_interior(event)
+                    new_interior = hit['id'] if hit else None
+
                 # Update Tk cursor
                 try:
-                    self.canvas.get_tk_widget().config(
-                        cursor=self._cursor_for_hover(event) if (
-                            new_hover or self._pinned_gate_id) else '')
+                    if new_hover or self._pinned_gate_id:
+                        cursor = self._cursor_for_hover(event)
+                    elif new_interior is not None:
+                        cursor = 'fleur'
+                    else:
+                        cursor = ''
+                    self.canvas.get_tk_widget().config(cursor=cursor)
                 except Exception:
                     pass
-                if new_hover != self._hover_gate_id:
-                    self._hover_gate_id = new_hover
+
+                # Redraw whenever any hover state changed
+                changed = (new_hover            != self._hover_gate_id or
+                           new_hover_handle_key != self._hover_handle_key or
+                           new_interior         != self._interior_hover_gate_id)
+                self._hover_gate_id           = new_hover
+                self._hover_handle_key        = new_hover_handle_key
+                self._interior_hover_gate_id  = new_interior
+                if changed:
                     self._preview_gate()
                     self.canvas.draw_idle()
                     return
-            elif self._hover_gate_id is not None:
-                self._hover_gate_id = None
+            elif self._hover_gate_id is not None or self._interior_hover_gate_id is not None:
+                self._hover_gate_id           = None
+                self._hover_handle_key        = None
+                self._interior_hover_gate_id  = None
                 try:
                     self.canvas.get_tk_widget().config(cursor='')
                 except Exception:
@@ -4304,16 +6028,6 @@ class FlowApp:
             return
         x, y = event.xdata, event.ydata
 
-        mode = self.gate_mode_var.get()
-        gt   = self.gate_type_var.get()
-
-        # Polygon rubber-band
-        if gt == 'polygon' and self._poly_active and mode == 'draw':
-            self._poly_cursor = (x, y)
-            self._preview_gate()
-            self.canvas.draw_idle()
-            return
-
         if not self.moving_gate:
             return
         gate = self._draw_gate_obj()
@@ -4325,8 +6039,24 @@ class FlowApp:
         elif gate['type'] in ('rectangle', 'ellipse'):
             gate['x1'] = x; gate['y1'] = y
 
-        self._preview_gate()
-        self.canvas.draw_idle()
+        # Throttle: cap redraws at ~60 fps.
+        now = time.monotonic()
+        if now - self._drag_last_draw < 0.016:
+            return
+        self._drag_last_draw = now
+
+        self._preview_gate(skip_cache=True)
+
+        # Restore frozen axis limits to prevent autoscale expansion as the
+        # gate corner is dragged toward or beyond the current view edge.
+        if self._draw_frozen_xlim is not None:
+            try:
+                self.ax.set_xlim(self._draw_frozen_xlim)
+                self.ax.set_ylim(self._draw_frozen_ylim)
+            except Exception:
+                pass
+
+        self._blit_render()
 
     def _on_release(self, event):
         # ── Finish handle drag (any button) ──
@@ -4335,8 +6065,18 @@ class FlowApp:
                          if g['id'] == self._handle_drag['gate_id']), None)
             self._handle_drag   = None
             self._hover_gate_id = None   # hide handles after release
+            self._end_blit_drag()        # release pixel snapshot before full refresh
             if gate:
                 self._finish_gate(gate)
+            return
+
+        # ── Finish gate-body move ─────────────────────────────────────────────
+        if self._gate_move:
+            gate = self._gate_move['gate']
+            self._gate_move              = None
+            self._interior_hover_gate_id = None
+            self._end_blit_drag()   # release pixel snapshot before full refresh
+            self._finish_gate(gate)
             return
 
         if not self.moving_gate:
@@ -4346,6 +6086,7 @@ class FlowApp:
         gate = self._draw_gate_obj()
         # Guard: released outside axes or None coords
         if not gate or event.xdata is None or event.ydata is None:
+            self._end_blit_drag()   # release snapshot even when discarding gate
             if gate and not gate.get('applied'):
                 self._del_gate(gate['id'])
             return
@@ -4362,12 +6103,14 @@ class FlowApp:
             gate['x1'] = x; gate['y1'] = y
             if (abs(gate['x1'] - gate['x0']) < 1e-10 or
                     abs(gate['y1'] - gate['y0']) < 1e-10):
+                self._end_blit_drag()   # release snapshot before discarding gate
                 self._del_gate(gate['id']); return
             gate['applied'] = True
         else:
             return  # polygon finishes via _poly_finish
 
         self._draw_gate_id = None
+        self._end_blit_drag()   # release pixel snapshot before full refresh
         self._finish_gate(gate)
 
     def _poly_finish(self):
@@ -4380,6 +6123,7 @@ class FlowApp:
         self._poly_cursor  = None
         self._draw_gate_id = None
         self._update_poly_close_btn()
+        self._end_blit_drag()   # release pixel snapshot before full refresh
         self._finish_gate(draw)
 
     def _finish_gate(self, gate: dict):
@@ -4391,6 +6135,9 @@ class FlowApp:
         # but update hint to remind right-click reshapes handles.
         if self.gate_mode_var.get() == 'draw':
             self._gate_hint_var.set('Gate placed  |  Right-drag handles to reshape')
+        # Invalidate the scatter-payload cache: gate geometry has changed so any
+        # cached (xa, ya, rgba) arrays are now stale and must be rebuilt.
+        self._scatter_cache.clear()
         self._compute_gate_stats_for(gate)
         self._rebuild_gate_manager()
         self._rebuild_thresh_panel()
@@ -4429,55 +6176,106 @@ class FlowApp:
     def _draw_handles(self):
         """
         Draw handle markers for:
-        - The gate being dragged (filled square on active handle)
-        - The hovered gate (open circles on all handles)
-        - The pinned gate (open circles, slightly larger — persists after right-click)
+        - The gate being dragged (filled square on the active handle only)
+        - Handle-proximity hover: only the nearest handle shown, filled (resize signal)
+        - Interior-body hover in draw mode: all handles filled (move-whole-gate signal)
+        - Line-proximity hover: all handles as open circles (general hover)
+        - The pinned gate (semi-filled circles, persists after right-click)
         """
         self._handle_artists = []
-        drag_gid   = self._handle_drag['gate_id'] if self._handle_drag else None
+        drag_gid = self._handle_drag['gate_id'] if self._handle_drag else None
         # Collect all gate ids that need handles drawn
         show_gids = set()
-        if drag_gid:     show_gids.add(drag_gid)
-        if self._hover_gate_id:   show_gids.add(self._hover_gate_id)
-        if self._pinned_gate_id:  show_gids.add(self._pinned_gate_id)
+        if drag_gid:                             show_gids.add(drag_gid)
+        if self._hover_gate_id:                  show_gids.add(self._hover_gate_id)
+        if self._pinned_gate_id:                 show_gids.add(self._pinned_gate_id)
+        if self._interior_hover_gate_id:         show_gids.add(self._interior_hover_gate_id)
         if not show_gids:
             return
 
         for gate in self.gates:
             if not gate.get('applied') or gate['id'] not in show_gids:
                 continue
+            gid     = gate['id']
             handles = self._get_handles(gate)
             color   = gate.get('color', GATE_PALETTE[0])
-            pinned  = (gate['id'] == self._pinned_gate_id and
-                       gate['id'] != drag_gid)
+
+            # Classify display mode for this gate's handles:
+            #   'drag'         — a handle is actively being right-dragged
+            #   'interior'     — cursor is inside gate body (draw mode): all filled
+            #   'handle_hover' — cursor is near one specific handle: that handle only
+            #   'line_hover'   — cursor is near gate line, not a handle: all open circles
+            #   'pinned'       — gate was right-clicked on a line to pin its handles
+            if gid == drag_gid:
+                disp = 'drag'
+            elif gid == self._interior_hover_gate_id:
+                disp = 'interior'
+            elif (gid == self._hover_gate_id and
+                  self._hover_handle_key is not None and
+                  self._hover_handle_key[0] == gid):
+                disp = 'handle_hover'
+            elif gid == self._hover_gate_id:
+                disp = 'line_hover'
+            else:
+                disp = 'pinned'
+
             for h in handles:
-                is_dragged = (drag_gid == gate['id'] and
-                              h['handle'] == self._handle_drag.get('handle') and
+                h_key = (gid, h['handle'], h['idx'])
+
+                if disp == 'drag':
+                    active = (h['handle'] == self._handle_drag.get('handle') and
                               h['idx']    == self._handle_drag.get('idx'))
-                marker = 's' if is_dragged else 'o'
-                ms     = 9  if is_dragged else (8 if pinned else 7)
-                mfc    = color if is_dragged else ('none' if not pinned else color+'55')
-                mew    = 2.0 if pinned else 0.5
+                    marker = 's' if active else 'o'
+                    ms     = 9  if active else 7
+                    mfc    = color if active else 'none'
+                    mew    = 1.5 if active else 0.5
+
+                elif disp == 'interior':
+                    # All handles filled — signals "right-drag will move whole gate"
+                    marker, ms, mfc, mew = 'o', 8, color, 1.5
+
+                elif disp == 'handle_hover':
+                    # Only the nearest handle is drawn — signals "right-drag resizes here"
+                    if h_key != self._hover_handle_key:
+                        continue
+                    marker, ms, mfc, mew = 's', 9, color, 1.5
+
+                elif disp == 'line_hover':
+                    marker, ms, mfc, mew = 'o', 7, 'none', 0.5
+
+                else:  # pinned
+                    marker, ms, mfc, mew = 'o', 8, color + '55', 2.0
+
                 a, = self.ax.plot(h['x'], h['y'],
                                   marker=marker, ms=ms,
                                   markerfacecolor=mfc,
                                   markeredgecolor=color,
                                   markeredgewidth=mew,
                                   linestyle='none', zorder=20)
-                a._flowjo_handle = {'gate_id': gate['id'],
+                a._flowjo_handle = {'gate_id': gid,
                                     'handle':  h['handle'],
                                     'idx':     h['idx']}
                 self._handle_artists.append(a)
 
     def _hit_test_handles(self, event) -> dict:
         """
-        Return handle drag info if the click is within HANDLE_PX pixels of
-        any handle on any applied gate.
+        Return handle drag info if the click is within HANDLE_PX*2.5 pixels
+        of any handle on any applied gate.
+
+        The threshold deliberately matches _hover_test_handles (also HANDLE_PX*2.5)
+        so that when the user sees a highlighted handle (hover) and right-clicks on
+        it, the click is guaranteed to fall within the hit-test radius.
+
+        Previously used HANDLE_PX (12px) while hover used HANDLE_PX*2.5 (30px),
+        creating a dead zone of 13-29px where handles were highlighted but clicks
+        silently fell through to the interior-move path — making resize appear broken
+        for loaded gates whose on-screen scale could position handles anywhere.
 
         Computed directly from gate geometry (not from artists) so that
         handles do not need to be visible to be draggable.
         """
         best, best_dist = None, float('inf')
+        threshold = HANDLE_PX * 2.5   # match hover threshold — no dead zone
         for gate in self.gates:
             if not gate.get('applied'):
                 continue
@@ -4487,18 +6285,114 @@ class FlowApp:
                 except Exception:
                     continue
                 dist = ((px - event.x)**2 + (py - event.y)**2)**0.5
-                if dist < HANDLE_PX and dist < best_dist:
+                if dist < threshold and dist < best_dist:
                     best_dist = dist
                     best = {'gate_id': gate['id'],
                             'gate':    gate,
                             'handle':  h['handle'],
                             'idx':     h['idx'],
-                            'orig':    copy.deepcopy(gate)}
+                            # FIX v4.1.3 Bug 1: copy.deepcopy(gate) raises TypeError
+                            # on loaded gates whose dict contains tk.BooleanVar /
+                            # tk.Variable objects.  This caused _hit_test_handles to
+                            # crash silently and return None, making every right-click
+                            # on a handle fall through to the body-move path — breaking
+                            # resize for all loaded gate types (rectangle, ellipse,
+                            # polygon).  Replaced with the same Tkinter-safe shallow
+                            # dict comprehension used in the _gate_move block; only
+                            # plain float values (x0/x1/y0/y1) are ever read from
+                            # 'orig' inside _drag_handle_update, so shallow is correct.
+                            'orig':    {k: v for k, v in gate.items()
+                                        if not isinstance(v, (tk.BooleanVar, tk.Variable))}}
         return best
 
-    def _rebuild_handle_px_cache(self):
+    def _gate_pts_to_pixels(self, gate: dict) -> np.ndarray:
+        """Return gate control points as a (N,2) array of display pixels.
+
+        For rectangle/ellipse: rows are [(x0,y0), (x1,y1)] in data space,
+        transformed to display pixels.
+        For polygon: one row per vertex.
+
+        Used by the pixel-space move to record the original shape at press time
+        so motion events apply a pure pixel translation then invert to data space —
+        preserving visual shape on any axis scale (linear, log, biexp…).
+        """
+        gt = gate.get('type', 'crosshair')
+        if gt in ('rectangle', 'ellipse'):
+            pts = np.array([[gate['x0'], gate['y0']],
+                            [gate['x1'], gate['y1']]], dtype=float)
+        elif gt == 'polygon':
+            verts = gate.get('vertices', [])
+            pts = np.array(verts, dtype=float) if verts else np.zeros((0, 2))
+        else:
+            pts = np.zeros((0, 2))
+        if len(pts) == 0:
+            return pts
+        try:
+            return self.ax.transData.transform(pts)
+        except Exception:
+            return pts
+
+    def _hit_test_gate_interior(self, event) -> dict:
+        """Return the smallest applied rect/ellipse/polygon gate whose interior
+        contains (event.xdata, event.ydata), or None.
+
+        Crosshair gates are excluded — they span the full axes.
+        When gates overlap, the one with the smallest area is returned so that
+        nested/inner gates can be targeted independently of outer ones.
+        Only meaningful when event.xdata/ydata are valid (cursor inside axes).
+        """
+        x, y = event.xdata, event.ydata
+        if x is None or y is None:
+            return None
+        best, best_area = None, float('inf')
+        for gate in self.gates:
+            if not gate.get('applied'):
+                continue
+            gt     = gate.get('type', 'crosshair')
+            inside = False
+            area   = float('inf')
+            if gt == 'rectangle':
+                x0, y0 = gate.get('x0', 0), gate.get('y0', 0)
+                x1, y1 = gate.get('x1', 0), gate.get('y1', 0)
+                xlo, xhi = min(x0, x1), max(x0, x1)
+                ylo, yhi = min(y0, y1), max(y0, y1)
+                inside = xlo <= x <= xhi and ylo <= y <= yhi
+                area   = (xhi - xlo) * (yhi - ylo)
+            elif gt == 'ellipse':
+                x0, y0 = gate.get('x0', 0), gate.get('y0', 0)
+                x1, y1 = gate.get('x1', 0), gate.get('y1', 0)
+                cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+                rx, ry = abs(x1 - x0) / 2, abs(y1 - y0) / 2
+                if rx > 0 and ry > 0:
+                    inside = ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1.0
+                    area   = np.pi * rx * ry
+            elif gt == 'polygon':
+                verts = gate.get('vertices', [])
+                if len(verts) >= 3:
+                    try:
+                        path   = MplPath(verts + [verts[0]])
+                        inside = path.contains_point((x, y))
+                        xs = [v[0] for v in verts]
+                        ys = [v[1] for v in verts]
+                        area = abs(sum(
+                            xs[i] * ys[i - 1] - xs[i - 1] * ys[i]
+                            for i in range(len(xs))
+                        )) / 2
+                    except Exception:
+                        pass
+            if inside and area < best_area:
+                best_area = area
+                best      = gate
+        return best
+
+    def _rebuild_handle_px_cache(self, event=None):
         """Cache all handle positions in display pixels after a full redraw.
-        Avoids calling transData.transform() on every mouse-move event."""
+        Avoids calling transData.transform() on every mouse-move event.
+
+        The optional *event* parameter is accepted so this method can be
+        registered directly as a draw_event callback (Matplotlib passes the
+        DrawEvent object); it is not used internally.
+        """
         self._handle_px_cache = {}
         for gate in self.gates:
             if not gate.get('applied'):
@@ -4615,9 +6509,29 @@ class FlowApp:
         return best_gid
 
     def _hover_test_handles(self, event) -> int:
-        """Return gate_id if cursor is within HANDLE_PX*2.5 of any handle (uses cache).
-        Returns None if no handle is close. Does NOT fall back to line testing —
-        that is done separately in _on_motion to avoid per-pixel transform calls."""
+        """Return gate_id if cursor is within HANDLE_PX*2.5 of any handle.
+
+        Uses _handle_px_cache which is rebuilt:
+          (a) inside _preview_gate() after every geometry change, and
+          (b) in the draw_event callback after every full canvas render.
+
+        Path (b) is the authoritative one: draw_event fires after matplotlib
+        has committed all transforms (including non-linear scales such as
+        asinh/biexp/logicle), so the cached pixel coords exactly match the
+        display positions of the handle markers.
+
+        v4.1.0 tried to replace this with a live transData.transform call.
+        That regressed hover detection for loaded gates on non-linear axes:
+        after ax.clear() → set_xscale() the composite transData transform is
+        in a partially-applied state until the canvas actually renders.
+        Live-transform calls made before or between renders returned pixel
+        coords that disagreed with what the user saw, so no handle was ever
+        detected within the threshold.  Reverting to the cache fixes this.
+
+        Note: _hit_test_handles (click path) uses a live transform and is
+        always called after the canvas has rendered (user sees the screen and
+        clicks), so it remains correct and is unaffected by this revert.
+        """
         best_gid, best_dist = None, float('inf')
         threshold = HANDLE_PX * 2.5
         for gid, entries in self._handle_px_cache.items():
@@ -4629,25 +6543,28 @@ class FlowApp:
         return best_gid
 
     def _cursor_for_hover(self, event) -> str:
-        """Return Tk cursor name appropriate for the current hover state."""
+        """Return Tk cursor name appropriate for the current hover state.
+        Uses _handle_px_cache (post-render, reliable) for cursor shape.
+        """
         if self._handle_drag or self._hover_gate_id or self._pinned_gate_id:
-            # Check if we're specifically over a corner handle → sizing cursor
             threshold = HANDLE_PX * 2.5
             gid = self._handle_drag['gate_id'] if self._handle_drag else (
                   self._hover_gate_id or self._pinned_gate_id)
-            entries = self._handle_px_cache.get(gid, [])
-            for (px, py, handle, idx) in entries:
+            for (px, py, handle, idx) in self._handle_px_cache.get(gid, []):
                 dist = ((px - event.x)**2 + (py - event.y)**2)**0.5
                 if dist < threshold:
-                    if handle == 'center':
-                        return 'fleur'
-                    return 'sizing'
-            # Near a line but not a corner handle
+                    return 'fleur' if handle == 'center' else 'sizing'
             return 'hand2'
         return ''
 
     def _drag_handle_update(self, x: float, y: float):
-        """Update gate geometry as a handle is dragged to (x, y)."""
+        """Update gate geometry as a handle is dragged to (x, y).
+
+        FIX v4.0.14 (Bug 8): Invalidate the gate's persistent mask-cache entry
+        at the start of every drag update.  Without this, a sub-pixel drag that
+        does not change the float vertex coordinates leaves the stale cached mask
+        in self._gmc, so the gate appears not to update after a very small move.
+        """
         info = self._handle_drag
         if not info:
             return
@@ -4656,6 +6573,19 @@ class FlowApp:
         idx    = info['idx']
         orig   = info['orig']
         gt     = gate.get('type', 'crosshair')
+
+        # ── FIX BUG 8: Proactively evict THIS gate from the mask cache ────────
+        # We do this unconditionally (before changing the geometry) so that even
+        # a zero-length drag — where the float coordinates happen to be identical
+        # to the previous position — forces a cache miss and fresh computation.
+        gid = gate['id']
+        stale_keys = [k for k in self._gmc if k[3] == gid]
+        for k in stale_keys:
+            self._gmc.pop(k, None)
+        # Also evict the scatter-payload cache for this gate so the new geometry
+        # is reflected immediately.  The full clear is safe here: drag events
+        # happen at ~60 Hz so the cache will repopulate within the next frame.
+        self._scatter_cache.clear()
 
         if gt in ('rectangle', 'ellipse'):
             # Move corners
@@ -4675,8 +6605,9 @@ class FlowApp:
                 verts[idx] = (x, y)
                 gate['vertices'] = verts
 
-        self._preview_gate()
-        self.canvas.draw_idle()
+        # NOTE: _preview_gate() and canvas rendering are intentionally NOT
+        # called here.  Rendering is the caller's responsibility (_on_motion)
+        # so that throttling and blit logic live in a single place.
 
     def _clear_handles(self):
         for art in self._handle_artists:
@@ -4697,10 +6628,69 @@ class FlowApp:
         # Each interactive caller (_on_click, _on_motion etc.) issues its own
         # explicit canvas.draw_idle() after _preview_gate() returns.
 
-    def _preview_gate(self):
+    def _start_blit_drag(self):
+        """Capture the scatter-only pixel background once at drag press.
+
+        Clears all gate preview artists from the axes so the background
+        contains only scatter + axes decorations (no gate outlines), performs
+        one synchronous canvas.draw() to commit that state, then snapshots
+        the pixel buffer with copy_from_bbox.
+
+        This full render happens exactly once per drag (at press time).
+        The momentary press latency is imperceptible compared with per-frame
+        lag during the motion.  All subsequent frames use restore_region +
+        draw_artist + blit, which only touches gate-outline pixels.
+
+        Sets self._drag_bg to None on failure so the motion handler falls
+        back to the standard draw_idle() path without crashing.
+        """
+        self._clear_preview()           # strip gate outlines from axes
+        try:
+            self.canvas.draw()          # one full synchronous render
+            self._drag_bg = self.canvas.copy_from_bbox(self.fig.bbox)
+        except Exception:
+            self._drag_bg = None        # blit unavailable; draw_idle fallback
+
+    def _end_blit_drag(self):
+        """Release the blit background snapshot after drag ends.
+
+        Called in _on_release before _finish_gate() triggers refresh_plot(),
+        which performs a normal full render reconciling the final gate position.
+        """
+        self._drag_bg = None
+
+    def _blit_render(self):
+        """Composite current preview artists onto the blit background and flush.
+
+        Restores the pixel snapshot captured by _start_blit_drag(), composites
+        all current preview and handle artists on top with draw_artist(), then
+        flushes only those changed pixels with canvas.blit().
+
+        Falls back to canvas.draw_idle() if _drag_bg is None (background was
+        not captured — canvas not yet fully initialised at press time, or blit
+        was never started for this interaction).
+        """
+        if self._drag_bg is not None:
+            self.canvas.restore_region(self._drag_bg)
+            for art in self._preview_artists + self._handle_artists:
+                try:
+                    self.ax.draw_artist(art)
+                except Exception:
+                    pass
+            self.canvas.blit(self.fig.bbox)
+        else:
+            self.canvas.draw_idle()
+
+    def _preview_gate(self, skip_cache: bool = False):
         """
         Redraw ALL gate outlines (applied + in-progress) and handle dots.
         Called both during drag preview and after ax.clear() in refresh_plot.
+
+        skip_cache : if True, skip _rebuild_handle_px_cache().  Set during
+                     gate-body drag — the hover hit-test block is unreachable
+                     while _gate_move is active, so rebuilding pixel coords
+                     each frame is pure overhead.  The cache is rebuilt on
+                     the next full refresh_plot() call (on mouse-release).
         """
         self._clear_preview()
 
@@ -4765,8 +6755,12 @@ class FlowApp:
 
         # Draw handles
         self._draw_handles()
-        # Refresh pixel-coord cache so hover hit-testing needs no per-event transform
-        self._rebuild_handle_px_cache()
+        # Rebuild pixel-coord cache so hover hit-testing avoids per-event transforms.
+        # Skipped during gate-body drag (skip_cache=True): the hover block is
+        # unreachable while _gate_move is active; the cache is rebuilt correctly
+        # on mouse-release via the normal refresh_plot() → _preview_gate() path.
+        if not skip_cache:
+            self._rebuild_handle_px_cache()
         # Caller is responsible for draw_idle to avoid duplicate flushes
 
     # ── Sub-gate (double-click) ───────────────────────────────────────────────
@@ -4824,8 +6818,8 @@ class FlowApp:
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns:
                 continue
-            xa = df[self.x_channel].values.astype(float)
-            ya = df[self.y_channel].values.astype(float)
+            xa = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya = df[self.y_channel].to_numpy(dtype=float, copy=False)
             reg, _ = self._gate_mask_for(target_gate, xa, ya)
             if clicked_region in reg:
                 sub_df = df[reg[clicked_region]].reset_index(drop=True)
@@ -4840,7 +6834,9 @@ class FlowApp:
         self.manager.open_subgate_tab(
             label=clicked_region, filtered_data=filtered,
             parent_x=self.x_channel, parent_y=self.y_channel,
-            total_cells=total)
+            total_cells=total,
+            parent_gate=target_gate, parent_region=clicked_region,
+            excluded_files=dict(self.excluded_files))
 
     def clear_gate(self):
         """Clear the currently selected gate."""
@@ -4859,9 +6855,16 @@ class FlowApp:
         self.moving_gate    = False
         self._poly_active   = False
         self._poly_cursor   = None
-        self._handle_drag      = None
-        self._hover_gate_id    = None
-        self._pinned_gate_id   = None
+        self._handle_drag              = None
+        self._gate_move                = None   # FIX Bug 2: was not reset → stale drag state
+        self._drag_bg                  = None   # release any blit background snapshot
+        self._drag_last_draw           = 0.0    # reset throttle timestamp
+        self._draw_frozen_xlim         = None
+        self._draw_frozen_ylim         = None
+        self._hover_gate_id            = None
+        self._hover_handle_key         = None
+        self._interior_hover_gate_id   = None   # FIX Bug 2: was not reset → stale hover state
+        self._pinned_gate_id           = None
         self._handle_px_cache  = {}
         self._clear_preview()
         self._rebuild_gate_manager()
@@ -4941,7 +6944,7 @@ class FlowApp:
         parts = []
         for df in self._active().values():
             if self.x_channel not in df.columns: continue
-            x = df[self.x_channel].values.astype(float)
+            x = df[self.x_channel].to_numpy(dtype=float, copy=False)
             xt = self._fwd(x, self.x_scale)
             parts.append(xt[np.isfinite(xt)])
         return np.concatenate(parts) if parts else np.array([])
@@ -4950,55 +6953,10 @@ class FlowApp:
         parts = []
         for df in self._active().values():
             if self.y_channel not in df.columns: continue
-            y = df[self.y_channel].values.astype(float)
+            y = df[self.y_channel].to_numpy(dtype=float, copy=False)
             yt = self._fwd(y, self.y_scale)
             parts.append(yt[np.isfinite(yt)])
         return np.concatenate(parts) if parts else np.array([])
-
-    def _deepest_gmm_threshold(self, data_t: np.ndarray,
-                                thresh_list: list) -> float:
-        """
-        Given a list of GMM inter-component thresholds (in transform space),
-        return the one at which the KDE density is LOWEST (deepest valley).
-
-        This selects the most prominent biological separation rather than
-        the leftmost threshold — critical when a 3-component GMM finds
-        [neg-background | neg-main | pos] and thresh_list[0] is the
-        background/main boundary instead of the main/pos boundary.
-        """
-        if len(thresh_list) == 1:
-            return thresh_list[0]
-        from scipy.stats import gaussian_kde as _kde
-        data_t = data_t[np.isfinite(data_t)]
-        try:
-            kde  = _kde(data_t, bw_method='scott')
-            dens = kde(np.asarray(thresh_list, dtype=float))   # one vectorised call
-            return float(thresh_list[int(np.argmin(dens))])
-        except Exception:
-            return thresh_list[0]
-
-    def _collect_2d_transform(self) -> np.ndarray:
-        """
-        Return an (N, 2) array of [X_transformed, Y_transformed] for every
-        cell in ALL currently active (checked) files, with NaN / inf removed.
-        Rows are proper (X_i, Y_i) pairs from the same cell — required for 2D GMM.
-        """
-        x_parts, y_parts = [], []
-        for df in self._active().values():
-            if self.x_channel not in df.columns or                self.y_channel not in df.columns: continue
-            x_raw = df[self.x_channel].values.astype(float)
-            y_raw = df[self.y_channel].values.astype(float)
-            # Keep only cells where BOTH channels are present
-            valid = np.isfinite(x_raw) & np.isfinite(y_raw)
-            xt = self._fwd(x_raw[valid], self.x_scale)
-            yt = self._fwd(y_raw[valid], self.y_scale)
-            valid2 = np.isfinite(xt) & np.isfinite(yt)
-            x_parts.append(xt[valid2])
-            y_parts.append(yt[valid2])
-        if not x_parts:
-            return np.empty((0, 2))
-        return np.column_stack([np.concatenate(x_parts),
-                                np.concatenate(y_parts)])
 
     def _apply_gate_and_refresh(self, xbs_raw, yb_raw, auto_method: str = None):
         """
@@ -5089,10 +7047,14 @@ class FlowApp:
 
         self._apply_gate_and_refresh([xb_raw], yb_raw, auto_method='kde')
 
-        all_x_raw = np.concatenate([df[self.x_channel].dropna().values
+        all_x_raw = np.concatenate([df[self.x_channel].to_numpy(dtype=float, copy=False)
                                     for df in active.values()])
-        all_y_raw = np.concatenate([df[self.y_channel].dropna().values
+        all_y_raw = np.concatenate([df[self.y_channel].to_numpy(dtype=float, copy=False)
                                     for df in active.values()])
+        # Filter NaNs before the mean — matches the semantics of the former
+        # .dropna().values which excluded NaN rows from the denominator.
+        all_x_raw = all_x_raw[np.isfinite(all_x_raw)]
+        all_y_raw = all_y_raw[np.isfinite(all_y_raw)]
         pct_x = float(np.mean(all_x_raw < xb_raw)) * 100
         pct_y = float(np.mean(all_y_raw < yb_raw)) * 100
         self.status_var.set(
@@ -5135,59 +7097,18 @@ class FlowApp:
 
         self._apply_gate_and_refresh([xb_raw], yb_raw, auto_method='otsu')
 
-        all_x_raw = np.concatenate([df[self.x_channel].dropna().values
+        all_x_raw = np.concatenate([df[self.x_channel].to_numpy(dtype=float, copy=False)
                                     for df in active.values()])
-        all_y_raw = np.concatenate([df[self.y_channel].dropna().values
+        all_y_raw = np.concatenate([df[self.y_channel].to_numpy(dtype=float, copy=False)
                                     for df in active.values()])
+        # Exclude NaNs to match former .dropna().values semantics.
+        all_x_raw = all_x_raw[np.isfinite(all_x_raw)]
+        all_y_raw = all_y_raw[np.isfinite(all_y_raw)]
         pct_x = float(np.mean(all_x_raw < xb_raw)) * 100
         pct_y = float(np.mean(all_y_raw < yb_raw)) * 100
         self.status_var.set(
             f"✓ Otsu: X @ {xb_raw:,.0f} ({pct_x:.1f}% below)"
             f"  |  Y @ {yb_raw:,.0f} ({pct_y:.1f}% below)")
-
-    def auto_gate_both(self):
-        """
-        Auto-Gate BOTH axes simultaneously:
-          X axis → GMM population detection
-          Y axis → Derivative first-valley detection
-        """
-        active = self._active()
-        if not active or not self.x_channel or not self.y_channel:
-            messagebox.showwarning("Auto-Gate",
-                "Load data and select axes first."); return
-
-        self._last_auto_gate_fn = self.auto_gate_both
-        sp = self._sens_params()
-
-        # ── X: GMM ──
-        all_xt = self._collect_x_transform()
-        all_xt = all_xt[np.isfinite(all_xt)]
-        try:
-            thresh_t = gmm_thresholds(all_xt, max_components=sp['gmm_max_comp'])
-        except Exception as e:
-            messagebox.showerror("GMM Error (X)", str(e)); return
-        if thresh_t:
-            xbs_raw = [float(self._inv(np.array([t]), self.x_scale)[0])
-                       for t in thresh_t]
-        else:
-            xb_t    = derivative_threshold(all_xt, min_prominence=sp['kde_prominence'], bw_factor=sp['bw_factor'], min_peak_frac=sp['min_peak_frac'])
-            xbs_raw = [float(self._inv(np.array([xb_t]), self.x_scale)[0])]
-
-        # ── Y: Derivative ──
-        all_yt = self._collect_y_transform()
-        all_yt = all_yt[np.isfinite(all_yt)]
-        try:
-            yb_t = derivative_threshold(all_yt, min_prominence=sp['kde_prominence'], bw_factor=sp['bw_factor'], min_peak_frac=sp['min_peak_frac'])
-        except Exception as e:
-            messagebox.showerror("Derivative Error (Y)", str(e)); return
-        yb_raw = float(self._inv(np.array([yb_t]), self.y_scale)[0])
-
-        self._apply_gate_and_refresh(xbs_raw, yb_raw, auto_method='mixed')
-        n_x = len(xbs_raw)
-        self.status_var.set(
-            f"✓ Mixed GMM+KDE: X={n_x} threshold(s)"
-            + (f" @ {xbs_raw[0]:,.0f}" if n_x == 1 else "")
-            + f"  |  Y @ {yb_raw:,.0f}")
 
     def auto_gate_gmm_multi(self):
         """
@@ -5259,7 +7180,7 @@ class FlowApp:
 
             # Subsample for speed; GMM is stable well above 10k points
             _MAX = 30_000
-            rng  = np.random.default_rng(42)
+            rng  = _get_rng(42)
             if len(data_t) > _MAX:
                 data_t = data_t[rng.choice(len(data_t), _MAX, replace=False)]
 
@@ -5370,7 +7291,7 @@ class FlowApp:
         target['gmm_y_params'] = gmm_y_params   # None if fit failed
         self._sel_gate_id     = target['id']
         self._gate_hint_var.set(
-            f'GMM Multi placed — uncheck crossings you do not want')
+            'GMM Multi placed — uncheck crossings you do not want')
         self._compute_gate_stats_for(target)
         self._rebuild_gate_manager()
         self._rebuild_thresh_panel()
@@ -5381,7 +7302,7 @@ class FlowApp:
         self.status_var.set(
             f"✓ GMM Multi — X: {n_x} comp → {nx} crossing(s)  "
             f"|  Y: {n_y} comp → {ny} crossing(s)  "
-            f"|  Uncheck unwanted thresholds in the Threshold panel")
+            "|  Uncheck unwanted thresholds in the Threshold panel")
 
     def auto_gate_cluster_polygons(self):
         """
@@ -5443,9 +7364,9 @@ class FlowApp:
         # ── Collect data ──────────────────────────────────────────────────────
         all_xt = self._collect_x_transform()
         all_yt = self._collect_y_transform()
-        all_xr = np.concatenate([df[self.x_channel].dropna().values
+        all_xr = np.concatenate([df[self.x_channel].to_numpy(dtype=float, copy=False)
                                   for df in active.values()])
-        all_yr = np.concatenate([df[self.y_channel].dropna().values
+        all_yr = np.concatenate([df[self.y_channel].to_numpy(dtype=float, copy=False)
                                   for df in active.values()])
 
         valid  = np.isfinite(all_xt) & np.isfinite(all_yt)
@@ -5457,7 +7378,7 @@ class FlowApp:
 
         # ── Subsample for speed (HDBSCAN is fast, but cap at 10k) ────────────
         MAX_PTS = 10_000
-        rng = np.random.default_rng(42)
+        rng = _get_rng(42)
         if n_total > MAX_PTS:
             idx    = rng.choice(n_total, MAX_PTS, replace=False)
             xt_s, yt_s = xt[idx], yt[idx]
@@ -5568,23 +7489,12 @@ class FlowApp:
             xbs  = gate.get('x_boundaries', [])
             yb   = gate.get('y_boundary')
             ybs  = gate.get('y_boundaries')   # multi-Y list
-            if xbs:
-                ttk.Label(self.thresh_panel, text="X thresholds:",
-                          style='Dim.TLabel').pack(anchor='w')
-                tvs = gate.get('x_thresh_vars', [])
-                for i, xb in enumerate(xbs):
-                    var = tvs[i] if i < len(tvs) else tk.BooleanVar(value=True)
-                    row = ttk.Frame(self.thresh_panel, style='TFrame')
-                    row.pack(fill=tk.X, pady=1)
-                    ttk.Checkbutton(row, variable=var,
-                                    command=self._on_thresh_toggle,
-                                    style='TCheckbutton').pack(side=tk.LEFT)
-                    ttk.Label(row, text=f'T{i+1}:  {xb:>12,.1f}',
-                              style='Mono.TLabel').pack(side=tk.LEFT)
+
+            # ── Y first ──────────────────────────────────────────────────
             # Multi-Y (from multi-valley gate)
             if ybs:
                 ttk.Label(self.thresh_panel, text="Y thresholds:",
-                          style='Dim.TLabel').pack(anchor='w', pady=(6,0))
+                          style='Dim.TLabel').pack(anchor='w')
                 y_tvs = gate.get('y_thresh_vars', [])
                 for i, yb_val in enumerate(ybs):
                     var = y_tvs[i] if i < len(y_tvs) else tk.BooleanVar(value=True)
@@ -5597,7 +7507,7 @@ class FlowApp:
                               style='Mono.TLabel').pack(side=tk.LEFT)
             elif yb is not None:
                 ttk.Label(self.thresh_panel, text="Y threshold:",
-                          style='Dim.TLabel').pack(anchor='w', pady=(6,0))
+                          style='Dim.TLabel').pack(anchor='w')
                 ytv = gate.get('y_thresh_var') or tk.BooleanVar(value=True)
                 row = ttk.Frame(self.thresh_panel, style='TFrame')
                 row.pack(fill=tk.X, pady=1)
@@ -5606,6 +7516,21 @@ class FlowApp:
                                 style='TCheckbutton').pack(side=tk.LEFT)
                 ttk.Label(row, text=f'Y  :  {yb:>12,.1f}',
                           style='Mono.TLabel').pack(side=tk.LEFT)
+
+            # ── X second ─────────────────────────────────────────────────
+            if xbs:
+                ttk.Label(self.thresh_panel, text="X thresholds:",
+                          style='Dim.TLabel').pack(anchor='w', pady=(6, 0))
+                tvs = gate.get('x_thresh_vars', [])
+                for i, xb in enumerate(xbs):
+                    var = tvs[i] if i < len(tvs) else tk.BooleanVar(value=True)
+                    row = ttk.Frame(self.thresh_panel, style='TFrame')
+                    row.pack(fill=tk.X, pady=1)
+                    ttk.Checkbutton(row, variable=var,
+                                    command=self._on_thresh_toggle,
+                                    style='TCheckbutton').pack(side=tk.LEFT)
+                    ttk.Label(row, text=f'X{i+1}:  {xb:>12,.1f}',
+                              style='Mono.TLabel').pack(side=tk.LEFT)
 
         elif gt == 'rectangle':
             x0,y0 = gate.get('x0',0), gate.get('y0',0)
@@ -5661,22 +7586,15 @@ class FlowApp:
         for path, df in self._active().items():
             if self.x_channel not in df.columns or \
                self.y_channel not in df.columns: continue
-            xa    = df[self.x_channel].values.astype(float)
-            ya    = df[self.y_channel].values.astype(float)
+            xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
             total = len(xa)
             regions, _ = self._gate_mask_for(gate, xa, ya, _cache_path=path)
             self.gate_stats[gid][path] = {
                 'stats': {
-                    rname: {'count': int(m.sum()),
-                            'pct':   m.sum()/total*100 if total else 0.0}
+                    rname: {'count': (c := int(m.sum())), 'pct': c/total*100 if total else 0.0}
                     for rname, m in regions.items()},
                 'total': total}
-
-    def _compute_gate_stats(self):
-        """Recompute stats for the currently selected gate."""
-        sel = self._sel_gate()
-        if sel:
-            self._compute_gate_stats_for(sel)
 
     def _merged_stats_from(self, gate_data: dict) -> dict:
         """Merge per-file stats from a {path: {stats, total}} dict."""
@@ -5715,9 +7633,6 @@ class FlowApp:
         for item in self.stats_tree.get_children():
             self.stats_tree.delete(item)
 
-        for i, c in enumerate(REGION_COLORS):
-            self.stats_tree.tag_configure(f'rc{i}', foreground=c)
-
         applied = [g for g in self.gates if g.get('applied')]
         if not applied: return
 
@@ -5741,7 +7656,7 @@ class FlowApp:
                     self.stats_tree.insert(
                         root_id, 'end', text=f'    {q}',
                         values=(f"{d['count']:,}", f"{d['pct']:.1f}%"),
-                        tags=(f'rc{ri % len(REGION_COLORS)}',))
+                        tags=(f'rc{ri % _N_REGION_COLORS}',))
             else:
                 for path, info in gate_stats.items():
                     name  = os.path.basename(path)
@@ -5753,7 +7668,7 @@ class FlowApp:
                         self.stats_tree.insert(
                             fid, 'end', text=f'    {q}',
                             values=(f"{d['count']:,}", f"{d['pct']:.1f}%"),
-                            tags=(f'rc{ri % len(REGION_COLORS)}',))
+                            tags=(f'rc{ri % _N_REGION_COLORS}',))
             return
 
         # ── Multiple gates: Venn partition ───────────────────────────────
@@ -5815,8 +7730,8 @@ class FlowApp:
             merged_parts = {}
             for df in active.values():
                 if self.x_channel not in df.columns or                    self.y_channel not in df.columns: continue
-                xa = df[self.x_channel].values.astype(float)
-                ya = df[self.y_channel].values.astype(float)
+                xa = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya = df[self.y_channel].to_numpy(dtype=float, copy=False)
                 total += len(xa)
                 for k, v in _partition_data(xa, ya).items():
                     merged_parts[k] = merged_parts.get(k, 0) + v
@@ -5837,12 +7752,12 @@ class FlowApp:
                 self.stats_tree.insert(
                     root_id, 'end', text=f'    {region}',
                     values=(f"{cnt:,}", f"{pct:.1f}%"),
-                    tags=(f'rc{ri % len(REGION_COLORS)}',))
+                    tags=(f'rc{ri % _N_REGION_COLORS}',))
         else:
             for path, df in active.items():
                 if self.x_channel not in df.columns or                    self.y_channel not in df.columns: continue
-                xa    = df[self.x_channel].values.astype(float)
-                ya    = df[self.y_channel].values.astype(float)
+                xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
                 total = len(xa)
                 parts = _partition_data(xa, ya)
                 name  = os.path.basename(path)
@@ -5862,7 +7777,7 @@ class FlowApp:
                     self.stats_tree.insert(
                         fid, 'end', text=f'    {region}',
                         values=(f"{cnt:,}", f"{pct:.1f}%"),
-                        tags=(f'rc{ri % len(REGION_COLORS)}',))
+                        tags=(f'rc{ri % _N_REGION_COLORS}',))
 
     # ── Export ────────────────────────────────────────────────────────────────
 
@@ -5943,7 +7858,7 @@ class FlowApp:
         self.status_var.set(f"✓ {n} gate(s) saved → {os.path.basename(path)}")
         messagebox.showinfo("Save Gates",
             f"{n} gate(s) saved to:\n{path}\n\n"
-            f"Channels at save time:\n"
+            "Channels at save time:\n"
             f"  X: {self.x_channel}\n  Y: {self.y_channel}")
 
     def load_gates(self):
@@ -5973,7 +7888,7 @@ class FlowApp:
         saved_y = payload.get('y_channel', '')
         if saved_x != (self.x_channel or '') or saved_y != (self.y_channel or ''):
             if not messagebox.askyesno("Load Gates",
-                f"Channel mismatch!\n\n"
+                "Channel mismatch!\n\n"
                 f"Saved with:   X={saved_x!r}  Y={saved_y!r}\n"
                 f"Current axes: X={self.x_channel!r}  Y={self.y_channel!r}\n\n"
                 "Load anyway? (Gate positions will be wrong if channels differ.)"):
@@ -6229,6 +8144,15 @@ class FlowApp:
         all_rows = []
         errors   = []
 
+        # Sub-gate context: if this FlowApp was opened by double-clicking a
+        # gate region in the parent tab, batch stats must first filter each
+        # raw file through that parent gate/region before applying the
+        # sub-gate's own gates — otherwise we'd be computing stats against
+        # the full unfiltered population instead of the sub-gate population.
+        is_subgate    = self.parent_gate is not None
+        p_gate        = self.parent_gate
+        p_region      = self.parent_region
+
         for fi, fpath in enumerate(target_files):
             self.status_var.set(
                 f"Batch stats: {fi+1} / {len(target_files)} — {os.path.basename(fpath)}")
@@ -6245,8 +8169,25 @@ class FlowApp:
                     f"'{self.x_channel}' or '{self.y_channel}'")
                 continue
 
-            xa    = df[self.x_channel].values.astype(float)
-            ya    = df[self.y_channel].values.astype(float)
+            # ── Sub-gate pre-filter ───────────────────────────────────────
+            # Restrict to the same parent-gate region that was double-clicked
+            # so the percentages are relative to that sub-population, not to
+            # all cells in the file.
+            if is_subgate:
+                xa_all = df[self.x_channel].to_numpy(dtype=float, copy=False)
+                ya_all = df[self.y_channel].to_numpy(dtype=float, copy=False)
+                p_regions, _ = self._gate_mask_for(p_gate, xa_all, ya_all,
+                                                    _cache_path=fpath)
+                p_mask = p_regions.get(p_region)
+                if p_mask is None or not p_mask.any():
+                    errors.append(
+                        f"{os.path.basename(fpath)}: no cells in parent region "
+                        f"'{p_region}' — skipped")
+                    continue
+                df = df[p_mask].reset_index(drop=True)
+
+            xa    = df[self.x_channel].to_numpy(dtype=float, copy=False)
+            ya    = df[self.y_channel].to_numpy(dtype=float, copy=False)
             total = len(xa)
             stem  = os.path.splitext(os.path.basename(fpath))[0]
 
@@ -6380,9 +8321,9 @@ class FlowApp:
                 continue
 
             # ── Build per-gate masks ────────────────────────────────────────
-            xa = df[self.x_channel].values.astype(float) \
+            xa = df[self.x_channel].to_numpy(dtype=float, copy=False) \
                  if self.x_channel and self.x_channel in df.columns else None
-            ya = df[self.y_channel].values.astype(float) \
+            ya = df[self.y_channel].to_numpy(dtype=float, copy=False) \
                  if self.y_channel and self.y_channel in df.columns else None
 
             if xa is None or ya is None:
@@ -6463,6 +8404,16 @@ class FlowApp:
         win = PolarAnalysisWindow(self.root, self.T, self)
         win.focus_set()
 
+    def open_batch_plots(self):
+        """Open the Batch Plots window (violin distributions + gate % bars)."""
+        if not self.loaded_files:
+            messagebox.showwarning(
+                "Batch Plots",
+                "Load at least one data file first.")
+            return
+        win = BatchPlotWindow(self.root, self.T, self)
+        win.focus_set()
+
     def export_figure(self):
         stem = self._auto_stem()
         xn   = (self.x_channel or 'X').replace(' ', '_')
@@ -6499,6 +8450,1062 @@ class FlowApp:
                 coll.set_rasterized(state)
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Rotated x-label helper for dense categorical axes
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _set_rotated_xlabels(ax, labels: list, fontsize: int = 7) -> None:
+    """
+    Apply 45 ° rotated x-tick labels using standard matplotlib tick machinery.
+
+    ha='right' pins the top-right corner of each label exactly at its tick
+    mark so every label — regardless of length — aligns consistently with
+    its bar/violin.  This is the canonical matplotlib approach and avoids
+    the coordinate-mixing issues of the previous annotate-based helper.
+    """
+    ax.set_xticklabels(labels, rotation=45, ha='right',
+                       fontsize=fontsize, rotation_mode='anchor')
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Batch Plot Window
+# ─────────────────────────────────────────────────────────────────────────────
+
+class BatchPlotWindow(tk.Toplevel):
+    """
+    Batch Plots window — reproduces the "Batch Export Stats — Folder Mode"
+    figure directly inside the application, without writing any files.
+
+    Left panel  : Violin (or box) plot — one shape per sample, showing the
+                  full distribution of a chosen numeric column (intensity,
+                  distance, etc.).  White dot = median, thick bar = IQR,
+                  thin whiskers = 5th–95th percentile.
+
+    Right panel : 100 % stacked bar chart — one bar per sample, showing
+                  the gate population percentages (Ch1+Ch2+, Ch1-Ch2+, …)
+                  for the currently applied FlowApp gate.
+
+    Sample identity
+    ───────────────
+    The window auto-detects which mode it is in:
+
+    • Concatenated-file mode
+        If ANY loaded file contains a "Source_File" column, each unique value
+        in that column becomes one sample (= the original per-file split
+        produced by the Folder-dialog "Save & Load Concatenate" action).
+        A short display name is derived from the Source_File stem using
+        _make_sample_label().
+
+    • Individual-files mode
+        Otherwise each loaded+checked file is one sample (the same colour
+        as in the scatter view).
+
+    Gate filtering
+    ──────────────
+    The gate dropdown lists every applied FlowApp gate.  Selecting a gate
+    computes per-sample population % exactly like batch_export_stats does
+    internally, using _gate_mask_for().  "All cells" skips the stacked bar
+    (no gate regions to show) and only renders the violin panel.
+
+    UI layout mirrors PolarAnalysisWindow / BatchPlotWindow:
+      scrollable sidebar (left) + matplotlib canvas (right).
+    """
+
+    # ── palette of up to 16 distinct sample colours ───────────────────────────
+    _SAMPLE_COLORS = [
+        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+        '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5',
+        '#c49c94',
+    ]
+
+    def __init__(self, parent_root, T: dict, app: 'FlowApp'):
+        super().__init__(parent_root)
+        self.T   = T
+        self.app = app
+        self.title("Batch Plots")
+        self.geometry("1350x820")
+        self.configure(bg=T['sidebar_bg'])
+        self.resizable(True, True)
+
+        # ── state ─────────────────────────────────────────────────────────
+        self._gate_var        = tk.StringVar(value='All cells')
+        self._region_var      = tk.StringVar(value='All regions')
+        self._dist_col_var    = tk.StringVar()
+        self._plot_kind_var   = tk.StringVar(value='violin')  # violin | box
+        self._show_points_var = tk.BooleanVar(value=False)
+        self._show_legend_var = tk.BooleanVar(value=True)
+        self._label_bars_var  = tk.BooleanVar(value=True)
+        self._sample_order_var = tk.StringVar(value='auto')   # auto | alpha
+
+        # per-file visibility (individual-files mode only)
+        self._file_vars: dict = {}
+
+        # cache: {sample_label: (values_array, color)}
+        self._dist_cache: dict = {}
+        # cache: {sample_label: {region_name: pct}}
+        self._pop_cache:  dict = {}
+        # ordered sample label list
+        self._sample_labels: list = []
+        self._replot_pending: str = None  # after() id for debounced replot
+
+        self._build_ui()
+        self._build_file_list()
+        self._populate_dropdowns()
+        self.after(180, self._compute_and_plot)
+
+    def _schedule_replot(self, delay_ms: int = 300):
+        """Debounced replot — cancels any pending call and re-schedules."""
+        if self._replot_pending:
+            try:
+                self.after_cancel(self._replot_pending)
+            except Exception:
+                pass
+        self._replot_pending = self.after(delay_ms, self._do_replot)
+
+    def _do_replot(self):
+        self._replot_pending = None
+        self._compute_and_plot()
+
+    def _zoom(self, dx: float, dy: float):
+        """Adjust horizontal or vertical zoom and re-render."""
+        if dx:
+            self._zoom_x.set(max(0.25, min(4.0, self._zoom_x.get() + dx)))
+        if dy:
+            self._zoom_y.set(max(0.25, min(4.0, self._zoom_y.get() + dy)))
+        if self._sample_labels:
+            self._render_figure()
+
+    def _zoom_reset(self):
+        self._zoom_x.set(1.0)
+        self._zoom_y.set(1.0)
+        if self._sample_labels:
+            self._render_figure()
+
+    # ── helpers ───────────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _make_sample_label(source_file_value: str) -> str:
+        """
+        Derive a short, readable sample name from a Source_File value.
+
+        Strips directory path, extension, and common instrument/pipeline
+        suffixes so the label carries only the biologically meaningful part.
+        """
+        stem = os.path.splitext(os.path.basename(str(source_file_value)))[0]
+        # Order matters: longest / most-specific tails first
+        _TAILS = (
+            '_TH-488_Pooled_CytoFile',
+            '_TH-488_Pooled',
+            '_Pooled_CytoFile',
+            '___Results', '___CytoFile',
+            '__Results',  '__CytoFile',
+            '_Results',   '_CytoFile',
+        )
+        for tail in _TAILS:
+            if stem.endswith(tail):
+                stem = stem[: -len(tail)]
+                break
+        return stem
+
+    def _shorten_labels(self, raw_labels: list) -> list:
+        """
+        Strip the longest common underscore-delimited prefix so labels are
+        as short as possible while still being unique.  No newlines, no
+        truncation — staggered rendering handles visual separation.
+        """
+        if len(raw_labels) <= 1:
+            return list(raw_labels)
+        prefix = os.path.commonprefix(raw_labels)
+        if '_' in prefix:
+            prefix = prefix[:prefix.rfind('_') + 1]
+        if len(prefix) > 4:
+            return [lbl[len(prefix):] or lbl for lbl in raw_labels]
+        return list(raw_labels)
+
+    def _is_concat_mode(self) -> bool:
+        """True if any active file has a Source_File column."""
+        for p, v in self._file_vars.items():
+            if not v.get():
+                continue
+            df = self.app.loaded_files.get(p)
+            if df is not None and 'Source_File' in df.columns:
+                return True
+        return False
+
+    def _get_samples(self) -> 'list[tuple[str, pd.DataFrame, str]]':
+        """
+        Return [(display_label, sub_df, color), ...] in current sort order.
+
+        In concat mode: sub_df is the rows for that Source_File value.
+        In file mode:   sub_df is the full per-file DataFrame.
+        """
+        active_paths = [p for p, v in self._file_vars.items() if v.get()]
+        if not active_paths:
+            return []
+
+        concat_mode = self._is_concat_mode()
+
+        if concat_mode:
+            # Merge all active files into one frame, group by Source_File
+            frames = []
+            for p in sorted(active_paths):
+                df = self.app.loaded_files.get(p)
+                if df is not None:
+                    frames.append(df)
+            if not frames:
+                return []
+            combined = pd.concat(frames, ignore_index=True)
+            if 'Source_File' not in combined.columns:
+                return []
+
+            raw_labels = [self._make_sample_label(sf)
+                          for sf in combined['Source_File'].unique()]
+            short_labels = self._shorten_labels(raw_labels)
+            label_map = dict(zip(
+                combined['Source_File'].unique(), short_labels))
+
+            samples = []
+            for fi, (sf, grp) in enumerate(combined.groupby('Source_File',
+                                                              sort=True)):
+                lbl   = label_map.get(sf, str(sf))
+                color = self._SAMPLE_COLORS[fi % len(self._SAMPLE_COLORS)]
+                samples.append((lbl, grp.reset_index(drop=True), color))
+        else:
+            raw_labels = [self._make_sample_label(p)
+                          for p in sorted(active_paths)]
+            short_labels = self._shorten_labels(raw_labels)
+            samples = []
+            for fi, p in enumerate(sorted(active_paths)):
+                df    = self.app.loaded_files.get(p)
+                if df is None:
+                    continue
+                lbl   = short_labels[fi]
+                color = self.app.file_colors.get(
+                    p, self._SAMPLE_COLORS[fi % len(self._SAMPLE_COLORS)])
+                samples.append((lbl, df, color))
+
+        if self._sample_order_var.get() == 'alpha':
+            samples.sort(key=lambda t: t[0])
+
+        return samples
+
+    def _get_population_mask(self, df: pd.DataFrame) -> np.ndarray:
+        """
+        Boolean row-mask for the selected gate + region.
+        Fresh computation — same pattern as PolarAnalysisWindow.
+        """
+        n    = len(df)
+        name = self._gate_var.get()
+        if name == 'All cells':
+            return np.ones(n, bool)
+        gate = next((g for g in self.app.gates
+                     if g['name'] == name and g.get('applied')), None)
+        if gate is None:
+            return np.ones(n, bool)
+        xch = self.app.x_channel
+        ych = self.app.y_channel
+        if (not xch or not ych
+                or xch not in df.columns or ych not in df.columns):
+            return np.ones(n, bool)
+        xa = df[xch].to_numpy(dtype=float, copy=False)
+        ya = df[ych].to_numpy(dtype=float, copy=False)
+        try:
+            regions, _ = self.app._gate_mask_for(gate, xa, ya)
+        except Exception:
+            return np.ones(n, bool)
+        region_sel = self._region_var.get()
+        if region_sel == 'All regions':
+            combined = np.zeros(n, bool)
+            for rname, mask in regions.items():
+                if gate.get('type', 'crosshair') != 'crosshair' \
+                        and rname == 'OUT':
+                    continue
+                combined |= mask
+            return combined
+        return regions.get(region_sel, np.ones(n, bool))
+
+    def _get_region_pcts_and_n(self, df: pd.DataFrame) -> 'dict[str, tuple]':
+        """
+        Return {region_name: (pct, n_total)} for the selected gate on one
+        sample's DataFrame.  n_total is the total cell count for that sample
+        and is needed to compute the per-sample binomial SEM.
+        Returns {} if no gate is selected or gate cannot be applied.
+        """
+        name = self._gate_var.get()
+        if name == 'All cells':
+            return {}
+        gate = next((g for g in self.app.gates
+                     if g['name'] == name and g.get('applied')), None)
+        if gate is None:
+            return {}
+        xch = self.app.x_channel
+        ych = self.app.y_channel
+        if (not xch or not ych
+                or xch not in df.columns or ych not in df.columns):
+            return {}
+        xa    = df[xch].to_numpy(dtype=float, copy=False)
+        ya    = df[ych].to_numpy(dtype=float, copy=False)
+        total = len(xa)
+        if total == 0:
+            return {}
+        try:
+            regions, _ = self.app._gate_mask_for(gate, xa, ya)
+        except Exception:
+            return {}
+        return {rname: (float(mask.sum()) / total * 100.0, total)
+                for rname, mask in regions.items()}
+
+    def _get_region_pcts(self, df: pd.DataFrame) -> 'dict[str, float]':
+        """
+        Return {region_name: pct} — convenience wrapper around
+        _get_region_pcts_and_n that drops the cell-count component.
+        """
+        return {rname: pct
+                for rname, (pct, _n) in self._get_region_pcts_and_n(df).items()}
+
+    # ── UI construction ───────────────────────────────────────────────────────
+
+    def _build_ui(self):
+        T = self.T
+
+        # scrollable sidebar
+        sb_outer = tk.Frame(self, bg=T['sidebar_bg'], width=270)
+        sb_outer.pack(side=tk.LEFT, fill=tk.Y)
+        sb_outer.pack_propagate(False)
+        sv = ttk.Scrollbar(sb_outer, orient='vertical')
+        sv.pack(side=tk.RIGHT, fill=tk.Y)
+        self._sb_canvas = tk.Canvas(sb_outer, bg=T['sidebar_bg'],
+                                    highlightthickness=0,
+                                    yscrollcommand=sv.set)
+        self._sb_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        sv.config(command=self._sb_canvas.yview)
+        self._sb = ttk.Frame(self._sb_canvas, style='TFrame')
+        self._sb_canvas.create_window((0, 0), window=self._sb,
+                                       anchor='nw', width=254)
+        self._sb.bind('<Configure>',
+            lambda e: self._sb_canvas.configure(
+                scrollregion=self._sb_canvas.bbox('all')))
+        def _scroll(evt):
+            self._sb_canvas.yview_scroll(int(-1*(evt.delta/120)), 'units')
+        self._sb_canvas.bind('<MouseWheel>', _scroll)
+        self._sb.bind('<MouseWheel>', _scroll)
+
+        p = self._sb
+
+        def _sec(txt):
+            ttk.Label(p, text=f'  {txt}', style='Section.TLabel',
+                      anchor='w').pack(fill=tk.X, pady=(10, 2))
+
+        def _lbl(txt):
+            ttk.Label(p, text=txt, style='TLabel').pack(anchor='w', padx=8)
+
+        def _btn(txt, cmd, style='TButton'):
+            b = ttk.Button(p, text=txt, command=cmd, style=style)
+            b.pack(fill=tk.X, padx=8, pady=2)
+            return b
+
+        def _combo(var, vals, width=22):
+            cb = ttk.Combobox(p, textvariable=var, values=vals,
+                              state='readonly', font=('Arial', 8), width=width)
+            cb.pack(fill=tk.X, padx=8, pady=(0, 3))
+            return cb
+
+        # ── GATE / POPULATION ─────────────────────────────────────────────
+        _sec("POPULATION")
+        _lbl("Gate (for population % bar):")
+        self._gate_combo = _combo(self._gate_var, ['All cells'])
+        self._gate_combo.bind('<<ComboboxSelected>>', self._on_gate_changed)
+        _lbl("Region filter (optional):")
+        self._region_combo = _combo(self._region_var, ['All regions'])
+        self._region_combo.bind('<<ComboboxSelected>>',
+                                lambda _e: self._schedule_replot())
+        ttk.Label(p,
+                  text="  Region filter applies to the violin/box data only.",
+                  style='Dim.TLabel', wraplength=230
+                  ).pack(anchor='w', padx=8, pady=(0, 4))
+
+        # ── FILES ─────────────────────────────────────────────────────────
+        _sec("FILES")
+        self._file_list_frame = ttk.Frame(p, style='TFrame')
+        self._file_list_frame.pack(fill=tk.X, padx=8, pady=(0, 4))
+        ttk.Label(p,
+                  text="  If a file has a Source_File column, samples are split from it automatically.",
+                  style='Dim.TLabel', wraplength=230
+                  ).pack(anchor='w', padx=8, pady=(0, 4))
+
+        # ── DISTRIBUTION COLUMN ───────────────────────────────────────────
+        _sec("DISTRIBUTION COLUMN")
+        _lbl("Column for violin / box:")
+        self._dist_combo = _combo(self._dist_col_var, [])
+        self._dist_combo.bind('<<ComboboxSelected>>',
+                              lambda _e: self._schedule_replot())
+        row_auto = ttk.Frame(p, style='TFrame')
+        row_auto.pack(fill=tk.X, padx=8, pady=(0, 4))
+        ttk.Button(row_auto, text='Auto: Intensity',
+                   command=self._auto_intensity,
+                   style='Gray.TButton').pack(side=tk.LEFT, padx=(0,3),
+                                              fill=tk.X, expand=True)
+        ttk.Button(row_auto, text='Auto: Distance',
+                   command=self._auto_distance,
+                   style='Gray.TButton').pack(side=tk.LEFT,
+                                              fill=tk.X, expand=True)
+
+        # ── DISPLAY ───────────────────────────────────────────────────────
+        _sec("DISPLAY")
+        _lbl("Distribution style:")
+        kind_cb = _combo(self._plot_kind_var, ['violin', 'box', 'points only'])
+        kind_cb.bind('<<ComboboxSelected>>', lambda _e: self._schedule_replot())
+        _lbl("Sample order:")
+        order_cb = _combo(self._sample_order_var, ['auto', 'alpha'])
+        order_cb.bind('<<ComboboxSelected>>', lambda _e: self._schedule_replot())
+        for var, txt in [
+            (self._show_points_var, 'Overlay individual points (violin/box)'),
+            (self._label_bars_var,  'Label % on stacked bars'),
+            (self._show_legend_var, 'Legend'),
+        ]:
+            ttk.Checkbutton(p, text=txt, variable=var,
+                            command=self._schedule_replot,
+                            style='TCheckbutton').pack(anchor='w', padx=8)
+
+        # ── ACTIONS ───────────────────────────────────────────────────────
+        _sec("ACTIONS")
+        _btn("💾  Export figure",      self._export_figure,    'Green.TButton')
+        _btn("📋  Export stats → CSV", self._export_stats,     'Blue2.TButton')
+
+        # ── STATISTICS ────────────────────────────────────────────────────
+        _sec("STATISTICS")
+        self._stats_tree = ttk.Treeview(
+            p, columns=('n', 'median', 'mean', 'iqr'),
+            show='tree headings', height=10)
+        for cid, hd, w, anc in [
+            ('#0',    'Sample',  120, 'w'),
+            ('n',     'n',        44, 'e'),
+            ('median','Median',   68, 'e'),
+            ('mean',  'Mean',     68, 'e'),
+            ('iqr',   'IQR',      60, 'e'),
+        ]:
+            self._stats_tree.heading(cid, text=hd, anchor=anc)
+            self._stats_tree.column(cid, width=w, anchor=anc,
+                                    stretch=(cid == '#0'))
+        self._stats_tree.pack(fill=tk.X, padx=8, pady=(0, 4))
+
+        ttk.Frame(p, style='TFrame', height=12).pack()
+
+        # ── plot area — scrollable in both directions, with zoom controls ──
+        self._plot_frame = tk.Frame(self, bg=T['plot_bg'])
+        self._plot_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Zoom scale factor (multiplier on per-sample width)
+        self._zoom_x = tk.DoubleVar(value=1.0)   # horizontal zoom
+        self._zoom_y = tk.DoubleVar(value=1.0)   # vertical zoom (figure height)
+
+        # ── scrollbars ───────────────────────────────────────────────────
+        h_scroll = tk.Scrollbar(self._plot_frame, orient='horizontal',
+                                bg=T['sidebar_bg'])
+        h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+
+        v_scroll = tk.Scrollbar(self._plot_frame, orient='vertical',
+                                bg=T['sidebar_bg'])
+        v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self._plot_canvas_widget = tk.Canvas(
+            self._plot_frame,
+            bg=T['plot_bg'],
+            highlightthickness=0,
+            xscrollcommand=h_scroll.set,
+            yscrollcommand=v_scroll.set,
+        )
+        self._plot_canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        h_scroll.config(command=self._plot_canvas_widget.xview)
+        v_scroll.config(command=self._plot_canvas_widget.yview)
+
+        # Matplotlib figure lives inside a plain Frame embedded in the Canvas
+        self._fig_frame = tk.Frame(self._plot_canvas_widget, bg=T['plot_bg'])
+        self._fig_frame_id = self._plot_canvas_widget.create_window(
+            (0, 0), window=self._fig_frame, anchor='nw')
+
+        self._fig = Figure(figsize=(max(13, len(self._sample_labels) * 0.55 + 4), 6),
+                           facecolor=T['fig_bg'])
+        self._canvas = FigureCanvasTkAgg(self._fig, master=self._fig_frame)
+        self._canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        # Keep scroll region in sync whenever the inner frame is resized
+        def _on_fig_frame_configure(event):
+            self._plot_canvas_widget.configure(
+                scrollregion=self._plot_canvas_widget.bbox('all'))
+        self._fig_frame.bind('<Configure>', _on_fig_frame_configure)
+
+        # Mouse-wheel: vertical scroll; Shift+wheel: horizontal scroll
+        def _vscroll(event):
+            self._plot_canvas_widget.yview_scroll(
+                int(-1 * (event.delta / 120)), 'units')
+        def _hscroll(event):
+            self._plot_canvas_widget.xview_scroll(
+                int(-1 * (event.delta / 120)), 'units')
+        self._plot_canvas_widget.bind('<MouseWheel>',       _vscroll)
+        self._plot_canvas_widget.bind('<Shift-MouseWheel>', _hscroll)
+
+        tf = tk.Frame(self._fig_frame, bg=T['sidebar_bg'])
+        tf.pack(fill=tk.X)
+        tb = NavigationToolbar2Tk(self._canvas, tf)
+        tb.config(background=T['sidebar_bg'])
+        tb.update()
+
+        self._status_var = tk.StringVar(value="Opening  …  auto-computing")
+        tk.Label(self._plot_frame, textvariable=self._status_var,
+                 bg=T['header_bg'], fg=T['fg_dim'],
+                 anchor='w', font=('Arial', 8), padx=6
+                 ).pack(side=tk.BOTTOM, fill=tk.X)
+
+    def _build_file_list(self):
+        for w in self._file_list_frame.winfo_children():
+            w.destroy()
+        self._file_vars.clear()
+        for fi, path in enumerate(sorted(self.app.loaded_files.keys())):
+            var = tk.BooleanVar(value=self.app.file_vars.get(
+                path, tk.BooleanVar(value=True)).get())
+            self._file_vars[path] = var
+            color = self.app.file_colors.get(
+                path, FILE_COLORS[fi % _N_FILE_COLORS])
+            row = ttk.Frame(self._file_list_frame, style='TFrame')
+            row.pack(fill=tk.X, pady=1)
+            tk.Label(row, bg=color, width=2,
+                     relief='raised').pack(side=tk.LEFT, padx=(0, 4),
+                                           anchor='n', pady=2)
+            name = os.path.basename(path)
+            # Use wraplength so the name flows onto as many lines as needed
+            # instead of being truncated. 220 px fits inside the 254 px sidebar
+            # after the colour swatch.
+            ttk.Checkbutton(row, text=name, variable=var,
+                            command=self._schedule_replot,
+                            style='TCheckbutton').pack(side=tk.LEFT,
+                                                       fill=tk.X, expand=True)
+
+    def _populate_dropdowns(self):
+        # ── Gate dropdown ──────────────────────────────────────────────────
+        applied = [g for g in self.app.gates if g.get('applied')]
+        gate_names = ['All cells'] + [g['name'] for g in applied]
+        self._gate_combo['values'] = gate_names
+        # Default: auto-select the first applied gate (not "All cells") so
+        # the stacked bar renders immediately on open.
+        current = self._gate_var.get()
+        if current not in gate_names:
+            self._gate_var.set(gate_names[1] if len(gate_names) > 1 else 'All cells')
+        elif current == 'All cells' and len(gate_names) > 1:
+            # First open: promote to real gate
+            self._gate_var.set(gate_names[1])
+        self._on_gate_changed()
+
+        # ── Distribution column dropdown ───────────────────────────────────
+        cols = self._numeric_columns()
+        self._dist_combo['values'] = cols
+        if self._dist_col_var.get() not in cols:
+            # Auto-pick: prefer Distance, then Intensity, then first numeric
+            preferred = next(
+                (c for c in cols if 'distance' in c.lower() or 'dist' in c.lower()),
+                next((c for c in cols if 'intensity' in c.lower()),
+                     cols[0] if cols else ''))
+            self._dist_col_var.set(preferred)
+
+    def _numeric_columns(self) -> list:
+        """Return all numeric columns common to all active files.
+        Only exclude columns that are pure row indices (named 'label' or
+        'index'). All intensity, distance, coordinate and background columns
+        are included so the user can choose freely."""
+        dfs = [self.app.loaded_files[p] for p, v in self._file_vars.items()
+               if v.get() and p in self.app.loaded_files]
+        if not dfs:
+            dfs = list(self.app.loaded_files.values())
+        sets = [set(df.select_dtypes(include='number').columns) for df in dfs]
+        common = sorted(set.intersection(*sets)) if sets else []
+        # Only skip pure integer-index columns named 'label' / 'index'
+        return [c for c in common if c.lower() not in ('label', 'index')]
+
+    def _on_gate_changed(self, event=None):
+        name = self._gate_var.get()
+        if name == 'All cells':
+            self._region_combo['values'] = ['All regions']
+            self._region_var.set('All regions')
+            self._schedule_replot()
+            return
+        gate = next((g for g in self.app.gates
+                     if g['name'] == name and g.get('applied')), None)
+        if gate is None:
+            self._schedule_replot()
+            return
+        xch = self.app.x_channel
+        ych = self.app.y_channel
+        if not xch or not ych:
+            self._region_combo['values'] = ['All regions']
+            self._region_var.set('All regions')
+            self._schedule_replot()
+            return
+        try:
+            regions, _ = self.app._gate_mask_for(
+                gate, np.array([0.0]), np.array([0.0]))
+            rnames = ['All regions'] + list(regions.keys())
+        except Exception:
+            rnames = ['All regions']
+        self._region_combo['values'] = rnames
+        if self._region_var.get() not in rnames:
+            self._region_var.set('All regions')
+        self._schedule_replot()
+
+    def _auto_intensity(self):
+        cols = self._dist_combo['values']
+        hit = next((c for c in cols if 'intensity' in c.lower()), None)
+        if hit:
+            self._dist_col_var.set(hit)
+            self._schedule_replot()
+
+    def _auto_distance(self):
+        cols = self._dist_combo['values']
+        hit = next((c for c in cols
+                    if 'distance' in c.lower() or 'dist' in c.lower()), None)
+        if hit:
+            self._dist_col_var.set(hit)
+            self._schedule_replot()
+
+    # ── compute ───────────────────────────────────────────────────────────────
+
+    def _compute_and_plot(self):
+        self._populate_dropdowns()
+        samples = self._get_samples()
+        if not samples:
+            self._status_var.set("No data — check file selection.")
+            return
+
+        dist_col     = self._dist_col_var.get()
+        gate_name    = self._gate_var.get()
+        region_sel   = self._region_var.get()
+        gate         = next((g for g in self.app.gates
+                             if g['name'] == gate_name and g.get('applied')), None)
+        xch          = self.app.x_channel
+        ych          = self.app.y_channel
+
+        self._dist_cache     = {}
+        self._pop_cache      = {}
+        self._pop_sem_cache  = {}
+
+        for lbl, df, color in samples:
+            n_total = len(df)
+
+            # ── Single _gate_mask_for call per sample ─────────────────────
+            regions: dict = {}
+            if (gate is not None and gate_name != 'All cells'
+                    and xch and ych
+                    and xch in df.columns and ych in df.columns):
+                xa = df[xch].to_numpy(dtype=float, copy=False)
+                ya = df[ych].to_numpy(dtype=float, copy=False)
+                try:
+                    regions, _ = self.app._gate_mask_for(gate, xa, ya)
+                except Exception:
+                    regions = {}
+
+            # ── Population mask for distribution filtering ────────────────
+            if not regions:
+                pop_mask = np.ones(n_total, bool)
+            elif region_sel == 'All regions':
+                pop_mask = np.zeros(n_total, bool)
+                for rname, mask in regions.items():
+                    if gate.get('type', 'crosshair') != 'crosshair' and rname == 'OUT':
+                        continue
+                    pop_mask |= mask
+            else:
+                pop_mask = regions.get(region_sel, np.ones(n_total, bool))
+
+            # ── Distribution values ───────────────────────────────────────
+            if dist_col and dist_col in df.columns:
+                vals = df[dist_col].to_numpy(dtype=float, copy=False)[pop_mask]
+                vals = vals[np.isfinite(vals)]
+            else:
+                vals = np.array([])
+            self._dist_cache[lbl] = (vals, color)
+
+            # ── Population percentages + binomial SEM ─────────────────────
+            if regions and n_total > 0:
+                pct_map = {rname: float(mask.sum()) / n_total * 100.0
+                           for rname, mask in regions.items()}
+                self._pop_cache[lbl] = pct_map
+                for rname, pct in pct_map.items():
+                    p = pct / 100.0
+                    self._pop_sem_cache[(lbl, rname)] = float(
+                        np.sqrt(p * (1.0 - p) / n_total) * 100.0)
+            else:
+                self._pop_cache[lbl] = {}
+
+        self._sample_labels = [lbl for lbl, _, _ in samples]
+
+        self._render_figure()
+        self._update_stats()
+
+        mode = 'concat-mode' if self._is_concat_mode() else 'file-mode'
+        self._status_var.set(
+            f"{len(samples)} sample(s)  ·  {mode}  ·  gate: {gate_name}"
+            + (f"  ·  col: {dist_col}" if dist_col else ""))
+
+    # ── render ────────────────────────────────────────────────────────────────
+
+    def _render_figure(self):
+        T     = self.T
+        labels = self._sample_labels
+        if not labels:
+            return
+
+        # Resize figure using zoom factors
+        n_samples     = len(labels)
+        zoom_x        = getattr(self, '_zoom_x', tk.DoubleVar(value=1.0)).get()
+        zoom_y        = getattr(self, '_zoom_y', tk.DoubleVar(value=1.0)).get()
+        bottom_margin = 0.38
+        fig_w  = max(13, n_samples * 0.6 * zoom_x + 4)
+        fig_h  = 6 * zoom_y
+        self._fig.set_size_inches(fig_w, fig_h)
+
+        self._fig.clear()
+        self._fig.patch.set_facecolor(T['fig_bg'])
+
+        has_dist = bool(self._dist_col_var.get()) and any(
+            len(v) > 0 for v, _ in self._dist_cache.values())
+        has_pop  = any(bool(d) for d in self._pop_cache.values())
+
+        if has_dist and has_pop:
+            gs = self._fig.add_gridspec(1, 2, wspace=0.35,
+                                         left=0.06, right=0.87,
+                                         top=0.90, bottom=bottom_margin)
+            ax_vio = self._fig.add_subplot(gs[0])
+            ax_bar = self._fig.add_subplot(gs[1])
+        elif has_dist:
+            ax_vio = self._fig.add_subplot(1, 1, 1)
+            self._fig.subplots_adjust(left=0.08, right=0.97,
+                                       top=0.90, bottom=bottom_margin)
+            ax_bar = None
+        elif has_pop:
+            ax_vio = None
+            ax_bar = self._fig.add_subplot(1, 1, 1)
+            self._fig.subplots_adjust(left=0.08, right=0.82,
+                                       top=0.90, bottom=bottom_margin)
+        else:
+            self._canvas.draw()
+            return
+
+        for ax in filter(None, [ax_vio, ax_bar]):
+            ax.set_facecolor(T['ax_bg'])
+            _set_spines_color(ax, T['spine'])
+            ax.tick_params(colors=T['fg'], labelsize=8)
+            ax.grid(True, alpha=0.20, color=T['grid'])
+
+        n = len(labels)
+        x_pos = np.arange(n)
+
+        # ── LEFT: violin / box / points only ─────────────────────────────
+        if ax_vio is not None:
+            col  = self._dist_col_var.get()
+            kind = self._plot_kind_var.get()
+            colors_ordered = [self._dist_cache[lbl][1] for lbl in labels]
+
+            if kind == 'violin':
+                data_for_vio = []
+                for lbl in labels:
+                    vals, _ = self._dist_cache[lbl]
+                    data_for_vio.append(vals if len(vals) >= 4 else np.array([0.0]))
+
+                try:
+                    parts = ax_vio.violinplot(
+                        data_for_vio,
+                        positions=x_pos,
+                        showmedians=False, showextrema=False,
+                        widths=0.65)
+                    for i, body in enumerate(parts['bodies']):
+                        body.set_facecolor(colors_ordered[i])
+                        body.set_alpha(0.75)
+                        body.set_edgecolor(T['spine'])
+                        body.set_linewidth(0.6)
+                except Exception:
+                    pass
+
+                # Manual median dot + IQR bar + 5–95 whisker
+                for xi, lbl in enumerate(labels):
+                    vals, col_c = self._dist_cache[lbl]
+                    if len(vals) < 2:
+                        continue
+                    med              = float(np.median(vals))
+                    p5, q1, q3, p95  = np.percentile(vals, [5, 25, 75, 95])
+                    ax_vio.vlines(xi, p5,  p95, color='white', lw=1.2, zorder=4)
+                    ax_vio.vlines(xi, q1,  q3,  color='white', lw=3.5, zorder=5)
+                    ax_vio.scatter([xi], [med], s=28, color='white',
+                                   zorder=6, linewidths=0)
+
+            elif kind == 'box':
+                data_for_box = []
+                for lbl in labels:
+                    vals, _ = self._dist_cache[lbl]
+                    data_for_box.append(vals if len(vals) >= 2 else np.array([0.0]))
+                try:
+                    bp = ax_vio.boxplot(
+                        data_for_box, positions=x_pos,
+                        patch_artist=True, widths=0.55,
+                        medianprops=dict(color='white', lw=1.5),
+                        whiskerprops=dict(color=T['fg_dim'], lw=0.8),
+                        capprops=dict(color=T['fg_dim'], lw=0.8),
+                        flierprops=dict(marker='.', markersize=2,
+                                        markerfacecolor=T['fg_dim'],
+                                        markeredgecolor='none', alpha=0.4))
+                    for i, patch in enumerate(bp['boxes']):
+                        patch.set_facecolor(colors_ordered[i])
+                        patch.set_alpha(0.75)
+                        patch.set_edgecolor(T['spine'])
+                    # Color flier dots to match their box color
+                    for i, flier in enumerate(bp['fliers']):
+                        flier.set_markerfacecolor(colors_ordered[i])
+                        flier.set_markeredgecolor('none')
+                        flier.set_alpha(0.5)
+                except Exception:
+                    pass
+
+            else:
+                # points only — strip plot, no violin/box behind
+                pass   # points drawn unconditionally below for this mode
+
+            # Individual points — always on for 'points only', optional for others
+            show_pts = self._show_points_var.get() or kind == 'points only'
+            if show_pts:
+                # Use a fresh Generator with a fixed seed each render so
+                # subsampling and jitter are identical across re-draws and
+                # the y-axis scale does not shift between views.
+                _rng_pts = np.random.default_rng(42)
+                # Collect all visible values first to set stable y-limits
+                _all_sub_vals: list = []
+                MAX_PTS = 500
+                _per_sample: list = []
+                for xi, lbl in enumerate(labels):
+                    vals, col_c = self._dist_cache[lbl]
+                    if len(vals) == 0:
+                        _per_sample.append((xi, col_c, np.array([]), np.array([])))
+                        continue
+                    if len(vals) > MAX_PTS:
+                        idx = _rng_pts.choice(len(vals), MAX_PTS, replace=False)
+                        sub = vals[idx]
+                    else:
+                        sub = vals.copy()
+                    jitter = _rng_pts.uniform(-0.18, 0.18, size=len(sub))
+                    _per_sample.append((xi, col_c, sub, jitter))
+                    _all_sub_vals.append(sub)
+                # Pin y-limits from the full data range (not just the subsample)
+                # to prevent axis rescaling when switching between modes.
+                _all_full = np.concatenate(
+                    [v for v, _ in self._dist_cache.values() if len(v) > 0]
+                ) if self._dist_cache else np.array([0.0])
+                if len(_all_full) > 0 and np.isfinite(_all_full).any():
+                    _ymin = float(np.nanmin(_all_full))
+                    _ymax = float(np.nanmax(_all_full))
+                    _pad  = (_ymax - _ymin) * 0.05 if _ymax > _ymin else 1.0
+                    ax_vio.set_ylim(_ymin - _pad, _ymax + _pad)
+                for xi, col_c, sub, jitter in _per_sample:
+                    if len(sub) == 0:
+                        continue
+                    ax_vio.scatter(xi + jitter, sub,
+                                   s=5, color=col_c, alpha=0.55,
+                                   linewidths=0, zorder=7)
+
+            # Legend
+            if self._show_legend_var.get() and n <= 16:
+                handles = [mlines.Line2D([], [], color=c, lw=4,
+                                         label=lbl, alpha=0.75)
+                           for lbl, (_, c) in self._dist_cache.items()
+                           if lbl in labels]
+                ax_vio.legend(handles=handles, fontsize=6,
+                              loc='upper right',
+                              facecolor=T['legend_bg'],
+                              labelcolor=T['fg'],
+                              framealpha=0.75,
+                              ncol=max(1, n // 8))
+
+            ax_vio.set_xticks(x_pos)
+            short = self._shorten_labels(labels)
+            _set_rotated_xlabels(ax_vio, short)
+            # Use the full column name for both y-label and title
+            ax_vio.set_ylabel(col, color=T['fg'], fontsize=8)
+            ax_vio.set_title(f'{col}  —  Distribution per Sample',
+                              color=T['fg'], fontsize=9)
+
+        # ── RIGHT: stacked 100 % bar ───────────────────────────────────────
+        if ax_bar is not None:
+            # Collect all region names (union across all samples)
+            all_regions: list = []
+            seen_r: set = set()
+            for lbl in labels:
+                for r in self._pop_cache.get(lbl, {}):
+                    if r not in seen_r:
+                        seen_r.add(r)
+                        all_regions.append(r)
+
+            bottoms = np.zeros(n)
+            for ri, rname in enumerate(all_regions):
+                heights = np.array([
+                    self._pop_cache.get(lbl, {}).get(rname, 0.0)
+                    for lbl in labels])
+                col_bar = REGION_COLORS[ri % _N_REGION_COLORS]
+                bars = ax_bar.bar(x_pos, heights, bottom=bottoms,
+                                  color=col_bar, width=0.65,
+                                  label=rname, edgecolor='none')
+
+                # % labels inside bars
+                if self._label_bars_var.get():
+                    for xi, (h, b) in enumerate(zip(heights, bottoms)):
+                        if h >= 5.0:
+                            ax_bar.text(xi, b + h / 2.0,
+                                        f'{h:.1f}%',
+                                        ha='center', va='center',
+                                        fontsize=6.5, color='white',
+                                        fontweight='bold', clip_on=True)
+
+                # Per-bar binomial SEM: each sample gets its own error bar
+                # looked up by (sample_label, region_name) key.
+                sem_cache = getattr(self, '_pop_sem_cache', {})
+                for xi, (lbl_xi, h, b) in enumerate(
+                        zip(labels, heights, bottoms)):
+                    if h >= 3.0:
+                        sem_bar = sem_cache.get((lbl_xi, rname), 0.0)
+                        if sem_bar > 0:
+                            top_y = b + h
+                            ax_bar.errorbar(
+                                xi, top_y,
+                                yerr=sem_bar,
+                                fmt='none',
+                                ecolor='white',
+                                elinewidth=1.2,
+                                capsize=3.5,
+                                capthick=1.2,
+                                zorder=6,
+                            )
+                bottoms += heights
+
+            ax_bar.set_ylim(0, 100)
+            ax_bar.set_xticks(x_pos)
+            short2 = self._shorten_labels(labels)
+            _set_rotated_xlabels(ax_bar, short2)
+            ax_bar.set_ylabel('Population (%)', color=T['fg'], fontsize=9)
+            gate_lbl = self._gate_var.get()
+            ax_bar.set_title(f'Gate Population % — Per Sample  [{gate_lbl}]',
+                              color=T['fg'], fontsize=9)
+
+            if self._show_legend_var.get() and all_regions:
+                ax_bar.legend(fontsize=7,
+                              loc='upper left',
+                              bbox_to_anchor=(1.01, 1.0),
+                              borderaxespad=0,
+                              facecolor=T['legend_bg'],
+                              labelcolor=T['fg'],
+                              framealpha=0.85)
+
+        self._fig.suptitle('Batch Plots', color=T['fg'], fontsize=10)
+        self._canvas.draw()
+
+        # Update the scrollable canvas scroll region to match the new figure size
+        dpi = self._fig.get_dpi()
+        pw = int(fig_w * dpi)
+        ph = int(fig_h * dpi)
+        self._canvas.get_tk_widget().config(width=pw, height=ph)
+        self._plot_canvas_widget.configure(
+            scrollregion=(0, 0, pw, ph))
+
+    # ── display-only refresh ──────────────────────────────────────────────────
+
+    def _update_stats(self):
+        for item in self._stats_tree.get_children():
+            self._stats_tree.delete(item)
+        if not self._dist_cache:
+            return
+
+        def _f(v):
+            if not np.isfinite(v):
+                return '—'
+            if abs(v) >= 1e6:
+                return f'{v:.3e}'
+            if abs(v) >= 100:
+                return f'{v:,.1f}'
+            return f'{v:.3f}'
+
+        for lbl in self._sample_labels:
+            vals, _ = self._dist_cache.get(lbl, (np.array([]), None))
+            n = len(vals)
+            if n == 0:
+                med = mean = iqr = float('nan')
+            else:
+                med        = float(np.median(vals))
+                mean       = float(np.mean(vals))
+                q25, q75   = np.percentile(vals, [25, 75])
+                iqr        = float(q75 - q25)
+            short = (lbl[:24] + '…') if len(lbl) > 25 else lbl
+            self._stats_tree.insert(
+                '', 'end', text=f'  {short}',
+                values=(f'{n:,}', _f(med), _f(mean), _f(iqr)))
+
+    # ── export ────────────────────────────────────────────────────────────────
+
+    def _export_figure(self):
+        path = filedialog.asksaveasfilename(
+            parent=self,
+            defaultextension='.pdf',
+            initialfile='batch_plots.pdf',
+            filetypes=[("PDF", "*.pdf"), ("PNG", "*.png"),
+                       ("SVG", "*.svg"), ("All", "*.*")])
+        if not path:
+            return
+        try:
+            self._fig.savefig(path, dpi=300, bbox_inches='tight',
+                              facecolor=self._fig.get_facecolor())
+            messagebox.showinfo("Saved", f"Figure saved:\n{path}", parent=self)
+        except Exception as e:
+            messagebox.showerror("Save Error", str(e), parent=self)
+
+    def _export_stats(self):
+        if not self._dist_cache and not self._pop_cache:
+            messagebox.showwarning("Export",
+                "No data yet — select a column and gate first.", parent=self)
+            return
+        path = filedialog.asksaveasfilename(
+            parent=self,
+            defaultextension='.csv',
+            initialfile='batch_stats.csv',
+            filetypes=[("CSV", "*.csv"), ("All", "*.*")])
+        if not path:
+            return
+        rows = []
+        for lbl in self._sample_labels:
+            vals, _ = self._dist_cache.get(lbl, (np.array([]), None))
+            n    = len(vals)
+            if n:
+                _q5, _q25, _q75, _q95 = np.percentile(vals, [5, 25, 75, 95])
+            base = {
+                'Sample':  lbl,
+                'Col':     self._dist_col_var.get(),
+                'Gate':    self._gate_var.get(),
+                'Region':  self._region_var.get(),
+                'N':       n,
+                'Mean':    round(float(np.mean(vals)),        4) if n else '',
+                'Median':  round(float(np.median(vals)),      4) if n else '',
+                'Std':     round(float(np.std(vals, ddof=1)), 4) if n > 1 else '',
+                'IQR':     round(float(_q75 - _q25),          4) if n else '',
+                'p5':      round(float(_q5),                  4) if n else '',
+                'p95':     round(float(_q95),                 4) if n else '',
+            }
+            pops = self._pop_cache.get(lbl, {})
+            for rname, pct in pops.items():
+                safe = rname.replace('/', '_').replace(' ', '_')
+                base[f'Pop_{safe}_pct'] = round(pct, 3)
+            rows.append(base)
+        try:
+            pd.DataFrame(rows).to_csv(path, index=False)
+            messagebox.showinfo("Export",
+                f"Stats saved ({len(rows)} rows):\n{path}", parent=self)
+        except Exception as e:
+            messagebox.showerror("Export", str(e), parent=self)
+
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 #  Tab manager
 # ─────────────────────────────────────────────────────────────────────────────
@@ -6520,13 +9527,14 @@ class FlowTabManager:
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        root.title("vFlow 3.9.9")
+        root.title("vFlow 4.1.4")
         root.geometry("1500x960")
 
         self._theme_name = 'dark'
         self.T = THEMES['dark']
-        _apply_ttk_style(self.T)
-        root.configure(bg=self.T['sidebar_bg'])
+        T = self.T   # local alias
+        _apply_ttk_style(T)
+        root.configure(bg=T['sidebar_bg'])
 
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill=tk.BOTH, expand=True)
@@ -6543,13 +9551,15 @@ class FlowTabManager:
     # ── Tab lifecycle ─────────────────────────────────────────────────────────
 
     def _new_tab(self, title, parent_label, filtered_data,
-                 default_x, default_y):
+                 default_x, default_y,
+                 parent_gate=None, parent_region=None, excluded_files=None):
         frame = ttk.Frame(self.notebook, style='TFrame')
         self.notebook.add(frame, text=title)
 
         # Sub-gate tabs get a thin header bar with a close ✕ button
         if parent_label is not None:
-            hdr = tk.Frame(frame, bg=self.T['header_bg'], height=24)
+            T   = self.T   # local alias — avoids 4× repeated attribute lookup
+            hdr = tk.Frame(frame, bg=T['header_bg'], height=24)
             hdr.pack(fill=tk.X, side=tk.TOP)
             hdr.pack_propagate(False)
             def _close_this():
@@ -6557,11 +9567,11 @@ class FlowTabManager:
                 self._close_tab(idx)
 
             tk.Label(hdr, text=f'  ↳ {parent_label}',
-                     bg=self.T['header_bg'], fg=self.T['fg'],
+                     bg=T['header_bg'], fg=T['fg'],
                      font=('Arial', 8)).pack(side=tk.LEFT, padx=4)
             close_btn = tk.Button(
                 hdr, text=' ✕ ', command=_close_this,
-                bg=self.T['header_bg'], fg=self.T['fg_dim'],
+                bg=T['header_bg'], fg=T['fg_dim'],
                 activebackground='#c33', activeforeground='white',
                 relief='flat', font=('Arial', 9, 'bold'), bd=0, padx=4)
             close_btn.pack(side=tk.RIGHT, padx=4)
@@ -6573,20 +9583,51 @@ class FlowTabManager:
         app = FlowApp(self.root, container=inner,
                       parent_label=parent_label, manager=self)
         if filtered_data:
-            self._load_filtered(app, filtered_data, default_x, default_y)
+            self._load_filtered(app, filtered_data, default_x, default_y,
+                                parent_gate=parent_gate,
+                                parent_region=parent_region,
+                                excluded_files=excluded_files or {})
         self._apps.append(app)
         self.notebook.select(frame)
         return app
 
     @staticmethod
-    def _load_filtered(app, filtered_data, default_x, default_y):
-        """Pre-load filtered DataFrames into a FlowApp and select axes."""
+    def _load_filtered(app, filtered_data, default_x, default_y,
+                       parent_gate=None, parent_region=None, excluded_files=None):
+        """Pre-load filtered DataFrames into a FlowApp and select axes.
+
+        Sub-gate tabs contain only the cells that passed the parent gate,
+        so there is no meaningful data outside that cluster.  We enable
+        fit_axes_var so every render (including after placing a new gate)
+        automatically zooms to the data range instead of showing the full
+        scale which would leave the population as a tiny speck in one corner.
+        The user can still uncheck 'Fit axes to data' in the sidebar.
+
+        parent_gate / parent_region are stored on the app so that
+        batch_export_stats can re-apply the parent filter to each raw file
+        before computing sub-gate statistics.
+
+        excluded_files is a snapshot of the parent's exclusion dict;
+        it is copied into the child so batch_export_stats excludes the same
+        files as the parent analysis did.
+        """
+        # Propagate parent-gate context for batch stats
+        app.parent_gate   = parent_gate    # gate dict (or None for main tab)
+        app.parent_region = parent_region  # region name (or None)
+
+        # Inherit exclusion list from parent tab
+        if excluded_files:
+            app.excluded_files = dict(excluded_files)
+            # Refresh the EXCLUDED FILES panel so it shows the inherited list
+            # instead of the default "(none)" label.
+            app._rebuild_excluded_list()
+
         for path, df in filtered_data.items():
             if path in app.loaded_files:
                 continue
             cidx = len(app.loaded_files)
             app.loaded_files[path] = df
-            app.file_colors[path]  = FILE_COLORS[cidx % len(FILE_COLORS)]
+            app.file_colors[path]  = FILE_COLORS[cidx % _N_FILE_COLORS]
             app._add_file_row(path)
 
         if not app.loaded_files:
@@ -6606,16 +9647,27 @@ class FlowTabManager:
         elif len(cols) > 1:
             app.y_var.set(cols[1]);   app.y_channel = cols[1]
 
+        # Sub-gate tabs: always fit the view to the actual data range.
+        # The parent gate filtered out everything outside the selection,
+        # so showing the full instrument scale would be misleading.
+        # Do not override an already-active lock-scale mode.
+        if not app.lock_scale_var.get():
+            app.fit_axes_var.set(True)
+
         app.refresh_plot()
 
     def open_subgate_tab(self, label: str, filtered_data: dict,
-                         parent_x: str, parent_y: str, total_cells: int):
+                         parent_x: str, parent_y: str, total_cells: int,
+                         parent_gate: dict = None, parent_region: str = None,
+                         excluded_files: dict = None):
         """Called by a FlowApp when the user double-clicks a gated region."""
         short     = label[:22]
         tab_title = f' ↳ {short}  ({total_cells:,}) '
         self._new_tab(title=tab_title, parent_label=label,
                       filtered_data=filtered_data,
-                      default_x=parent_x, default_y=parent_y)
+                      default_x=parent_x, default_y=parent_y,
+                      parent_gate=parent_gate, parent_region=parent_region,
+                      excluded_files=excluded_files or {})
 
     # ── Tab closure ───────────────────────────────────────────────────────────
 
@@ -6627,7 +9679,7 @@ class FlowTabManager:
         if idx == 0:
             return  # Main tab is permanent
         menu  = tk.Menu(self.root, tearoff=0)
-        menu.add_command(label=f'✕  Close tab', command=lambda i=idx: self._close_tab(i))
+        menu.add_command(label='✕  Close tab', command=lambda i=idx: self._close_tab(i))
         menu.tk_popup(event.x_root, event.y_root)
 
     def _close_tab(self, idx: int):
@@ -6645,14 +9697,30 @@ class FlowTabManager:
 # ─────────────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
+    # Heavy imports above already advanced the splash through 5 steps.
+    # Two final steps for the UI build, then finish and launch.
+    if _splash:
+        try:
+            _splash.step("vFlow UI")
+            _splash.step("ready")
+            _splash.finish()
+        except Exception:
+            pass
+
+    # ── Main application ──────────────────────────────────────────────────────
     root = tk.Tk()
     mgr  = FlowTabManager(root)
+
     def _on_close():
-        try: import matplotlib.pyplot as _plt; _plt.close('all')
-        except Exception: pass
+        try:
+            import matplotlib.pyplot as _plt
+            _plt.close('all')
+        except Exception:
+            pass
         root.quit()
         root.destroy()
         sys.exit(0)
+
     root.protocol('WM_DELETE_WINDOW', _on_close)
     root.mainloop()
     sys.exit(0)
