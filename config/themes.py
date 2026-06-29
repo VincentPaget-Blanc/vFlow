@@ -1,0 +1,43 @@
+"""Theme palettes for vFlow."""
+
+THEMES = {
+    "dark": {
+        "sidebar_bg": "#2b2b2b",
+        "plot_bg": "#1e1e1e",
+        "fg": "#e0e0e0",
+        "fg_dim": "#aaaaaa",
+        "header_bg": "#3c3f41",
+        "field_bg": "#3c3f41",
+        "sel_bg": "#3c7fbd",
+        "trough": "#3c3f41",
+        "entry_ins": "#e0e0e0",
+        "fig_bg": "#1e1e1e",
+        "ax_bg": "#1e1e1e",
+        "spine": "#555555",
+        "grid": "#888888",
+        "gate_line": "white",
+        "legend_bg": "#333333",
+        "label_box": "#111111",
+        "label_txt": "white",
+    },
+    "light": {
+        "sidebar_bg": "#f2f2f2",
+        "plot_bg": "#ffffff",
+        "fg": "#111111",
+        "fg_dim": "#555555",
+        "header_bg": "#d8d8d8",
+        "field_bg": "#ffffff",
+        "sel_bg": "#3c7fbd",
+        "trough": "#cccccc",
+        "entry_ins": "#111111",
+        "fig_bg": "#ffffff",
+        "ax_bg": "#ffffff",
+        "spine": "#aaaaaa",
+        "grid": "#cccccc",
+        "gate_line": "#222222",
+        "legend_bg": "#f8f8f8",
+        "label_box": "#eeeeee",
+        "label_txt": "#111111",
+    },
+}
+
