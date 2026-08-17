@@ -1,0 +1,25 @@
+vFlow v4.3 controller decomposition — Milestone 4
+=================================================
+M0 baseline/map + M1 changelog + M2 pure computation + M3 BatchStatsRunner
++ M4 composed GateInteractionController
+
+Authoritative v4.2.0 release SHA-256:
+e7e8e51dae1fd0d3cb404b367057275e80da47ea6eded8548fbed8ae7a15d94f
+
+pytest: 1007/1007 PASS
+compileall: PASS
+scientific fingerprint (byte-identical):
+b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+FlowJo/TextToFCS: shape 1473 x 8; normalizations 10; max DATA diff 0.0
+decoded-value SHA-256:
+5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+
+FlowApp event delegates:
+_on_click: 2 lines
+_on_motion: 2 lines
+_on_release: 2 lines
+GateInteractionController: 776 physical lines
+vflow_app.py: 5960 physical / ~4191 substantive lines
+
+Architecture-only ownership assertions migrated to the new composed owner;
+behavior/failure-order characterizations retained.

@@ -1,0 +1,95 @@
+vFlow v4.3.0-dev Accuracy Hardening A4 Validation
+=================================================
+
+Starting checkpoint
+-------------------
+Certified v4.3.0-dev Gate Axis Preservation A3.
+A3 SHA-256:
+e4d6cedfd34186e0466ae82dea70678a824a73bf83c4344f0f1e0ed7b9f9439d
+A3 baseline reproduced before edits: 1067/1067 PASS.
+
+Cumulative tests
+----------------
+1102/1102 PASS
+
+Compile
+-------
+compileall PASS
+
+A4 deterministic adversarial validator
+--------------------------------------
+300 randomized valid batch partitions PASS
+600 deliberately overlapping/incomplete batch partitions rejected
+303 channel-integrity scenarios PASS
+361 rotated antipodal circular-mean cases PASS
+4 malformed inactive-gate cases rejected
+
+A2 scientific-method validator
+------------------------------
+480/480 independent Gating-ML Logicle root comparisons PASS
+maximum coordinate error: 1.0658141036401503e-14
+3000/3000 legacy gate migration membership events PASS
+polar orientation invariants PASS
+
+A3 gate-axis validator
+----------------------
+480/480 membership-preservation checks PASS
+
+Frozen scientific fingerprint
+-----------------------------
+b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+BYTE-IDENTICAL
+
+FlowJo/TextToFCS reference
+-------------------------
+shape: 1473 x 8
+compatibility normalizations: 10
+all finite: True
+maximum direct big-endian float32 DATA difference: 0.0
+decoded float64 SHA-256:
+5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+UNCHANGED
+
+Legacy rendering probes
+-----------------------
+Dot:
+b1ea81cf7217c6d83d0673697f0a9919298d36fba63e7525695d570de6246bc9
+Density:
+274fdc016409f1d818b0f156e87573fea7897fd14d97b0e542e161ca92a68c34
+Contour:
+e3983d4ca6d2eebad360720b7f6f07b72e0799a5be1ff805ec7bdf47466f7d13
+Gate preview:
+e12d7030e6a51a43e8d1d9fb6e328dfe43a6089b4905413a69bb5f1d4dd2b9a6
+All match certified A3 values exactly.
+
+Scientific/result changes intentionally limited to defect-triggering cases
+--------------------------------------------------------------------------
+* compensation metadata detection/reporting is broader but neutral;
+* valid unused FCS integer high bits are masked before range validation;
+* malformed inactive gates fail instead of being reshaped;
+* saved reversed-axis gate sessions use A3 transposition semantics;
+* undefined circular mean direction is not manufactured from round-off;
+* zero-valid-event samples remain represented;
+* transform/source/input denominator provenance is explicit;
+* KDE/Otsu status percentages match the actual gate universe and boundary;
+* no-common/ambiguous/partial-source channels fail automatic multi-file matching;
+* Batch Stats partitions must be disjoint and exhaustive;
+* subgate/main stats/render/auto-gate paths reject partial active-file subsets.
+
+Rejected hypotheses
+-------------------
+* Do NOT ignore non-unit $PnG solely because FCS DATA are floating point.
+* Do NOT require identical schemas for heterogeneous CSV concatenation.
+* Do NOT infer uncompensated DATA solely from compensation metadata.
+
+Artifacts
+---------
+validation_artifacts/full_pytest_a4.txt
+validation_artifacts/compileall_a4.txt
+validation_artifacts/accuracy_hardening_a4_checks.json
+validation_artifacts/scientific_fingerprint_a4.txt
+validation_artifacts/scientific_fingerprint_a4.json
+validation_artifacts/flowjo_direct_compare_a4.txt
+validation_artifacts/render_diff_a4.json
+validation_artifacts/science_method_a2_checks_a4.json
+validation_artifacts/gate_axis_swap_checks_a4.json

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  gate_types.svg — four gate types illustrated in vFlow dark style
+  SVG: 900 × 275
+  Panels: h=255, y=10–265  (captions fit at y=245 and y=257)
+  Plot areas: x=panel+10, y=40, w=panel-20, h=170  (y:40–210, unchanged)
+  Y-axis labels: x=panel_left+5, clearly in panel left margin, outside plot
+-->
+<svg viewBox="0 0 900 275" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+
+  <!-- Outer background -->
+  <rect width="900" height="275" rx="10" fill="#1e1e1e"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PANEL 1 — CROSSHAIR   panel x=10 w=210  cx=115
+  ══════════════════════════════════════════════════════════ -->
+  <rect x="10" y="10" width="210" height="255" rx="6" fill="#2b2b2b"/>
+  <rect x="10" y="10" width="210" height="22" rx="6" fill="#3c3f41"/>
+  <rect x="10" y="24"  width="210" height="8"  fill="#3c3f41"/>
+  <text x="115" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#e0e0e0">✛  Crosshair</text>
+
+  <!-- plot area  x:20–210  y:40–210 -->
+  <rect x="20" y="40" width="190" height="170" rx="3" fill="#1e1e1e"/>
+
+  <!-- scatter — four quadrant populations -->
+  <!-- bottom-left  Ch1−/Ch2−  grey -->
+  <circle cx="52" cy="178" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="61" cy="185" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="45" cy="192" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="70" cy="175" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="55" cy="168" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="78" cy="190" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="42" cy="182" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <circle cx="66" cy="196" r="2.2" fill="#5a5a5a" opacity=".8"/>
+  <!-- bottom-right  Ch1+/Ch2−  blue -->
+  <circle cx="148" cy="180" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <circle cx="158" cy="173" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <circle cx="168" cy="183" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <circle cx="155" cy="192" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <circle cx="163" cy="165" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <circle cx="142" cy="190" r="2.2" fill="#1f77b4" opacity=".9"/>
+  <!-- top-left  Ch1−/Ch2+  orange -->
+  <circle cx="50" cy="78" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <circle cx="62" cy="68" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <circle cx="72" cy="80" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <circle cx="44" cy="88" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <circle cx="58" cy="62" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <circle cx="68" cy="90" r="2.2" fill="#ff7f0e" opacity=".9"/>
+  <!-- top-right  Ch1+/Ch2+  green (highlighted) -->
+  <circle cx="152" cy="72" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="163" cy="62" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="172" cy="78" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="144" cy="80" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="168" cy="88" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="158" cy="55" r="2.2" fill="#2ca02c" opacity=".9"/>
+  <circle cx="178" cy="68" r="2.2" fill="#2ca02c" opacity=".9"/>
+
+  <!-- crosshair threshold lines -->
+  <line x1="107" y1="40"  x2="107" y2="210" stroke="#e05c5c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="20"  y1="128" x2="210" y2="128" stroke="#e05c5c" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- quadrant labels — centred in each quadrant, away from threshold lines -->
+  <!-- bottom-left: cx≈63, centre of y:128–210 ≈169 → labels at 160/169 -->
+  <text x="63"  y="160" text-anchor="middle" font-size="7.5" fill="#777">Ch1−</text>
+  <text x="63"  y="169" text-anchor="middle" font-size="7.5" fill="#777">Ch2−</text>
+  <!-- bottom-right: cx≈158 -->
+  <text x="158" y="160" text-anchor="middle" font-size="7.5" fill="#777">Ch1+</text>
+  <text x="158" y="169" text-anchor="middle" font-size="7.5" fill="#777">Ch2−</text>
+  <!-- top-left: centre of y:40–128 ≈84 → labels at 75/84 -->
+  <text x="63"  y="75"  text-anchor="middle" font-size="7.5" fill="#777">Ch1−</text>
+  <text x="63"  y="84"  text-anchor="middle" font-size="7.5" fill="#777">Ch2+</text>
+  <!-- top-right: highlighted -->
+  <text x="158" y="75"  text-anchor="middle" font-size="7.5" font-weight="bold" fill="#aaa">Ch1+</text>
+  <text x="158" y="84"  text-anchor="middle" font-size="7.5" font-weight="bold" fill="#aaa">Ch2+</text>
+
+  <!-- axis labels -->
+  <!-- X: centred horizontally, 14px below plot bottom (210) -->
+  <text x="115" y="224" text-anchor="middle" font-size="8" fill="#888">Channel 1</text>
+  <!-- Y: x=15 = 5px right of panel left edge (10), 5px left of plot left edge (20) -->
+  <text x="15" y="125" text-anchor="middle" font-size="8" fill="#888"
+        transform="rotate(-90,15,125)">Channel 2</text>
+
+  <!-- captions — inside panel (bottom=265), at y=245 and y=257 -->
+  <text x="115" y="245" text-anchor="middle" font-size="9" fill="#aaa">Quadrant grid — one or more</text>
+  <text x="115" y="257" text-anchor="middle" font-size="9" fill="#aaa">X and Y threshold lines</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       PANEL 2 — RECTANGLE   panel x=230 w=210  cx=335
+  ══════════════════════════════════════════════════════════ -->
+  <rect x="230" y="10" width="210" height="255" rx="6" fill="#2b2b2b"/>
+  <rect x="230" y="10" width="210" height="22" rx="6" fill="#3c3f41"/>
+  <rect x="230" y="24" width="210" height="8"  fill="#3c3f41"/>
+  <text x="335" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#e0e0e0">▬  Rectangle</text>
+
+  <!-- plot area  x:240–430  y:40–210 -->
+  <rect x="240" y="40" width="190" height="170" rx="3" fill="#1e1e1e"/>
+
+  <!-- scatter — central cluster (blue) + outliers (grey) -->
+  <circle cx="298" cy="122" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="310" cy="108" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="322" cy="118" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="305" cy="132" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="318" cy="102" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="330" cy="125" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="292" cy="112" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="340" cy="115" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="325" cy="138" r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="302" cy="98"  r="2.2" fill="#1f77b4" opacity=".7"/>
+  <circle cx="260" cy="160" r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="272" cy="152" r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="248" cy="170" r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="355" cy="68"  r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="368" cy="80"  r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="378" cy="60"  r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="260" cy="72"  r="2.2" fill="#5a5a5a" opacity=".6"/>
+  <circle cx="252" cy="85"  r="2.2" fill="#5a5a5a" opacity=".6"/>
+
+  <!-- rectangle gate: x=282 y=92 w=72 h=56 → right=354 bottom=148 -->
+  <rect x="282" y="92" width="72" height="56"
+        fill="rgba(77,166,255,0.08)" stroke="#4da6ff" stroke-width="1.5" rx="1"/>
+  <!-- corner handles at exact gate corners -->
+  <circle cx="282" cy="92"  r="4" fill="#3c3f41" stroke="#4da6ff" stroke-width="1.5"/>
+  <circle cx="354" cy="92"  r="4" fill="#3c3f41" stroke="#4da6ff" stroke-width="1.5"/>
+  <circle cx="282" cy="148" r="4" fill="#3c3f41" stroke="#4da6ff" stroke-width="1.5"/>
+  <circle cx="354" cy="148" r="4" fill="#3c3f41" stroke="#4da6ff" stroke-width="1.5"/>
+
+  <!-- axis labels -->
+  <text x="335" y="224" text-anchor="middle" font-size="8" fill="#888">Channel 1</text>
+  <!-- Y: x=235 = 5px right of panel left (230), 5px left of plot left (240) -->
+  <text x="235" y="125" text-anchor="middle" font-size="8" fill="#888"
+        transform="rotate(-90,235,125)">Channel 2</text>
+
+  <!-- captions -->
+  <text x="335" y="245" text-anchor="middle" font-size="9" fill="#aaa">Click-drag to define; right-drag</text>
+  <text x="335" y="257" text-anchor="middle" font-size="9" fill="#aaa">corner handles to resize</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       PANEL 3 — ELLIPSE   panel x=450 w=210  cx=555
+  ══════════════════════════════════════════════════════════ -->
+  <rect x="450" y="10" width="210" height="255" rx="6" fill="#2b2b2b"/>
+  <rect x="450" y="10" width="210" height="22" rx="6" fill="#3c3f41"/>
+  <rect x="450" y="24" width="210" height="8"  fill="#3c3f41"/>
+  <text x="555" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#e0e0e0">⬭  Ellipse</text>
+
+  <!-- plot area  x:460–650  y:40–210 -->
+  <rect x="460" y="40" width="190" height="170" rx="3" fill="#1e1e1e"/>
+
+  <!-- scatter — elliptical cloud (orange) + outliers (grey) -->
+  <circle cx="532" cy="128" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="548" cy="118" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="555" cy="132" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="542" cy="140" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="560" cy="115" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="522" cy="120" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="568" cy="125" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="538" cy="110" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="575" cy="135" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="515" cy="138" r="2.2" fill="#ff7f0e" opacity=".75"/>
+  <circle cx="472" cy="162" r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="483" cy="72"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="592" cy="80"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="600" cy="168" r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="468" cy="55"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="606" cy="60"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+
+  <!-- ellipse gate: cx=548 cy=126 rx=46 ry=28
+       extents: top=98 bottom=154 left=502 right=594 — all inside plot -->
+  <ellipse cx="548" cy="126" rx="46" ry="28"
+           fill="rgba(255,165,0,0.08)" stroke="#ffa500" stroke-width="1.5"/>
+  <!-- cardinal handles exactly on ellipse boundary -->
+  <circle cx="548" cy="98"  r="4" fill="#3c3f41" stroke="#ffa500" stroke-width="1.5"/>
+  <circle cx="548" cy="154" r="4" fill="#3c3f41" stroke="#ffa500" stroke-width="1.5"/>
+  <circle cx="502" cy="126" r="4" fill="#3c3f41" stroke="#ffa500" stroke-width="1.5"/>
+  <circle cx="594" cy="126" r="4" fill="#3c3f41" stroke="#ffa500" stroke-width="1.5"/>
+
+  <!-- axis labels -->
+  <text x="555" y="224" text-anchor="middle" font-size="8" fill="#888">Channel 1</text>
+  <!-- Y: x=455 = 5px right of panel left (450), 5px left of plot left (460) -->
+  <text x="455" y="125" text-anchor="middle" font-size="8" fill="#888"
+        transform="rotate(-90,455,125)">Channel 2</text>
+
+  <!-- captions -->
+  <text x="555" y="245" text-anchor="middle" font-size="9" fill="#aaa">Click-drag to define; right-drag</text>
+  <text x="555" y="257" text-anchor="middle" font-size="9" fill="#aaa">cardinal handles to resize</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       PANEL 4 — POLYGON   panel x=670 w=220  cx=780
+  ══════════════════════════════════════════════════════════ -->
+  <rect x="670" y="10" width="220" height="255" rx="6" fill="#2b2b2b"/>
+  <rect x="670" y="10" width="220" height="22" rx="6" fill="#3c3f41"/>
+  <rect x="670" y="24" width="220" height="8"  fill="#3c3f41"/>
+  <text x="780" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#e0e0e0">⬠  Polygon</text>
+
+  <!-- plot area  x:680–880  y:40–210 -->
+  <rect x="680" y="40" width="200" height="170" rx="3" fill="#1e1e1e"/>
+
+  <!-- scatter — irregular cluster (green) + secondary (purple) + outliers -->
+  <circle cx="752" cy="115" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="765" cy="105" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="775" cy="118" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="760" cy="130" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="742" cy="125" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="770" cy="98"  r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="785" cy="110" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="755" cy="138" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="745" cy="105" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="780" cy="130" r="2.2" fill="#2ca02c" opacity=".8"/>
+  <circle cx="715" cy="165" r="2.2" fill="#9467bd" opacity=".75"/>
+  <circle cx="726" cy="158" r="2.2" fill="#9467bd" opacity=".75"/>
+  <circle cx="720" cy="175" r="2.2" fill="#9467bd" opacity=".75"/>
+  <circle cx="708" cy="170" r="2.2" fill="#9467bd" opacity=".75"/>
+  <circle cx="732" cy="168" r="2.2" fill="#9467bd" opacity=".75"/>
+  <circle cx="695" cy="62"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="840" cy="72"  r="2.2" fill="#5a5a5a" opacity=".55"/>
+  <circle cx="855" cy="165" r="2.2" fill="#5a5a5a" opacity=".55"/>
+
+  <!-- polygon gate — convex hull around green cluster
+       all vertices inside plot area (x:680–880, y:40–210) -->
+  <polygon points="738,93 790,93 800,115 790,142 750,145 728,128 730,100"
+           fill="rgba(44,160,44,0.10)" stroke="#2ca02c" stroke-width="1.5"
+           stroke-linejoin="round"/>
+  <!-- vertex handles — one per polygon vertex -->
+  <circle cx="738" cy="93"  r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="790" cy="93"  r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="800" cy="115" r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="790" cy="142" r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="750" cy="145" r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="728" cy="128" r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+  <circle cx="730" cy="100" r="4" fill="#3c3f41" stroke="#2ca02c" stroke-width="1.5"/>
+
+  <!-- axis labels -->
+  <text x="780" y="224" text-anchor="middle" font-size="8" fill="#888">Channel 1</text>
+  <!-- Y: x=675 = 5px right of panel left (670), 5px left of plot left (680) -->
+  <text x="675" y="125" text-anchor="middle" font-size="8" fill="#888"
+        transform="rotate(-90,675,125)">Channel 2</text>
+
+  <!-- captions -->
+  <text x="780" y="245" text-anchor="middle" font-size="9" fill="#aaa">Click to place vertices; close by</text>
+  <text x="780" y="257" text-anchor="middle" font-size="9" fill="#aaa">double-click or ✓ Close Polygon</text>
+
+</svg>

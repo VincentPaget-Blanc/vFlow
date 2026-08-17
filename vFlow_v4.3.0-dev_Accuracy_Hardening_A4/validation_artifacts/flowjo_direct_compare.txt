@@ -1,0 +1,6 @@
+FCS path: flowjo_texttofcs_reference.fcs
+shape: 1473 x 8
+compatibility normalizations: 10
+all finite: True
+maximum direct big-endian float32 DATA difference: 0.0
+decoded float64 SHA-256: 5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225

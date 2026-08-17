@@ -1,0 +1,51 @@
+vFlow v4.3 controller decomposition — Milestone 07 validation
+===============================================================
+
+Scope
+-----
+Added the composed ProjectDataLoadCoordinator as the final justified ownership
+boundary. It owns dataset admission/load orchestration, gate-session save/load
+orchestration, and excluded-file list persistence. FlowApp retains thin public
+compatibility facades plus direct file-list widget actions (clear/exclude/restore).
+
+Compatibility
+-------------
+- FlowApp._load_paths/save_gates/load_gates/save_excluded_list/load_excluded_list
+  remain callable compatibility facades.
+- Live filedialog/messagebox/tk.BooleanVar/get_last_folder dependencies are passed
+  through the facade, preserving monkeypatch/failure-oracle behavior.
+- Unbound/duck-typed FlowApp._load_paths harnesses remain supported.
+- B27 UI-row-before-dataset-commit ordering remains frozen.
+- Gate version/schema/lineage/provenance/confirmation ordering remains frozen.
+- Excluded-list moved/registered/already semantics remain frozen.
+
+Certification
+-------------
+Focused project/data/gate-session characterization: 54/54 PASS
+Cumulative pytest: 1018/1018 PASS
+compileall: PASS
+Scientific fingerprint: b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef (byte-identical)
+Real FlowJo/TextToFCS DATA shape: 1473 x 8
+Compatibility normalizations: 10
+All decoded values finite: True
+Maximum direct big-endian float32 DATA difference: 0.0
+Decoded float64 SHA-256: 5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+Dot RGBA: bf1b1b3fae4fda4ea34b1c495402ef2dac406a77f65fe096ae663721143b0e01
+Density RGBA: cd950685ef48d2f6f7416b427d879931d6f2fc3fed980c04b7b86f858a4f7422
+Contour RGBA: 293f4cf77552e56abe92fc234068931c8431b91500f407cab400c5aaeb748dbd
+Gate-preview RGBA: aa4ca9b3c8308ce2ab3ace85731805032ff42342c26e0b593633fc251ea91289
+
+Final structural metrics
+------------------------
+vflow_app.py: 3861 physical / 2748 substantive lines
+production package: 15055 substantive lines / 86 Python files
+vflow_app.py production share: 18.25%
+FlowApp distinct self.<...> references: 166 (v4.2 baseline 212)
+ProjectDataLoadCoordinator: 450 physical / 380 substantive lines
+
+Structural stop
+---------------
+YES. The remaining large FlowApp methods are predominantly composition-root,
+Tk presentation, interactive nomenclature, or narrow UI/status/commit shells
+around already-extracted services. Further extraction has diminishing ownership
+and testability benefit.

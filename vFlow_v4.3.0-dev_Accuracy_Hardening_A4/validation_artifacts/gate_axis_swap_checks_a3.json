@@ -1,0 +1,11 @@
+{
+  "axis_swap_membership_checks": 480,
+  "contexts_tested": 3,
+  "different_channel_is_not_swap": true,
+  "gate_types": [
+    "crosshair",
+    "rectangle",
+    "ellipse",
+    "polygon"
+  ]
+}
