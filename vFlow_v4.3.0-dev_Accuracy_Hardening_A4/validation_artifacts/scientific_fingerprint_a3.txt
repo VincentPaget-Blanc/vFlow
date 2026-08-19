@@ -1,1 +1,0 @@
-scientific_fingerprint_sha256=b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef

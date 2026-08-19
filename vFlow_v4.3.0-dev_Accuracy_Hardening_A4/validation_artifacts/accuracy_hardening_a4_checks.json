@@ -1,8 +1,0 @@
-{
-  "channel_integrity_checks": 303,
-  "malformed_inactive_gate_checks": 4,
-  "rejected_bad_batch_partitions": 600,
-  "status": "PASS",
-  "undefined_circular_mean_checks": 361,
-  "valid_batch_partition_checks": 300
-}
