@@ -1,0 +1,15 @@
+{
+  "ui_shell_file_gate_manager": {
+    "references": 134,
+    "missing": []
+  },
+  "gate_interaction_controller": {
+    "references": 56,
+    "missing": []
+  },
+  "flow_renderer": {
+    "references": 50,
+    "missing": []
+  },
+  "status": "PASS"
+}

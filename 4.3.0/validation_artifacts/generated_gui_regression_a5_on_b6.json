@@ -1,0 +1,43 @@
+{
+  "auto_gates": {
+    "auto_gate_cluster_polygons": {
+      "applied_gates": 5,
+      "errors": [],
+      "preview_artists": 5,
+      "stats_gates": 5,
+      "status": "\u2713 Cluster Polygons (HDBSCAN): 5 gate(s)  |  0.4% noise points",
+      "warnings": []
+    },
+    "auto_gate_derivative": {
+      "applied_gates": 1,
+      "errors": [],
+      "preview_artists": 2,
+      "stats_gates": 1,
+      "status": "\u2713 KDE Valley: X @ 113 (50.0% at/below)  |  Y @ 192 (49.9% at/below)",
+      "warnings": []
+    },
+    "auto_gate_gmm_multi": {
+      "applied_gates": 1,
+      "errors": [],
+      "preview_artists": 4,
+      "stats_gates": 1,
+      "status": "\u2713 GMM Multi \u2014 X: 3 comp \u2192 2 crossing(s)  |  Y: 3 comp \u2192 2 crossing(s)  |  Uncheck unwanted thresholds in the Threshold panel",
+      "warnings": []
+    },
+    "auto_gate_otsu": {
+      "applied_gates": 1,
+      "errors": [],
+      "preview_artists": 2,
+      "stats_gates": 1,
+      "status": "\u2713 Otsu: X @ -62 (49.9% at/below)  |  Y @ 111 (49.7% at/below)",
+      "warnings": []
+    }
+  },
+  "scale_matrix": {
+    "inactive_on_different_channel": true,
+    "returns_after_scale_change_on_original_channels": true,
+    "scale_combinations_checked": 36,
+    "scale_failures": []
+  },
+  "status": "PASS"
+}

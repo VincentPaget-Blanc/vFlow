@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "checks": {
+    "lock_captured_before_clear": true,
+    "clear_removes_loaded_files": true,
+    "clear_blanks_channel_values": true,
+    "clear_blanks_channel_variables": true,
+    "clear_resets_lock": true,
+    "clear_removes_old_scatter": true,
+    "clear_replaces_old_title": true,
+    "new_dataset_channels_selected": true,
+    "new_dataset_not_using_old_locked_limits": true,
+    "new_dataset_visible": true,
+    "constant_density_all_scales_safe": true,
+    "mismatch_common_menu_is_intersection": true,
+    "mismatch_has_no_unsafe_xy_pair": true,
+    "mismatch_reports_safe_pause": true,
+    "nan_inf_all_scales_safe": true,
+    "empty_and_single_column_fail_closed": true,
+    "subgate_live_gate_is_plain_provenance": true,
+    "subgate_repeated_close_destroys_widgets": true,
+    "async_callback_errors_none": true,
+    "messagebox_errors_none": true
+  },
+  "failures": [],
+  "async_errors": [],
+  "messagebox_errors": [],
+  "messagebox_warnings": [],
+  "degenerate_scale_results": {
+    "linear": {
+      "ordered": true,
+      "new_async_errors": 0
+    },
+    "log": {
+      "ordered": true,
+      "new_async_errors": 0
+    },
+    "asinh": {
+      "ordered": true,
+      "new_async_errors": 0
+    },
+    "logicle_gml2": {
+      "ordered": true,
+      "new_async_errors": 0
+    },
+    "legacy_biexp": {
+      "ordered": true,
+      "new_async_errors": 0
+    },
+    "legacy_logicle": {
+      "ordered": true,
+      "new_async_errors": 0
+    }
+  }
+}

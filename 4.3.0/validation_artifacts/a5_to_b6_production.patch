@@ -1,0 +1,195 @@
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/controllers/project_data_load_coordinator.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/controllers/project_data_load_coordinator.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/controllers/project_data_load_coordinator.py	2026-08-14 22:32:39.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/controllers/project_data_load_coordinator.py	2026-08-17 09:26:11.850322690 +0000
+@@ -281,8 +281,16 @@
+                 "then save again.")
+             return
+ 
+-        with open(path, 'w') as fh:
+-            json.dump(payload, fh, indent=2)
++        try:
++            with open(path, 'w') as fh:
++                json.dump(payload, fh, indent=2)
++        except OSError as exc:
++            messagebox.showerror(
++                "Save Gates",
++                "Could not write the gate file.\n\n"
++                f"{exc}\n\n"
++                "Choose a writable location and try again.")
++            return
+ 
+         n = len(h.gates)
+         h.status_var.set(gate_save_status(path, n))
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/legacy/vflow_app.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/legacy/vflow_app.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/legacy/vflow_app.py	2026-08-17 08:34:24.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/legacy/vflow_app.py	2026-08-17 09:26:12.497860322 +0000
+@@ -1608,6 +1608,22 @@
+         # the same column gets assigned to both axes.
+         self.x_channel = None
+         self.y_channel = None
++        # The combobox values/visible variables are UI state, not dataset
++        # state.  _update_channel_menus() intentionally no-ops with zero files,
++        # so clear them explicitly to prevent stale channel names lingering.
++        self.x_menu['values'] = ()
++        self.y_menu['values'] = ()
++        self.x_var.set('')
++        self.y_var.set('')
++
++        # Locked limits belong to the dataset that produced them.  Keeping
++        # them across Clear All can make a subsequently loaded dataset appear
++        # completely empty when its numeric range differs.
++        self.lock_scale_var.set(False)
++        self._locked_xlim = None
++        self._locked_ylim = None
++        self._show_lock_buttons(False)
++
+         self._rebuild_excluded_list()
+         self._update_channel_menus()
+         self.refresh_plot()
+@@ -2944,7 +2960,6 @@
+         return sensitivity_parameters(self.auto_sensitivity_var.get())
+ 
+     @staticmethod
+-    @staticmethod
+     def _kde_valley_supported(data: np.ndarray, threshold: float,
+                               bw_factor: float, min_prominence: float,
+                               min_peak_frac: float) -> bool:
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/plotting/kde_payloads.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/plotting/kde_payloads.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/plotting/kde_payloads.py	2026-08-14 18:53:22.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/plotting/kde_payloads.py	2026-08-17 09:31:41.178012159 +0000
+@@ -59,6 +59,14 @@
+ 
+     xlo, xhi = np.nanpercentile(xv, [1, 99])
+     ylo, yhi = np.nanpercentile(yv, [1, 99])
++    # Constant or machine-resolution-small spans cannot form the strictly
++    # monotonic interpolation grid required by RegularGridInterpolator.
++    # Density coloring adds no information in that case, so use the existing
++    # deterministic dot-plot fallback instead of allowing an async Tk callback
++    # to crash during a scale change.
++    if (not np.isfinite([xlo, xhi, ylo, yhi]).all()
++            or not xhi > xlo or not yhi > ylo):
++        return KDERenderComputation("dot")
+     core = (xv >= xlo) & (xv <= xhi) & (yv >= ylo) & (yv <= yhi)
+     xc = xv[core]
+     yc = yv[core]
+@@ -78,6 +86,8 @@
+     grid = 96
+     xg = np.linspace(xlo, xhi, grid)
+     yg = np.linspace(ylo, yhi, grid)
++    if np.any(np.diff(xg) <= 0) or np.any(np.diff(yg) <= 0):
++        return KDERenderComputation("dot")
+     xmg, ymg = np.meshgrid(xg, yg, indexing="ij")
+     z = kern(np.vstack([xmg.ravel(), ymg.ravel()])).reshape(grid, grid)
+     interp = RegularGridInterpolator(
+@@ -124,6 +134,9 @@
+     n = len(xv)
+     if n < 20:
+         return KDERenderComputation("dot")
++    if (not np.isfinite([xv.min(), xv.max(), yv.min(), yv.max()]).all()
++            or not xv.max() > xv.min() or not yv.max() > yv.min()):
++        return KDERenderComputation("dot")
+ 
+     try:
+         idx = sampled_indices(n, KDE_SUBSAMPLE, seed=0)
+@@ -137,6 +150,8 @@
+     grid = 96
+     xg_t = np.linspace(xv.min(), xv.max(), grid)
+     yg_t = np.linspace(yv.min(), yv.max(), grid)
++    if np.any(np.diff(xg_t) <= 0) or np.any(np.diff(yg_t) <= 0):
++        return KDERenderComputation("dot")
+     xmg, ymg = np.meshgrid(xg_t, yg_t, indexing="ij")
+     z = kern(np.vstack([xmg.ravel(), ymg.ravel()])).reshape(grid, grid)
+     xg_raw = inverse_transform(
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/rendering/flow_renderer.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/rendering/flow_renderer.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/rendering/flow_renderer.py	2026-08-17 08:30:17.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/rendering/flow_renderer.py	2026-08-17 09:26:11.849225320 +0000
+@@ -91,6 +91,14 @@
+         # multi-file selection can actively clear the previous plot instead of
+         # returning early and leaving stale biological data on screen.
+         active = host._active()
++        # A full data clear must also clear the last rendered biological data.
++        # ``x_channel``/``y_channel`` are intentionally reset by Clear All;
++        # returning early here used to leave the previous scatter/title on
++        # screen indefinitely.  Guard with hasattr so lightweight renderer
++        # hosts used by services/tests keep their historical contract.
++        if hasattr(host, 'loaded_files') and not host.loaded_files:
++            self._clear_invalid_analysis_view("No data loaded.")
++            return
+         if active and (not host.x_channel or not host.y_channel):
+             self._clear_invalid_analysis_view(
+                 "No safe shared X/Y channels are available for all active files.")
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/flow_app_shell.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/flow_app_shell.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/flow_app_shell.py	2026-08-14 18:52:30.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/flow_app_shell.py	2026-08-17 09:26:11.850163396 +0000
+@@ -560,6 +560,19 @@
+ 
+     def _setup_axes(self):
+         T = self.T
++        # Matplotlib may emit non-positive-limit warnings while destroying
++        # shared log-scaled axes (for example when toggling marginals after a
++        # log plot).  Normalize old axes before Figure.clear() so layout
++        # rebuilds cannot inherit or warn on an incompatible transform.
++        for old_ax in tuple(self.fig.axes):
++            try:
++                old_ax.set_xscale('linear')
++            except (AttributeError, TypeError, ValueError):
++                pass
++            try:
++                old_ax.set_yscale('linear')
++            except (AttributeError, TypeError, ValueError):
++                pass
+         self.fig.clear()
+         self.fig.patch.set_facecolor(T['fig_bg'])
+         self._preview_artists = []
+diff -ruN '--exclude=__pycache__' '--exclude=*.pyc' /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/tab_manager.py /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/tab_manager.py
+--- /mnt/data/vflow_audit_b6/a5_clean/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/tab_manager.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vflow_audit_b6/vFlow_v4.3.0-dev_Regression_Hardening_A5_Certified/source/vFlow_v4.3.0-dev/vflow/ui/tab_manager.py	2026-08-17 09:26:11.850249535 +0000
+@@ -102,10 +102,24 @@
+                        parent_gate=None, parent_region=None, population_lineage=None,
+                        excluded_files=None, axis_aliases=None):
+         """Pre-load one child population with frozen v4.1.11 tab semantics."""
++        import tkinter as tk
++
+         from vflow.config.constants import FILE_COLORS, _N_FILE_COLORS
++        from vflow.core.gate_definition import GateDefinition
++
++        # The tab boundary stores immutable analysis provenance.  Be defensive
++        # if a caller supplies a live UI gate: Tk Variables cannot be deep-
++        # copied/pickled and must never leak into AnalysisState.  The normal
++        # double-click path already supplies a plain snapshot; this hardens the
++        # public manager boundary against alternate/internal callers.
++        plain_parent_gate = parent_gate
++        if parent_gate is not None:
++            plain_parent_gate = GateDefinition.from_live_dict(
++                parent_gate, variable_types=(tk.Variable,)
++            ).to_plain_dict()
+ 
+         app._analysis_state_obj().set_population_context(
+-            parent_gate=parent_gate,
++            parent_gate=plain_parent_gate,
+             parent_region=parent_region,
+             population_lineage=population_lineage,
+         )
+@@ -205,7 +219,21 @@
+                         pass
+                     setattr(sub_app, attr, None)
+             self._apps.pop(idx)
+-        self.notebook.forget(tabs[idx])
++        tab_id = tabs[idx]
++        try:
++            tab_widget = self.notebook.nametowidget(tab_id)
++        except (AttributeError, KeyError):
++            tab_widget = None
++        self.notebook.forget(tab_id)
++        # ttk.Notebook.forget() only unmaps the child; it does not destroy it.
++        # Destroy explicitly so closed FlowApp canvases/widgets and callback
++        # references cannot accumulate over repeated sub-gate exploration.
++        if tab_widget is not None:
++            try:
++                if tab_widget.winfo_exists():
++                    tab_widget.destroy()
++            except (AttributeError, TypeError):
++                pass
+ 
+ 
+ def __getattr__(name: str):

@@ -1,0 +1,94 @@
+vFlow v4.3.0-dev — Refactor Integrity B6 Validation
+====================================================
+
+Baseline from clean A5
+----------------------
+pytest: 1109 passed
+
+B6 cumulative test suite
+------------------------
+pytest: 1115 passed
+compileall: PASS
+
+Static/live refactor wiring
+---------------------------
+UI shell/file list/gate manager: 134 refs, 0 missing
+GateInteractionController host: 56 refs, 0 missing
+FlowRenderer host: 50 refs, 0 missing
+Status: PASS
+
+Retained A5 generated GUI regression
+------------------------------------
+36/36 scale combinations: PASS
+Derivative/KDE auto gate: PASS
+Otsu auto gate: PASS
+GMM Multi auto gate: PASS
+HDBSCAN cluster polygons: PASS
+Status: PASS
+
+Retained A5 interaction smoke
+-----------------------------
+Manual rectangle/ellipse/crosshair/polygon: PASS
+Handle resize: PASS
+Whole-gate move: PASS
+Scale change rebind: PASS
+Different-channel hide + return restore: PASS
+Marginal log->asinh ordered limits: PASS
+Two-file overlay/cycle: PASS
+Session reload on current scale: PASS
+Status: PASS
+
+B6 refactor-integrity GUI checks
+--------------------------------
+Clear removes loaded files: PASS
+Clear blanks visible channel values/variables: PASS
+Clear resets locked limits: PASS
+Clear removes stale scatter/title: PASS
+New distant-range dataset visible after Clear: PASS
+Constant Density all 6 scales: PASS
+NaN/+Inf/-Inf all 6 scales: PASS
+Mismatched channels fail closed: PASS
+Zero-row/single-column files fail closed: PASS
+Live Tk parent gate is converted to plain provenance: PASS
+8 repeated sub-gate closes destroy child widgets: PASS
+Async Tk callback errors: 0
+Messagebox errors: 0
+Status: PASS
+
+Deterministic real-GUI state fuzz
+---------------------------------
+Operations: 80
+Failures: 0
+Async errors: 0
+Messagebox errors: 0
+Status: PASS
+
+Scientific/reference validation
+-------------------------------
+Science Method A2: PASS
+- independent GML2 root checks: 480
+- legacy alias bit-identical: true
+Gate Axis A3: PASS
+- membership checks: 480
+Accuracy A4: PASS
+- channel integrity checks: 303
+- valid batch partition checks: 300
+- rejected bad partitions: 600
+FlowJo/TextToFCS reference: PASS
+- shape: 1473 x 8
+- all finite: true
+- maximum direct big-endian float32 DATA difference: 0.0
+Scientific fingerprint: byte-identical = true
+Frozen render hashes: unchanged
+
+B6 fixed defect classes
+-----------------------
+1. stale plot after Clear All
+2. stale channel selectors after Clear All
+3. locked limits poisoning next dataset
+4. forgotten sub-gate widget/resource leak
+5. Tk Variable leakage into AnalysisState provenance boundary
+6. log-axis warnings during layout teardown
+7. unhandled gate-session filesystem write error
+8. constant/degenerate Density/Contour interpolation crash
+9. duplicate refactor decorator cleanup

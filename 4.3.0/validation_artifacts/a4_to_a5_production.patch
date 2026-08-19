@@ -1,0 +1,307 @@
+--- A4/vflow/app/state.py
++++ A5/vflow/app/state.py
+@@ -128,14 +128,68 @@
+             bound["y_transform_params"] = copy.deepcopy(ctx.get("y_transform_params"))
+         gate["_analysis_context"] = bound
+ 
++    @staticmethod
++    def context_channels_equal(a: dict, b: dict) -> bool:
++        """Return whether two contexts refer to the same ordered X/Y channels."""
++        if not isinstance(a, dict) or not isinstance(b, dict):
++            return False
++        return (
++            (a.get("x_channel") or "") == (b.get("x_channel") or "")
++            and (a.get("y_channel") or "") == (b.get("y_channel") or "")
++        )
++
+     def gate_context_matches(self, gate: dict, context: dict | None = None) -> bool:
+-        """Match a gate to a context, preserving bind-on-first-use behavior."""
++        """Return whether *gate* applies to the requested X/Y measurements.
++
++        Gate applicability is channel-affine, not display-transform-affine.
++        A scale/cofactor/Logicle change keeps the same measurements, so the
++        gate is rebound to that transform and its membership is recomputed.
++        Selecting a different X or Y measurement remains incompatible.
++        """
+         if not gate:
+             return False
+         requested = context or self.context_dict()
+         if not gate.get("_analysis_context"):
+             self.bind_gate_context(gate, requested)
+-        return self.contexts_equal(gate.get("_analysis_context", {}), requested)
++        saved = gate.get("_analysis_context", {})
++        if not self.context_channels_equal(saved, requested):
++            return False
++        if not self.contexts_equal(saved, requested):
++            self.bind_gate_context(gate, requested)
++        return True
++
++    def rebind_gates_matching_context(
++        self, gates, previous_context: dict, new_context: dict | None = None
++    ) -> int:
++        """Move only gates valid in *previous_context* into a new transform context.
++
++        Interactive scale/cofactor/Logicle-parameter changes are a change of
++        display coordinates, not a request to discard gates.  The gate geometry
++        is stored in raw channel coordinates and the evaluator already
++        recomputes membership using the active transform, so gates that were
++        valid immediately before a transform change must follow that change.
++
++        Gates belonging to a different X/Y channel pair (or otherwise already
++        incompatible) are deliberately left untouched.  This distinction is
++        important: changing a measurement channel still makes those gates
++        inactive, while changing only its display transform preserves them.
++        """
++        target = dict(new_context or self.context_dict())
++        count = 0
++        for gate in gates or ():
++            if not gate:
++                continue
++            if not gate.get("_analysis_context"):
++                # Legacy/in-memory gates have the same bind-on-first-use
++                # semantics as gate_context_matches().  Bind to the context
++                # that was active before the transform mutation.
++                self.bind_gate_context(gate, previous_context)
++            if self.contexts_equal(
++                gate.get("_analysis_context", {}), previous_context
++            ):
++                self.bind_gate_context(gate, target)
++                count += 1
++        return count
+ 
+     def advance_data_generation(self) -> int:
+         """Advance and return the monotonic in-memory dataset generation token."""
+--- A4/vflow/controllers/gate_interaction_controller.py
++++ A5/vflow/controllers/gate_interaction_controller.py
+@@ -48,6 +48,7 @@
+     finite_point_pairs,
+     gate_control_points,
+     gate_handles,
++    handle_cache_entries,
+     gate_preview_style,
+     handle_display_mode,
+     handle_marker_style,
+--- A4/vflow/legacy/vflow_app.py
++++ A5/vflow/legacy/vflow_app.py
+@@ -1705,10 +1705,9 @@
+         return (
+             f"Gate '{gate.get('name', gate.get('id', '?'))}' belongs to "
+             f"X={saved.get('x_channel','?')} / Y={saved.get('y_channel','?')} "
+-            f"[{saved.get('x_scale','?')}, {saved.get('y_scale','?')}] and "
+-            f"cannot be applied to X={now.get('x_channel','?')} / "
+-            f"Y={now.get('y_channel','?')} "
+-            f"[{now.get('x_scale','?')}, {now.get('y_scale','?')}]."
++            f"and cannot be applied to X={now.get('x_channel','?')} / "
++            f"Y={now.get('y_channel','?')}. Display-scale changes on the same "
++            "channels are recomputed automatically."
+         )
+ 
+     def _compatible_applied_gates(self) -> list:
+@@ -1752,6 +1751,16 @@
+         if status_message:
+             self.status_var.set(status_message)
+ 
++    def _rebind_gates_after_transform_change(self, previous_context: dict) -> int:
++        """Keep previously-compatible gates attached across display transforms.
++
++        Channel changes intentionally do not use this helper.  It is reserved
++        for scale/cofactor/Logicle-parameter changes where the underlying X/Y
++        measurements are unchanged and gate membership can be recomputed.
++        """
++        return self._analysis_state_obj().rebind_gates_matching_context(
++            self.gates, previous_context, self._current_analysis_context())
++
+     @staticmethod
+     def _plain_gate_snapshot(gate: dict) -> dict:
+         """Deep, Tk-free snapshot suitable for immutable lineage provenance."""
+@@ -1918,6 +1927,7 @@
+     def _apply_scales(self):
+         if self.__dict__.get('_axis_swap_syncing_scales', False):
+             return
++        previous_context = self._current_analysis_context()
+         self.x_scale = self.x_scale_var.get()
+         self.y_scale = self.y_scale_var.get()
+         plan = plan_scale_apply(
+@@ -1925,6 +1935,7 @@
+         self.cofactor = plan.cofactor
+         if plan.replacement_cofactor_text is not None:
+             self.cofactor_str.set(plan.replacement_cofactor_text)
++        self._rebind_gates_after_transform_change(previous_context)
+         self._analysis_context_changed()
+ 
+     def _on_cofactor_change(self, *_):
+@@ -1932,14 +1943,18 @@
+         # intermediate text is ignored until focus-out/Return validation.
+         plan = plan_cofactor_trace(self.cofactor_str.get(), self.cofactor)
+         if plan.apply_value is not None:
++            previous_context = self._current_analysis_context()
+             self.cofactor = plan.apply_value
++            self._rebind_gates_after_transform_change(previous_context)
+             self._analysis_context_changed()
+ 
+     def _validate_cofactor_entry(self, event=None):
+         """Keep the displayed cofactor synchronized with the value in use."""
+         plan = plan_cofactor_entry(self.cofactor_str.get(), self.cofactor)
+         if plan.context_changed:
++            previous_context = self._current_analysis_context()
+             self.cofactor = plan.cofactor
++            self._rebind_gates_after_transform_change(previous_context)
+             self._analysis_context_changed()
+         self.cofactor_str.set(plan.display_text)
+         if plan.status_text is not None:
+@@ -1960,8 +1975,8 @@
+         ttk.Label(
+             dlg,
+             text=("Parameters are stored per axis and with every saved gate. "
+-                  "Changing them changes the analysis coordinate context; existing "
+-                  "gates remain bound to their original parameters."),
++                  "Changing them recomputes gates that are active on the current "
++                  "X/Y channels; gates from other channel pairs remain inactive."),
+             wraplength=430, justify='left'
+         ).grid(row=0, column=0, columnspan=5, padx=12, pady=(12, 8), sticky='w')
+ 
+@@ -1999,11 +2014,13 @@
+                 return
+             changed = (parsed["X"] != self.x_transform_params or
+                        parsed["Y"] != self.y_transform_params)
++            previous_context = self._current_analysis_context()
+             self.x_transform_params = parsed["X"]
+             self.y_transform_params = parsed["Y"]
+             dlg.destroy()
+             if changed and (scale_uses_logicle_params(self.x_scale) or
+                             scale_uses_logicle_params(self.y_scale)):
++                self._rebind_gates_after_transform_change(previous_context)
+                 self._analysis_context_changed()
+             elif changed:
+                 self.status_var.set(
+@@ -3111,7 +3128,7 @@
+             finite_displayable_raw_channel_values(
+                 active.values(), self.x_channel, self.x_scale,
+                 cofactor=self.cofactor,
+-                transform_params=self._axis_transform_params("x"),
++                transform_params=self._transform_params_for_axis("x"),
+             ),
+             xb_raw,
+         )
+@@ -3119,7 +3136,7 @@
+             finite_displayable_raw_channel_values(
+                 active.values(), self.y_channel, self.y_scale,
+                 cofactor=self.cofactor,
+-                transform_params=self._axis_transform_params("y"),
++                transform_params=self._transform_params_for_axis("y"),
+             ),
+             yb_raw,
+         )
+@@ -3185,7 +3202,7 @@
+             finite_displayable_raw_channel_values(
+                 active.values(), self.x_channel, self.x_scale,
+                 cofactor=self.cofactor,
+-                transform_params=self._axis_transform_params("x"),
++                transform_params=self._transform_params_for_axis("x"),
+             ),
+             xb_raw,
+         )
+@@ -3193,7 +3210,7 @@
+             finite_displayable_raw_channel_values(
+                 active.values(), self.y_channel, self.y_scale,
+                 cofactor=self.cofactor,
+-                transform_params=self._axis_transform_params("y"),
++                transform_params=self._transform_params_for_axis("y"),
+             ),
+             yb_raw,
+         )
+@@ -3730,8 +3747,8 @@
+         if incompatible:
+             messagebox.showerror(
+                 "Batch Stats",
+-                "Applied gates belong to a different channel/transform context. "
+-                "Switch back before batch export:\n" +
++                "Applied gates belong to a different X/Y channel context. "
++                "Switch back to those measurements before batch export:\n" +
+                 "\n".join(f"• {g.get('name', g.get('id'))}" for g in incompatible[:8]))
+             return
+ 
+--- A4/vflow/plotting/render_lifecycle.py
++++ A5/vflow/plotting/render_lifecycle.py
+@@ -100,6 +100,27 @@
+         pass
+ 
+ 
++
++
++def can_preserve_axis_state(
++    ax, *, plot_type: str, target_x_scale: str, target_y_scale: str
++) -> bool:
++    """Return whether the lightweight artist reset is safe for this frame.
++
++    Reuse is intentionally forbidden across scale transitions: the retained
++    Axis objects still carry the previous transform until the renderer applies
++    the requested scale near the end of the pass.
++    """
++    if plot_type == "Contour Plot" or target_x_scale == "log" or target_y_scale == "log":
++        return False
++    try:
++        return (
++            ax.get_xscale() == target_x_scale
++            and ax.get_yscale() == target_y_scale
++        )
++    except Exception:
++        return False
++
+ def reset_refresh_axes(axes: Iterable, *, preserve_axis_state: bool) -> None:
+     """Reset each non-None Axes using the requested refresh strategy."""
+     for ax in axes:
+@@ -108,4 +129,18 @@
+         if preserve_axis_state:
+             clear_data_artists_preserve_axis_state(ax)
+         else:
++            # ``Axes.clear()`` tries to restore fresh 0..1 limits before all
++            # scale machinery is fully reset.  If the previous frame used a
++            # logarithmic axis, Matplotlib rejects the zero limit and can
++            # retain stale/reversed view limits into the next scale.  Explicit
++            # temporary linearisation makes a full refresh truly fresh.  The
++            # renderer reapplies the requested scale after plot construction.
++            try:
++                ax.set_xscale("linear")
++            except Exception:
++                pass
++            try:
++                ax.set_yscale("linear")
++            except Exception:
++                pass
+             ax.clear()
+--- A4/vflow/rendering/flow_renderer.py
++++ A5/vflow/rendering/flow_renderer.py
+@@ -16,7 +16,7 @@
+     compute_density_render_payload,
+     compute_kde_jobs_parallel,
+ )
+-from vflow.plotting.render_lifecycle import reset_refresh_axes
++from vflow.plotting.render_lifecycle import can_preserve_axis_state, reset_refresh_axes
+ from vflow.plotting.utils import (
+     apply_sample_indices,
+     gmm_overlay_curves,
+@@ -184,12 +184,19 @@
+         # nonlinear scale would change those label positions.  Plain log axes
+         # also keep full clear because a retained log transform cannot accept
+         # the historical temporary 0..1 fresh-axes limits.
++        # Reusing Axis/Tick objects is safe only when the live Matplotlib
++        # transform already matches the requested transform.  A scale change
++        # (especially log -> signed nonlinear) must take the full-reset path;
++        # otherwise the reset helper operates through the previous transform
++        # and stale limits can leak into the new scale, including an inverted
++        # axis.
+         reset_refresh_axes(
+             (host.ax, host.ax_top, host.ax_right),
+-            preserve_axis_state=(
+-                plot_type != 'Contour Plot'
+-                and plan.x_scale != 'log'
+-                and plan.y_scale != 'log'
++            preserve_axis_state=can_preserve_axis_state(
++                host.ax,
++                plot_type=plot_type,
++                target_x_scale=plan.x_scale,
++                target_y_scale=plan.y_scale,
+             ),
+         )
+         host.ax.set_facecolor(T['ax_bg'])

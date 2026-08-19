@@ -1,0 +1,74 @@
+vFlow v4.3.0-dev Gate Axis Preservation A3 Validation
+======================================================
+
+Starting checkpoint
+-------------------
+Certified v4.3.0-dev Science Method A2.
+
+Defect corrected
+----------------
+A true X<->Y exchange of the same two channels was previously treated as an
+incompatible ordered gate context, causing applied gates to disappear and gate
+statistics to be dropped.
+
+Corrected contract
+------------------
+* Exact A/B -> B/A swaps transpose gate geometry and channel-affine transform
+  state, then invalidate caches/recompute statistics/redraw.
+* Crosshair threshold activation state is preserved.
+* GMM X/Y metadata is swapped.
+* Per-axis Logicle parameters and locked axis limits follow their channels.
+* Any genuinely different channel selection retains the existing incompatible
+  gate behavior.
+
+Cumulative tests
+----------------
+1067/1067 PASS
+
+Dedicated swap validator
+------------------------
+480/480 membership-preservation checks PASS
+Gate types: crosshair, rectangle, ellipse, polygon
+Contexts:
+  linear / asinh
+  legacy_logicle / legacy_biexp
+  logicle_gml2 / asinh
+
+Compile
+-------
+compileall PASS
+
+Frozen scientific fingerprint
+-----------------------------
+b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+UNCHANGED
+
+FlowJo/TextToFCS reference
+-------------------------
+shape: 1473 x 8
+compatibility normalizations: 10
+all finite: True
+maximum direct big-endian float32 DATA difference: 0.0
+decoded float64 SHA-256:
+5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+UNCHANGED
+
+Legacy rendering probes
+-----------------------
+Dot / Density / Contour / gate-preview hashes match the certified A2 values.
+
+A2 scientific-method checks
+---------------------------
+480/480 independent Gating-ML Logicle root comparisons PASS.
+3000/3000 legacy gate migration membership events PASS.
+Polar orientation invariants PASS.
+
+Artifacts
+---------
+validation_artifacts/full_pytest_a3.txt
+validation_artifacts/compileall_a3.txt
+validation_artifacts/gate_axis_swap_checks_a3.json
+validation_artifacts/scientific_fingerprint_a3.txt
+validation_artifacts/flowjo_direct_compare_a3.txt
+validation_artifacts/render_diff_a3.json
+validation_artifacts/science_method_a2_checks_a3.json

@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "steps_completed": 80,
+  "failure": [],
+  "async_errors": [],
+  "messagebox_errors": [],
+  "last_ops": [
+    "plot",
+    "delete",
+    "stats",
+    "fit",
+    "nudge",
+    "theme",
+    "fit",
+    "delete",
+    "fit",
+    "fit",
+    "nudge",
+    "plot",
+    "stats",
+    "lock",
+    "grid",
+    "nudge",
+    "theme",
+    "file",
+    "axes",
+    "axes"
+  ]
+}
