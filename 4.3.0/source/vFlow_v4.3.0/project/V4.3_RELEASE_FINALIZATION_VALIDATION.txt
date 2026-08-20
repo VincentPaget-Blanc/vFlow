@@ -1,0 +1,99 @@
+vFlow v4.3.0 — Release Finalization Validation
+Date: 2026-08-20
+Baseline: Refactor Integrity B6 certified checkpoint
+
+SCOPE
+-----
+This finalization changes the public/package release identity and repository
+metadata from the internal checkpoint state to v4.3.0. It does not merge the
+separate unreleased build-kit startup/icon/native-packaging follow-up.
+
+PRODUCTION-CODE CHANGE BOUNDARY VS CERTIFIED B6
+-----------------------------------------------
+Only version-facing production Python files differ from B6:
+- vflow/__init__.py: release docstring + __version__ -> 4.3.0
+- vflow/legacy/vflow_app.py: release header + APP_VERSION -> 4.3.0
+- vflow/main.py: release-authority docstring only
+
+No scientific, gating, transform, rendering, controller, export, FCS/CSV,
+statistics, state-management, or UI behavior logic was changed by release
+finalization.
+
+RELEASE METADATA
+----------------
+- pyproject.toml project.version: 4.3.0
+- vflow.__version__: 4.3.0
+- vflow.legacy.vflow_app.APP_VERSION: 4.3.0
+- public source directory: source/vFlow_v4.3.0/
+- CITATION.cff added
+- .zenodo.json added
+- RELEASE_NOTES_v4.3.0.md added
+- cumulative CHANGELOG.md updated for v4.1.4 -> v4.3.0
+- GitHub repository URLs added to pyproject.toml
+- retained validation scripts updated from source/vFlow_v4.3.0-dev to
+  source/vFlow_v4.3.0 so they remain runnable in the final archive
+
+AUTOMATED TESTS
+---------------
+- compileall: PASS
+- pytest: 1118 / 1118 PASS
+  (1115-test B6 application baseline + 3 release-metadata/repository tests)
+
+RELEASE-METADATA PARSING
+------------------------
+- .zenodo.json JSON parse: PASS
+- CITATION.cff YAML structural parse: PASS
+- CITATION.cff version: 4.3.0
+- creator: Vincent Paget-Blanc
+- repository: https://github.com/VincentPaget-Blanc/vFlow
+- license metadata: GPL-3.0-only
+
+SCIENTIFIC / REFERENCE REVALIDATION
+-----------------------------------
+- Gate axis swap validator: 480 membership checks, PASS
+- Science Method A2 independent Logicle/root checks: PASS
+- Accuracy A4 checks: PASS
+- FlowJo/TextToFCS reference: 1473 x 8, all finite, maximum direct DATA
+  difference = 0.0
+- Scientific fingerprint SHA-256:
+  b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+- Scientific fingerprint vs certified reference: byte-identical = True
+- Frozen render hashes: identical to B6 certified artifacts
+
+REAL-GUI / REFACTOR REVALIDATION
+--------------------------------
+- Live refactor wiring: PASS
+  * UI shell/file list/gate manager: 134 references, 0 missing
+  * GateInteractionController host boundary: 56 references, 0 missing
+  * FlowRenderer host boundary: 50 references, 0 missing
+- A5 generated-GUI regression: PASS
+  * 36/36 X/Y scale combinations
+  * all four auto-gate families
+  * different-channel gate inactivity + return/rebind semantics
+- A5 manual interaction/session smoke: PASS
+  * manual gate creation
+  * handle resize / body move
+  * overlay/cycle
+  * scale transitions
+  * session reload/rebind
+- B6 refactor-integrity GUI edge checks: PASS
+  * Clear/reload state reset
+  * locked-axis reset
+  * constant Density/Contour fallback
+  * NaN/Inf datasets
+  * incompatible shared-channel contexts
+  * empty/single-column fail-closed behavior
+  * repeated sub-gate destruction
+  * Tk-backed parent-gate provenance sanitization
+
+The historical B6 80-operation randomized GUI fuzz artifact remains preserved in
+validation_artifacts/random_state_fuzz_b6_clean_package.json. Release
+finalization did not modify application behavior logic.
+
+PROVENANCE NOTE
+---------------
+Historical files under project/ and older validation_artifacts/ intentionally
+retain internal checkpoint labels such as v4.3.0-dev and the metadata state that
+was true when those validations were executed. They are audit records and were
+not rewritten retroactively. Current release authority is the source-root
+metadata/runtime version set, synchronized to 4.3.0.

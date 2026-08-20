@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use vFlow in your research, please cite the software using the metadata below and the Zenodo DOI for the exact version used."
+title: "vFlow: Visual Flow Cytometry & Immunofluorescence Analysis Tool"
+type: software
+version: 4.3.0
+authors:
+  - family-names: "Paget-Blanc"
+    given-names: "Vincent"
+abstract: >-
+  vFlow is a desktop application for interactive 2D gating, visualization and
+  quantification of flow-cytometry and single-particle immunofluorescence data
+  from FCS or CSV list-mode files.
+license: GPL-3.0-only
+repository-code: "https://github.com/VincentPaget-Blanc/vFlow"
+keywords:
+  - flow cytometry
+  - immunofluorescence
+  - gating
+  - FCS
+  - single-particle analysis
+  - synaptosomes
+  - quantitative microscopy
+  - Logicle
+  - Gating-ML
+  - Python

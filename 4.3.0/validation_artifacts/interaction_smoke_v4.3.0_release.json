@@ -1,0 +1,16 @@
+{
+  "active_file_change_recomputes_stats": true,
+  "body_move_changed_geometry": true,
+  "cycle_label_nonempty": true,
+  "cycle_shows_one_of_two": true,
+  "different_channel_hides_gates": true,
+  "handle_resize_changed_geometry": true,
+  "manual_gate_types_all_applied_with_stats": true,
+  "manual_rectangle_created": true,
+  "marginal_log_to_asinh_limits_ordered": true,
+  "messagebox_errors": [],
+  "overlay_stats_file_count": 2,
+  "return_to_original_channels_restores_gates": true,
+  "session_reload_rebinds_current_scale": true,
+  "status": "PASS"
+}

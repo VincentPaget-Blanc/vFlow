@@ -1,0 +1,125 @@
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/pyproject.toml	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/pyproject.toml	2026-08-20 10:10:21.848024144 +0000
+@@ -4,7 +4,7 @@
+ 
+ [project]
+ name = "vflow"
+-version = "4.2.0"
++version = "4.3.0"
+ description = "Desktop flow-cytometry and single-particle fluorescence analysis"
+ readme = "README.md"
+ license = { file = "LICENSE" }
+@@ -16,6 +16,11 @@
+   "scipy",
+ ]
+ 
++[project.urls]
++Homepage = "https://github.com/VincentPaget-Blanc/vFlow"
++Repository = "https://github.com/VincentPaget-Blanc/vFlow"
++Changelog = "https://github.com/VincentPaget-Blanc/vFlow/blob/main/CHANGELOG.md"
++
+ [project.optional-dependencies]
+ advanced = ["scikit-learn>=1.3"]
+ test = ["pytest", "scikit-learn>=1.3"]
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/vflow/__init__.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/vflow/__init__.py	2026-08-20 10:10:21.848220297 +0000
+@@ -1,7 +1,7 @@
+ """vFlow application package.
+ 
+ The packaged entry point (``python -m vflow`` or ``vflow`` after installation)
+-is the authoritative v4.2 release launcher.
++is the authoritative v4.3.0 release launcher.
+ """
+ 
+-__version__ = "4.2.0"
++__version__ = "4.3.0"
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/vflow/legacy/vflow_app.py	2026-08-17 09:26:12.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/vflow/legacy/vflow_app.py	2026-08-20 10:10:21.852288487 +0000
+@@ -2,10 +2,10 @@
+ # -*- coding: utf-8 -*-
+ """Legacy Tk application compatibility facade for vFlow.
+ 
+-The controller remains the public compatibility surface while v4.3 development
+-progressively moves cohesive computation, workflow, interaction, and rendering
+-ownership into composed modules. Scientific and interaction behavior remain
+-certified against the v4.2.0 release baseline. Historical release notes live in
++The controller remains the public compatibility surface for vFlow 4.3.0 while
++cohesive computation, workflow, interaction, and rendering ownership live in
++composed modules. Scientific and interaction behavior include the audited 4.3.0
++bug-fix/hardening series. Historical release notes live in
+ ``CHANGELOG.md`` at the source root.
+ """
+ 
+@@ -17,7 +17,7 @@
+ import tkinter as tk
+ from tkinter import filedialog, messagebox, ttk
+ 
+-APP_VERSION = "4.2.0"
++APP_VERSION = "4.3.0"
+ 
+ # Scientific/runtime compatibility guard: launcher and companion package must
+ # be from the same release. A stale package can otherwise silently reintroduce
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/vflow/main.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/vflow/main.py	2026-08-20 10:10:21.852741724 +0000
+@@ -14,7 +14,7 @@
+ def _load_legacy_module():
+     """Return the packaged legacy compatibility module lazily.
+ 
+-    The v4.2 release has a single packaged source authority; there is no
++    The v4.3.0 release has a single packaged source authority; there is no
+     duplicate standalone launcher file to synchronize.
+     """
+     return importlib.import_module(LEGACY_MODULE_NAME)
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/tests/test_release_metadata.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/tests/test_release_metadata.py	2026-08-20 10:10:21.852833569 +0000
+@@ -11,11 +11,11 @@
+         return tomllib.load(fh)
+ 
+ 
+-def test_release_version_is_420_everywhere():
++def test_release_version_is_430_everywhere():
+     project = _pyproject()["project"]
+-    assert project["version"] == "4.2.0"
+-    assert vflow.__version__ == "4.2.0"
+-    assert vflow_app.APP_VERSION == "4.2.0"
++    assert project["version"] == "4.3.0"
++    assert vflow.__version__ == "4.3.0"
++    assert vflow_app.APP_VERSION == "4.3.0"
+ 
+ 
+ def test_runtime_version_guard_accepts_packaged_release():
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/tests/test_import_headless.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/tests/test_import_headless.py	2026-08-20 10:10:21.852946570 +0000
+@@ -9,7 +9,7 @@
+ def test_package_import_does_not_require_matplotlib():
+     import vflow
+ 
+-    assert vflow.__version__ == "4.2.0"
++    assert vflow.__version__ == "4.3.0"
+ 
+ 
+ def test_package_imports_headlessly():
+@@ -18,7 +18,7 @@
+ 
+     import vflow
+ 
+-    assert vflow.__version__ == "4.2.0"
++    assert vflow.__version__ == "4.3.0"
+ 
+ 
+ def test_core_modules_import_without_tk_root():
+--- /mnt/data/b6_release_work/vFlow_v4.3.0-dev_Refactor_Integrity_B6_Certified/source/vFlow_v4.3.0-dev/tests/test_release_docs.py	2026-08-14 13:34:38.000000000 +0000
++++ /mnt/data/vFlow_v4.3.0_Refactor_Integrity_B6_Release_Ready/source/vFlow_v4.3.0/tests/test_release_docs.py	2026-08-20 10:10:21.853031549 +0000
+@@ -2,10 +2,10 @@
+ import re
+ 
+ 
+-def test_readme_describes_v420_package_entry_point():
++def test_readme_describes_v430_package_entry_point():
+     root = Path(__file__).resolve().parents[1]
+     text = (root / "README.md").read_text(encoding="utf-8")
+-    assert "### v4.2.0" in text
++    assert "### v4.3.0" in text
+     assert "python -m vflow" in text
+     assert "vflow 1.4.11.py" not in text
+     assert "staged package refactor" not in text

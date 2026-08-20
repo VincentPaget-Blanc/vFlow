@@ -5,7 +5,7 @@ import sys,tempfile,traceback,json,random
 from pathlib import Path
 import tkinter as tk
 import numpy as np,pandas as pd
-ROOT=Path(__file__).resolve().parents[1]; SRC=ROOT/'source'/'vFlow_v4.3.0-dev'; sys.path.insert(0,str(SRC))
+ROOT=Path(__file__).resolve().parents[1]; SRC=ROOT/'source'/'vFlow_v4.3.0'; sys.path.insert(0,str(SRC))
 from vflow.legacy.vflow_app import FlowApp
 from vflow.legacy import vflow_app as legacy
 class MB:

@@ -18,7 +18,7 @@ import pandas as pd
 import tkinter as tk
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "source" / "vFlow_v4.3.0-dev"
+SRC = ROOT / "source" / "vFlow_v4.3.0"
 sys.path.insert(0, str(SRC))
 
 from vflow.config.constants import ALL_SCALES

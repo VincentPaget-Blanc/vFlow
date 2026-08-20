@@ -1,0 +1,28 @@
+{
+  "creators": [
+    {
+      "name": "Paget-Blanc, Vincent",
+      "type": "Researcher"
+    }
+  ],
+  "title": "vFlow: Visual Flow Cytometry & Immunofluorescence Analysis Tool",
+  "version": "4.3.0",
+  "description": "vFlow is a desktop application for interactive 2D gating, visualisation, and quantification of flow-cytometry and single-particle immunofluorescence data from FCS or CSV list-mode files. Version 4.3.0 combines the package refactor with scientific-correctness, FCS/CSV, gate-provenance, transform, polar-analysis, batch-analysis, runtime-regression and refactor-integrity hardening.",
+  "access_right": "open",
+  "license": "gpl-3.0-only",
+  "upload_type": "software",
+  "language": "eng",
+  "keywords": [
+    "flow cytometry",
+    "immunofluorescence",
+    "gating",
+    "FCS",
+    "single-particle analysis",
+    "synaptosomes",
+    "quantitative microscopy",
+    "Logicle",
+    "Gating-ML",
+    "batch statistics",
+    "Python"
+  ]
+}
