@@ -1,0 +1,3 @@
+dataset,rows_or_events,columns_or_parameters,primary_x,primary_y,recommended_scale,cofactor
+vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,2029,8,Bkgd_Corr_Intensity_Marker_A,Bkgd_Corr_Intensity_Marker_B,asinh / asinh,150
+vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,6192,14,FSC-H,FL1-H,asinh / asinh,150

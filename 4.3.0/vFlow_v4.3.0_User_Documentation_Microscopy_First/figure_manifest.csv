@@ -1,0 +1,22 @@
+figure,file,title,source,settings
+1,01_ui_csv_reference.jpeg,CSV UI reference,User-supplied vFlow screenshot,CSV canonical channels with marginals
+2,02_ui_fcs_reference.jpeg,FCS UI reference,User-supplied vFlow screenshot,FSC-H × FL1-H with marginals
+3,03_csv_density_asinh.png,CSV canonical Density,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Bkgd_Corr_Intensity_Marker_A × Bkgd_Corr_Intensity_Marker_B; asinh/150
+4,04_fcs_density_asinh.png,FCS canonical Density,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,FSC-H × FL1-H; asinh/150
+5,05_csv_dot_asinh.png,CSV Dot Plot,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Same channels; asinh/150
+6,06_csv_contour_asinh.png,CSV Contour,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Same channels; asinh/150
+7,07_csv_linear_density.png,CSV linear comparison,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Same channels; linear
+8,08_fcs_linear_density.png,FCS linear comparison,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,Same channels; linear
+9,09_csv_manual_crosshair.png,Manual crosshair gate,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,"Illustrative thresholds X=800,000; Y=0"
+10,10_csv_otsu_autogate.png,Otsu auto-gate,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,"vFlow Otsu; X≈776,831; Y≈-4,221"
+11,11_fcs_manual_ellipse.png,Manual ellipse illustration,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,"Dominant density cloud, 95% transformed-space ellipse"
+12,12_csv_gmm_multi.png,CSV GMM Multi,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Bkgd_Corr_Intensity_Marker_A × Bkgd_Corr_Intensity_Marker_B; asinh/150; exact N=3 per axis
+13,13_fcs_cluster_polygons.png,Cluster polygons,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,HDBSCAN illustration; 2 clusters
+14,14_csv_distance_histogram.png,Distance distribution,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Distance_Marker_A-Marker_B_microns
+15,15_fcs_fsca_ssca_density.png,FSC-A × SSC-A,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,Alternative conventional FCS projection
+16,16_fcs_fl1a_fl2a_density.png,FL1-A × FL2-A,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,Alternative fluorescence projection
+17,17_actual_ui_csv_canonical.png,Actual vFlow CSV UI,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,Real vFlow 4.3.0 UI; canonical CSV axes; Density; marginals
+18,18_actual_ui_fcs_canonical.png,Actual vFlow FCS UI,vFlow_v4.3.0_SemiSynthetic_Demo_Cytometry.fcs,Real vFlow 4.3.0 UI; FSC-H × FL1-H; Density; marginals
+19,19_actual_ui_csv_gmm_multi.png,Actual CSV GMM Multi UI,vFlow_v4.3.0_SemiSynthetic_Demo_Pooled_CytoFile.csv,"Real vFlow 4.3.0 UI; GMM X=3, Y=3; thresholds/stats/marginals visible"
+20,20_actual_ui_file_context_menu.png,Source-file location context menu,vFlow 4.3.0 UI,Linux: Show in File Manager; macOS: Show in Finder; Windows: Show in Explorer
+21,21_microscopy_first_overview.png,Microscopy-first overview,Actual vFlow 4.3.0 UI captures,Primary CSV visualization + CSV GMM workflow + FCS compatibility
