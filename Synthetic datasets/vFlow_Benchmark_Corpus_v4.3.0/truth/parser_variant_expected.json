@@ -1,0 +1,34 @@
+{
+  "FCS20_Float_LE.fcs": {
+    "version": "FCS2.0",
+    "datatype": "F",
+    "endian": "<",
+    "roundtrip_ok": true,
+    "events": 256,
+    "parameters": 4
+  },
+  "FCS30_Double_BE.fcs": {
+    "version": "FCS3.0",
+    "datatype": "D",
+    "endian": ">",
+    "roundtrip_ok": true,
+    "events": 256,
+    "parameters": 4
+  },
+  "FCS31_Float_BE.fcs": {
+    "version": "FCS3.1",
+    "datatype": "F",
+    "endian": ">",
+    "roundtrip_ok": true,
+    "events": 256,
+    "parameters": 4
+  },
+  "FCS31_Integer16_LE.fcs": {
+    "version": "FCS3.1",
+    "datatype": "I",
+    "endian": "<",
+    "roundtrip_ok": true,
+    "events": 256,
+    "parameters": 4
+  }
+}

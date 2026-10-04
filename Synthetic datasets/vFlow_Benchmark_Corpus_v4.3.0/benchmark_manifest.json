@@ -1,0 +1,44 @@
+{
+  "name": "vFlow Benchmark Corpus",
+  "version": "1.0.0",
+  "seed": 20261002,
+  "created_for": "vFlow regression, scientific correctness, parser, UI/workspace and performance smoke benchmarking",
+  "design_rules": [
+    "Fully synthetic; no patient or private data.",
+    "Deterministic generation seed.",
+    "Source data and benchmark truth are separate.",
+    "Scientific expected counts use full populations, never display subsamples.",
+    "Future workspace fixture stores paths/state only and does not duplicate raw files."
+  ],
+  "cytometry_channels": [
+    "FSC-A",
+    "FSC-H",
+    "FSC-W",
+    "SSC-A",
+    "SSC-H",
+    "CD3-A",
+    "CD4-A",
+    "CD8-A",
+    "Viability-A",
+    "Time",
+    "LogPositive",
+    "NearZero",
+    "Constant-A"
+  ],
+  "main_samples": [
+    "Control_01",
+    "Control_02",
+    "Treatment_01",
+    "Treatment_02",
+    "EdgeCases_01"
+  ],
+  "expected_truth_files": [
+    "truth/expected_gate_counts.csv",
+    "truth/population_truth_summary.csv",
+    "truth/offscale_expected_counts.csv",
+    "truth/polar_expected_metrics.json",
+    "truth/parser_variant_expected.json"
+  ],
+  "reference_gate_file": "references/benchmark_gate_definitions.json",
+  "workspace_future_fixture": "workspace_future_fixture/Benchmark_Workspace_ProposedSchema1.vflow"
+}

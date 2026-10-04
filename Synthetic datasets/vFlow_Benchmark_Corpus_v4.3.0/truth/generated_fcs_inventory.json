@@ -1,0 +1,195 @@
+[
+  {
+    "file": "cytometry/Control_01.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 13,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "CD8-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "cytometry/Control_02.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 13,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "CD8-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "cytometry/EdgeCases_01.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 13,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "CD8-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "cytometry/Missing_CD8_01.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 12,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "cytometry/Treatment_01.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 13,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "CD8-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "cytometry/Treatment_02.fcs",
+    "version": "FCS3.1",
+    "events": 12000,
+    "parameters": 13,
+    "channels": [
+      "FSC-A",
+      "FSC-H",
+      "FSC-W",
+      "SSC-A",
+      "SSC-H",
+      "CD3-A",
+      "CD4-A",
+      "CD8-A",
+      "Viability-A",
+      "Time",
+      "LogPositive",
+      "NearZero",
+      "Constant-A"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "parser_variants/FCS20_Float_LE.fcs",
+    "version": "FCS2.0",
+    "events": 256,
+    "parameters": 4,
+    "channels": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "datatype": "F",
+    "byteord": "1,2,3,4"
+  },
+  {
+    "file": "parser_variants/FCS30_Double_BE.fcs",
+    "version": "FCS3.0",
+    "events": 256,
+    "parameters": 4,
+    "channels": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "datatype": "D",
+    "byteord": "4,3,2,1"
+  },
+  {
+    "file": "parser_variants/FCS31_Float_BE.fcs",
+    "version": "FCS3.1",
+    "events": 256,
+    "parameters": 4,
+    "channels": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "datatype": "F",
+    "byteord": "4,3,2,1"
+  },
+  {
+    "file": "parser_variants/FCS31_Integer16_LE.fcs",
+    "version": "FCS3.1",
+    "events": 256,
+    "parameters": 4,
+    "channels": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "datatype": "I",
+    "byteord": "1,2,3,4"
+  }
+]
