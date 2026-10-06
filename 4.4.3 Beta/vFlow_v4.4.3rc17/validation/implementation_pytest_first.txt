@@ -1,0 +1,1205 @@
+
+==================================== ERRORS ====================================
+__________ ERROR collecting tests/test_active_file_change_boundary.py __________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_active_file_change_boundary.py:5: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__________________ ERROR collecting tests/test_app_session.py __________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_app_session.py:5: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_arch_performance_01_line_hit_testing.py ______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_01_line_hit_testing.py:13: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_arch_performance_02_density_gate_eval.py _____
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_02_density_gate_eval.py:10: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_________ ERROR collecting tests/test_arch_performance_03_marginals.py _________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_03_marginals.py:9: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_arch_performance_04_render_lifecycle.py ______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_04_render_lifecycle.py:12: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_arch_performance_05_contour_cache.py _______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_05_contour_cache.py:16: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_arch_performance_07_parallel_kde.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_arch_performance_07_parallel_kde.py:13: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+______________ ERROR collecting tests/test_axis_input_boundary.py ______________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_axis_input_boundary.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__ ERROR collecting tests/test_behavior_review_02_file_row_failure_cleanup.py __
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_02_file_row_failure_cleanup.py:4: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_behavior_review_03_threshold_schema_validation.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_03_threshold_schema_validation.py:12: in <module>
+    from vflow.legacy import vflow_app as app_module
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__ ERROR collecting tests/test_behavior_review_04_polygon_vertices_schema.py ___
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_04_polygon_vertices_schema.py:11: in <module>
+    from vflow.legacy import vflow_app as legacy_mod
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_behavior_review_05_line_test_position_initialization.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_05_line_test_position_initialization.py:1: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_behavior_review_06_stray_hover_handle_cleanup.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_06_stray_hover_handle_cleanup.py:4: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_behavior_review_08_axis_snapshot_transaction.py __
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_08_axis_snapshot_transaction.py:3: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_behavior_review_09_polygon_close_transaction.py __
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_09_polygon_close_transaction.py:3: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_behavior_review_10_cache_key_eviction.py _____
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_10_cache_key_eviction.py:5: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___ ERROR collecting tests/test_behavior_review_11_transactional_geometry.py ___
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_behavior_review_11_transactional_geometry.py:7: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___ ERROR collecting tests/test_cached_handle_nearest_selection_refactor.py ____
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_cached_handle_nearest_selection_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp, HANDLE_PX
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___________ ERROR collecting tests/test_channel_nomenclature_port.py ___________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_channel_nomenclature_port.py:7: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_crosshair_release_side_effect_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_crosshair_release_side_effect_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_________________ ERROR collecting tests/test_dataset_state.py _________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_dataset_state.py:2: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+____________ ERROR collecting tests/test_file_list_presentation.py _____________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_file_list_presentation.py:2: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+________________ ERROR collecting tests/test_flow_app_shell.py _________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_flow_app_shell.py:1: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_fresh_draw_discard_side_effect_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_fresh_draw_discard_side_effect_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_fresh_draw_finalization_path_orchestration_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_fresh_draw_finalization_path_orchestration_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_fresh_draw_motion_presentation_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_fresh_draw_motion_presentation_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_fresh_draw_release_guard_orchestration_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_fresh_draw_release_guard_orchestration_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+________________ ERROR collecting tests/test_gate_axis_swap.py _________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_axis_swap.py:7: in <module>
+    from vflow.legacy import vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__________ ERROR collecting tests/test_gate_draw_geometry_refactor.py __________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_draw_geometry_refactor.py:5: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_gate_draw_initialization_refactor.py _______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_draw_initialization_refactor.py:8: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+______ ERROR collecting tests/test_gate_geometry_interaction_boundary.py _______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_geometry_interaction_boundary.py:7: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___________ ERROR collecting tests/test_gate_manager_presentation.py ___________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_manager_presentation.py:3: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_gate_move_motion_presentation_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_move_motion_presentation_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_gate_move_release_side_effect_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_move_release_side_effect_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___ ERROR collecting tests/test_gate_release_path_orchestration_refactor.py ____
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_release_path_orchestration_refactor.py:7: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+________ ERROR collecting tests/test_gate_threshold_materialization.py _________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_threshold_materialization.py:4: in <module>
+    import vflow.legacy.vflow_app as legacy
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_gate_threshold_planning_boundary.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_gate_threshold_planning_boundary.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_handle_drag_motion_presentation_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_handle_drag_motion_presentation_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_handle_drag_release_side_effect_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_handle_drag_release_side_effect_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__ ERROR collecting tests/test_hover_cursor_application_sequence_refactor.py ___
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_hover_cursor_application_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_hover_presentation_sequence_refactor.py ______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_hover_presentation_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__ ERROR collecting tests/test_outside_axes_hover_clear_sequence_refactor.py ___
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_outside_axes_hover_clear_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_____ ERROR collecting tests/test_polygon_close_entry_planning_refactor.py _____
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_polygon_close_entry_planning_refactor.py:10: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_polygon_finish_planning_refactor.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_polygon_finish_planning_refactor.py:11: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_ ERROR collecting tests/test_polygon_motion_presentation_sequence_refactor.py _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_polygon_motion_presentation_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_polygon_vertex_lifecycle_refactor.py _______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_polygon_vertex_lifecycle_refactor.py:13: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+______________ ERROR collecting tests/test_population_lineage.py _______________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_population_lineage.py:10: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_regression_b6_refactor_integrity.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_regression_b6_refactor_integrity.py:7: in <module>
+    from vflow.legacy import vflow_app as app_module
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_________ ERROR collecting tests/test_release_gate_file_boundaries.py __________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_release_gate_file_boundaries.py:3: in <module>
+    from vflow.legacy import vflow_app as vf
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______________ ERROR collecting tests/test_release_metadata.py ________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_release_metadata.py:5: in <module>
+    from vflow.legacy import vflow_app
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___________ ERROR collecting tests/test_release_package_authority.py ___________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_release_package_authority.py:9: in <module>
+    from vflow.legacy import vflow_app as app
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__________ ERROR collecting tests/test_release_scientific_baseline.py __________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_release_scientific_baseline.py:16: in <module>
+    import vflow.legacy.vflow_app as vf
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+__ ERROR collecting tests/test_shape_release_side_effect_sequence_refactor.py __
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_shape_release_side_effect_sequence_refactor.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+___________ ERROR collecting tests/test_threshold_state_boundary.py ____________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_threshold_state_boundary.py:4: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+________ ERROR collecting tests/test_v43_controller_decomposition_m2.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_v43_controller_decomposition_m2.py:18: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______________ ERROR collecting tests/test_v43_flow_renderer.py _______________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_v43_flow_renderer.py:6: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+________ ERROR collecting tests/test_v43_gate_interaction_controller.py ________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_v43_gate_interaction_controller.py:5: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_______ ERROR collecting tests/test_v43_project_data_load_coordinator.py _______
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_v43_project_data_load_coordinator.py:4: in <module>
+    from vflow.legacy.vflow_app import FlowApp
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+_________________ ERROR collecting tests/test_workspace_gui.py _________________
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:10: in <module>
+    from vflow.legacy.vflow_app import FlowTabManager
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.1, package=4.4.3rc1. Use files from the same release.
+=========================== short test summary info ============================
+ERROR tests/test_active_file_change_boundary.py - RuntimeError: vFlow version...
+ERROR tests/test_app_session.py - RuntimeError: vFlow version mismatch: launc...
+ERROR tests/test_arch_performance_01_line_hit_testing.py - RuntimeError: vFlo...
+ERROR tests/test_arch_performance_02_density_gate_eval.py - RuntimeError: vFl...
+ERROR tests/test_arch_performance_03_marginals.py - RuntimeError: vFlow versi...
+ERROR tests/test_arch_performance_04_render_lifecycle.py - RuntimeError: vFlo...
+ERROR tests/test_arch_performance_05_contour_cache.py - RuntimeError: vFlow v...
+ERROR tests/test_arch_performance_07_parallel_kde.py - RuntimeError: vFlow ve...
+ERROR tests/test_axis_input_boundary.py - RuntimeError: vFlow version mismatc...
+ERROR tests/test_behavior_review_02_file_row_failure_cleanup.py - RuntimeErro...
+ERROR tests/test_behavior_review_03_threshold_schema_validation.py - RuntimeE...
+ERROR tests/test_behavior_review_04_polygon_vertices_schema.py - RuntimeError...
+ERROR tests/test_behavior_review_05_line_test_position_initialization.py - Ru...
+ERROR tests/test_behavior_review_06_stray_hover_handle_cleanup.py - RuntimeEr...
+ERROR tests/test_behavior_review_08_axis_snapshot_transaction.py - RuntimeErr...
+ERROR tests/test_behavior_review_09_polygon_close_transaction.py - RuntimeErr...
+ERROR tests/test_behavior_review_10_cache_key_eviction.py - RuntimeError: vFl...
+ERROR tests/test_behavior_review_11_transactional_geometry.py - RuntimeError:...
+ERROR tests/test_cached_handle_nearest_selection_refactor.py - RuntimeError: ...
+ERROR tests/test_channel_nomenclature_port.py - RuntimeError: vFlow version m...
+ERROR tests/test_crosshair_release_side_effect_sequence_refactor.py - Runtime...
+ERROR tests/test_dataset_state.py - RuntimeError: vFlow version mismatch: lau...
+ERROR tests/test_file_list_presentation.py - RuntimeError: vFlow version mism...
+ERROR tests/test_flow_app_shell.py - RuntimeError: vFlow version mismatch: la...
+ERROR tests/test_fresh_draw_discard_side_effect_sequence_refactor.py - Runtim...
+ERROR tests/test_fresh_draw_finalization_path_orchestration_refactor.py - Run...
+ERROR tests/test_fresh_draw_motion_presentation_sequence_refactor.py - Runtim...
+ERROR tests/test_fresh_draw_release_guard_orchestration_refactor.py - Runtime...
+ERROR tests/test_gate_axis_swap.py - RuntimeError: vFlow version mismatch: la...
+ERROR tests/test_gate_draw_geometry_refactor.py - RuntimeError: vFlow version...
+ERROR tests/test_gate_draw_initialization_refactor.py - RuntimeError: vFlow v...
+ERROR tests/test_gate_geometry_interaction_boundary.py - RuntimeError: vFlow ...
+ERROR tests/test_gate_manager_presentation.py - RuntimeError: vFlow version m...
+ERROR tests/test_gate_move_motion_presentation_sequence_refactor.py - Runtime...
+ERROR tests/test_gate_move_release_side_effect_sequence_refactor.py - Runtime...
+ERROR tests/test_gate_release_path_orchestration_refactor.py - RuntimeError: ...
+ERROR tests/test_gate_threshold_materialization.py - RuntimeError: vFlow vers...
+ERROR tests/test_gate_threshold_planning_boundary.py - RuntimeError: vFlow ve...
+ERROR tests/test_handle_drag_motion_presentation_sequence_refactor.py - Runti...
+ERROR tests/test_handle_drag_release_side_effect_sequence_refactor.py - Runti...
+ERROR tests/test_hover_cursor_application_sequence_refactor.py - RuntimeError...
+ERROR tests/test_hover_presentation_sequence_refactor.py - RuntimeError: vFlo...
+ERROR tests/test_outside_axes_hover_clear_sequence_refactor.py - RuntimeError...
+ERROR tests/test_polygon_close_entry_planning_refactor.py - RuntimeError: vFl...
+ERROR tests/test_polygon_finish_planning_refactor.py - RuntimeError: vFlow ve...
+ERROR tests/test_polygon_motion_presentation_sequence_refactor.py - RuntimeEr...
+ERROR tests/test_polygon_vertex_lifecycle_refactor.py - RuntimeError: vFlow v...
+ERROR tests/test_population_lineage.py - RuntimeError: vFlow version mismatch...
+ERROR tests/test_regression_b6_refactor_integrity.py - RuntimeError: vFlow ve...
+ERROR tests/test_release_gate_file_boundaries.py - RuntimeError: vFlow versio...
+ERROR tests/test_release_metadata.py - RuntimeError: vFlow version mismatch: ...
+ERROR tests/test_release_package_authority.py - RuntimeError: vFlow version m...
+ERROR tests/test_release_scientific_baseline.py - RuntimeError: vFlow version...
+ERROR tests/test_shape_release_side_effect_sequence_refactor.py - RuntimeErro...
+ERROR tests/test_threshold_state_boundary.py - RuntimeError: vFlow version mi...
+ERROR tests/test_v43_controller_decomposition_m2.py - RuntimeError: vFlow ver...
+ERROR tests/test_v43_flow_renderer.py - RuntimeError: vFlow version mismatch:...
+ERROR tests/test_v43_gate_interaction_controller.py - RuntimeError: vFlow ver...
+ERROR tests/test_v43_project_data_load_coordinator.py - RuntimeError: vFlow v...
+ERROR tests/test_workspace_gui.py - RuntimeError: vFlow version mismatch: lau...
+!!!!!!!!!!!!!!!!!!! Interrupted: 60 errors during collection !!!!!!!!!!!!!!!!!!!
+60 errors in 5.00s

@@ -1,0 +1,22 @@
+
+==================================== ERRORS ====================================
+_____________ ERROR collecting tests/test_ui_interactions_rc17.py ______________
+tests/test_ui_interactions_rc17.py:10: in <module>
+    from tests.test_workspace_gui import experiment, new_gate
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/root/.local/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests/test_workspace_gui.py:10: in <module>
+    from vflow.legacy.vflow_app import FlowTabManager
+vflow/legacy/vflow_app.py:27: in <module>
+    raise RuntimeError(
+E   RuntimeError: vFlow version mismatch: launcher=4.4.3rc16, package=4.4.3rc17. Use files from the same release.
+=========================== short test summary info ============================
+ERROR tests/test_ui_interactions_rc17.py - RuntimeError: vFlow version mismat...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.72s

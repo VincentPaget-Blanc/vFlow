@@ -1,0 +1,59 @@
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 21%]
+........................................................................ [ 26%]
+........................................................................ [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 42%]
+........................................................................ [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 57%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+........................................................................ [ 84%]
+.......F................................................................ [ 89%]
+........................................................................ [ 94%]
+...........................................F............................ [ 99%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+________ test_scroll_is_local_to_task_and_dynamic_gate_controls_remain _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9185fc0ec0>, <vflow.legacy.vflow_app.Flow...st-5/test_scroll_is_local_to_task_a0/B.csv', '/tmp/pytest-of-root/pytest-5/test_scroll_is_local_to_task_a0/C.csv'], [])
+
+    def test_scroll_is_local_to_task_and_dynamic_gate_controls_remain(experiment):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1024x600');app._set_all_sections(True);app._select_sidebar_task('Plot');root.update()
+        plot=app._task_pages['Plot']['canvas'];plot.yview_moveto(.5);root.update();before=plot.yview()
+        app._select_sidebar_task('Data');root.update();assert plot.yview()==before
+        app._select_sidebar_task('Plot');root.update();assert plot.yview()==before
+>       plot.event_generate('<MouseWheel>',delta=-120);root.update();assert plot.yview()[0]>before[0]
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert 0.4823348694316436 > 0.4823348694316436
+
+tests/test_task_sidebar_gui.py:163: AssertionError
+_________ test_real_gui_sizes_collapsed_controls_and_missing_channels __________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9185c227b0>, <vflow.legacy.vflow_app.Flow...st-5/test_real_gui_sizes_collapsed_0/B.csv', '/tmp/pytest-of-root/pytest-5/test_real_gui_sizes_collapsed_0/C.csv'], [])
+
+    def test_real_gui_sizes_collapsed_controls_and_missing_channels(experiment):
+        root,manager,app,paths,errors=experiment
+        for size in ['Automatic','Compact','Comfortable','Large']:
+            app.interface_size_var.set(size);app._apply_interface_size();root.geometry('1024x768');root.update()
+            assert app._workspace_tree.winfo_ismapped()
+            assert app._status_lbl.winfo_ismapped() and app._toolbar_frame.winfo_ismapped()
+            from tkinter import font
+>           assert font.nametofont('VFlowBody').actual('size') >= 10
+E           AssertionError: assert 9 >= 10
+E            +  where 9 = actual('size')
+E            +    where actual = <tkinter.font.Font object 'VFlowBody'>.actual
+E            +      where <tkinter.font.Font object 'VFlowBody'> = <function nametofont at 0x7f91a25d36a0>('VFlowBody')
+E            +        where <function nametofont at 0x7f91a25d36a0> = <module 'tkinter.font' from '/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/font.py'>.nametofont
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:129: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_task_sidebar_gui.py::test_scroll_is_local_to_task_and_dynamic_gate_controls_remain
+FAILED tests/test_workspace_gui.py::test_real_gui_sizes_collapsed_controls_and_missing_channels
+2 failed, 1369 passed in 123.25s (0:02:03)

@@ -1,0 +1,152 @@
+{
+  "pass": true,
+  "platform": "Linux/Tk under Xvfb",
+  "native_macos_windows_tested": false,
+  "callback_errors": [],
+  "captures": [
+    {
+      "name": "01_empty_workspace",
+      "width": 1280,
+      "height": 720,
+      "scale": "Compact",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 321,
+      "sidebar_width": 285,
+      "plot_width": 984,
+      "status_visible": true
+    },
+    {
+      "name": "02_overlay_1440x900",
+      "width": 1440,
+      "height": 900,
+      "scale": "Comfortable",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 414,
+      "sidebar_width": 340,
+      "plot_width": 1089,
+      "status_visible": true
+    },
+    {
+      "name": "03_cycle",
+      "width": 1280,
+      "height": 720,
+      "scale": "Compact",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 353,
+      "sidebar_width": 285,
+      "plot_width": 984,
+      "status_visible": true
+    },
+    {
+      "name": "04_sample_specific_gate",
+      "width": 1280,
+      "height": 720,
+      "scale": "Compact",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 353,
+      "sidebar_width": 285,
+      "plot_width": 984,
+      "status_visible": true
+    },
+    {
+      "name": "05_narrow_1024x768",
+      "width": 1024,
+      "height": 768,
+      "scale": "Compact",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 401,
+      "sidebar_width": 285,
+      "plot_width": 728,
+      "status_visible": true
+    },
+    {
+      "name": "06_large_interface",
+      "width": 1440,
+      "height": 900,
+      "scale": "Large",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 362,
+      "sidebar_width": 410,
+      "plot_width": 1019,
+      "status_visible": true
+    },
+    {
+      "name": "07_highdpi_125percent",
+      "width": 1280,
+      "height": 720,
+      "scale": "Automatic",
+      "simulated_dpi": 120,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 288,
+      "sidebar_width": 412,
+      "plot_width": 857,
+      "status_visible": true
+    },
+    {
+      "name": "08_highdpi_150percent",
+      "width": 1280,
+      "height": 720,
+      "scale": "Automatic",
+      "simulated_dpi": 144,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 227,
+      "sidebar_width": 495,
+      "plot_width": 774,
+      "status_visible": true
+    },
+    {
+      "name": "09_subset_fit_applied_workspace",
+      "width": 1920,
+      "height": 1080,
+      "scale": "Comfortable",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 594,
+      "sidebar_width": 340,
+      "plot_width": 1569,
+      "status_visible": true
+    },
+    {
+      "name": "10_dark_mode",
+      "width": 1440,
+      "height": 900,
+      "scale": "Comfortable",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 414,
+      "sidebar_width": 340,
+      "plot_width": 1089,
+      "status_visible": true
+    },
+    {
+      "name": "11_light_mode",
+      "width": 1440,
+      "height": 900,
+      "scale": "Comfortable",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 414,
+      "sidebar_width": 340,
+      "plot_width": 1089,
+      "status_visible": true
+    },
+    {
+      "name": "13_missing_source",
+      "width": 1280,
+      "height": 720,
+      "scale": "Compact",
+      "simulated_dpi": 96,
+      "samples_panel_visible": true,
+      "controls_viewport_height": 353,
+      "sidebar_width": 285,
+      "plot_width": 984,
+      "status_visible": true
+    }
+  ]
+}

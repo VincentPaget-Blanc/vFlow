@@ -1,0 +1,11 @@
+SUPERVISOR START child=24 timeout=7200.0
+Traceback (most recent call last):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9, in <module>
+    sys.argv=[a.script,*a.args];runpy.run_path(a.script,run_name='__main__')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "validation/run_full_suite_rc16.py", line 5, in <module>
+    import pytest
+ModuleNotFoundError: No module named 'pytest'

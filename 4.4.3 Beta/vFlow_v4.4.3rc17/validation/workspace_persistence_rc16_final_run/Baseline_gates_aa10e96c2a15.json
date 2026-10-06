@@ -1,0 +1,97 @@
+{
+  "vflow_workspace_gates": 1,
+  "workspace_id": "171504a7-be64-4740-a67a-daf86c008929",
+  "tabs": {
+    "main": {
+      "population_lineage": [],
+      "global_session": {
+        "version": 3,
+        "x_channel": "",
+        "y_channel": "",
+        "gates": [
+          {
+            "id": 0,
+            "name": "Gate 1",
+            "type": "rectangle",
+            "auto_method": null,
+            "applied": true,
+            "color": "#ff6b6b",
+            "linestyle": "-",
+            "linewidth": 0.5,
+            "x_boundaries": [],
+            "y_boundary": null,
+            "x_thresh_active": [],
+            "y_thresh_active": false,
+            "y_boundaries": null,
+            "y_thresh_actives": [],
+            "x0": 20.0,
+            "y0": 20.0,
+            "x1": 100.0,
+            "y1": 100.0,
+            "vertices": []
+          },
+          {
+            "id": 1,
+            "name": "Gate 2",
+            "type": "crosshair",
+            "auto_method": null,
+            "applied": true,
+            "color": "#ffd93d",
+            "linestyle": "-",
+            "linewidth": 0.5,
+            "x_boundaries": [
+              40.0,
+              100.0,
+              200.0
+            ],
+            "y_boundary": 999.0,
+            "x_thresh_active": [
+              true,
+              false,
+              true
+            ],
+            "y_thresh_active": false,
+            "y_boundaries": [
+              40.0,
+              100.0
+            ],
+            "y_thresh_actives": [
+              false,
+              true
+            ],
+            "x0": 0.0,
+            "y0": 0.0,
+            "x1": 0.0,
+            "y1": 0.0,
+            "vertices": []
+          }
+        ],
+        "x_scale": "asinh",
+        "y_scale": "asinh",
+        "cofactor": 150.0,
+        "x_transform_params": null,
+        "y_transform_params": null,
+        "gate_contexts": {
+          "0": {
+            "x_channel": "X",
+            "y_channel": "Y",
+            "x_scale": "linear",
+            "y_scale": "linear",
+            "cofactor": null
+          },
+          "1": {
+            "x_channel": "X",
+            "y_channel": "Y",
+            "x_scale": "linear",
+            "y_scale": "linear",
+            "cofactor": null
+          }
+        },
+        "population_lineage": [],
+        "workspace_auto_fit": {}
+      },
+      "sample_sessions": {},
+      "sample_deleted_gate_ids": {}
+    }
+  }
+}

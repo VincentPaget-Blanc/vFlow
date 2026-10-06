@@ -1,0 +1,83 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/d5c8064eecdc/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+collecting ... collected 62 items
+
+tests/test_workspace_gui.py::test_real_gui_sample_views_overlay_and_scope PASSED
+tests/test_workspace_gui.py::test_real_gui_override_counts_cache_copy_reset_undo PASSED
+tests/test_workspace_gui.py::test_real_gui_save_reopen_external_sessions_and_recovery PASSED
+tests/test_workspace_gui.py::test_real_gui_offscale_arrays_and_all_plot_modes PASSED
+tests/test_workspace_gui.py::test_real_gui_nested_population_refresh_and_reopen PASSED
+tests/test_workspace_gui.py::test_real_gui_sizes_collapsed_controls_and_missing_channels PASSED
+tests/test_workspace_gui.py::test_real_gui_sample_only_gate_is_not_global PASSED
+tests/test_workspace_gui.py::test_real_gui_partial_reopen_scan_relink_and_exclusion PASSED
+tests/test_workspace_gui.py::test_real_gui_multigate_partition_and_secondary_analysis_use_overrides PASSED
+tests/test_workspace_gui.py::test_real_gui_multilevel_lineage_keeps_all_parent_namespaces PASSED
+tests/test_workspace_gui.py::test_real_gui_missing_gate_resource_never_opens_child_as_full_population PASSED
+tests/test_workspace_gui.py::test_real_gui_drag_handle_copies_gate_to_sample PASSED
+tests/test_workspace_gui.py::test_real_gui_child_sample_membership_and_source_exclusion PASSED
+tests/test_workspace_gui.py::test_real_gui_region_labels_agree_with_sample_override_counts PASSED
+tests/test_workspace_gui.py::test_real_gui_gate_copy_rejects_unavailable_target_lineage PASSED
+tests/test_workspace_gui.py::test_auto_fit_default_pools_all_active_even_in_cycle PASSED
+tests/test_workspace_gui.py::test_auto_fit_selected_subset_is_independent_of_gate_targets_and_reopens PASSED
+tests/test_workspace_gui.py::test_auto_fit_current_source_can_apply_globally_or_to_one_sample PASSED
+tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_otsu] PASSED
+tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_derivative] PASSED
+tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_gmm_multi] PASSED
+tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_cluster_polygons] PASSED
+tests/test_workspace_gui.py::test_entire_workspace_replaces_only_the_selected_gate_overrides_and_undo PASSED
+tests/test_workspace_gui.py::test_selected_sample_edit_is_sparse_preserves_unedited_gates_and_undo PASSED
+tests/test_workspace_gui.py::test_selected_sample_edit_rejects_incompatible_target_atomically PASSED
+tests/test_workspace_gui.py::test_auto_gate_reuse_is_one_undo_step_and_scope_change_cancels_live_rerun PASSED
+tests/test_workspace_gui.py::test_drag_feedback_does_not_mutate_fitting_row_selection PASSED
+tests/test_workspace_gui.py::test_plot_header_names_sample_scope_and_overlay_overrides PASSED
+tests/test_workspace_gui.py::test_cluster_input_keeps_nan_and_log_invalid_rows_aligned PASSED
+tests/test_workspace_gui.py::test_cluster_creating_multiple_gates_is_one_undo_step PASSED
+tests/test_workspace_gui.py::test_empty_fitting_selection_creates_no_gate PASSED
+tests/test_workspace_gui.py::test_auto_fitting_in_child_uses_each_samples_resolved_parent PASSED
+tests/test_workspace_gui.py::test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens PASSED
+tests/test_workspace_gui.py::test_current_sample_copy_uses_resolved_gate_even_when_editing_all_samples PASSED
+tests/test_workspace_gui.py::test_pinned_active_checkbox_controls_pooled_fitting PASSED
+tests/test_workspace_gui.py::test_missing_parent_lineage_survives_redraw_and_state_save PASSED
+tests/test_workspace_gui.py::test_native_gate_save_in_selected_scope_keeps_correct_external_references PASSED
+tests/test_bug_hunt_gui_rc13.py::test_locate_loaded_source_retains_identity_and_population PASSED
+tests/test_bug_hunt_gui_rc13.py::test_locate_dialog_cannot_apply_after_workspace_replacement PASSED
+tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui0] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui1] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_missing_unloaded_exclusion_can_be_saved_and_reopened PASSED
+tests/test_bug_hunt_gui_rc13.py::test_population_audit_lists_only_member_samples PASSED
+tests/test_bug_hunt_gui_rc13.py::test_population_capture_refuses_nonmember_even_with_parent_source PASSED
+tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[symlink] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[relative_missing] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_repeated_population_reopen_does_not_add_temporary_tabs PASSED
+tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[second_writer] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[edit] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[delete] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[source] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[gates] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[audit] PASSED
+tests/test_workspace_integrity_rc16.py::test_retargeted_symlink_save_refused PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_alias_tracks_physical_revision PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[False] PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[True] PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_source_portability_after_tree_move PASSED
+tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty PASSED
+tests/test_workspace_integrity_rc16.py::test_open_same_workspace_reads_after_close_save PASSED
+tests/test_workspace_integrity_rc16.py::test_gui_retarget_guard_and_metadata_after_initial_save PASSED
+
+- generated xml file: /workspace/scratch/d5c8064eecdc/vFlow_v4.4.3rc16/validation/full_suite_rc17_shard_0.xml -
+============================= slowest 10 durations =============================
+14.41s call     tests/test_bug_hunt_gui_rc13.py::test_repeated_population_reopen_does_not_add_temporary_tabs
+5.67s call     tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice
+5.61s call     tests/test_workspace_gui.py::test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens
+4.04s call     tests/test_bug_hunt_gui_rc13.py::test_locate_loaded_source_retains_identity_and_population
+3.88s call     tests/test_workspace_gui.py::test_missing_parent_lineage_survives_redraw_and_state_save
+3.39s setup    tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty
+3.20s call     tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty
+3.19s setup    tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice
+3.07s setup    tests/test_workspace_integrity_rc16.py::test_gui_retarget_guard_and_metadata_after_initial_save
+3.07s setup    tests/test_workspace_integrity_rc16.py::test_open_same_workspace_reads_after_close_save
+======================== 62 passed in 172.29s (0:02:52) ========================

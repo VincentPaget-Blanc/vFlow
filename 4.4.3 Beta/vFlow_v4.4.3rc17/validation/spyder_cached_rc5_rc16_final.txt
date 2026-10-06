@@ -1,0 +1,7 @@
+Kernel cached RC5 package and legacy application module; child must load RC16.
+vFlow started in a separate process (PID 24).
+Startup output: /tmp/vflow-startup-r50ytvz5.log
+PASS isolated Spyder launch 1: [{"mode": "spyder-isolated", "version": "4.4.3rc16", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+vFlow started in a separate process (PID 36).
+Startup output: /tmp/vflow-startup-agt9sdcx.log
+PASS isolated Spyder launch 2: [{"mode": "spyder-isolated", "version": "4.4.3rc16", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]

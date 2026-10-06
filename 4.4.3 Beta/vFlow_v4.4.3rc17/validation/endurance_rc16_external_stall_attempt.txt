@@ -1,0 +1,500 @@
+{"phase": "create", "python": "3.12.14", "tk": "9.0.4", "passed": true, "save_as_preserves_old_revision": true, "events": 48000, "counts": {"Control_01": 7273, "Control_02": 7020, "Treatment_01": 7081, "Treatment_02": 7058}, "saved_audit_events": 24000, "review_note_preserved": true, "bundle_bytes_preserved": true, "seconds": 16.117, "errors": []}
+{"stage": "endurance", "cycle": 1, "workspace_switches": 2, "active_seconds": 11.026}
+SUPERVISOR TIMED STACK elapsed=120.0
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 90 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 90 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 11, "workspace_switches": 22, "active_seconds": 99.095}
+{"stage": "endurance", "cycle": 21, "workspace_switches": 42, "active_seconds": 186.361}
+SUPERVISOR TIMED STACK elapsed=240.0
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 430 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 1008 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 31, "workspace_switches": 62, "active_seconds": 269.786}
+SUPERVISOR TIMED STACK elapsed=360.0
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/file_guard.py", line 14 in <lambda>
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/file_guard.py", line 14 in file_revision
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/model.py", line 25 in fingerprint
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/model.py", line 42 in matches_fingerprint
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/model.py", line 103 in matches
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/model.py", line 113 in accept
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 602 in reload_resources
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 575 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 41, "workspace_switches": 82, "active_seconds": 362.635}
+{"stage": "endurance", "cycle": 51, "workspace_switches": 102, "active_seconds": 447.287}
+SUPERVISOR TIMED STACK elapsed=480.0
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 366 in apply
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 593 in copy
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/generic.py", line 6811 in copy
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/generic.py", line 5603 in reindex
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/series.py", line 5153 in reindex
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/series.py", line 655 in _init_dict
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/series.py", line 537 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/internals/construction.py", line 443 in dict_to_mgr
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/core/frame.py", line 778 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1968 in read
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 626 in _read
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026 in read_csv
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/core/data_io.py", line 82 in smart_read_csv
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/io/registry.py", line 63 in read
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/io/registry.py", line 94 in read_flow_source
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/core/data_io.py", line 111 in read_flow_data_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1566 in _read_data_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 636 in reload_resources
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 575 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 61, "workspace_switches": 122, "active_seconds": 530.991}
+SUPERVISOR TIMED STACK elapsed=600.0
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 71, "workspace_switches": 142, "active_seconds": 611.928}
+{"stage": "endurance", "cycle": 81, "workspace_switches": 162, "active_seconds": 685.098}
+SUPERVISOR TIMED STACK elapsed=720.0
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 374 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 154 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 429 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1592 in _get_tick
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1690 in get_minor_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1290 in _update_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1404 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 91, "workspace_switches": 182, "active_seconds": 770.565}
+SUPERVISOR TIMED STACK elapsed=840.0
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/_core/function_base.py", line 143 in linspace
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 90 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 2912 in cov
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 588 in _compute_covariance
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 579 in set_bandwidth
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 236 in __init__
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 84 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 587 in average
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 2890 in cov
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 588 in _compute_covariance
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 579 in set_bandwidth
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 236 in __init__
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 84 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 101, "workspace_switches": 202, "active_seconds": 869.643}
+SUPERVISOR TIMED STACK elapsed=960.0
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 234 in read
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1923 in read
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 626 in _read
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026 in read_csv
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/core/data_io.py", line 82 in smart_read_csv
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/io/registry.py", line 63 in read
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/io/registry.py", line 94 in read_flow_source
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/core/data_io.py", line 111 in read_flow_data_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1566 in _read_data_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 636 in reload_resources
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 575 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 111, "workspace_switches": 222, "active_seconds": 957.269}
+{"stage": "endurance", "cycle": 121, "workspace_switches": 242, "active_seconds": 1032.619}
+SUPERVISOR TIMED STACK elapsed=1080.0
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 90 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 90 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 131, "workspace_switches": 262, "active_seconds": 1109.979}
+SUPERVISOR TIMED STACK elapsed=1200.0
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 141, "workspace_switches": 282, "active_seconds": 1187.118}
+{"stage": "endurance", "cycle": 151, "workspace_switches": 302, "active_seconds": 1267.331}
+SUPERVISOR TIMED STACK elapsed=1320.0
+Thread 0x00007fb2a55e66c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29ffff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb29f7fe6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fb2a4de56c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Current thread 0x00007fb2bd27b740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 161, "workspace_switches": 322, "active_seconds": 1340.504}

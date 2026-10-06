@@ -1,0 +1,45 @@
+vFlow v4.3.0-dev — Accuracy Hardening A1 validation
+
+Starting structural checkpoint:
+  vFlow_v4.3.0-dev_Controller_Decomposition_M7_Certified.zip
+  SHA-256: a104649690cabb272396e74c2fc48abaa14a69fb06d5311a610b03cb30a8a3a0
+  baseline suite reproduced: 1018/1018 PASS
+
+Current cumulative validation:
+  pytest: 1046/1046 PASS
+  compileall vflow/tests: PASS
+
+Scientific fingerprint:
+  expected: b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+  actual:   b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+  byte-identical: YES
+
+Real FlowJo/TextToFCS reference:
+  shape: 1473 x 8
+  compatibility normalizations: 10
+  all decoded values finite: True
+  max direct big-endian float32 DATA absolute difference: 0.0
+  decoded float64 SHA-256:
+    5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+
+Frozen render probes:
+  Dot:
+    bf1b1b3fae4fda4ea34b1c495402ef2dac406a77f65fe096ae663721143b0e01
+  Density:
+    cd950685ef48d2f6f7416b427d879931d6f2fc3fed980c04b7b86f858a4f7422
+  Contour:
+    293f4cf77552e56abe92fc234068931c8431b91500f407cab400c5aaeb748dbd
+  Gate preview fixture:
+    aa4ca9b3c8308ce2ab3ace85731805032ff42342c26e0b593633fc251ea91289
+
+Accuracy-hunt targeted verification:
+  weighted-Gaussian crossing fuzz: 20,000 randomized pairs, no supported-crossing disagreement
+  gate persistence fuzz: 1,500 randomized save/JSON/reload membership comparisons PASS
+  centroid-pairing permutation checks: PASS
+  polygon boundary/winding checks across current scale modes: PASS
+  supplemental FCS TEXT gain/spillover/duplicate-key checks: PASS
+
+Known unresolved methodological items are documented in:
+  project/V4.3_ACCURACY_AUDIT_A1.md
+
+Runtime/version metadata remains v4.2.0 intentionally. This is a v4.3.0-dev accuracy checkpoint, not a v4.3 release certification.

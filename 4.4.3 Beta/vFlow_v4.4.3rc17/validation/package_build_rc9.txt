@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc9_candidate/validation/build_rc9_package.py", line 8, in <module>
+    assert '1463 passed' in full and 'failed' not in full
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

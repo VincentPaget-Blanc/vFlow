@@ -1,0 +1,58 @@
+{
+  "views": [
+    {
+      "file": "01_Data_Workspace_Controls.png",
+      "size": [
+        525,
+        1041
+      ],
+      "name": "Untitled Workspace",
+      "state": "Unsaved changes",
+      "events": 48000,
+      "samples": 4,
+      "tk_scaling": 1.3879781420765027
+    },
+    {
+      "file": "02_Saved_And_Reopened.png",
+      "size": [
+        525,
+        1041
+      ],
+      "name": "Benchmark workspace \u03b1",
+      "state": "Saved",
+      "events": 48000,
+      "samples": 4,
+      "tk_scaling": 1.3879781420765027
+    },
+    {
+      "file": "03_Compact_1024.png",
+      "size": [
+        414,
+        733
+      ],
+      "name": "Benchmark workspace \u03b1",
+      "state": "Saved",
+      "events": 48000,
+      "samples": 4,
+      "tk_scaling": 1.3333333333333333
+    },
+    {
+      "file": "04_Large_200_Percent.png",
+      "size": [
+        1065,
+        1012
+      ],
+      "name": "Benchmark workspace \u03b1",
+      "state": "Saved",
+      "events": 48000,
+      "samples": 4,
+      "tk_scaling": 2.6624737945492662
+    }
+  ],
+  "errors": [],
+  "platform": "Linux/Python3.12/Tk9/Xvfb",
+  "real_benchmark_files": 4,
+  "events": 48000,
+  "save_close_open_controls_passed": true,
+  "source_hashes_unchanged": true
+}

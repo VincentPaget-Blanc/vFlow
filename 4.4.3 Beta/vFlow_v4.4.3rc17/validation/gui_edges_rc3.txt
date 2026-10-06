@@ -1,0 +1,24 @@
+........F.....                                                           [100%]
+=================================== FAILURES ===================================
+________ test_interpretation_and_model_details_visible_at_minimum_size _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f21bca45c10>, <vflow.legacy.vflow_app.Flow...st-4/test_interpretation_and_model_0/B.csv', '/tmp/pytest-of-root/pytest-4/test_interpretation_and_model_0/C.csv'], [])
+
+    def test_interpretation_and_model_details_visible_at_minimum_size(experiment):
+        from PIL import ImageGrab
+        root,manager,app,paths,errors=experiment;owner=app._workspace
+        ids=[owner.sample_id(p) for p in paths]
+        b=run_audit(prepare_samples(owner,app,ids),audit_type='hierarchy',hierarchy_mapping=dict(zip(ids,['Bio_A','Bio_B','Bio_C'])))
+        ref=commit(owner,b);results=AuditResultsDialog(owner,ref,b);results.geometry('720x450+0+0');root.update()
+        def descendants(widget):
+            for child in widget.winfo_children():yield child;yield from descendants(child)
+        buttons=[w for w in descendants(results) if isinstance(w,tk.ttk.Button)]
+>       assert len(buttons)==8 and all(w.winfo_ismapped() for w in buttons)
+E       assert (8 == 8 and False)
+E        +  where 8 = len([<tkinter.ttk.Button object .!auditresultsdialog.!frame2.!button>, <tkinter.ttk.Button object .!auditresultsdialog.!fr... object .!auditresultsdialog.!frame2.!button5>, <tkinter.ttk.Button object .!auditresultsdialog.!frame2.!button6>, ...])
+E        +  and   False = all(<generator object test_interpretation_and_model_details_visible_at_minimum_size.<locals>.<genexpr> at 0x7f21bc05dd80>)
+
+tests/test_statistical_audit_gui.py:134: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_statistical_audit_gui.py::test_interpretation_and_model_details_visible_at_minimum_size
+1 failed, 13 passed in 65.19s (0:01:05)

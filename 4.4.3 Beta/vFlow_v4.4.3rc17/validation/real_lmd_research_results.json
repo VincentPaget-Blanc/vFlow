@@ -1,0 +1,128 @@
+[
+  {
+    "file": "188-15.LMD",
+    "members": 1,
+    "events": [
+      11369
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.3300215859999298
+  },
+  {
+    "file": "222.LMD",
+    "members": 1,
+    "events": [
+      10356
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.07124480299989955
+  },
+  {
+    "file": "240+S.LMD",
+    "members": 1,
+    "events": [
+      15754
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.1024091290000797
+  },
+  {
+    "file": "240-4-2+rad.LMD",
+    "members": 1,
+    "events": [
+      5507
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.03803693399959229
+  },
+  {
+    "file": "248+S.LMD",
+    "members": 1,
+    "events": [
+      16152
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.10228266899957816
+  },
+  {
+    "file": "248+r.LMD",
+    "members": 1,
+    "events": [
+      9380
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.06352500499997404
+  },
+  {
+    "file": "337.LMD",
+    "members": 1,
+    "events": [
+      23066
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.14919708500019624
+  },
+  {
+    "file": "350.LMD",
+    "members": 1,
+    "events": [
+      16260
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.104979849999836
+  },
+  {
+    "file": "358.LMD",
+    "members": 1,
+    "events": [
+      21421
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.13827570100011144
+  },
+  {
+    "file": "597.LMD",
+    "members": 1,
+    "events": [
+      9596
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.06245399100043869
+  },
+  {
+    "file": "734.LMD",
+    "members": 1,
+    "events": [
+      8980
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.05879637999987608
+  },
+  {
+    "file": "744.LMD",
+    "members": 1,
+    "events": [
+      7085
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.0479068129998268
+  },
+  {
+    "file": "S.621.LMD",
+    "members": 1,
+    "events": [
+      12144
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.0788451299999906
+  },
+  {
+    "file": "SM239.LMD",
+    "members": 1,
+    "events": [
+      6163
+    ],
+    "exact_reference_equality": true,
+    "seconds": 0.022049959000014496
+  }
+]

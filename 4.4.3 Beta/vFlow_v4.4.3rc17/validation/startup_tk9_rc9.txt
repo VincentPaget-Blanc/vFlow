@@ -1,0 +1,12 @@
+PASS [{"mode": "source", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+Traceback (most recent call last):
+  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc9_candidate/validation/check_startup_rc9.py", line 79, in <module>
+    assert len(observations)==runs,(observations,errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ([], ['Traceback (most recent call last):\n  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc9_candidate/validation/check_startup_rc9.py", line 30, in verify_window\n    assert app._workspace_tree.winfo_ismapped()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n'])
+Traceback (most recent call last):
+  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc9_candidate/validation/check_startup_rc9.py", line 79, in <module>
+    assert len(observations)==runs,(observations,errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ([], ['Traceback (most recent call last):\n  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc9_candidate/validation/check_startup_rc9.py", line 30, in verify_window\n    assert app._workspace_tree.winfo_ismapped()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n'])
+PASS [{"mode": "spyder", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}, {"mode": "spyder", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]

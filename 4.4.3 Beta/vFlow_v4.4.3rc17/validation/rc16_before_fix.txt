@@ -1,0 +1,255 @@
+FFFFFFFFFF.FFF                                                           [100%]
+=================================== FAILURES ===================================
+____________________ test_stale_save_refused[second_writer] ____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_stale_save_refused_second0')
+change = 'second_writer'
+
+    @pytest.mark.parametrize('change', ['second_writer', 'edit', 'delete'])
+    def test_stale_save_refused(tmp_path, change):
+        p=tmp_path/'study.vflow';Workspace().save(p);a=Workspace.load(p);b=Workspace.load(p)
+        a.ui_state['workspace_name']='My unsaved edits'
+        if change=='second_writer':b.ui_state['workspace_name']='Other writer';b.save(p)
+        elif change=='edit':p.write_bytes(p.read_bytes()+b' ')
+        else:p.unlink()
+        expected=p.read_bytes() if p.exists() else None
+>       with pytest.raises(ValueError,match='changed'):a.save(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_workspace_integrity_rc16.py:19: Failed
+________________________ test_stale_save_refused[edit] _________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_stale_save_refused_edit_0')
+change = 'edit'
+
+    @pytest.mark.parametrize('change', ['second_writer', 'edit', 'delete'])
+    def test_stale_save_refused(tmp_path, change):
+        p=tmp_path/'study.vflow';Workspace().save(p);a=Workspace.load(p);b=Workspace.load(p)
+        a.ui_state['workspace_name']='My unsaved edits'
+        if change=='second_writer':b.ui_state['workspace_name']='Other writer';b.save(p)
+        elif change=='edit':p.write_bytes(p.read_bytes()+b' ')
+        else:p.unlink()
+        expected=p.read_bytes() if p.exists() else None
+>       with pytest.raises(ValueError,match='changed'):a.save(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_workspace_integrity_rc16.py:19: Failed
+_______________________ test_stale_save_refused[delete] ________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_stale_save_refused_delete0')
+change = 'delete'
+
+    @pytest.mark.parametrize('change', ['second_writer', 'edit', 'delete'])
+    def test_stale_save_refused(tmp_path, change):
+        p=tmp_path/'study.vflow';Workspace().save(p);a=Workspace.load(p);b=Workspace.load(p)
+        a.ui_state['workspace_name']='My unsaved edits'
+        if change=='second_writer':b.ui_state['workspace_name']='Other writer';b.save(p)
+        elif change=='edit':p.write_bytes(p.read_bytes()+b' ')
+        else:p.unlink()
+        expected=p.read_bytes() if p.exists() else None
+>       with pytest.raises(ValueError,match='changed'):a.save(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_workspace_integrity_rc16.py:19: Failed
+________________ test_unsampled_same_size_edit_rejected[source] ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_0')
+kind = 'source'
+
+    @pytest.mark.parametrize('kind',['source','gates','audit'])
+    def test_unsampled_same_size_edit_rejected(tmp_path,kind):
+        p=tmp_path/'bytes.bin';p.write_bytes(b'a'*400000);r=FileReference.create(p,kind=kind)
+        data=bytearray(p.read_bytes());data[90000]=98;p.write_bytes(data)
+>       assert not r.matches(p)
+E       AssertionError: assert not True
+E        +  where True = matches(PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_0/bytes.bin'))
+E        +    where matches = FileReference(absolute_path='/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_0/bytes.bin', relative_path=No... identity_fingerprint='sampled-sha256:bc7efbcd81a403c1c353b1be0108a852fe5cb990f8553d8642d9fcf97af96f72', kind='source').matches
+
+tests/test_workspace_integrity_rc16.py:27: AssertionError
+________________ test_unsampled_same_size_edit_rejected[gates] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_1')
+kind = 'gates'
+
+    @pytest.mark.parametrize('kind',['source','gates','audit'])
+    def test_unsampled_same_size_edit_rejected(tmp_path,kind):
+        p=tmp_path/'bytes.bin';p.write_bytes(b'a'*400000);r=FileReference.create(p,kind=kind)
+        data=bytearray(p.read_bytes());data[90000]=98;p.write_bytes(data)
+>       assert not r.matches(p)
+E       AssertionError: assert not True
+E        +  where True = matches(PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_1/bytes.bin'))
+E        +    where matches = FileReference(absolute_path='/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_1/bytes.bin', relative_path=No..., identity_fingerprint='sampled-sha256:bc7efbcd81a403c1c353b1be0108a852fe5cb990f8553d8642d9fcf97af96f72', kind='gates').matches
+
+tests/test_workspace_integrity_rc16.py:27: AssertionError
+________________ test_unsampled_same_size_edit_rejected[audit] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_2')
+kind = 'audit'
+
+    @pytest.mark.parametrize('kind',['source','gates','audit'])
+    def test_unsampled_same_size_edit_rejected(tmp_path,kind):
+        p=tmp_path/'bytes.bin';p.write_bytes(b'a'*400000);r=FileReference.create(p,kind=kind)
+        data=bytearray(p.read_bytes());data[90000]=98;p.write_bytes(data)
+>       assert not r.matches(p)
+E       AssertionError: assert not True
+E        +  where True = matches(PosixPath('/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_2/bytes.bin'))
+E        +    where matches = FileReference(absolute_path='/tmp/pytest-of-root/pytest-0/test_unsampled_same_size_edit_2/bytes.bin', relative_path=No..., identity_fingerprint='sampled-sha256:bc7efbcd81a403c1c353b1be0108a852fe5cb990f8553d8642d9fcf97af96f72', kind='audit').matches
+
+tests/test_workspace_integrity_rc16.py:27: AssertionError
+_____________________ test_retargeted_symlink_save_refused _____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_retargeted_symlink_save_r0')
+
+    def test_retargeted_symlink_save_refused(tmp_path):
+        a=tmp_path/'a.vflow';b=tmp_path/'b.vflow';Workspace().save(a);Workspace().save(b)
+        alias=tmp_path/'alias.vflow';alias.symlink_to(a);w=Workspace.load(alias);w.ui_state['workspace_name']='Unsaved'
+        ba,bb=a.read_bytes(),b.read_bytes();alias.unlink();alias.symlink_to(b)
+>       with pytest.raises(ValueError,match='changed'):w.save(alias)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_workspace_integrity_rc16.py:33: Failed
+_________________ test_symlink_alias_tracks_physical_revision __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_symlink_alias_tracks_phys0')
+
+    def test_symlink_alias_tracks_physical_revision(tmp_path):
+        p=tmp_path/'study.vflow';Workspace().save(p);alias=tmp_path/'alias.vflow';alias.symlink_to(p)
+        a=Workspace.load(alias);b=Workspace.load(p);b.ui_state['workspace_name']='Winner';b.save(p)
+        before=p.read_bytes()
+>       with pytest.raises(ValueError,match='changed'):a.save(alias)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_workspace_integrity_rc16.py:41: Failed
+__________ test_missing_relative_only_reference_survives_save[False] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_missing_relative_only_ref0')
+save_as = False
+
+    @pytest.mark.parametrize('save_as',[False,True])
+    def test_missing_relative_only_reference_survives_save(tmp_path,save_as):
+        p=tmp_path/'study.vflow';w=Workspace();w.samples['s']=SampleReference('s','Missing',FileReference(relative_path='missing.csv'),excluded=True)
+        # Simulate an older portable document with no absolute locator.
+        p.write_text(json.dumps(w.payload()));loaded=Workspace.load(p)
+        dest=tmp_path/'other'/'copy.vflow' if save_as else p;loaded.save(dest);again=Workspace.load(dest)
+        r=again.samples['s'].source
+>       assert r.absolute_path==str(tmp_path/'missing.csv') and again.samples['s'].excluded
+E       AssertionError: assert ('' == '/tmp/pytest-...0/missing.csv'
+E         
+E         - /tmp/pytest-of-root/pytest-0/test_missing_relative_only_ref0/missing.csv)
+
+tests/test_workspace_integrity_rc16.py:51: AssertionError
+___________ test_missing_relative_only_reference_survives_save[True] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_missing_relative_only_ref1')
+save_as = True
+
+    @pytest.mark.parametrize('save_as',[False,True])
+    def test_missing_relative_only_reference_survives_save(tmp_path,save_as):
+        p=tmp_path/'study.vflow';w=Workspace();w.samples['s']=SampleReference('s','Missing',FileReference(relative_path='missing.csv'),excluded=True)
+        # Simulate an older portable document with no absolute locator.
+        p.write_text(json.dumps(w.payload()));loaded=Workspace.load(p)
+        dest=tmp_path/'other'/'copy.vflow' if save_as else p;loaded.save(dest);again=Workspace.load(dest)
+        r=again.samples['s'].source
+>       assert r.absolute_path==str(tmp_path/'missing.csv') and again.samples['s'].excluded
+E       AssertionError: assert ('' == '/tmp/pytest-...1/missing.csv'
+E         
+E         - /tmp/pytest-of-root/pytest-0/test_missing_relative_only_ref1/missing.csv)
+
+tests/test_workspace_integrity_rc16.py:51: AssertionError
+___________ test_recovery_retains_geometry_and_marks_restored_dirty ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f2c97dec710>, <vflow.legacy.vflow_app.Flow...st-0/test_recovery_retains_geometry0/B.csv', '/tmp/pytest-of-root/pytest-0/test_recovery_retains_geometry0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_recovery_retains_geometry0')
+
+    @pytest.mark.skipif(not os.environ.get('DISPLAY'),reason='Tk display required')
+    def test_recovery_retains_geometry_and_marks_restored_dirty(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace;g=new_gate(app);gid=g['id']
+        p=tmp_path/'study.vflow';assert owner.save(path=p);before=p.read_bytes()
+        app._sel_gate()['x1']=70.;app.refresh_plot();owner.capture(app);owner.autosave()
+        checkpoint=owner.recovery_path;owner.dirty=False;owner.gates_dirty=False
+        assert owner.open(p)
+>       assert app.gates[0]['x1']==70. and owner.dirty and owner.gates_dirty and p.read_bytes()==before
+E       assert (100.0 == 70.0)
+
+tests/test_workspace_integrity_rc16.py:69: AssertionError
+_______________ test_open_same_workspace_reads_after_close_save ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f2c9c5580b0>, <vflow.legacy.vflow_app.Flow...st-0/test_open_same_workspace_reads0/B.csv', '/tmp/pytest-of-root/pytest-0/test_open_same_workspace_reads0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_open_same_workspace_reads0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2c9c559b20>
+
+    @pytest.mark.skipif(not os.environ.get('DISPLAY'),reason='Tk display required')
+    def test_open_same_workspace_reads_after_close_save(experiment,tmp_path,monkeypatch):
+        root,manager,app,paths,errors=experiment;owner=app._workspace;p=tmp_path/'study.vflow';assert owner.save(path=p)
+        owner.rename('Saved during close');monkeypatch.setattr('tkinter.messagebox.askyesnocancel',lambda **k:True)
+        # The prompt also receives positional arguments.
+        monkeypatch.setattr('tkinter.messagebox.askyesnocancel',lambda *a,**k:True)
+>       assert owner.open(p) and owner.workspace_name()=='Saved during close'
+E       AssertionError: assert (True and 'study' == 'Saved during close'
+E        +  where True = open(PosixPath('/tmp/pytest-of-root/pytest-0/test_open_same_workspace_reads0/study.vflow'))
+E        +    where open = <vflow.workspace.controller.WorkspaceController object at 0x7f2c979fbad0>.open
+E         
+E         - Saved during close
+E         + study)
+
+tests/test_workspace_integrity_rc16.py:79: AssertionError
+___________ test_gui_retarget_guard_and_metadata_after_initial_save ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f2c9c617800>, <vflow.legacy.vflow_app.Flow...st-0/test_gui_retarget_guard_and_me0/B.csv', '/tmp/pytest-of-root/pytest-0/test_gui_retarget_guard_and_me0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_gui_retarget_guard_and_me0')
+
+    @pytest.mark.skipif(not os.environ.get('DISPLAY'),reason='Tk display required')
+    def test_gui_retarget_guard_and_metadata_after_initial_save(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace;a=tmp_path/'a.vflow';b=tmp_path/'b.vflow'
+        Workspace().save(b);alias=tmp_path/'alias.vflow';alias.symlink_to(a);assert owner.save(path=alias)
+>       ba,bb=a.read_bytes(),b.read_bytes();alias.unlink();alias.symlink_to(b);owner.rename('Unsaved')
+              ^^^^^^^^^^^^^^
+
+tests/test_workspace_integrity_rc16.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-root/pytest-0/test_gui_retarget_guard_and_me0/a.vflow')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-root/pytest-0/test_gui_retarget_guard_and_me0/a.vflow'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: FileNotFoundError
+---------------------------- Captured stderr setup -----------------------------
+invalid command name "139829587684032autosave"
+    while executing
+"139829587684032autosave"
+    ("after" script)
+=========================== short test summary info ============================
+FAILED tests/test_workspace_integrity_rc16.py::test_stale_save_refused[second_writer]
+FAILED tests/test_workspace_integrity_rc16.py::test_stale_save_refused[edit]
+FAILED tests/test_workspace_integrity_rc16.py::test_stale_save_refused[delete]
+FAILED tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[source]
+FAILED tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[gates]
+FAILED tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[audit]
+FAILED tests/test_workspace_integrity_rc16.py::test_retargeted_symlink_save_refused
+FAILED tests/test_workspace_integrity_rc16.py::test_symlink_alias_tracks_physical_revision
+FAILED tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[False]
+FAILED tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[True]
+FAILED tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty
+FAILED tests/test_workspace_integrity_rc16.py::test_open_same_workspace_reads_after_close_save
+FAILED tests/test_workspace_integrity_rc16.py::test_gui_retarget_guard_and_metadata_after_initial_save
+13 failed, 1 passed in 6.71s

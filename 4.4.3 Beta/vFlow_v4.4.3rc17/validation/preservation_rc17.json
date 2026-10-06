@@ -1,0 +1,42 @@
+{
+  "unchanged_core_modules": 19,
+  "statistical_modules_unchanged_except_version": 11,
+  "statistics_behavior_changes": [],
+  "source_launcher_unchanged": true,
+  "rc16_registry_unchanged": true,
+  "core": [
+    "vflow/core/__init__.py",
+    "vflow/core/auto_gate.py",
+    "vflow/core/cache_keys.py",
+    "vflow/core/circular_stats.py",
+    "vflow/core/column_normalization.py",
+    "vflow/core/data_io.py",
+    "vflow/core/fcs_reader.py",
+    "vflow/core/gate_definition.py",
+    "vflow/core/gate_masks.py",
+    "vflow/core/gate_serialization.py",
+    "vflow/core/gate_stats.py",
+    "vflow/core/gates.py",
+    "vflow/core/logicle.py",
+    "vflow/core/path_identity.py",
+    "vflow/core/sample_labels.py",
+    "vflow/core/scales.py",
+    "vflow/core/threshold_edits.py",
+    "vflow/core/threshold_state.py",
+    "vflow/core/transforms.py"
+  ],
+  "statistics": [
+    "vflow/statistics/__init__.py",
+    "vflow/statistics/audit_export.py",
+    "vflow/statistics/audit_runner.py",
+    "vflow/statistics/audit_serialization.py",
+    "vflow/statistics/discordance.py",
+    "vflow/statistics/hierarchy.py",
+    "vflow/statistics/models.py",
+    "vflow/statistics/sliced_wasserstein.py",
+    "vflow/statistics/variable_eligibility.py",
+    "vflow/statistics/wasserstein.py",
+    "vflow/statistics/workspace_audit.py"
+  ],
+  "removed_original_methods_or_classes": {}
+}

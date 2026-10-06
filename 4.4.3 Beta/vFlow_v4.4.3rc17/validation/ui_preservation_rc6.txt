@@ -1,0 +1,15 @@
+{
+  "baseline": "4.4.3rc5",
+  "candidate": "4.4.3rc6",
+  "original_modules": 117,
+  "unchanged_modules": 100,
+  "presentation_modules": 12,
+  "version_only_modules": 5,
+  "added_modules": [
+    "vflow/ui/layout_helpers.py"
+  ],
+  "protected_scientific_and_ingestion_modules": 59,
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

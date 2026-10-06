@@ -1,0 +1,478 @@
+* Getting build dependencies for wheel...
+running egg_info
+creating vflow.egg-info
+writing vflow.egg-info/PKG-INFO
+writing dependency_links to vflow.egg-info/dependency_links.txt
+writing entry points to vflow.egg-info/entry_points.txt
+writing requirements to vflow.egg-info/requires.txt
+writing top-level names to vflow.egg-info/top_level.txt
+writing manifest file 'vflow.egg-info/SOURCES.txt'
+reading manifest file 'vflow.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'vflow.egg-info/SOURCES.txt'
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/vflow
+copying vflow/__main__.py -> build/lib/vflow
+copying vflow/main.py -> build/lib/vflow
+copying vflow/backends.py -> build/lib/vflow
+copying vflow/__init__.py -> build/lib/vflow
+creating build/lib/vflow/services
+copying vflow/services/batch_plot_results.py -> build/lib/vflow/services
+copying vflow/services/batch_plot_samples.py -> build/lib/vflow/services
+copying vflow/services/gate_threshold_planning.py -> build/lib/vflow/services
+copying vflow/services/subgate_population.py -> build/lib/vflow/services
+copying vflow/services/axis_input_planning.py -> build/lib/vflow/services
+copying vflow/services/batch_stats_export.py -> build/lib/vflow/services
+copying vflow/services/concat_export.py -> build/lib/vflow/services
+copying vflow/services/gated_data_export.py -> build/lib/vflow/services
+copying vflow/services/active_file_changes.py -> build/lib/vflow/services
+copying vflow/services/file_load_planning.py -> build/lib/vflow/services
+copying vflow/services/gate_axis_swap.py -> build/lib/vflow/services
+copying vflow/services/batch_stats_runner.py -> build/lib/vflow/services
+copying vflow/services/gate_geometry_interaction.py -> build/lib/vflow/services
+copying vflow/services/channel_selection.py -> build/lib/vflow/services
+copying vflow/services/gate_evaluation.py -> build/lib/vflow/services
+copying vflow/services/population_evaluation.py -> build/lib/vflow/services
+copying vflow/services/gate_session.py -> build/lib/vflow/services
+copying vflow/services/gate_lifecycle.py -> build/lib/vflow/services
+copying vflow/services/__init__.py -> build/lib/vflow/services
+copying vflow/services/figure_export.py -> build/lib/vflow/services
+copying vflow/services/concat_paths.py -> build/lib/vflow/services
+copying vflow/services/batch_plot_export.py -> build/lib/vflow/services
+copying vflow/services/export_names.py -> build/lib/vflow/services
+copying vflow/services/polar_results.py -> build/lib/vflow/services
+copying vflow/services/gate_assignment_transaction.py -> build/lib/vflow/services
+creating build/lib/vflow/nomenclature
+copying vflow/nomenclature/__init__.py -> build/lib/vflow/nomenclature
+copying vflow/nomenclature/session.py -> build/lib/vflow/nomenclature
+copying vflow/nomenclature/channel_names.py -> build/lib/vflow/nomenclature
+creating build/lib/vflow/legacy
+copying vflow/legacy/vflow_app.py -> build/lib/vflow/legacy
+copying vflow/legacy/vflow_legacy.py -> build/lib/vflow/legacy
+copying vflow/legacy/__init__.py -> build/lib/vflow/legacy
+creating build/lib/vflow/rendering
+copying vflow/rendering/render_plan.py -> build/lib/vflow/rendering
+copying vflow/rendering/flow_renderer.py -> build/lib/vflow/rendering
+copying vflow/rendering/__init__.py -> build/lib/vflow/rendering
+creating build/lib/vflow/app
+copying vflow/app/cache.py -> build/lib/vflow/app
+copying vflow/app/lineage.py -> build/lib/vflow/app
+copying vflow/app/dataset.py -> build/lib/vflow/app
+copying vflow/app/state.py -> build/lib/vflow/app
+copying vflow/app/__init__.py -> build/lib/vflow/app
+copying vflow/app/session.py -> build/lib/vflow/app
+creating build/lib/vflow/controllers
+copying vflow/controllers/gate_interaction_controller.py -> build/lib/vflow/controllers
+copying vflow/controllers/__init__.py -> build/lib/vflow/controllers
+copying vflow/controllers/project_data_load_coordinator.py -> build/lib/vflow/controllers
+creating build/lib/vflow/statistics
+copying vflow/statistics/hierarchy.py -> build/lib/vflow/statistics
+copying vflow/statistics/variable_eligibility.py -> build/lib/vflow/statistics
+copying vflow/statistics/models.py -> build/lib/vflow/statistics
+copying vflow/statistics/audit_runner.py -> build/lib/vflow/statistics
+copying vflow/statistics/sliced_wasserstein.py -> build/lib/vflow/statistics
+copying vflow/statistics/audit_export.py -> build/lib/vflow/statistics
+copying vflow/statistics/discordance.py -> build/lib/vflow/statistics
+copying vflow/statistics/workspace_audit.py -> build/lib/vflow/statistics
+copying vflow/statistics/__init__.py -> build/lib/vflow/statistics
+copying vflow/statistics/audit_serialization.py -> build/lib/vflow/statistics
+copying vflow/statistics/wasserstein.py -> build/lib/vflow/statistics
+creating build/lib/vflow/ui
+copying vflow/ui/batch_stats_dialog.py -> build/lib/vflow/ui
+copying vflow/ui/tab_manager.py -> build/lib/vflow/ui
+copying vflow/ui/statistical_audit_dialog.py -> build/lib/vflow/ui
+copying vflow/ui/tooltips.py -> build/lib/vflow/ui
+copying vflow/ui/file_list.py -> build/lib/vflow/ui
+copying vflow/ui/fonts.py -> build/lib/vflow/ui
+copying vflow/ui/polar_analysis_window.py -> build/lib/vflow/ui
+copying vflow/ui/flow_app_shell.py -> build/lib/vflow/ui
+copying vflow/ui/task_sidebar.py -> build/lib/vflow/ui
+copying vflow/ui/axis_name_resolver.py -> build/lib/vflow/ui
+copying vflow/ui/folder_state.py -> build/lib/vflow/ui
+copying vflow/ui/folder_scan_dialog.py -> build/lib/vflow/ui
+copying vflow/ui/layout_helpers.py -> build/lib/vflow/ui
+copying vflow/ui/adaptive_samples.py -> build/lib/vflow/ui
+copying vflow/ui/audit_interpretation.py -> build/lib/vflow/ui
+copying vflow/ui/batch_plot_window.py -> build/lib/vflow/ui
+copying vflow/ui/gate_interaction.py -> build/lib/vflow/ui
+copying vflow/ui/__init__.py -> build/lib/vflow/ui
+copying vflow/ui/gate_manager.py -> build/lib/vflow/ui
+copying vflow/ui/app.py -> build/lib/vflow/ui
+copying vflow/ui/session_guard.py -> build/lib/vflow/ui
+creating build/lib/vflow/platform
+copying vflow/platform/file_reveal.py -> build/lib/vflow/platform
+copying vflow/platform/__init__.py -> build/lib/vflow/platform
+creating build/lib/vflow/io
+copying vflow/io/derivatives.py -> build/lib/vflow/io
+copying vflow/io/models.py -> build/lib/vflow/io
+copying vflow/io/lmd_reader.py -> build/lib/vflow/io
+copying vflow/io/__init__.py -> build/lib/vflow/io
+copying vflow/io/export_safety.py -> build/lib/vflow/io
+copying vflow/io/registry.py -> build/lib/vflow/io
+creating build/lib/vflow/workspace
+copying vflow/workspace/gates.py -> build/lib/vflow/workspace
+copying vflow/workspace/autogating.py -> build/lib/vflow/workspace
+copying vflow/workspace/relink.py -> build/lib/vflow/workspace
+copying vflow/workspace/file_guard.py -> build/lib/vflow/workspace
+copying vflow/workspace/ui.py -> build/lib/vflow/workspace
+copying vflow/workspace/model.py -> build/lib/vflow/workspace
+copying vflow/workspace/__init__.py -> build/lib/vflow/workspace
+copying vflow/workspace/controller.py -> build/lib/vflow/workspace
+creating build/lib/vflow/plotting
+copying vflow/plotting/kde_payloads.py -> build/lib/vflow/plotting
+copying vflow/plotting/utils.py -> build/lib/vflow/plotting
+copying vflow/plotting/render_lifecycle.py -> build/lib/vflow/plotting
+copying vflow/plotting/__init__.py -> build/lib/vflow/plotting
+copying vflow/plotting/offscale.py -> build/lib/vflow/plotting
+creating build/lib/vflow/config
+copying vflow/config/themes.py -> build/lib/vflow/config
+copying vflow/config/constants.py -> build/lib/vflow/config
+copying vflow/config/styles.py -> build/lib/vflow/config
+copying vflow/config/__init__.py -> build/lib/vflow/config
+creating build/lib/vflow/core
+copying vflow/core/gates.py -> build/lib/vflow/core
+copying vflow/core/gate_stats.py -> build/lib/vflow/core
+copying vflow/core/data_io.py -> build/lib/vflow/core
+copying vflow/core/gate_masks.py -> build/lib/vflow/core
+copying vflow/core/cache_keys.py -> build/lib/vflow/core
+copying vflow/core/fcs_reader.py -> build/lib/vflow/core
+copying vflow/core/auto_gate.py -> build/lib/vflow/core
+copying vflow/core/gate_serialization.py -> build/lib/vflow/core
+copying vflow/core/column_normalization.py -> build/lib/vflow/core
+copying vflow/core/scales.py -> build/lib/vflow/core
+copying vflow/core/threshold_state.py -> build/lib/vflow/core
+copying vflow/core/threshold_edits.py -> build/lib/vflow/core
+copying vflow/core/logicle.py -> build/lib/vflow/core
+copying vflow/core/circular_stats.py -> build/lib/vflow/core
+copying vflow/core/gate_definition.py -> build/lib/vflow/core
+copying vflow/core/sample_labels.py -> build/lib/vflow/core
+copying vflow/core/__init__.py -> build/lib/vflow/core
+copying vflow/core/transforms.py -> build/lib/vflow/core
+copying vflow/core/path_identity.py -> build/lib/vflow/core
+running egg_info
+writing vflow.egg-info/PKG-INFO
+writing dependency_links to vflow.egg-info/dependency_links.txt
+writing entry points to vflow.egg-info/entry_points.txt
+writing requirements to vflow.egg-info/requires.txt
+writing top-level names to vflow.egg-info/top_level.txt
+reading manifest file 'vflow.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'vflow.egg-info/SOURCES.txt'
+creating build/lib/vflow/docs
+copying vflow/docs/gate_types.svg -> build/lib/vflow/docs
+copying vflow/docs/ui_layout.svg -> build/lib/vflow/docs
+copying vflow/docs/polar_analysis.svg -> build/lib/vflow/docs
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/vflow
+creating build/bdist.linux-x86_64/wheel/vflow/services
+copying build/lib/vflow/services/batch_plot_results.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/batch_plot_samples.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_threshold_planning.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/subgate_population.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/axis_input_planning.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/batch_stats_export.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/concat_export.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gated_data_export.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/active_file_changes.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/file_load_planning.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_axis_swap.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/batch_stats_runner.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_geometry_interaction.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/channel_selection.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_evaluation.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/population_evaluation.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_session.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_lifecycle.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/figure_export.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/concat_paths.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/batch_plot_export.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/export_names.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/polar_results.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+copying build/lib/vflow/services/gate_assignment_transaction.py -> build/bdist.linux-x86_64/wheel/./vflow/services
+creating build/bdist.linux-x86_64/wheel/vflow/nomenclature
+copying build/lib/vflow/nomenclature/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/nomenclature
+copying build/lib/vflow/nomenclature/session.py -> build/bdist.linux-x86_64/wheel/./vflow/nomenclature
+copying build/lib/vflow/nomenclature/channel_names.py -> build/bdist.linux-x86_64/wheel/./vflow/nomenclature
+creating build/bdist.linux-x86_64/wheel/vflow/legacy
+copying build/lib/vflow/legacy/vflow_app.py -> build/bdist.linux-x86_64/wheel/./vflow/legacy
+copying build/lib/vflow/legacy/vflow_legacy.py -> build/bdist.linux-x86_64/wheel/./vflow/legacy
+copying build/lib/vflow/legacy/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/legacy
+creating build/bdist.linux-x86_64/wheel/vflow/rendering
+copying build/lib/vflow/rendering/render_plan.py -> build/bdist.linux-x86_64/wheel/./vflow/rendering
+copying build/lib/vflow/rendering/flow_renderer.py -> build/bdist.linux-x86_64/wheel/./vflow/rendering
+copying build/lib/vflow/rendering/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/rendering
+creating build/bdist.linux-x86_64/wheel/vflow/app
+copying build/lib/vflow/app/cache.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+copying build/lib/vflow/app/lineage.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+copying build/lib/vflow/app/dataset.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+copying build/lib/vflow/app/state.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+copying build/lib/vflow/app/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+copying build/lib/vflow/app/session.py -> build/bdist.linux-x86_64/wheel/./vflow/app
+creating build/bdist.linux-x86_64/wheel/vflow/controllers
+copying build/lib/vflow/controllers/gate_interaction_controller.py -> build/bdist.linux-x86_64/wheel/./vflow/controllers
+copying build/lib/vflow/controllers/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/controllers
+copying build/lib/vflow/controllers/project_data_load_coordinator.py -> build/bdist.linux-x86_64/wheel/./vflow/controllers
+creating build/bdist.linux-x86_64/wheel/vflow/statistics
+copying build/lib/vflow/statistics/hierarchy.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/variable_eligibility.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/models.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/audit_runner.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/sliced_wasserstein.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/audit_export.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/discordance.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/workspace_audit.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/audit_serialization.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/statistics/wasserstein.py -> build/bdist.linux-x86_64/wheel/./vflow/statistics
+copying build/lib/vflow/__main__.py -> build/bdist.linux-x86_64/wheel/./vflow
+creating build/bdist.linux-x86_64/wheel/vflow/ui
+copying build/lib/vflow/ui/batch_stats_dialog.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/tab_manager.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/statistical_audit_dialog.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/tooltips.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/file_list.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/fonts.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/polar_analysis_window.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/flow_app_shell.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/task_sidebar.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/axis_name_resolver.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/folder_state.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/folder_scan_dialog.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/layout_helpers.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/adaptive_samples.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/audit_interpretation.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/batch_plot_window.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/gate_interaction.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/gate_manager.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/app.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/ui/session_guard.py -> build/bdist.linux-x86_64/wheel/./vflow/ui
+copying build/lib/vflow/main.py -> build/bdist.linux-x86_64/wheel/./vflow
+creating build/bdist.linux-x86_64/wheel/vflow/platform
+copying build/lib/vflow/platform/file_reveal.py -> build/bdist.linux-x86_64/wheel/./vflow/platform
+copying build/lib/vflow/platform/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/platform
+creating build/bdist.linux-x86_64/wheel/vflow/io
+copying build/lib/vflow/io/derivatives.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+copying build/lib/vflow/io/models.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+copying build/lib/vflow/io/lmd_reader.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+copying build/lib/vflow/io/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+copying build/lib/vflow/io/export_safety.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+copying build/lib/vflow/io/registry.py -> build/bdist.linux-x86_64/wheel/./vflow/io
+creating build/bdist.linux-x86_64/wheel/vflow/workspace
+copying build/lib/vflow/workspace/gates.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/autogating.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/relink.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/file_guard.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/ui.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/model.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+copying build/lib/vflow/workspace/controller.py -> build/bdist.linux-x86_64/wheel/./vflow/workspace
+creating build/bdist.linux-x86_64/wheel/vflow/docs
+copying build/lib/vflow/docs/gate_types.svg -> build/bdist.linux-x86_64/wheel/./vflow/docs
+copying build/lib/vflow/docs/ui_layout.svg -> build/bdist.linux-x86_64/wheel/./vflow/docs
+copying build/lib/vflow/docs/polar_analysis.svg -> build/bdist.linux-x86_64/wheel/./vflow/docs
+creating build/bdist.linux-x86_64/wheel/vflow/plotting
+copying build/lib/vflow/plotting/kde_payloads.py -> build/bdist.linux-x86_64/wheel/./vflow/plotting
+copying build/lib/vflow/plotting/utils.py -> build/bdist.linux-x86_64/wheel/./vflow/plotting
+copying build/lib/vflow/plotting/render_lifecycle.py -> build/bdist.linux-x86_64/wheel/./vflow/plotting
+copying build/lib/vflow/plotting/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/plotting
+copying build/lib/vflow/plotting/offscale.py -> build/bdist.linux-x86_64/wheel/./vflow/plotting
+copying build/lib/vflow/backends.py -> build/bdist.linux-x86_64/wheel/./vflow
+copying build/lib/vflow/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow
+creating build/bdist.linux-x86_64/wheel/vflow/config
+copying build/lib/vflow/config/themes.py -> build/bdist.linux-x86_64/wheel/./vflow/config
+copying build/lib/vflow/config/constants.py -> build/bdist.linux-x86_64/wheel/./vflow/config
+copying build/lib/vflow/config/styles.py -> build/bdist.linux-x86_64/wheel/./vflow/config
+copying build/lib/vflow/config/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/config
+creating build/bdist.linux-x86_64/wheel/vflow/core
+copying build/lib/vflow/core/gates.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/gate_stats.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/data_io.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/gate_masks.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/cache_keys.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/fcs_reader.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/auto_gate.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/gate_serialization.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/column_normalization.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/scales.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/threshold_state.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/threshold_edits.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/logicle.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/circular_stats.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/gate_definition.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/sample_labels.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/__init__.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/transforms.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+copying build/lib/vflow/core/path_identity.py -> build/bdist.linux-x86_64/wheel/./vflow/core
+running install_egg_info
+Copying vflow.egg-info to build/bdist.linux-x86_64/wheel/./vflow-4.4.3rc16-py3.12.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/vflow-4.4.3rc16.dist-info/WHEEL
+creating '/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/dist/.tmp-190tek5u/vflow-4.4.3rc16-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'vflow/__init__.py'
+adding 'vflow/__main__.py'
+adding 'vflow/backends.py'
+adding 'vflow/main.py'
+adding 'vflow/app/__init__.py'
+adding 'vflow/app/cache.py'
+adding 'vflow/app/dataset.py'
+adding 'vflow/app/lineage.py'
+adding 'vflow/app/session.py'
+adding 'vflow/app/state.py'
+adding 'vflow/config/__init__.py'
+adding 'vflow/config/constants.py'
+adding 'vflow/config/styles.py'
+adding 'vflow/config/themes.py'
+adding 'vflow/controllers/__init__.py'
+adding 'vflow/controllers/gate_interaction_controller.py'
+adding 'vflow/controllers/project_data_load_coordinator.py'
+adding 'vflow/core/__init__.py'
+adding 'vflow/core/auto_gate.py'
+adding 'vflow/core/cache_keys.py'
+adding 'vflow/core/circular_stats.py'
+adding 'vflow/core/column_normalization.py'
+adding 'vflow/core/data_io.py'
+adding 'vflow/core/fcs_reader.py'
+adding 'vflow/core/gate_definition.py'
+adding 'vflow/core/gate_masks.py'
+adding 'vflow/core/gate_serialization.py'
+adding 'vflow/core/gate_stats.py'
+adding 'vflow/core/gates.py'
+adding 'vflow/core/logicle.py'
+adding 'vflow/core/path_identity.py'
+adding 'vflow/core/sample_labels.py'
+adding 'vflow/core/scales.py'
+adding 'vflow/core/threshold_edits.py'
+adding 'vflow/core/threshold_state.py'
+adding 'vflow/core/transforms.py'
+adding 'vflow/docs/gate_types.svg'
+adding 'vflow/docs/polar_analysis.svg'
+adding 'vflow/docs/ui_layout.svg'
+adding 'vflow/io/__init__.py'
+adding 'vflow/io/derivatives.py'
+adding 'vflow/io/export_safety.py'
+adding 'vflow/io/lmd_reader.py'
+adding 'vflow/io/models.py'
+adding 'vflow/io/registry.py'
+adding 'vflow/legacy/__init__.py'
+adding 'vflow/legacy/vflow_app.py'
+adding 'vflow/legacy/vflow_legacy.py'
+adding 'vflow/nomenclature/__init__.py'
+adding 'vflow/nomenclature/channel_names.py'
+adding 'vflow/nomenclature/session.py'
+adding 'vflow/platform/__init__.py'
+adding 'vflow/platform/file_reveal.py'
+adding 'vflow/plotting/__init__.py'
+adding 'vflow/plotting/kde_payloads.py'
+adding 'vflow/plotting/offscale.py'
+adding 'vflow/plotting/render_lifecycle.py'
+adding 'vflow/plotting/utils.py'
+adding 'vflow/rendering/__init__.py'
+adding 'vflow/rendering/flow_renderer.py'
+adding 'vflow/rendering/render_plan.py'
+adding 'vflow/services/__init__.py'
+adding 'vflow/services/active_file_changes.py'
+adding 'vflow/services/axis_input_planning.py'
+adding 'vflow/services/batch_plot_export.py'
+adding 'vflow/services/batch_plot_results.py'
+adding 'vflow/services/batch_plot_samples.py'
+adding 'vflow/services/batch_stats_export.py'
+adding 'vflow/services/batch_stats_runner.py'
+adding 'vflow/services/channel_selection.py'
+adding 'vflow/services/concat_export.py'
+adding 'vflow/services/concat_paths.py'
+adding 'vflow/services/export_names.py'
+adding 'vflow/services/figure_export.py'
+adding 'vflow/services/file_load_planning.py'
+adding 'vflow/services/gate_assignment_transaction.py'
+adding 'vflow/services/gate_axis_swap.py'
+adding 'vflow/services/gate_evaluation.py'
+adding 'vflow/services/gate_geometry_interaction.py'
+adding 'vflow/services/gate_lifecycle.py'
+adding 'vflow/services/gate_session.py'
+adding 'vflow/services/gate_threshold_planning.py'
+adding 'vflow/services/gated_data_export.py'
+adding 'vflow/services/polar_results.py'
+adding 'vflow/services/population_evaluation.py'
+adding 'vflow/services/subgate_population.py'
+adding 'vflow/statistics/__init__.py'
+adding 'vflow/statistics/audit_export.py'
+adding 'vflow/statistics/audit_runner.py'
+adding 'vflow/statistics/audit_serialization.py'
+adding 'vflow/statistics/discordance.py'
+adding 'vflow/statistics/hierarchy.py'
+adding 'vflow/statistics/models.py'
+adding 'vflow/statistics/sliced_wasserstein.py'
+adding 'vflow/statistics/variable_eligibility.py'
+adding 'vflow/statistics/wasserstein.py'
+adding 'vflow/statistics/workspace_audit.py'
+adding 'vflow/ui/__init__.py'
+adding 'vflow/ui/adaptive_samples.py'
+adding 'vflow/ui/app.py'
+adding 'vflow/ui/audit_interpretation.py'
+adding 'vflow/ui/axis_name_resolver.py'
+adding 'vflow/ui/batch_plot_window.py'
+adding 'vflow/ui/batch_stats_dialog.py'
+adding 'vflow/ui/file_list.py'
+adding 'vflow/ui/flow_app_shell.py'
+adding 'vflow/ui/folder_scan_dialog.py'
+adding 'vflow/ui/folder_state.py'
+adding 'vflow/ui/fonts.py'
+adding 'vflow/ui/gate_interaction.py'
+adding 'vflow/ui/gate_manager.py'
+adding 'vflow/ui/layout_helpers.py'
+adding 'vflow/ui/polar_analysis_window.py'
+adding 'vflow/ui/session_guard.py'
+adding 'vflow/ui/statistical_audit_dialog.py'
+adding 'vflow/ui/tab_manager.py'
+adding 'vflow/ui/task_sidebar.py'
+adding 'vflow/ui/tooltips.py'
+adding 'vflow/workspace/__init__.py'
+adding 'vflow/workspace/autogating.py'
+adding 'vflow/workspace/controller.py'
+adding 'vflow/workspace/file_guard.py'
+adding 'vflow/workspace/gates.py'
+adding 'vflow/workspace/model.py'
+adding 'vflow/workspace/relink.py'
+adding 'vflow/workspace/ui.py'
+adding 'vflow-4.4.3rc16.dist-info/licenses/LICENSE'
+adding 'vflow-4.4.3rc16.dist-info/METADATA'
+adding 'vflow-4.4.3rc16.dist-info/WHEEL'
+adding 'vflow-4.4.3rc16.dist-info/entry_points.txt'
+adding 'vflow-4.4.3rc16.dist-info/top_level.txt'
+adding 'vflow-4.4.3rc16.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+Successfully built vflow-4.4.3rc16-py3-none-any.whl

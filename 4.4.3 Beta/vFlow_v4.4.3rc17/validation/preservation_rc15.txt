@@ -1,0 +1,19 @@
+{
+  "baseline": "4.4.3rc14",
+  "candidate": "4.4.3rc15",
+  "original_modules": 122,
+  "new_modules": [],
+  "unchanged_modules": 114,
+  "version_only_modules": 5,
+  "bug_fix_modules": 3,
+  "unchanged_core_modules": 19,
+  "protected_statistical_modules": 11,
+  "no_original_methods_removed": true,
+  "all_legacy_methods_unchanged": true,
+  "secondary_numerical_bodies_unchanged": true,
+  "population_capture_unchanged": true,
+  "source_launcher_changed": false,
+  "launcher_sha256": "f3268e4e22c168300f9a8fce4811b7f173fb5ed63b371e92aac28246d22d735f",
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

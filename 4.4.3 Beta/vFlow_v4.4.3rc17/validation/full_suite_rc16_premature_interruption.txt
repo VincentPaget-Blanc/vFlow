@@ -1,0 +1,1653 @@
+SUPERVISOR START child=22 timeout=3600.0
+SOURCE SHA256 4f608834f34195c016b617772eac7535e1878ccea5dda61795ec0d5aa8b99c46
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.12.3
+collecting ... collected 1663 items
+
+tests/test_active_file_change_boundary.py::test_active_file_change_service_is_tk_free_and_side_effect_free_by_import_boundary PASSED
+tests/test_active_file_change_boundary.py::test_flowapp_active_file_callback_delegates_decision_but_keeps_side_effects PASSED
+tests/test_active_file_change_boundary.py::test_flowapp_context_change_keeps_scientific_side_effect_order_and_only_formats_status_outside PASSED
+tests/test_active_file_changes.py::test_unchanged_context_without_applied_gates_only_refreshes PASSED
+tests/test_active_file_changes.py::test_unchanged_context_with_any_truthy_applied_gate_recomputes_stats PASSED
+tests/test_active_file_changes.py::test_context_change_suppresses_direct_stats_recompute_path PASSED
+tests/test_active_file_changes.py::test_context_equality_preserves_exact_cofactor_tolerance PASSED
+tests/test_active_file_changes.py::test_non_mapping_contexts_fail_closed_as_changed PASSED
+tests/test_active_file_changes.py::test_incompatible_gate_status_preserves_names_fallback_and_four_gate_truncation PASSED
+tests/test_active_file_changes.py::test_incompatible_gate_status_none_when_no_incompatible_gates PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Large] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Large] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Large] SUPERVISOR TIMED STACK elapsed=60.2
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 192 in draw_text
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/text.py", line 808 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/offsetbox.py", line 822 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/offsetbox.py", line 383 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/offsetbox.py", line 383 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/offsetbox.py", line 383 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/offsetbox.py", line 383 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/legend.py", line 764 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_adaptive_samples_gui.py", line 17 in many_samples
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_adaptive_samples_gui.py", line 32 in test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_adaptive_samples_gui.py::test_short_list_fits_rows_and_long_list_reacts_to_add_remove_and_resize PASSED
+tests/test_adaptive_samples_gui.py::test_scrolling_is_scoped_and_clicking_same_task_reveals_its_settings PASSED
+tests/test_adaptive_samples_gui.py::test_manual_divider_and_automatic_mode_save_reopen_on_different_window_size PASSED
+tests/test_adaptive_samples_gui.py::test_invalid_outer_scroll_preference_does_not_break_workspace[True] PASSED
+tests/test_adaptive_samples_gui.py::test_invalid_outer_scroll_preference_does_not_break_workspace[bottom] PASSED
+tests/test_adaptive_samples_gui.py::test_invalid_outer_scroll_preference_does_not_break_workspace[None] SUPERVISOR TIMED STACK elapsed=120.5
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/controllers/project_data_load_coordinator.py", line 147 in load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1543 in _load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_workspace_gui.py", line 37 in experiment
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 998 in call_fixture_func
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1328 in pytest_fixture_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1232 in execute
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 726 in _get_active_fixturedef
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 630 in getfixturevalue
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 806 in _fillfixtures
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1710 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 536 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 170 in pytest_runtest_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_adaptive_samples_gui.py::test_invalid_outer_scroll_preference_does_not_break_workspace[nan] PASSED
+tests/test_adaptive_samples_gui.py::test_invalid_outer_scroll_preference_does_not_break_workspace[inf] PASSED
+tests/test_adaptive_samples_gui.py::test_pending_resize_and_outer_wheel_bindings_are_disposed PASSED
+tests/test_adaptive_samples_gui.py::test_rapid_resize_settles_and_each_task_keeps_its_scroll_position PASSED
+tests/test_adaptive_samples_gui.py::test_gate_action_labels_fit_with_outer_scrollbar_and_scaled_fonts[1-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_gate_action_labels_fit_with_outer_scrollbar_and_scaled_fonts[1.5-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_gate_action_labels_fit_with_outer_scrollbar_and_scaled_fonts[2-Large] PASSED
+tests/test_app_cache.py::test_cache_instances_are_independent PASSED
+tests/test_app_cache.py::test_clear_all_invalidates_all_three_legacy_cache_classes PASSED
+tests/test_app_cache.py::test_clear_gate_dependent_preserves_transform_cache PASSED
+tests/test_app_cache.py::test_clear_scatter_is_render_only PASSED
+tests/test_app_cache.py::test_gate_mask_cache_rejects_wrong_length_but_keeps_entry_until_overwritten PASSED
+tests/test_app_cache.py::test_gate_mask_cache_empty_regions_match_legacy_cache_miss_behavior PASSED
+tests/test_app_cache.py::test_gate_mask_cache_partial_eviction_preserves_newer_half_and_new_entry PASSED
+tests/test_app_session.py::test_application_session_components_are_independent_between_instances PASSED
+tests/test_app_session.py::test_flowapp_legacy_helpers_share_one_application_session_owner PASSED
+tests/test_app_session.py::test_application_session_adopts_preexisting_legacy_component_objects PASSED
+tests/test_app_state.py::test_analysis_state_defaults_match_v411_context PASSED
+tests/test_app_state.py::test_analysis_state_context_preserves_legacy_cofactor_rule PASSED
+tests/test_app_state.py::test_analysis_state_generation_is_monotonic PASSED
+tests/test_app_state.py::test_analysis_state_instances_do_not_share_lineage PASSED
+tests/test_app_state.py::test_analysis_state_context_equality_matches_v411_cofactor_tolerance PASSED
+tests/test_app_state.py::test_analysis_state_binds_gate_context_once_and_does_not_drift PASSED
+tests/test_app_state.py::test_analysis_state_explicit_context_binding_preserves_legacy_mapping PASSED
+tests/test_app_state.py::test_analysis_state_child_population_context_is_deep_copied PASSED
+tests/test_app_state.py::test_gate_transform_change_rebinds_on_same_channels_but_channel_change_stays_incompatible PASSED
+tests/test_app_state.py::test_gate_returns_after_temporary_other_channel_even_if_scale_changed_there PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_vectorized_polyline_distance_matches_scalar_segments PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_vectorized_polyline_ignores_nonfinite_segments_like_threshold_comparisons PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_shape_line_hit_matches_legacy_reference_randomized PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_ellipse_line_hit_uses_one_batch_transform_on_normal_path PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_batch_transform_failure_falls_back_to_scalar_shape_hit_testing PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_interior_hit_matches_legacy_reference_randomized_supported_scales PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_outside_rectangle_and_ellipse_skip_transform_space_area_work PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_polygon_raw_bbox_rejection_skips_all_transforms PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_polygon_event_transform_is_reused_across_candidates PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_handle_cache_entries_batch_matches_scalar_entries PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_handle_cache_entries_uses_one_batch_transform_on_success PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_handle_cache_entries_batch_failure_falls_back_per_handle_fail_closed PASSED
+tests/test_arch_performance_01_line_hit_testing.py::test_rectangle_and_polygon_line_hits_use_one_batch_transform_each PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_density_render_cache_reuses_numeric_payload_across_style_changes PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_density_cache_is_context_keyed_and_data_generation_keyed PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_density_cache_policy_preserves_base_density_across_gate_only_evictions PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_density_cache_partial_eviction_is_bounded PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[rectangle-linear] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[rectangle-asinh] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[rectangle-log] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[rectangle-biexp] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[rectangle-logicle] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[ellipse-linear] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[ellipse-asinh] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[ellipse-log] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[ellipse-biexp] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[ellipse-logicle] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[polygon-linear] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[polygon-asinh] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[polygon-log] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[polygon-biexp] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[polygon-logicle] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[crosshair-linear] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[crosshair-asinh] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[crosshair-log] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[crosshair-biexp] PASSED
+tests/test_arch_performance_02_density_gate_eval.py::test_gate_evaluator_matches_core_single_transform_contract[crosshair-logicle] PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cached_payload_matches_historical_bins_exactly[1473] PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cached_payload_matches_historical_bins_exactly[75000] PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cache_hit_skips_histogram_and_edge_recomputation PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cache_is_context_and_generation_keyed PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cache_policy_matches_base_render_cache_invalidation PASSED
+tests/test_arch_performance_03_marginals.py::test_marginal_cache_partial_eviction_is_bounded PASSED
+tests/test_arch_performance_03_marginals.py::test_historical_direct_plot_marginals_path_remains_available PASSED
+tests/test_arch_performance_03_marginals.py::test_stepfilled_hist_and_stairs_are_pixel_identical_both_orientations PASSED
+tests/test_arch_performance_03_marginals.py::test_default_render_path_does_not_unconditionally_accumulate_full_raw_arrays PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_content_reset_removes_refresh_artists_but_preserves_axis_tick_objects PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_content_reset_restores_fresh_unit_limits_and_autoscale PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_content_reset_restarts_default_property_cycle_like_axes_clear PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_reset_refresh_axes_preserve_false_uses_historical_full_clear PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_reset_refresh_axes_preserve_true_does_not_call_axes_clear PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_refresh_plot_delegates_safe_axis_state_reuse_policy PASSED
+tests/test_arch_performance_04_render_lifecycle.py::test_refresh_plot_explicitly_disables_grid_on_retained_axes PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cached_payload_matches_historical_algorithm_exactly PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cache_hit_skips_kde_inverse_and_interpolation PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cache_reuses_surface_across_probability_and_keys_context PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cache_gate_and_style_invalidation_policy PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cache_partial_eviction_is_bounded PASSED
+tests/test_arch_performance_05_contour_cache.py::test_contour_cache_existing_key_update_does_not_trigger_capacity_eviction PASSED
+tests/test_arch_performance_05_contour_cache.py::test_direct_plot_contour_path_does_not_create_cache_entry PASSED
+tests/test_arch_performance_05_contour_cache.py::test_refresh_plot_supplies_file_identity_to_contour_cache PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_gate_mask_storage_is_bit_packed_and_round_trips_exactly PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_packed_gate_mask_stale_length_guard_remains_fail_closed PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_gate_mask_byte_budget_evicts_oldest_until_new_payload_fits PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_gate_mask_single_payload_larger_than_budget_is_not_cached PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_gate_mask_legacy_small_entry_cap_keeps_half_eviction_contract PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_scatter_cache_is_bounded_by_numeric_bytes_and_keeps_newest_working_set PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_scatter_payload_larger_than_budget_is_used_uncached_not_retained PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_scatter_existing_key_replacement_does_not_evict_unnecessarily PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_compact_scatter_payload_materializes_exact_coordinates_and_rgba PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_compact_scatter_payload_is_accounted_at_retained_representation_size PASSED
+tests/test_arch_performance_06_cache_budgeting.py::test_plot_gated_multi_warm_compact_cache_replays_exact_cold_scatter_payload PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_density_pure_helper_matches_historical_algorithm_exactly PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_parallel_jobs_match_sequential_payloads_exactly PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_parallel_orchestrator_runs_jobs_concurrently_and_preserves_input_order PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_parallel_orchestrator_captures_unexpected_exception_for_ordered_reraise PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_precompute_requires_multiple_misses_and_does_not_commit_cache PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_single_cold_file_stays_on_direct_historical_path PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_precomputed_error_is_reraised_before_cache_commit PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_refresh_plot_wires_precomputed_payloads_into_all_density_contour_branches PASSED
+tests/test_arch_performance_07_parallel_kde.py::test_parallel_constant_data_falls_back_without_interpolator_failure PASSED
+tests/test_audit_selection_gui.py::test_sample_plain_clicks_toggle_without_clearing_others PASSED
+tests/test_audit_selection_gui.py::test_sample_keyboard_navigation_preserves_selection_and_space_toggles PASSED
+tests/test_audit_selection_gui.py::test_variable_clicks_keyboard_focus_and_blank_space_preserve_selection PASSED
+tests/test_audit_selection_gui.py::test_double_click_biological_id_edits_without_changing_membership PASSED
+tests/test_audit_selection_gui.py::test_changed_sample_selection_requires_prepare_and_empty_inputs_are_rejected PASSED
+tests/test_audit_selection_gui.py::test_busy_inputs_freeze_and_close_does_not_commit SUPERVISOR TIMED STACK elapsed=180.6
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/_core/_methods.py", line 43 in _amax
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/text.py", line 444 in _get_layout
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/text.py", line 969 in get_window_extent
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1332 in _get_ticklabel_bboxes
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1405 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_workspace_gui.py", line 39 in experiment
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 998 in call_fixture_func
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1328 in pytest_fixture_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1232 in execute
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 726 in _get_active_fixturedef
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1181 in execute
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 726 in _get_active_fixturedef
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 630 in getfixturevalue
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 806 in _fillfixtures
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1710 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 536 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 170 in pytest_runtest_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_audit_selection_gui.py::test_queue_result_arriving_at_worker_exit_is_not_lost PASSED
+tests/test_audit_selection_gui.py::test_old_dialog_cannot_run_against_replaced_workspace_or_closed_tab[same_file] PASSED
+tests/test_audit_selection_gui.py::test_old_dialog_cannot_run_against_replaced_workspace_or_closed_tab[new_workspace] PASSED
+tests/test_audit_selection_gui.py::test_old_dialog_cannot_run_against_replaced_workspace_or_closed_tab[closed_population] PASSED
+tests/test_audit_selection_gui.py::test_scroll_long_variable_names_and_many_samples_keeps_toggled_items PASSED
+tests/test_audit_selection_gui.py::test_empty_sidebar_has_only_data_workspace_open PASSED
+tests/test_audit_selection_gui.py::test_real_benchmark_selected_audit_export_save_and_reopen PASSED
+tests/test_audit_selection_gui.py::test_result_from_reopened_same_workspace_is_rejected_even_with_same_id PASSED
+tests/test_audit_selection_gui.py::test_finished_worker_with_pending_result_cannot_start_second_run PASSED
+tests/test_audit_selection_gui.py::test_mouse_drag_does_not_replace_persistent_selections PASSED
+tests/test_audit_selection_gui.py::test_reprepare_changed_samples_preserves_variable_choices[False] PASSED
+tests/test_audit_selection_gui.py::test_reprepare_changed_samples_preserves_variable_choices[True] PASSED
+tests/test_audit_selection_gui.py::test_variable_highlight_is_readable_and_persists_after_focus_moves[dark] SUPERVISOR TIMED STACK elapsed=240.7
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/controllers/project_data_load_coordinator.py", line 147 in load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1543 in _load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_workspace_gui.py", line 37 in experiment
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 998 in call_fixture_func
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1328 in pytest_fixture_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1232 in execute
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 726 in _get_active_fixturedef
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 630 in getfixturevalue
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 806 in _fillfixtures
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1710 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 536 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 170 in pytest_runtest_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_audit_selection_gui.py::test_variable_highlight_is_readable_and_persists_after_focus_moves[light] PASSED
+tests/test_audit_selection_gui.py::test_audit_scaled_geometry_preserves_tables_and_actions[Compact-1.0] PASSED
+tests/test_audit_selection_gui.py::test_audit_scaled_geometry_preserves_tables_and_actions[Automatic-1.0] PASSED
+tests/test_audit_selection_gui.py::test_audit_scaled_geometry_preserves_tables_and_actions[Comfortable-1.5] PASSED
+tests/test_audit_selection_gui.py::test_audit_scaled_geometry_preserves_tables_and_actions[Large-2.0] PASSED
+tests/test_axis_input_boundary.py::test_axis_input_service_is_tk_free_and_does_not_own_analysis_state PASSED
+tests/test_axis_input_boundary.py::test_flowapp_callbacks_delegate_planning_but_keep_context_side_effects PASSED
+tests/test_axis_input_planning.py::test_axis_apply_requires_both_channels PASSED
+tests/test_axis_input_planning.py::test_axis_apply_refreshes_only_when_both_channels_are_unchanged PASSED
+tests/test_axis_input_planning.py::test_scale_apply_preserves_valid_values_without_replacement_text PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[abc] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[0] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[-2] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[nan] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[inf] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_invalid_cofactor_falls_back_to_frozen_150[-inf] PASSED
+tests/test_axis_input_planning.py::test_scale_apply_retains_legacy_broad_exception_fallback PASSED
+tests/test_axis_input_planning.py::test_cofactor_trace_ignores_malformed_nonfinite_nonpositive_and_tolerance_values PASSED
+tests/test_axis_input_planning.py::test_cofactor_trace_applies_only_a_real_change_outside_absolute_tolerance PASSED
+tests/test_axis_input_planning.py::test_cofactor_entry_invalid_text_restores_current_value_and_sets_legacy_status PASSED
+tests/test_axis_input_planning.py::test_cofactor_entry_within_tolerance_reformats_using_current_value PASSED
+tests/test_axis_input_planning.py::test_cofactor_entry_real_change_returns_new_value_and_no_status PASSED
+tests/test_batch_plot_export.py::test_safe_population_column_name_matches_legacy_export PASSED
+tests/test_batch_plot_export.py::test_build_batch_plot_stats_row_with_values_and_populations PASSED
+tests/test_batch_plot_export.py::test_build_batch_plot_stats_row_empty_values PASSED
+tests/test_batch_plot_export.py::test_distribution_summary_handles_empty_and_values PASSED
+tests/test_batch_plot_export.py::test_format_display_number_matches_sidebar_rules PASSED
+tests/test_batch_plot_export.py::test_short_display_label_matches_legacy_sidebar PASSED
+tests/test_batch_plot_export.py::test_batch_plot_export_can_include_counting_se PASSED
+tests/test_batch_plot_export.py::test_batch_plot_export_rejects_population_column_name_collisions PASSED
+tests/test_batch_plot_results.py::test_batch_results_all_cells_filters_only_nonfinite_distribution_values PASSED
+tests/test_batch_plot_results.py::test_batch_results_uses_finite_xy_denominator_for_percentages_and_sem PASSED
+tests/test_batch_plot_results.py::test_batch_results_selected_region_filters_distribution_but_not_gate_denominator PASSED
+tests/test_batch_plot_results.py::test_batch_results_collects_all_failed_samples_and_discards_partial_caches PASSED
+tests/test_batch_plot_results.py::test_batch_results_zero_finite_denominator_keeps_distribution_but_no_percentages PASSED
+tests/test_batch_plot_results.py::test_batch_results_does_not_swallow_distribution_conversion_errors PASSED
+tests/test_batch_plot_results.py::test_legacy_batch_compute_delegates_to_tk_free_result_service PASSED
+tests/test_batch_plot_samples.py::test_has_source_file_samples_checks_only_active_paths PASSED
+tests/test_batch_plot_samples.py::test_build_batch_plot_samples_file_mode_uses_file_colors_and_sorted_paths PASSED
+tests/test_batch_plot_samples.py::test_build_batch_plot_samples_concat_mode_groups_source_file PASSED
+tests/test_batch_plot_samples.py::test_common_numeric_columns_excludes_label_and_index PASSED
+tests/test_batch_plot_samples.py::test_preferred_distribution_column_order PASSED
+tests/test_batch_plot_samples.py::test_auto_column_helpers PASSED
+tests/test_batch_plot_samples.py::test_build_batch_plot_samples_mixed_concat_and_plain_keeps_both PASSED
+tests/test_batch_plot_samples.py::test_build_batch_plot_samples_does_not_merge_same_source_name_across_containers PASSED
+tests/test_batch_plot_samples.py::test_build_batch_plot_samples_uses_source_path_identity PASSED
+tests/test_batch_stats_dialog.py::test_matching_batch_preview_files_filters_suffix_and_type PASSED
+tests/test_batch_stats_dialog.py::test_matching_batch_preview_files_recurses_and_blank_suffix_matches_all PASSED
+tests/test_batch_stats_dialog.py::test_matching_batch_preview_files_invalid_folder_returns_empty PASSED
+tests/test_batch_stats_dialog.py::test_batch_preview_message_for_no_matches PASSED
+tests/test_batch_stats_dialog.py::test_batch_preview_message_limits_examples PASSED
+tests/test_batch_stats_dialog.py::test_validate_batch_stats_selection_returns_result PASSED
+tests/test_batch_stats_dialog.py::test_validate_batch_stats_selection_requires_valid_folder PASSED
+tests/test_batch_stats_dialog.py::test_validate_batch_stats_selection_requires_save_path PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_matches_pooled_doc_case PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_rejects_substring_false_positive PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_rejects_biologically_distinct_generic_prefixes[Mouse_01_Treated-Mouse_01_Control] PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_rejects_biologically_distinct_generic_prefixes[Patient_001_day2-Patient_001_day1] PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_rejects_biologically_distinct_generic_prefixes[exp_A_sample2-exp_A_sample1] PASSED
+tests/test_batch_stats_export.py::test_family_exclusion_matches_acquisition_to_acquisition_in_same_cyto_family PASSED
+tests/test_batch_stats_export.py::test_discover_batch_target_files_applies_direct_and_family_exclusions PASSED
+tests/test_batch_stats_export.py::test_batch_exclusion_sets_normalizes_paths_and_stems PASSED
+tests/test_batch_stats_export.py::test_duplicate_basename_disambiguation_and_relative_path PASSED
+tests/test_batch_stats_export.py::test_concat_and_previous_batch_skip_reasons PASSED
+tests/test_batch_stats_export.py::test_batch_region_column_formatting_and_rounding PASSED
+tests/test_batch_stats_export.py::test_ordered_batch_columns_keeps_meta_edges_and_sorts_gate_columns PASSED
+tests/test_batch_stats_export.py::test_excluded_log_rows_include_exclusions_and_errors PASSED
+tests/test_batch_stats_export.py::test_batch_completion_messages PASSED
+tests/test_batch_stats_export.py::test_batch_target_warning_messages PASSED
+tests/test_batch_stats_export.py::test_apply_parent_region_filter_returns_filtered_frame_or_reason PASSED
+tests/test_batch_stats_export.py::test_build_batch_stats_row_uses_labels_paths_and_gate_counts PASSED
+tests/test_batch_stats_export.py::test_duplicate_gate_names_get_distinct_wide_export_columns PASSED
+tests/test_batch_stats_export.py::test_region_universe_total_and_batch_row_use_valid_gate_denominator PASSED
+tests/test_batch_stats_export.py::test_add_gate_region_counts_rejects_normalized_region_name_collision PASSED
+tests/test_batch_stats_export.py::test_region_universe_total_rejects_wrong_mask_length PASSED
+tests/test_batch_stats_export.py::test_region_universe_total_rejects_incomplete_partition PASSED
+tests/test_batch_stats_export.py::test_region_universe_total_rejects_overlapping_region_masks PASSED
+tests/test_batch_stats_export.py::test_batch_row_rejects_incompatible_gate_denominators PASSED
+tests/test_batch_stats_export.py::test_parent_region_filter_rejects_wrong_mask_length PASSED
+tests/test_batch_stats_export.py::test_exact_exclusions_preserve_case_on_case_sensitive_filesystems PASSED
+tests/test_batch_stats_export.py::test_concat_detection_prefers_source_path_over_duplicate_basenames PASSED
+tests/test_batch_stats_export.py::test_batch_discovery_deduplicates_filesystem_aliases PASSED
+tests/test_batch_stats_export.py::test_add_gate_region_counts_rejects_cross_gate_composite_column_collision PASSED
+tests/test_batch_stats_export.py::test_batch_stats_row_exposes_input_and_transform_excluded_denominator PASSED
+tests/test_behavior_review_02_file_row_failure_cleanup.py::test_br_file_002_failed_row_after_checkbox_creation_rolls_back_ui_state PASSED
+tests/test_behavior_review_02_file_row_failure_cleanup.py::test_br_file_002_failed_row_before_checkbox_creation_remains_clean PASSED
+tests/test_behavior_review_02_file_row_failure_cleanup.py::test_br_file_002_successful_registration_order_and_state_are_unchanged PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_valid_plain_and_tk_like_threshold_values_keep_legacy_semantics PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_explicit_none_serialization_lists_are_actionable_schema_errors PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_non_iterable_serialization_container_reports_field_and_type PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_non_callable_getter_is_rejected_deliberately PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_getter_failure_is_wrapped_with_field_and_preserves_cause PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_gate_serialization_adds_gate_identity_to_threshold_schema_error PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_save_gates_shows_actionable_error_and_does_not_create_file PASSED
+tests/test_behavior_review_03_threshold_schema_validation.py::test_save_controller_catches_only_expected_validation_errors_source_contract PASSED
+tests/test_behavior_review_04_polygon_vertices_schema.py::test_require_polygon_vertices_rejects_only_explicit_none PASSED
+tests/test_behavior_review_04_polygon_vertices_schema.py::test_valid_polygon_append_and_finish_semantics_are_unchanged PASSED
+tests/test_behavior_review_04_polygon_vertices_schema.py::test_none_vertices_is_not_mutated_by_core_schema_failures PASSED
+tests/test_behavior_review_04_polygon_vertices_schema.py::test_controller_append_none_shows_actionable_error_and_stops PASSED
+tests/test_behavior_review_04_polygon_vertices_schema.py::test_controller_finish_none_shows_actionable_error_without_partial_close PASSED
+tests/test_behavior_review_05_line_test_position_initialization.py::test_explicit_none_survives_cache_clear PASSED
+tests/test_behavior_review_05_line_test_position_initialization.py::test_flowapp_first_planner_input_remains_none PASSED
+tests/test_behavior_review_05_line_test_position_initialization.py::test_first_committed_position_replaces_explicit_none PASSED
+tests/test_behavior_review_06_stray_hover_handle_cleanup.py::test_outside_axes_clear_checks_handle_only_when_both_gate_ids_are_absent PASSED
+tests/test_behavior_review_06_stray_hover_handle_cleanup.py::test_outside_axes_clear_treats_gate_id_zero_as_present_without_handle_read PASSED
+tests/test_behavior_review_06_stray_hover_handle_cleanup.py::test_flowapp_outside_axes_condition_passes_handle_as_lazy_resolver_after_gate_ids PASSED
+tests/test_behavior_review_06_stray_hover_handle_cleanup.py::test_flowapp_clears_a_lone_stray_handle_outside_axes PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_draw_axis_snapshot_failure_rolls_back_transient_start_state[xlim] PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_draw_axis_snapshot_failure_rolls_back_transient_start_state[ylim] PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_handle_axis_snapshot_failure_leaves_no_partial_frozen_limits[xlim] PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_handle_axis_snapshot_failure_leaves_no_partial_frozen_limits[ylim] PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_handle_axis_snapshot_failure_restores_preexisting_frozen_values PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_successful_draw_start_preserves_historical_state_and_axis_order PASSED
+tests/test_behavior_review_08_axis_snapshot_transaction.py::test_successful_handle_start_preserves_historical_payload_and_axis_order PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_successful_polygon_close_keeps_historical_callback_order_and_closed_state PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_update_failure_restores_close_state_and_preserves_original_exception PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_end_blit_failure_restores_state_then_resyncs_close_button_once PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_finish_failure_restores_state_and_resyncs_close_button_after_finish PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_failure_restores_absent_applied_key_to_absent PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_resync_failure_does_not_mask_original_post_close_exception PASSED
+tests/test_behavior_review_09_polygon_close_transaction.py::test_ineligible_polygon_finish_remains_noop PASSED
+tests/test_behavior_review_10_cache_key_eviction.py::test_tiny_polygon_handle_drag_evicts_same_signature_mask_and_scatter_cache PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_handle_late_calculation_failure_rolls_back_geometry_but_keeps_conservative_eviction PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_fresh_motion_assignment_failure_restores_prior_geometry_and_preserves_interaction_state PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_fresh_release_assignment_failure_restores_geometry_but_preserves_historical_release_transient_state[gate0-event0-y_boundary-expected_sets0] PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_fresh_release_assignment_failure_restores_geometry_but_preserves_historical_release_transient_state[gate1-event1-y1-expected_sets1] PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_initialization_assignment_failure_restores_type_and_all_prior_geometry PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_axis_snapshot_failure_after_complete_initialization_keeps_br08_coherent_gate_semantics[xlim-axis_calls0] PASSED
+tests/test_behavior_review_11_transactional_geometry.py::test_axis_snapshot_failure_after_complete_initialization_keeps_br08_coherent_gate_semantics[ylim-axis_calls1] PASSED
+tests/test_behavior_review_gate_id_zero.py::test_br_hover_001_gate_zero_is_a_real_cursor_source_end_to_end_helpers PASSED
+tests/test_behavior_review_gate_id_zero.py::test_br_hover_001_pinned_gate_zero_is_a_real_cursor_source PASSED
+tests/test_behavior_review_gate_id_zero.py::test_br_hover_001_flowapp_cursor_uses_hover_gate_zero_cache PASSED
+tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[cytometry-names0] SUPERVISOR TIMED STACK elapsed=300.7
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/task_sidebar.py", line 245 in _plot_mode_controls_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/flow_app_shell.py", line 230 in <lambda>
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 427 in set
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_benchmark_app_gui.py", line 48 in test_frozen_sources_in_app
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[microscopy-names1] PASSED
+tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[parser_variants-names2] PASSED
+tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[lmd-names3] SUPERVISOR TIMED STACK elapsed=360.8
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1797 in _analysis_context_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1975 in apply_axes
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_benchmark_app_gui.py", line 46 in test_frozen_sources_in_app
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_bug_hunt_gui_rc13.py::test_locate_loaded_source_retains_identity_and_population PASSED
+tests/test_bug_hunt_gui_rc13.py::test_locate_dialog_cannot_apply_after_workspace_replacement PASSED
+tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui0] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui1] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_missing_unloaded_exclusion_can_be_saved_and_reopened PASSED
+tests/test_bug_hunt_gui_rc13.py::test_population_audit_lists_only_member_samples SUPERVISOR TIMED STACK elapsed=420.9
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_workspace_gui.py", line 39 in experiment
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 998 in call_fixture_func
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1328 in pytest_fixture_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 1232 in execute
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 726 in _get_active_fixturedef
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 630 in getfixturevalue
+  File "/root/.local/lib/python3.12/site-packages/_pytest/fixtures.py", line 806 in _fillfixtures
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1710 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 536 in setup
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 170 in pytest_runtest_setup
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_bug_hunt_gui_rc13.py::test_population_capture_refuses_nonmember_even_with_parent_source PASSED
+tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[symlink] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[relative_missing] PASSED
+tests/test_bug_hunt_gui_rc13.py::test_repeated_population_reopen_does_not_add_temporary_tabs PASSED
+tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice SUPERVISOR TIMED STACK elapsed=481.0
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 186 in _load_filtered
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 4343 in _load_filtered
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 101 in _new_tab
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 197 in open_subgate_tab
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2966 in _open_subgate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_bug_hunt_gui_rc13.py", line 107 in test_relink_refreshes_every_child_and_preserves_inactive_choice
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_bug_hunt_gui_rc14.py::test_unreadable_excluded_source_survives_reopen[csv] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_unreadable_excluded_source_survives_reopen[mqd] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_locate_missing_exclusion_can_restore_decoded_events[False] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_locate_missing_exclusion_can_restore_decoded_events[True] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_retry_unreadable_exclusion_after_repair PASSED
+tests/test_bug_hunt_gui_rc14.py::test_unreadable_container_member_keeps_authoritative_identity SUPERVISOR TIMED STACK elapsed=541.2
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_bug_hunt_gui_rc14.py", line 89 in test_unreadable_container_member_keeps_authoritative_identity
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_bug_hunt_gui_rc14.py::test_prepare_publishes_state_only_when_main_thread_polls PASSED
+tests/test_bug_hunt_gui_rc14.py::test_closed_audit_is_not_retained_by_worker[prepare] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_closed_audit_is_not_retained_by_worker[run] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_direct_destroy_cancels_audit_and_scheduled_callbacks PASSED
+tests/test_bug_hunt_gui_rc14.py::test_audit_close_is_idempotent PASSED
+tests/test_bug_hunt_gui_rc14.py::test_rename_audit_rechecks_identity_after_modal[clear] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_rename_audit_rechecks_identity_after_modal[reopen] PASSED
+tests/test_bug_hunt_gui_rc14.py::test_biological_id_modal_can_close_without_touching_dead_widgets PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui0] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui1] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui2] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui3] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui4] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui5] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui6] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui7] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui8] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui9] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui10] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui11] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui12] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui13] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui0] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui1] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui2] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui3] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui4] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui5] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui6] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui7] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui8] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui9] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui10] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui11] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui12] PASSED
+tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui13] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change0] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change1] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change2] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change3] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change4] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change5] PASSED
+tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change6] PASSED
+tests/test_bug_hunt_rc13.py::test_family_excluded_acquisition_cannot_be_overwritten PASSED
+tests/test_cache_keys.py::test_gate_signature_includes_threshold_toggles PASSED
+tests/test_cache_keys.py::test_gate_signature_handles_none_y_boundaries PASSED
+tests/test_cache_keys.py::test_polygon_signature_rounds_vertices PASSED
+tests/test_cache_keys.py::test_gate_mask_cache_keys_for_gate_ids PASSED
+tests/test_cache_keys.py::test_gate_mask_cache_keys_for_gate_ids_current_generation_key_shape PASSED
+tests/test_cache_keys.py::test_gate_mask_cache_keys_for_gate_ids_does_not_treat_y_channel_as_gate_id PASSED
+tests/test_cache_keys.py::test_scatter_cache_keys_for_gate_signature PASSED
+tests/test_cache_keys.py::test_scatter_cache_keys_for_gate_signature_current_generation_key_shape PASSED
+tests/test_cache_keys.py::test_scatter_cache_keys_for_gate_signature_does_not_treat_y_channel_as_signature_tuple PASSED
+tests/test_cache_keys.py::test_evict_cache_keys_returns_removed_count PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_reducer_selects_strictly_nearest_gate_and_preserves_first_tie PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_reducer_skips_none_hits_and_preserves_gate_zero PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_reducer_consumes_candidates_lazily_and_propagates_late_failure PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_reducer_keeps_frozen_nan_and_infinity_comparison_semantics PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_flowapp_hover_test_preserves_repeated_event_read_order_and_nearest_gate PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_flowapp_hover_test_keeps_per_gate_geometry_and_threshold_in_controller PASSED
+tests/test_cached_handle_nearest_selection_refactor.py::test_reducer_does_not_import_or_call_geometry_helpers PASSED
+tests/test_channel_nomenclature_port.py::test_multitoken_channel_is_preserved_by_exact_template_extraction PASSED
+tests/test_channel_nomenclature_port.py::test_selected_main_channel_finds_full_variant_but_not_coexisting_d1r PASSED
+tests/test_channel_nomenclature_port.py::test_alias_session_renames_labels_only_and_protects_collisions PASSED
+tests/test_channel_nomenclature_port.py::test_confirmed_channel_mapping_updates_exact_family_only PASSED
+tests/test_channel_nomenclature_port.py::test_subgate_seed_inherits_axis_aliases_even_before_data_registration PASSED
+tests/test_channel_nomenclature_port.py::test_port_source_contracts_are_wired_into_refactored_ui_seams PASSED
+tests/test_channel_nomenclature_port.py::test_load_and_batch_raw_rereads_apply_aliases_before_schema_use PASSED
+tests/test_channel_nomenclature_port.py::test_schema_report_refuses_to_claim_unique_reference_on_tie PASSED
+tests/test_channel_nomenclature_port.py::test_file_manager_labels_are_platform_specific PASSED
+tests/test_channel_nomenclature_port.py::test_reveal_service_builds_native_commands_without_modifying_file PASSED
+tests/test_channel_nomenclature_port.py::test_unload_removes_analysis_entry_but_never_source_file PASSED
+tests/test_channel_nomenclature_port.py::test_case_only_load_normalization_is_persisted_for_raw_rereads PASSED
+tests/test_channel_nomenclature_port.py::test_unambiguous_relabel_preserves_gate_context_and_membership PASSED
+tests/test_channel_nomenclature_port.py::test_sixty_file_strict_intersection_and_explicit_resolution PASSED
+tests/test_channel_nomenclature_port.py::test_multitoken_space_and_short_suffix_candidates_keep_literal_channel_slot PASSED
+tests/test_channel_nomenclature_port.py::test_two_aliases_to_one_absent_target_are_protected_as_ambiguous PASSED
+tests/test_channel_nomenclature_port.py::test_unresolved_workflow_converges_from_five_to_two_structural_outliers PASSED
+tests/test_channel_nomenclature_port.py::test_alias_session_clear_resets_mappings_and_prompt_signature PASSED
+tests/test_channel_nomenclature_port.py::test_resolver_prompt_respects_checked_active_files PASSED
+tests/test_channel_nomenclature_port.py::test_linux_reveal_falls_back_to_containing_folder_when_dbus_unavailable PASSED
+tests/test_channel_selection.py::test_channel_plan_initializes_first_two_sorted_common_columns_in_legacy_order PASSED
+tests/test_channel_selection.py::test_channel_plan_reports_hidden_columns_across_files PASSED
+tests/test_channel_selection.py::test_channel_plan_with_no_common_active_channel_fails_closed_instead_of_analysing_subset PASSED
+tests/test_channel_selection.py::test_channel_plan_stale_axes_keep_y_distinct_from_resolved_x PASSED
+tests/test_channel_selection.py::test_channel_plan_single_column_with_uninitialized_x_preserves_legacy_y_fallback PASSED
+tests/test_channel_selection.py::test_multi_file_duplicate_fcs_stain_suffixes_are_not_auto_matched PASSED
+tests/test_channel_selection.py::test_single_file_duplicate_fcs_stain_suffixes_remain_usable PASSED
+tests/test_channel_selection.py::test_concatenated_provenance_columns_are_never_axis_candidates PASSED
+tests/test_channel_selection.py::test_concatenated_channel_missing_for_one_source_is_hidden_not_partially_analysed PASSED
+tests/test_channel_selection.py::test_object_metadata_column_is_not_an_axis_candidate PASSED
+tests/test_channel_selection.py::test_unnamed_csv_measurement_is_usable_single_file_but_not_auto_matched_across_files PASSED
+tests/test_circular_stats.py::test_mean_resultant_length_empty_and_aligned PASSED
+tests/test_circular_stats.py::test_common_columns_returns_sorted_intersection PASSED
+tests/test_circular_stats.py::test_circular_mean_direction PASSED
+tests/test_circular_stats.py::test_rayleigh_p_value_edge_cases_and_bounds PASSED
+tests/test_circular_stats.py::test_rayleigh_p_value_uses_zar_circstat_approximation PASSED
+tests/test_circular_stats.py::test_rayleigh_small_sample_uses_zar_approximation_not_exp_minus_z PASSED
+tests/test_circular_stats.py::test_directional_significance_requires_p_and_mrl PASSED
+tests/test_circular_stats.py::test_vectors_from_coordinate_columns_requires_all_columns PASSED
+tests/test_circular_stats.py::test_vectors_from_coordinate_columns_empty_selection PASSED
+tests/test_circular_stats.py::test_vectors_from_coordinate_columns_computes_angles_and_magnitudes PASSED
+tests/test_circular_stats.py::test_zero_length_vectors_have_no_direction_and_are_excluded PASSED
+tests/test_circular_stats.py::test_vector_direction_stats_empty_and_aligned PASSED
+tests/test_circular_stats.py::test_polar_stats_display_formatting PASSED
+tests/test_circular_stats.py::test_build_polar_stats_export_row PASSED
+tests/test_circular_stats.py::test_build_polar_stats_export_row_empty PASSED
+tests/test_circular_stats.py::test_auto_detect_vector_columns_prefers_microns_and_pairs_axes PASSED
+tests/test_circular_stats.py::test_auto_detect_vector_columns_pairs_channel_identity_when_column_order_is_scrambled PASSED
+tests/test_circular_stats.py::test_auto_detect_vector_columns_duplicates_single_axis PASSED
+tests/test_circular_stats.py::test_auto_detect_vector_columns_handles_missing_axes PASSED
+tests/test_circular_stats.py::test_vectors_drop_nonfinite_coordinate_rows PASSED
+tests/test_circular_stats.py::test_vector_stats_ignore_nonfinite_angles PASSED
+tests/test_circular_stats.py::test_antipodal_vectors_have_undefined_mean_direction_not_roundoff_angle PASSED
+tests/test_circular_stats.py::test_quadrature_symmetric_vectors_have_undefined_mean_direction PASSED
+tests/test_circular_stats.py::test_auto_detect_vector_columns_refuses_positional_cross_pair_guess PASSED
+tests/test_column_normalization.py::test_column_normalization_uses_first_seen_reference_casing PASSED
+tests/test_column_normalization.py::test_column_rename_map_is_empty_without_case_mismatch PASSED
+tests/test_column_normalization.py::test_case_insensitive_duplicate_columns_are_rejected PASSED
+tests/test_column_normalization.py::test_normalization_refuses_ambiguous_reference_columns PASSED
+tests/test_compile_legacy.py::test_packaged_application_module_compiles PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1601] SUPERVISOR TIMED STACK elapsed=601.4
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/controllers/project_data_load_coordinator.py", line 147 in load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1543 in _load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 27 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=661.5
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/_core/fromnumeric.py", line 2580 in any
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 2618 in update_datalim
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 2382 in add_collection
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_axes.py", line 5068 in scatter
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/__init__.py", line 1524 in inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/_api/deprecation.py", line 453 in wrapper
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 590 in plot_density
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 298 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 34 in verify
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 67 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=721.6
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 65 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1602] SUPERVISOR TIMED STACK elapsed=781.7
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/controllers/project_data_load_coordinator.py", line 147 in load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1543 in _load_paths
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 27 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=841.7
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 575 in plot_density
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 298 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 66 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=901.9
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 430 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 1008 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1379 in update_idletasks
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/task_sidebar.py", line 271 in _restore_sidebar_state
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 788 in restore_ui
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 1142 in locate_reference
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 74 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1603] SUPERVISOR TIMED STACK elapsed=962.1
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 66 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=1022.2
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1687 in _restore_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 63 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1604] SUPERVISOR TIMED STACK elapsed=1082.4
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1797 in _analysis_context_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1990 in _apply_scales
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/flow_app_shell.py", line 218 in <lambda>
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 427 in set
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 27 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=1142.4
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 1897 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 1835 in frozen
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/markers.py", line 351 in get_transform
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 879 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 276 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1408 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1379 in update_idletasks
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/task_sidebar.py", line 271 in _restore_sidebar_state
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 788 in restore_ui
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 711 in restore_tabs
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 576 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 66 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+SUPERVISOR TIMED STACK elapsed=1202.5
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 1111 in remove_sample
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 75 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_adds_source_file_and_resets_index PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_skips_fcs_files PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_returns_none_when_no_csv_frames PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_reports_read_error PASSED
+tests/test_concat_export.py::test_concat_output_filename_and_path PASSED
+tests/test_concat_export.py::test_concat_success_messages PASSED
+tests/test_concat_export.py::test_concat_warning_and_error_messages PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_disambiguates_duplicate_basenames PASSED
+tests/test_concat_export.py::test_build_concatenated_csv_rejects_nested_provenance PASSED
+tests/test_concat_export.py::test_concatenate_rejects_same_physical_file_via_alias PASSED
+tests/test_concat_paths.py::test_concat_paths_do_not_import_pandas PASSED
+tests/test_concat_paths.py::test_concat_output_filename_and_path PASSED
+tests/test_config_modules.py::test_theme_defaults_are_available PASSED
+tests/test_config_modules.py::test_shared_constants_expose_explicit_a2_transform_identities PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_matches_frozen_success_order_and_plan_identity PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[geometry-expected_names0] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[plan-expected_names1] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[xvars-expected_names2] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[yvar-expected_names3] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[applied-expected_names4] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[clear_id-expected_names5] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[end_render-expected_names6] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_crosshair_sequence_preserves_each_failure_cutoff[finish-expected_names7] PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_flowapp_keeps_crosshair_materialization_and_mutation_controller_owned PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_shape_degeneracy_path_remains_separate_and_controller_owned PASSED
+tests/test_crosshair_release_side_effect_sequence_refactor.py::test_sequence_helper_does_not_absorb_concrete_controller_authority PASSED
+tests/test_csv_io.py::test_smart_read_csv_keeps_named_first_column PASSED
+tests/test_csv_io.py::test_smart_read_csv_drops_unnamed_index_column PASSED
+tests/test_csv_io.py::test_read_flow_data_file_uses_csv_reader PASSED
+tests/test_csv_io.py::test_smart_read_csv_preserves_legitimate_unnamed_measurement_column PASSED
+tests/test_csv_io.py::test_smart_read_csv_does_not_drop_nonsequential_integer_first_column PASSED
+tests/test_csv_io.py::test_csv_case_insensitive_channel_collision_is_rejected PASSED
+tests/test_csv_io.py::test_smart_read_csv_rejects_exact_duplicate_headers_before_pandas_mangles_them PASSED
+tests/test_dataset_state.py::test_dataset_state_defaults_are_independent_mutable_mappings PASSED
+tests/test_dataset_state.py::test_flowapp_loaded_files_property_preserves_mapping_identity PASSED
+tests/test_dataset_state.py::test_flowapp_excluded_files_property_preserves_mapping_identity PASSED
+tests/test_dataset_state.py::test_flowapp_dataset_properties_lazy_initialize_for_headless_harnesses PASSED
+tests/test_dataset_state.py::test_dataset_state_inherits_exclusions_by_shallow_mapping_copy PASSED
+tests/test_dataset_state.py::test_dataset_state_commit_loaded_file_preserves_value_identity PASSED
+tests/test_dataset_state.py::test_dataset_state_exclude_loaded_file_moves_value_and_fails_closed PASSED
+tests/test_dataset_state.py::test_dataset_state_restore_excluded_file_preserves_none_placeholder_semantics PASSED
+tests/test_dataset_state.py::test_dataset_state_register_unloaded_exclusion_is_non_destructive PASSED
+tests/test_dataset_state.py::test_dataset_state_clear_files_clears_mappings_in_place PASSED
+tests/test_derivative_refresh_rc16.py::test_owned_derivative_refresh_preserves_original_integrity PASSED
+tests/test_export_names.py::test_export_channel_token_uses_fallback_and_replaces_spaces PASSED
+tests/test_export_names.py::test_active_export_stem_uses_first_active_path PASSED
+tests/test_export_names.py::test_xy_export_prefix_matches_legacy_pattern PASSED
+tests/test_fcs_reader.py::test_big_endian_16_bit_integer_values PASSED
+tests/test_fcs_reader.py::test_text_escaped_delimiter_and_duplicate_stain_names_are_handled PASSED
+tests/test_fcs_reader.py::test_tightly_packed_10_bit_integers PASSED
+tests/test_fcs_reader.py::test_truncated_data_is_rejected PASSED
+tests/test_fcs_reader.py::test_invalid_byte_order_is_rejected PASSED
+tests/test_fcs_reader.py::test_linear_gain_is_converted_to_scale_values PASSED
+tests/test_fcs_reader.py::test_time_parameter_is_returned_in_seconds PASSED
+tests/test_fcs_reader.py::test_utf8_stain_name_is_preserved PASSED
+tests/test_fcs_reader.py::test_header_text_data_offset_mismatch_is_rejected PASSED
+tests/test_fcs_reader.py::test_multiple_fcs_datasets_are_not_silently_ignored PASSED
+tests/test_fcs_reader.py::test_log_amplification_cannot_be_combined_with_nonunit_gain PASSED
+tests/test_fcs_reader.py::test_spillover_matrix_is_flagged_as_unapplied PASSED
+tests/test_fcs_reader.py::test_no_spillover_matrix_is_not_flagged PASSED
+tests/test_fcs_reader.py::test_fcs30_comp_metadata_is_flagged_as_unapplied_compensation PASSED
+tests/test_fcs_reader.py::test_fcs20_dfc_metadata_is_flagged_as_unapplied_compensation PASSED
+tests/test_fcs_reader.py::test_case_insensitive_duplicate_stains_are_disambiguated PASSED
+tests/test_fcs_reader.py::test_flowjo_texttofcs_float_compatibility_layout_is_read_exactly PASSED
+tests/test_fcs_reader.py::test_missing_pne_is_still_rejected_without_explicit_linear_pnd PASSED
+tests/test_fcs_reader.py::test_integer_unused_high_bits_are_masked_according_to_pnr PASSED
+tests/test_fcs_reader.py::test_integer_value_still_outside_non_power_of_two_pnr_is_rejected_after_mask PASSED
+tests/test_fcs_reader.py::test_integer_range_beyond_exact_float64_precision_fails_closed PASSED
+tests/test_fcs_reader.py::test_integer_value_at_pnr_minus_one_is_valid PASSED
+tests/test_fcs_reader.py::test_supplemental_text_gain_is_applied_before_numeric_conversion PASSED
+tests/test_fcs_reader.py::test_supplemental_text_spillover_is_not_silently_ignored PASSED
+tests/test_fcs_reader.py::test_duplicate_fcs_keyword_between_primary_and_supplemental_text_is_rejected PASSED
+tests/test_fcs_reader.py::test_duplicate_fcs_keyword_within_primary_text_is_rejected PASSED
+tests/test_fcs_reader.py::test_texttofcs_overlapping_stext_quirk_remains_compatible PASSED
+tests/test_figure_export.py::test_is_vector_path PASSED
+tests/test_figure_export.py::test_save_figure_uses_legacy_options PASSED
+tests/test_figure_export.py::test_save_figure_unrasterizes_vector_and_restores_state PASSED
+tests/test_figure_export.py::test_save_figure_restores_state_on_failure PASSED
+tests/test_file_list_presentation.py::test_flow_app_keeps_shell_as_direct_base_and_shell_composes_file_list_presentation PASSED
+tests/test_file_list_presentation.py::test_file_list_ui_state_is_separate_from_dataset_state PASSED
+tests/test_file_list_presentation.py::test_file_list_compatibility_properties_preserve_mapping_identity PASSED
+tests/test_file_list_presentation.py::test_active_files_uses_loaded_order_and_checkbox_state PASSED
+tests/test_file_list_presentation.py::test_display_files_cycle_mode_preserves_active_order_and_cycle_modulo PASSED
+tests/test_file_list_presentation.py::test_select_and_unselect_all_keep_single_active_change_callback PASSED
+tests/test_file_load_planning.py::test_exact_loaded_path_is_silent_skip PASSED
+tests/test_file_load_planning.py::test_physical_alias_of_loaded_path_reports_loaded_alias PASSED
+tests/test_file_load_planning.py::test_physical_alias_of_excluded_path_reports_excluded_alias PASSED
+tests/test_file_load_planning.py::test_loaded_frame_plan_preserves_first_loaded_case_and_notice_order PASSED
+tests/test_file_load_planning.py::test_loaded_frame_plan_retains_legacy_spillover_marker_fallback PASSED
+tests/test_file_load_planning.py::test_loaded_frame_plan_keeps_ambiguous_column_rejection PASSED
+tests/test_file_load_planning.py::test_warning_plan_preserves_legacy_order_and_truncation PASSED
+tests/test_file_load_planning.py::test_project_data_coordinator_owns_load_planning_and_side_effect_order PASSED
+tests/test_file_load_planning.py::test_file_load_planner_has_no_tk_or_file_reader_dependency PASSED
+tests/test_flow_app_shell.py::test_flow_app_inherits_extracted_ui_shell PASSED
+tests/test_flow_app_shell.py::test_extracted_ui_methods_are_owned_only_by_shell_base PASSED
+tests/test_flow_app_shell.py::test_scientific_and_application_methods_remain_on_flow_app PASSED
+tests/test_flow_app_shell.py::test_flow_app_shell_has_no_scientific_gate_or_export_methods PASSED
+tests/test_folder_scan_dialog.py::test_matching_folder_scan_files_filters_csv_fcs_and_pattern PASSED
+tests/test_folder_scan_dialog.py::test_matching_folder_scan_files_recurses_and_blank_pattern_matches_all PASSED
+tests/test_folder_scan_dialog.py::test_matching_folder_scan_files_invalid_folder_returns_empty PASSED
+tests/test_folder_scan_dialog.py::test_folder_scan_default_concat_filename PASSED
+tests/test_folder_scan_dialog.py::test_folder_scan_count_text PASSED
+tests/test_folder_scan_dialog.py::test_folder_scan_relative_label PASSED
+tests/test_folder_state.py::test_last_folder_state_roundtrip PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_falsey_gate_stops_after_second_gate_truth_test PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_truthy_applied_gate_is_not_deleted PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_unapplied_gate_resolves_id_then_deletes_with_identity PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_callback_failures_preserve_exact_cutoff[end_render-expected_names0] PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_callback_failures_preserve_exact_cutoff[gate-expected_names1] PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_callback_failures_preserve_exact_cutoff[applied-expected_names2] PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_callback_failures_preserve_exact_cutoff[gate_id-expected_names3] PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_callback_failures_preserve_exact_cutoff[delete-expected_names4] PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_gate_truth_failure_occurs_after_render_teardown PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_applied_truth_failure_occurs_before_id_lookup PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_flowapp_keeps_concrete_discard_gate_access_and_deletion_controller_owned PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_sequence_remains_separate_from_release_guard PASSED
+tests/test_fresh_draw_discard_side_effect_sequence_refactor.py::test_discard_helper_does_not_absorb_concrete_controller_authority PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[crosshair-crosshair] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[rectangle-shape] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[ellipse-shape] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[polygon-deferred] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[mystery-deferred] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[None-deferred] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_plain_gate_types_preserve_frozen_branch_selection[0-deferred] PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_custom_equality_preserves_crosshair_then_rectangle_order PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_custom_equality_reaches_ellipse_only_after_rectangle_is_false PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_type_getter_failure_propagates_before_any_comparison PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_crosshair_comparison_failure_preserves_cutoff PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_comparison_truth_test_failure_preserves_cutoff PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_flowapp_retains_concrete_type_lookup_and_all_finalization_side_effects PASSED
+tests/test_fresh_draw_finalization_path_orchestration_refactor.py::test_finalization_path_helper_does_not_absorb_gate_mutation_or_controller_state PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_preserves_success_order_and_time_identity PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_throttle_stops_before_all_side_effects PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_callback_failures_preserve_cutoff[resolve-expected0] PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_callback_failures_preserve_cutoff[commit-expected1] PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_callback_failures_preserve_cutoff[preview-expected2] PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_callback_failures_preserve_cutoff[restore-expected3] PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_fresh_draw_motion_presentation_callback_failures_preserve_cutoff[render-expected4] PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_flowapp_retains_fresh_draw_guard_geometry_clock_axis_and_render_authority PASSED
+tests/test_fresh_draw_motion_presentation_sequence_refactor.py::test_headless_fresh_draw_helper_does_not_absorb_concrete_motion_authority PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_falsey_gate_short_circuits_all_coordinate_reads PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_missing_first_x_short_circuits_y_and_marks_discard PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_missing_first_y_reads_x_then_y_once_and_marks_discard PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_success_repeats_x_then_y_and_returns_second_reads PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_gate_getter_failure_propagates_before_truth_test_or_coordinates PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_gate_truthiness_failure_propagates_before_coordinates PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_coordinate_failures_preserve_exact_cutoff_order[x_values0-y_values0-x0-fail-expected0] PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_coordinate_failures_preserve_exact_cutoff_order[x_values1-y_values1-y0-fail-expected1] PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_coordinate_failures_preserve_exact_cutoff_order[x_values2-y_values2-x1-fail-expected2] PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_coordinate_failures_preserve_exact_cutoff_order[x_values3-y_values3-y1-fail-expected3] PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_flowapp_retains_discard_type_geometry_tk_and_finalization_authority PASSED
+tests/test_fresh_draw_release_guard_orchestration_refactor.py::test_guard_helper_does_not_absorb_release_side_effects_or_gate_type_dispatch PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_stats] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_gated_data] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[save_gates] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_figure] SUPERVISOR TIMED STACK elapsed=1262.7
+Stack (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 201 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_workspace_gui.py", line 50 in new_gate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_full_bug_hunt_gui_rc12.py", line 10 in test_export_cannot_overwrite_loaded_source
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "validation/run_full_suite_rc16.py", line 11 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_workspace_save_as_cannot_replace_source 

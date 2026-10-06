@@ -1,0 +1,254 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "results": [
+    {
+      "name": "main_gc",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.095
+    },
+    {
+      "name": "kde",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.691
+    },
+    {
+      "name": "audit",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.789
+    },
+    {
+      "name": "scan",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.976
+    },
+    {
+      "name": "create",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 7.849
+    },
+    {
+      "name": "moved_workspace",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.238
+    },
+    {
+      "name": "long_session",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 76.582
+    },
+    {
+      "name": "interrupt_before",
+      "returncode": 83,
+      "expected": 83,
+      "passed": true,
+      "seconds": 3.012
+    },
+    {
+      "name": "verify_before",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.171
+    },
+    {
+      "name": "interrupt_after",
+      "returncode": 84,
+      "expected": 84,
+      "passed": true,
+      "seconds": 3.184
+    },
+    {
+      "name": "verify_after",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.203
+    }
+  ],
+  "passed": true,
+  "unsafe_controls_run": false,
+  "phases": {
+    "create": {
+      "phase": "create",
+      "python": "3.12.14",
+      "tk": "9.0.4",
+      "passed": true,
+      "save_as_preserves_old_revision": true,
+      "events": 48000,
+      "counts": {
+        "Control_01": 7273,
+        "Control_02": 7020,
+        "Treatment_01": 7081,
+        "Treatment_02": 7058
+      },
+      "seconds": 6.177,
+      "errors": []
+    },
+    "verify": {
+      "phase": "verify",
+      "python": "3.12.14",
+      "tk": "9.0.4",
+      "passed": true,
+      "seconds": 1.674,
+      "errors": []
+    },
+    "long_session": {
+      "phase": "long_session",
+      "python": "3.12.14",
+      "tk": "9.0.4",
+      "passed": true,
+      "cycles": 20,
+      "workspace_switches": 40,
+      "real_audit_preparations": 20,
+      "cancelled_closed_workers": 20,
+      "closed_dialogs_collected": true,
+      "snapshots": [
+        {
+          "cycle": 1,
+          "root_children": 3,
+          "peak_rss_platform_units": 234048
+        },
+        {
+          "cycle": 2,
+          "root_children": 3,
+          "peak_rss_platform_units": 239808
+        },
+        {
+          "cycle": 3,
+          "root_children": 3,
+          "peak_rss_platform_units": 240960
+        },
+        {
+          "cycle": 4,
+          "root_children": 3,
+          "peak_rss_platform_units": 240960
+        },
+        {
+          "cycle": 5,
+          "root_children": 3,
+          "peak_rss_platform_units": 240960
+        },
+        {
+          "cycle": 6,
+          "root_children": 3,
+          "peak_rss_platform_units": 243704
+        },
+        {
+          "cycle": 7,
+          "root_children": 3,
+          "peak_rss_platform_units": 243704
+        },
+        {
+          "cycle": 8,
+          "root_children": 3,
+          "peak_rss_platform_units": 249544
+        },
+        {
+          "cycle": 9,
+          "root_children": 3,
+          "peak_rss_platform_units": 249800
+        },
+        {
+          "cycle": 10,
+          "root_children": 3,
+          "peak_rss_platform_units": 249800
+        },
+        {
+          "cycle": 11,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 12,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 13,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 14,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 15,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 16,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 17,
+          "root_children": 3,
+          "peak_rss_platform_units": 256232
+        },
+        {
+          "cycle": 18,
+          "root_children": 3,
+          "peak_rss_platform_units": 257580
+        },
+        {
+          "cycle": 19,
+          "root_children": 3,
+          "peak_rss_platform_units": 257580
+        },
+        {
+          "cycle": 20,
+          "root_children": 3,
+          "peak_rss_platform_units": 257836
+        }
+      ],
+      "seconds": 74.93,
+      "errors": []
+    },
+    "verify_before": {
+      "phase": "verify_before",
+      "python": "3.12.14",
+      "tk": "9.0.4",
+      "passed": true,
+      "previous_revision_intact": true,
+      "saved_audit_events": 24000,
+      "review_note_preserved": true,
+      "bundle_bytes_preserved": true,
+      "seconds": 1.54,
+      "errors": []
+    },
+    "verify_after": {
+      "phase": "verify_after",
+      "python": "3.12.14",
+      "tk": "9.0.4",
+      "passed": true,
+      "committed_revision_complete": true,
+      "saved_audit_events": 24000,
+      "review_note_preserved": true,
+      "bundle_bytes_preserved": true,
+      "seconds": 1.741,
+      "errors": []
+    }
+  },
+  "audit_bundle_and_review_history_preserved": true,
+  "saved_audit_events": 24000,
+  "standalone_no_pytest_required": true
+}

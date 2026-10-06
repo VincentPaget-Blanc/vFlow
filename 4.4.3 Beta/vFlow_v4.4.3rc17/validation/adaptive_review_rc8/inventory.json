@@ -1,0 +1,167 @@
+{
+  "views": [
+    {
+      "file": "01_Short_List.png",
+      "size": [
+        525,
+        1041
+      ],
+      "sample_count": 4,
+      "sample_tree_height": 152,
+      "outer_scroll": [
+        0.0,
+        1.0
+      ],
+      "row_height": 29,
+      "scaling": 1.3879781420765027,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "02_Long_List_1080.png",
+      "size": [
+        525,
+        1041
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 732,
+      "outer_scroll": [
+        0.0,
+        0.694
+      ],
+      "row_height": 29,
+      "scaling": 1.3879781420765027,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "03_Click_Plot_Settings.png",
+      "size": [
+        525,
+        1041
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 732,
+      "outer_scroll": [
+        0.30933333333333335,
+        1.0
+      ],
+      "row_height": 29,
+      "scaling": 1.3879781420765027,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "04_Plot_Export_End.png",
+      "size": [
+        525,
+        1041
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 732,
+      "outer_scroll": [
+        0.30933333333333335,
+        1.0
+      ],
+      "row_height": 29,
+      "scaling": 1.3879781420765027,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "05_Click_Gates.png",
+      "size": [
+        525,
+        1041
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 732,
+      "outer_scroll": [
+        0.30933333333333335,
+        1.0
+      ],
+      "row_height": 29,
+      "scaling": 1.3879781420765027,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "06_Compact_640.png",
+      "size": [
+        414,
+        605
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 344,
+      "outer_scroll": [
+        0.0,
+        0.7051282051282052
+      ],
+      "row_height": 24,
+      "scaling": 1.3333333333333333,
+      "mode": "Compact"
+    },
+    {
+      "file": "07_Scaling_150.png",
+      "size": [
+        690,
+        851
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 428,
+      "outer_scroll": [
+        0.0,
+        0.7199661590524534
+      ],
+      "row_height": 42,
+      "scaling": 2.0015760441292354,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "08_Scaling_200.png",
+      "size": [
+        1071,
+        1012
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 388,
+      "outer_scroll": [
+        0.0,
+        0.7312138728323699
+      ],
+      "row_height": 64,
+      "scaling": 2.6624737945492662,
+      "mode": "Large"
+    },
+    {
+      "file": "09_Manual_Divider.png",
+      "size": [
+        512,
+        1043
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 326,
+      "outer_scroll": [
+        0.0,
+        0.9630655586334257
+      ],
+      "row_height": 28,
+      "scaling": 1.3333333333333333,
+      "mode": "Comfortable"
+    },
+    {
+      "file": "10_Automatic_Reopened.png",
+      "size": [
+        512,
+        1043
+      ],
+      "sample_count": 60,
+      "sample_tree_height": 735,
+      "outer_scroll": [
+        0.0,
+        0.6990616621983914
+      ],
+      "row_height": 28,
+      "scaling": 1.3333333333333333,
+      "mode": "Comfortable"
+    }
+  ],
+  "errors": [],
+  "data": "4 frozen cytometry CSVs (48,000 events) plus 56 labeled 250-row benchmark subsets for UI stress only (62,000 total events). Subsets are not independent biological acquisitions.",
+  "platform": "Linux/Tk 9/Xvfb"
+}

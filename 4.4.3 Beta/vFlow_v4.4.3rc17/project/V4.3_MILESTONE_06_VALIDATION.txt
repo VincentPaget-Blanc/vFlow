@@ -1,0 +1,34 @@
+vFlow v4.3 controller decomposition — Milestone 06 validation
+===============================================================
+
+Scope
+-----
+Completed the coherent GateInteractionController ownership boundary by moving
+interaction-only helper implementations (hit testing, hover/cursor resolution,
+handle cache/rebuild, drag mutation, preview, and blitting) behind the composed
+controller while preserving the legacy FlowApp helper facade and override/failure
+injection surface.
+
+Certification
+-------------
+Focused interaction characterization: 373/373 PASS
+Cumulative pytest: 1013/1013 PASS
+compileall: PASS
+Scientific fingerprint: b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef (byte-identical)
+Real FlowJo/TextToFCS DATA shape: 1473 x 8
+Compatibility normalizations: 10
+Maximum direct big-endian float32 DATA difference: 0.0
+Decoded float64 SHA-256: 5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+M5-vs-M6 gate-preview Agg RGBA SHA-256: aa4ca9b3c8308ce2ab3ace85731805032ff42342c26e0b593633fc251ea91289 (identical)
+
+Compatibility note
+------------------
+The event lifecycle intentionally continues through host._hit_test_* / host._preview_gate /
+host._blit_render facades. This preserves historical monkeypatch/unbound-call failure
+oracles while the real implementations are owned by GateInteractionController.
+
+Release-state note
+------------------
+This remains a behavior-preserving v4.3.0-dev structural checkpoint. Runtime/package
+metadata intentionally remains frozen at v4.2.0 until a separate release-cleanup and
+certification cycle.

@@ -1,0 +1,35 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_unreadable_container_member_keeps_authoritative_identity _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f77fa6f3350>, <vflow.legacy.vflow_app.Flow...st-4/test_unreadable_container_memb0/B.csv', '/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7810127980>
+
+    def test_unreadable_container_member_keeps_authoritative_identity(experiment, tmp_path, monkeypatch):
+        from tests.format_fixtures import write_fixture
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        member = next(s for s in owner.document.samples.values() if s.source.absolute_path == str(source))
+        sid = member.sample_id; member_id = member.source_member_id
+        app._exclude_file(owner.path_for(sid)); expected = set(owner.document.samples)
+        dest = tmp_path/'member.vflow'; assert owner.save(path=dest)
+        aliases = app._apply_axis_aliases_to_df
+        def unavailable(df, path):
+            if df.attrs.get('vflow_source_member_id') == member_id: raise ValueError('Temporary member decode failure')
+            return aliases(df, path)
+        with monkeypatch.context() as patch:
+            patch.setattr(app, '_apply_axis_aliases_to_df', unavailable)
+            assert owner.open(dest)
+>           assert str(source) in app.excluded_files and app.excluded_files[str(source)] is None
+E           AssertionError: assert ('/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/plate.lmd' in {'/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/plate__dataset-01.vflow.csv': None})
+E            +  where '/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/plate.lmd' = str(PosixPath('/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/plate.lmd'))
+E            +  and   {'/tmp/pytest-of-root/pytest-4/test_unreadable_container_memb0/plate__dataset-01.vflow.csv': None} = <vflow.legacy.vflow_app.FlowApp object at 0x7f77f9e1e990>.excluded_files
+
+tests/test_bug_hunt_gui_rc14.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc14.py::test_unreadable_container_member_keeps_authoritative_identity
+1 failed in 2.73s

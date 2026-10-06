@@ -1,0 +1,13 @@
+Kernel cached RC5; child must load RC11.
+vFlow started in a separate process (PID 4681).
+Startup output: /tmp/vflow-startup-gqkw_xoe.log
+PASS isolated Spyder launch 1: PASS [{"mode": "spyder-isolated", "version": "4.4.3rc11", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+vFlow started in a separate process (PID 4695).
+Startup output: /tmp/vflow-startup-ajl2bvuh.log
+Traceback (most recent call last):
+  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc11_candidate/validation/check_spyder_launcher_rc11.py", line 36, in <module>
+    assert 'PASS ' in output and '"mapped": true' in output and '"events": 48000' in output,output
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: vFlow source: /workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc11_candidate
+Python: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python
+

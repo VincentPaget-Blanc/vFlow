@@ -1,0 +1,35 @@
+{
+  "version": "4.4.3rc11",
+  "full_suite_passed": 1498,
+  "audit_selection_cases_tk9": 39,
+  "audit_workspace_adaptive_cases_tk86": 75,
+  "new_audit_selection_cases": 24,
+  "frozen_scientific_checks": 53,
+  "expanded_checks": 35,
+  "frozen_hashes": 39,
+  "current_native_views": 3,
+  "cached_rc5_spyder_launches": {
+    "Tk8.6": 2,
+    "Tk9": 2
+  },
+  "benchmark_events_per_launch": 48000,
+  "benchmark_audited_events": 24000,
+  "benchmark_selected_samples": 2,
+  "benchmark_selected_variables": [
+    "FSC-A",
+    "SSC-A"
+  ],
+  "fresh_process_persistence_passed": true,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "wheel": "vflow-4.4.3rc11-py3-none-any.whl",
+  "wheel_sha256": "e66d21ae9a5ca7c561041cef1d90fad0e6abb3cc8a85b1d6d3844009297b0c94",
+  "verified_wheel_python_sources": 120,
+  "wheel_matches_source": true,
+  "numerical_changes": false,
+  "source_launcher_changed": false,
+  "unchanged_core_modules": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "platform": "Linux/Python3.12/Tk8.6.14+Tk9.0.4/Xvfb; actual Spyder runner, no native desktop frontend",
+  "final_followup": "Final full suite and both Tk audit checks include footer-wrap resize measurements and compact padding at Large/200%."
+}

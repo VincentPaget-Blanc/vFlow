@@ -1,0 +1,4 @@
+PASS [{"mode": "source", "version": "4.4.3rc9", "tk": "8.6.14", "mapped": true, "samples": 4, "events": 48000}]
+PASS [{"mode": "module", "version": "4.4.3rc9", "tk": "8.6.14", "mapped": true, "samples": 4, "events": 48000}]
+PASS [{"mode": "console", "version": "4.4.3rc9", "tk": "8.6.14", "mapped": true, "samples": 4, "events": 48000}]
+/bin/bash: line 13:   665 Segmentation fault      timeout 40s python validation/check_startup_rc9.py "$vflow_mode"

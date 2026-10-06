@@ -1,0 +1,38 @@
+{
+  "Microscopy_01": {
+    "n": 5000,
+    "observed_mean_direction_deg": 42.618875577905804,
+    "observed_mean_resultant_length": 0.6738939909729612,
+    "rayleigh_z": 2270.6655553473274,
+    "rayleigh_p_approx": 0.0,
+    "cluster_counts": {
+      "0": 1632,
+      "1": 1373,
+      "2": 1995
+    }
+  },
+  "Microscopy_02": {
+    "n": 5000,
+    "observed_mean_direction_deg": 44.14424507550026,
+    "observed_mean_resultant_length": 0.6696097844762207,
+    "rayleigh_z": 2241.8863173314535,
+    "rayleigh_p_approx": 0.0,
+    "cluster_counts": {
+      "0": 1578,
+      "1": 1402,
+      "2": 2020
+    }
+  },
+  "Microscopy_03": {
+    "n": 5000,
+    "observed_mean_direction_deg": 39.37956721580592,
+    "observed_mean_resultant_length": 0.6714657623861242,
+    "rayleigh_z": 2254.331350283895,
+    "rayleigh_p_approx": 0.0,
+    "cluster_counts": {
+      "0": 1595,
+      "1": 1413,
+      "2": 1992
+    }
+  }
+}

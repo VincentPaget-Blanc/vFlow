@@ -1,0 +1,28 @@
+{
+  "version": "4.4.3rc10",
+  "full_suite_passed": 1474,
+  "workspace_ui_regressions_tk9": 11,
+  "workspace_ui_regressions_tk86": 11,
+  "frozen_scientific_checks": 53,
+  "expanded_checks": 35,
+  "frozen_hashes": 39,
+  "current_native_workspace_views": 4,
+  "cached_rc5_spyder_launches": {
+    "Tk8.6": 2,
+    "Tk9": 2
+  },
+  "benchmark_events_per_launch": 48000,
+  "fresh_process_persistence_passed": true,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "wheel": "vflow-4.4.3rc10-py3-none-any.whl",
+  "wheel_sha256": "c06bdd36c4b80ac1bc9ce8c1ed4b601a985a7fec50d3d25d67263e58d9c8ed01",
+  "verified_wheel_python_sources": 120,
+  "wheel_matches_source": true,
+  "numerical_changes": false,
+  "source_launcher_changed": false,
+  "unchanged_core_modules": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "platform": "Linux/Python3.12/Tk8.6.14+Tk9.0.4/Xvfb; actual Spyder runner, no native desktop frontend",
+  "final_followup": "After full-suite collection, Open Recent semantic font/padding was corrected; all 11 workspace cases reran on Tk9/Tk8.6 and current screenshots use that final source."
+}

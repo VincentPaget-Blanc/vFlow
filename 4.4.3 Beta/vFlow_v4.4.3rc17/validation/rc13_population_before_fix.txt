@@ -1,0 +1,48 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_________ test_repeated_population_reopen_does_not_add_temporary_tabs __________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f6036f43bc0>, <vflow.legacy.vflow_app.Flow...-27/test_repeated_population_reope0/B.csv', '/tmp/pytest-of-root/pytest-27/test_repeated_population_reope0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-27/test_repeated_population_reope0')
+
+    def test_repeated_population_reopen_does_not_add_temporary_tabs(experiment, tmp_path):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        new_gate(app); app._open_subgate(50., 50.); root.update()
+        expected = set(owner.document.tabs); assert len(expected) == 2
+        dest = tmp_path / 'populations.vflow'; assert owner.save(path=dest)
+        for _ in range(3):
+            assert owner.open(dest); root.update()
+>           assert set(owner.document.tabs) == expected and len(manager._apps) == 2
+E           AssertionError: assert ({'33988f45-47...f4ea', 'main'} == {'33988f45-47...2f75', 'main'}
+E             
+E             Extra items in the left set:
+E             'bad652a4-520a-4614-b763-0892866bf4ea'
+E             Use -v to get more diff)
+
+tests/test_bug_hunt_gui_rc13.py:101: AssertionError
+_______ test_relink_refreshes_every_child_and_preserves_inactive_choice ________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f6021e7ef90>, <vflow.legacy.vflow_app.Flow...-27/test_relink_refreshes_every_ch0/B.csv', '/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f60215b1160>
+
+    def test_relink_refreshes_every_child_and_preserves_inactive_choice(experiment, tmp_path, monkeypatch):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        new_gate(app); app._open_subgate(50., 50.); first = manager._apps[-1]
+        app._open_subgate(50., 50.); second = manager._apps[-1]
+        first.file_vars[paths[0]].set(False); first._on_active_files_changed()
+        sid = owner.sample_id(paths[0]); dest = tmp_path / 'children.vflow'; assert owner.save(path=dest)
+        moved = tmp_path / 'moved.csv'; shutil.copy2(paths[0], moved)
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **k: str(moved))
+        owner.locate_reference('sample:' + sid)
+        assert owner.save()
+>       assert str(moved) in first.loaded_files and str(moved) in second.loaded_files
+E       AssertionError: assert ('/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/moved.csv' in {'/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/A.csv':       X     Y    U    V\n0  30.0  30.0  1.0  6....shes_every_ch0/C.csv':       X     Y    U    V\n0  30.0  30.0  1.0  6.0\n1  50.0  50.0  2.0  7.0\n2  90.0  90.0  3.0  8.0})
+E        +  where '/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/moved.csv' = str(PosixPath('/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/moved.csv'))
+E        +  and   {'/tmp/pytest-of-root/pytest-27/test_relink_refreshes_every_ch0/A.csv':       X     Y    U    V\n0  30.0  30.0  1.0  6....shes_every_ch0/C.csv':       X     Y    U    V\n0  30.0  30.0  1.0  6.0\n1  50.0  50.0  2.0  7.0\n2  90.0  90.0  3.0  8.0} = <vflow.legacy.vflow_app.FlowApp object at 0x7f601bbaf4a0>.loaded_files
+
+tests/test_bug_hunt_gui_rc13.py:114: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc13.py::test_repeated_population_reopen_does_not_add_temporary_tabs
+FAILED tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice
+2 failed, 9 deselected in 4.38s

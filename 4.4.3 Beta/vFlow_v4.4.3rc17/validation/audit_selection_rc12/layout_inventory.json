@@ -1,0 +1,26 @@
+{
+  "views": [
+    {
+      "file": "02_Large_200_Percent_Audit.png",
+      "size": [
+        1880,
+        1000
+      ],
+      "mode": "Large",
+      "scaling": 2.6666666666666665
+    },
+    {
+      "file": "03_Empty_Data_Workspace.png",
+      "size": [
+        512,
+        963
+      ],
+      "mode": "Comfortable",
+      "scaling": 1.3333333333333333
+    }
+  ],
+  "errors": [],
+  "real_benchmark_files": 4,
+  "events": 48000,
+  "platform": "Linux/Tk9/Xvfb; 1920x1080 screen"
+}

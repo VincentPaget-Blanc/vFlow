@@ -1,0 +1,23 @@
+{
+  "version": "4.4.3rc4",
+  "analysis_version": "audit-4",
+  "policy_version": "review-3",
+  "tests_passed": 1349,
+  "new_regression_cases": 47,
+  "frozen_scientific_checks": 53,
+  "frozen_fixture_incompatibilities": 6,
+  "expanded_checks": 35,
+  "frozen_source_hashes": 39,
+  "sidebar_screenshots": 6,
+  "sidebar_events": 48000,
+  "wheel": "vflow-4.4.3rc4-py3-none-any.whl",
+  "wheel_sha256": "4def52ac2e96bc009a7fee0a09e710beb7eb0f11b8d29e6127432796a488f214",
+  "verified_wheel_python_sources": 116,
+  "wheel_matches_source": true,
+  "platform": "Python 3.12 / Linux / Tk through Xvfb",
+  "remaining_format_acceptance": [
+    "MQD native/export truth",
+    "real FCS1.0 acquisition",
+    "external FCS3.2 acquisition"
+  ]
+}

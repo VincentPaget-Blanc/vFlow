@@ -1,0 +1,31 @@
+{
+  "pass": true,
+  "observed": {
+    "sample_A": {
+      "parent_denominator": 7273,
+      "child_IN": 2882
+    },
+    "sample_B": {
+      "parent_denominator": 6162,
+      "child_IN": 2403
+    },
+    "sample_C": {
+      "parent_denominator": 7081,
+      "child_IN": 2009
+    }
+  },
+  "expected": {
+    "sample_A": {
+      "parent_denominator": 7273,
+      "child_IN": 2882
+    },
+    "sample_B": {
+      "parent_denominator": 6162,
+      "child_IN": 2403
+    },
+    "sample_C": {
+      "parent_denominator": 7081,
+      "child_IN": 2009
+    }
+  }
+}

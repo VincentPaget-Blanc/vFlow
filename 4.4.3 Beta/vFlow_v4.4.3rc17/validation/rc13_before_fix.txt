@@ -1,0 +1,708 @@
+FFFFFF.FFFFFFFFFFF.FFFFFF.FFFFFFFFFF                                     [100%]
+=================================== FAILURES ===================================
+__________ test_workspace_ui_validated_before_restore[workspace-ui0] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be0')
+ui = {'current_sample_id': []}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui1] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be1')
+ui = {'selected_sample_ids': None}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui2] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be2')
+ui = {'selected_sample_ids': [None]}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui3] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be3')
+ui = {'active_sample_ids': None}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui4] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be4')
+ui = {'active_sample_ids': [{}]}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui5] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be5')
+ui = {'view_mode': []}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui7] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be7')
+ui = {'sidebar_width': True}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui8] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be8')
+ui = {'workspace_name': []}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui9] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be9')
+ui = {'interface_size': []}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui10] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be10')
+ui = {'selected_gate_id': []}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui11] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be11')
+ui = {'active_tab_id': {}}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui0] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be12')
+ui = {'current_sample_id': []}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui1] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be13')
+ui = {'selected_sample_ids': None}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui2] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be14')
+ui = {'selected_sample_ids': [None]}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui3] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be15')
+ui = {'active_sample_ids': None}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui4] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be16')
+ui = {'active_sample_ids': [{}]}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui5] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be17')
+ui = {'view_mode': []}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui7] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be19')
+ui = {'sidebar_width': True}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui8] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be20')
+ui = {'workspace_name': []}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui9] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be21')
+ui = {'interface_size': []}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui10] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be22')
+ui = {'selected_gate_id': []}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui11] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_workspace_ui_validated_be23')
+ui = {'active_tab_id': {}}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:22: Failed
+_____________ test_nested_workspace_metadata_is_rejected[change0] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata0')
+change = {'overlay_view': {'transform_parameters': ['bad']}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+                                        ^^^^^^^^^^^^^^^^^
+
+tests/test_bug_hunt_rc13.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/workspace/model.py:256: in load
+    d['overlay_view'] = ViewState.from_dict(d.get('overlay_view'))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.ViewState'>
+data = {'transform_parameters': ['bad']}
+
+    @classmethod
+    def from_dict(cls, data):
+        if data is not None and not isinstance(data,dict):raise ValueError('Saved view must be an object.')
+        d = dict(data or {})
+        # Accept the proposed handoff representation without mapping channel names.
+        params = d.pop('transform_parameters', {})
+        if params:
+>           d.setdefault('cofactor', params.get('cofactor', 150.0))
+                                     ^^^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+
+vflow/workspace/model.py:145: AttributeError
+_____________ test_nested_workspace_metadata_is_rejected[change2] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata2')
+change = {'axis_aliases': {'X': ['wrong']}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:36: Failed
+_____________ test_nested_workspace_metadata_is_rejected[change3] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata3')
+change = {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:36: Failed
+_____________ test_nested_workspace_metadata_is_rejected[change4] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata4')
+change = {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:36: Failed
+_____________ test_nested_workspace_metadata_is_rejected[change5] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata5')
+change = {'tabs': {'main': {'lineage': [{'gate_id': []}]}}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:36: Failed
+_____________ test_nested_workspace_metadata_is_rejected[change6] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_nested_workspace_metadata6')
+change = {'tabs': {'main': {'lineage': [{'region': []}]}}}
+
+    @pytest.mark.parametrize('change', [
+        {'overlay_view': {'transform_parameters': ['bad']}},
+        {'overlay_view': {'x_transform_params': ['bad']}},
+        {'axis_aliases': {'X': ['wrong']}},
+        {'tabs': {'main': {'sections': {'PLOT': 'not-a-boolean'}}}},
+        {'tabs': {'main': {'lineage': [{'workspace_tab_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'gate_id': []}]}}},
+        {'tabs': {'main': {'lineage': [{'region': []}]}}},
+    ])
+    def test_nested_workspace_metadata_is_rejected(tmp_path, change):
+        d = Workspace().payload(); d.update(change)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:36: Failed
+____________ test_family_excluded_acquisition_cannot_be_overwritten ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_family_excluded_acquisiti0')
+
+    def test_family_excluded_acquisition_cannot_be_overwritten(tmp_path):
+        from tests.test_v43_batch_stats_runner import _base_adapters, _request
+        from vflow.services.batch_stats_runner import BatchStatsRunner
+        excluded = tmp_path / 'family_1___CytoFile.csv'
+        excluded.write_text('X,Y\n1,2\n3,4\n')
+        protected = tmp_path / 'family_2___CytoFile.csv'
+        protected.write_text('X,Y\n11,12\n13,14\n'); before = protected.read_bytes()
+        (tmp_path / 'other___CytoFile.csv').write_text('X,Y\n1,2\n3,4\n')
+        # The family member is skipped, so is absent from target_files and excluded_files.
+        target = protected
+>       with pytest.raises(ValueError, match='replace'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:48: Failed
+__________ test_locate_loaded_source_retains_identity_and_population ___________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f16d261e840>, <vflow.legacy.vflow_app.Flow...-14/test_locate_loaded_source_reta0/B.csv', '/tmp/pytest-of-root/pytest-14/test_locate_loaded_source_reta0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_locate_loaded_source_reta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f16d23df6e0>
+
+    def test_locate_loaded_source_retains_identity_and_population(experiment, tmp_path, monkeypatch):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        gate = new_gate(app); app._open_subgate(50., 50.); child = manager._apps[-1]
+        sid = owner.sample_id(paths[0]); original_ids = set(owner.document.samples)
+        child_id = child._workspace_tab_id
+        copy = tmp_path / 'relocated' / 'A.csv'; copy.parent.mkdir(); shutil.copy2(paths[0], copy)
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **k: str(copy))
+        owner.locate_reference('sample:' + sid); root.update(); owner.capture(app)
+>       assert set(owner.document.samples) == original_ids
+E       AssertionError: assert {'17936a95-ed...d899fbd526fd'} == {'17936a95-ed...d899fbd526fd'}
+E         
+E         Extra items in the left set:
+E         '58f2f669-47b8-474a-8420-4acc810b975c'
+E         Extra items in the right set:
+E         '53e46035-842d-4f33-989b-e13daaf5dd18'
+E         Use -v to get more diff
+
+tests/test_bug_hunt_gui_rc13.py:16: AssertionError
+_________ test_locate_dialog_cannot_apply_after_workspace_replacement __________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f16d22286e0>, <vflow.legacy.vflow_app.Flow...-14/test_locate_dialog_cannot_appl0/B.csv', '/tmp/pytest-of-root/pytest-14/test_locate_dialog_cannot_appl0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_locate_dialog_cannot_appl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f16cd9ad190>
+
+    def test_locate_dialog_cannot_apply_after_workspace_replacement(experiment, tmp_path, monkeypatch):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        sid = owner.sample_id(paths[0]); calls = []
+        def choose(**k): owner.clear(); return paths[0]
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', choose)
+        monkeypatch.setattr(owner, 'reload_resources', lambda: calls.append(True))
+        owner.locate_reference('sample:' + sid)
+>       assert calls == [] and len(owner.document.samples) == 0
+E       assert ([True] == []
+E         
+E         Left contains one more item: True
+E         Use -v to get more diff)
+
+tests/test_bug_hunt_gui_rc13.py:32: AssertionError
+________________ test_malformed_ui_open_keeps_live_samples[ui0] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f16d208a960>, <vflow.legacy.vflow_app.Flow...-14/test_malformed_ui_open_keeps_l0/B.csv', '/tmp/pytest-of-root/pytest-14/test_malformed_ui_open_keeps_l0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_malformed_ui_open_keeps_l0')
+ui = {'current_sample_id': []}
+
+    @pytest.mark.parametrize('ui', [{'current_sample_id': []}, {'selected_sample_ids': None}])
+    def test_malformed_ui_open_keeps_live_samples(experiment, tmp_path, ui):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        doc = owner.document; data = doc.payload(); data['tabs']['main']['ui_state'].update(ui)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(data))
+>       assert owner.open(p) is False
+               ^^^^^^^^^^^^^
+
+tests/test_bug_hunt_gui_rc13.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/workspace/controller.py:487: in open
+    self.restore_ui(self.main)
+vflow/workspace/controller.py:644: in restore_ui
+    path = self.path_for(ui.get('current_sample_id'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <vflow.workspace.controller.WorkspaceController object at 0x7f16c5d12e40>
+sid = []
+
+    def path_for(self, sid):
+>       sample = self.document.samples.get(sid)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: unhashable type: 'list'
+
+vflow/workspace/controller.py:81: TypeError
+________________ test_malformed_ui_open_keeps_live_samples[ui1] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f16c5f08e30>, <vflow.legacy.vflow_app.Flow...-14/test_malformed_ui_open_keeps_l1/B.csv', '/tmp/pytest-of-root/pytest-14/test_malformed_ui_open_keeps_l1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/test_malformed_ui_open_keeps_l1')
+ui = {'selected_sample_ids': None}
+
+    @pytest.mark.parametrize('ui', [{'current_sample_id': []}, {'selected_sample_ids': None}])
+    def test_malformed_ui_open_keeps_live_samples(experiment, tmp_path, ui):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        doc = owner.document; data = doc.payload(); data['tabs']['main']['ui_state'].update(ui)
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(data))
+>       assert owner.open(p) is False
+               ^^^^^^^^^^^^^
+
+tests/test_bug_hunt_gui_rc13.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/workspace/controller.py:487: in open
+    self.restore_ui(self.main)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <vflow.workspace.controller.WorkspaceController object at 0x7f16d220fb90>
+app = <vflow.legacy.vflow_app.FlowApp object at 0x7f16d220fc50>
+
+    def restore_ui(self, app):
+        tab = self.tab_state(app); ui = tab.get('ui_state') or (self.document.ui_state if app is self.main else {})
+        app.view_mode_var.set(ui.get('view_mode', 'overlay'))
+        if app is not self.main and 'active_sample_ids' in ui:
+            active_ids=set(ui['active_sample_ids'])
+            for path,var in app.file_vars.items(): var.set(self.sample_id(path) in active_ids)
+        active = list(app._active())
+        path = self.path_for(ui.get('current_sample_id'))
+        app.cycle_idx = active.index(path) if path in active else 0
+        app.gate_scope_var.set('All samples (default)')  # editing scope always starts safely
+        app.auto_gate_input_var.set(ui.get('auto_gate_input', 'Active samples (pooled)'))
+        app.interface_size_var.set(ui.get('interface_size', 'Automatic')); app._apply_interface_size()
+        if hasattr(app, '_sidebar_restoring'): app._sidebar_restoring = True
+        try:
+            for name, expanded in tab.get('sections', {}).items():
+                if name in app._sections: app._sections[name][0].set(expanded); app._toggle_section(name)
+        finally:
+            if hasattr(app, '_sidebar_restoring'): app._sidebar_restoring = False
+        width = ui.get('sidebar_width')
+        if isinstance(width, (int, float)) and width > 0: app._main_pane.paneconfigure(app._side_outer, width=int(width))
+        app._workspace_view_key = None; app._workspace_materialized = False
+        self.before_render(app)
+>       app._workspace_tree.selection_set([sid for sid in ui.get('selected_sample_ids', []) if app._workspace_tree.exists(sid)])
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+vflow/workspace/controller.py:659: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui0]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui1]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui2]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui3]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui4]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui5]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui7]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui8]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui9]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui10]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui11]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui0]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui1]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui2]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui3]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui4]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui5]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui7]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui8]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui9]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui10]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui11]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change0]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change2]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change3]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change4]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change5]
+FAILED tests/test_bug_hunt_rc13.py::test_nested_workspace_metadata_is_rejected[change6]
+FAILED tests/test_bug_hunt_rc13.py::test_family_excluded_acquisition_cannot_be_overwritten
+FAILED tests/test_bug_hunt_gui_rc13.py::test_locate_loaded_source_retains_identity_and_population
+FAILED tests/test_bug_hunt_gui_rc13.py::test_locate_dialog_cannot_apply_after_workspace_replacement
+FAILED tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui0]
+FAILED tests/test_bug_hunt_gui_rc13.py::test_malformed_ui_open_keeps_live_samples[ui1]
+33 failed, 3 passed in 4.30s

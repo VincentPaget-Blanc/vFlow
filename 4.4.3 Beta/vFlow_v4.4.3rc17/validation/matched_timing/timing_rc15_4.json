@@ -1,0 +1,22 @@
+{
+  "version": "4.4.3rc15",
+  "timings": {
+    "source_fingerprints_48k": 0.0012832109996452346,
+    "CSV_ingestion_48k": 0.08263818100022036,
+    "LMD_decode_and_materialize": 0.09977532300035818,
+    "owned_CSV_redirect_cached": 0.05573691399968084,
+    "rectangle_gates_48k": 0.0009787469998627785,
+    "audit_full_48k": 1.8483701020004446,
+    "verified_references_48k": 0.0008218100001613493,
+    "workspace_save_edit_reopen": 0.002706876999582164,
+    "audit_CSV_and_XLSX_exports": 0.21471038500021677
+  },
+  "counts": [
+    7273,
+    7020,
+    7081,
+    7058
+  ],
+  "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+  "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818"
+}

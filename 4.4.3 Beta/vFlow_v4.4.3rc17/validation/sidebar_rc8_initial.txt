@@ -1,0 +1,90 @@
+FFFF...................................F..........................       [100%]
+=================================== FAILURES ===================================
+__ test_sample_area_is_larger_and_adjustable_without_losing_tasks[Automatic] ___
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3c4ed58d40>, <vflow.legacy.vflow_app.Flow...-19/test_sample_area_is_larger_and0/B.csv', '/tmp/pytest-of-root/pytest-19/test_sample_area_is_larger_and0/C.csv'], [])
+size = 'Automatic'
+
+    @pytest.mark.parametrize('size',['Automatic','Compact','Comfortable','Large'])
+    def test_sample_area_is_larger_and_adjustable_without_losing_tasks(experiment,size):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1280x900');app.interface_size_var.set(size);app._apply_interface_size();root.update()
+        tree=app._workspace_tree
+>       assert tree.winfo_height()>180
+E       assert 116 > 180
+E        +  where 116 = winfo_height()
+E        +    where winfo_height = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_height
+
+tests/test_ui_restoration_gui.py:31: AssertionError
+___ test_sample_area_is_larger_and_adjustable_without_losing_tasks[Compact] ____
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3c4f0c3d40>, <vflow.legacy.vflow_app.Flow...-19/test_sample_area_is_larger_and1/B.csv', '/tmp/pytest-of-root/pytest-19/test_sample_area_is_larger_and1/C.csv'], [])
+size = 'Compact'
+
+    @pytest.mark.parametrize('size',['Automatic','Compact','Comfortable','Large'])
+    def test_sample_area_is_larger_and_adjustable_without_losing_tasks(experiment,size):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1280x900');app.interface_size_var.set(size);app._apply_interface_size();root.update()
+        tree=app._workspace_tree
+>       assert tree.winfo_height()>180
+E       assert 107 > 180
+E        +  where 107 = winfo_height()
+E        +    where winfo_height = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_height
+
+tests/test_ui_restoration_gui.py:31: AssertionError
+_ test_sample_area_is_larger_and_adjustable_without_losing_tasks[Comfortable] __
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3c4eac3020>, <vflow.legacy.vflow_app.Flow...-19/test_sample_area_is_larger_and2/B.csv', '/tmp/pytest-of-root/pytest-19/test_sample_area_is_larger_and2/C.csv'], [])
+size = 'Comfortable'
+
+    @pytest.mark.parametrize('size',['Automatic','Compact','Comfortable','Large'])
+    def test_sample_area_is_larger_and_adjustable_without_losing_tasks(experiment,size):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1280x900');app.interface_size_var.set(size);app._apply_interface_size();root.update()
+        tree=app._workspace_tree
+>       assert tree.winfo_height()>180
+E       assert 87 > 180
+E        +  where 87 = winfo_height()
+E        +    where winfo_height = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_height
+
+tests/test_ui_restoration_gui.py:31: AssertionError
+____ test_sample_area_is_larger_and_adjustable_without_losing_tasks[Large] _____
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3c4eab5430>, <vflow.legacy.vflow_app.Flow...-19/test_sample_area_is_larger_and3/B.csv', '/tmp/pytest-of-root/pytest-19/test_sample_area_is_larger_and3/C.csv'], [])
+size = 'Large'
+
+    @pytest.mark.parametrize('size',['Automatic','Compact','Comfortable','Large'])
+    def test_sample_area_is_larger_and_adjustable_without_losing_tasks(experiment,size):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1280x900');app.interface_size_var.set(size);app._apply_interface_size();root.update()
+        tree=app._workspace_tree
+>       assert tree.winfo_height()>180
+E       assert 57 > 180
+E        +  where 57 = winfo_height()
+E        +    where winfo_height = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_height
+
+tests/test_ui_restoration_gui.py:31: AssertionError
+________ test_scroll_is_local_to_task_and_dynamic_gate_controls_remain _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3c41672b40>, <vflow.legacy.vflow_app.Flow...-19/test_scroll_is_local_to_task_a0/B.csv', '/tmp/pytest-of-root/pytest-19/test_scroll_is_local_to_task_a0/C.csv'], [])
+
+    def test_scroll_is_local_to_task_and_dynamic_gate_controls_remain(experiment):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1024x600');app._set_all_sections(True);app._select_sidebar_task('Plot');root.update()
+        plot=app._task_pages['Plot']['canvas'];plot.yview_moveto(.5);root.update();before=plot.yview()
+        app._select_sidebar_task('Data');root.update();assert plot.yview()==before
+>       app._select_sidebar_task('Plot');root.update();assert plot.yview()==before
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (0.3990825688...5779816513762) == (0.39908256880733944, 1.0)
+E         
+E         At index 1 diff: 0.6685779816513762 != 1.0
+E         Use -v to get more diff
+
+tests/test_task_sidebar_gui.py:167: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_ui_restoration_gui.py::test_sample_area_is_larger_and_adjustable_without_losing_tasks[Automatic]
+FAILED tests/test_ui_restoration_gui.py::test_sample_area_is_larger_and_adjustable_without_losing_tasks[Compact]
+FAILED tests/test_ui_restoration_gui.py::test_sample_area_is_larger_and_adjustable_without_losing_tasks[Comfortable]
+FAILED tests/test_ui_restoration_gui.py::test_sample_area_is_larger_and_adjustable_without_losing_tasks[Large]
+FAILED tests/test_task_sidebar_gui.py::test_scroll_is_local_to_task_and_dynamic_gate_controls_remain
+5 failed, 61 passed in 61.65s (0:01:01)

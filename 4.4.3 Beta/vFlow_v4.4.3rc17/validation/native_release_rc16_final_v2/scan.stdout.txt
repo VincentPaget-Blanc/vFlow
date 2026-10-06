@@ -1,0 +1,2 @@
+{"stage": "retired", "scenario": "scan", "tk": "9.0.4", "main_thread": 139632208832320, "pending": true}
+{"stage": "passed", "scenario": "scan", "finalizer_threads": [139632208832320, 139632208832320], "main_thread": 139632208832320}

@@ -1,0 +1,2 @@
+{"phase": "verify_after", "python": "3.12.14", "tk": "9.0.4", "passed": true, "committed_revision_complete": true, "saved_audit_events": 24000, "review_note_preserved": true, "bundle_bytes_preserved": true, "seconds": 1.741, "errors": []}
+PASS standalone helper: pytest/tests imports blocked

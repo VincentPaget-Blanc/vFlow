@@ -1,0 +1,71 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 61 items
+
+tests/test_fcs_reader.py::test_big_endian_16_bit_integer_values PASSED
+tests/test_fcs_reader.py::test_text_escaped_delimiter_and_duplicate_stain_names_are_handled PASSED
+tests/test_fcs_reader.py::test_tightly_packed_10_bit_integers PASSED
+tests/test_fcs_reader.py::test_truncated_data_is_rejected PASSED
+tests/test_fcs_reader.py::test_invalid_byte_order_is_rejected PASSED
+tests/test_fcs_reader.py::test_linear_gain_is_converted_to_scale_values PASSED
+tests/test_fcs_reader.py::test_time_parameter_is_returned_in_seconds PASSED
+tests/test_fcs_reader.py::test_utf8_stain_name_is_preserved PASSED
+tests/test_fcs_reader.py::test_header_text_data_offset_mismatch_is_rejected PASSED
+tests/test_fcs_reader.py::test_multiple_fcs_datasets_are_not_silently_ignored PASSED
+tests/test_fcs_reader.py::test_log_amplification_cannot_be_combined_with_nonunit_gain PASSED
+tests/test_fcs_reader.py::test_spillover_matrix_is_flagged_as_unapplied PASSED
+tests/test_fcs_reader.py::test_no_spillover_matrix_is_not_flagged PASSED
+tests/test_fcs_reader.py::test_fcs30_comp_metadata_is_flagged_as_unapplied_compensation PASSED
+tests/test_fcs_reader.py::test_fcs20_dfc_metadata_is_flagged_as_unapplied_compensation PASSED
+tests/test_fcs_reader.py::test_case_insensitive_duplicate_stains_are_disambiguated PASSED
+tests/test_fcs_reader.py::test_flowjo_texttofcs_float_compatibility_layout_is_read_exactly PASSED
+tests/test_fcs_reader.py::test_missing_pne_is_still_rejected_without_explicit_linear_pnd PASSED
+tests/test_fcs_reader.py::test_integer_unused_high_bits_are_masked_according_to_pnr PASSED
+tests/test_fcs_reader.py::test_integer_value_still_outside_non_power_of_two_pnr_is_rejected_after_mask PASSED
+tests/test_fcs_reader.py::test_integer_range_beyond_exact_float64_precision_fails_closed PASSED
+tests/test_fcs_reader.py::test_integer_value_at_pnr_minus_one_is_valid PASSED
+tests/test_fcs_reader.py::test_supplemental_text_gain_is_applied_before_numeric_conversion PASSED
+tests/test_fcs_reader.py::test_supplemental_text_spillover_is_not_silently_ignored PASSED
+tests/test_fcs_reader.py::test_duplicate_fcs_keyword_between_primary_and_supplemental_text_is_rejected PASSED
+tests/test_fcs_reader.py::test_duplicate_fcs_keyword_within_primary_text_is_rejected PASSED
+tests/test_fcs_reader.py::test_texttofcs_overlapping_stext_quirk_remains_compatible PASSED
+tests/test_universal_ingestion.py::test_fcs32_true_mixture_preserves_uint64_identity[<] PASSED
+tests/test_universal_ingestion.py::test_fcs32_true_mixture_preserves_uint64_identity[>] PASSED
+tests/test_universal_ingestion.py::test_version_binary_numeric_path[FCS1.0] PASSED
+tests/test_universal_ingestion.py::test_version_binary_numeric_path[FCS2.0] PASSED
+tests/test_universal_ingestion.py::test_version_binary_numeric_path[FCS3.0] PASSED
+tests/test_universal_ingestion.py::test_version_binary_numeric_path[FCS3.1] PASSED
+tests/test_universal_ingestion.py::test_version_binary_numeric_path[FCS3.2] PASSED
+tests/test_universal_ingestion.py::test_crc_integrity_and_independent_check_vector PASSED
+tests/test_universal_ingestion.py::test_probe_content_beats_fcs_extension_and_unknown_fails PASSED
+tests/test_universal_ingestion.py::test_lmd_derivative_reuse_delete_edit_source_lifecycle PASSED
+tests/test_universal_ingestion.py::test_collision_and_tampered_derivative_never_overwrite_user_bytes PASSED
+tests/test_universal_ingestion.py::test_read_only_fallback_and_no_partial_trusted_result PASSED
+tests/test_universal_ingestion.py::test_multiple_members_and_discovery_avoids_duplicate_derivatives PASSED
+tests/test_universal_ingestion.py::test_equivalent_lmd_members_choose_newer_version PASSED
+tests/test_universal_ingestion.py::test_mqd_is_fail_closed_even_with_fcs_like_signature PASSED
+tests/test_universal_ingestion.py::test_lmd_false_patterns_fail_closed PASSED
+tests/test_universal_ingestion.py::test_wide_integer_scaling_cannot_silently_round[extra0] PASSED
+tests/test_universal_ingestion.py::test_wide_integer_scaling_cannot_silently_round[extra1] PASSED
+tests/test_universal_ingestion.py::test_integer_time_unit_step_preserves_precision PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[188-15.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[222.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[240+S.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[240-4-2+rad.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[248+S.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[248+r.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[337.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[350.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[358.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[597.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[734.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[744.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[S.621.LMD] PASSED
+tests/test_real_lmd_corpus.py::test_gallios_high_resolution_values_and_derivative_reuse[SM239.LMD] PASSED
+tests/test_derivative_refresh_rc16.py::test_owned_derivative_refresh_preserves_original_integrity PASSED
+
+============================== 61 passed in 4.38s ==============================

@@ -1,0 +1,13 @@
+concordant 0.083 seconds
+multivariable shift 0.077 seconds
+joint only covariance 0.083 seconds
+small N=1 0.01 seconds
+small N=2 0.014 seconds
+small N=3 0.032 seconds
+small N=4 0.049 seconds
+missing values 0.084 seconds
+frozen cytometry audit 0.303 seconds
+frozen microscopy audit 0.47 seconds
+unbalanced hierarchical influence 0.393 seconds
+250000-event full-data profile 14.612 seconds
+35/35 expanded checks passed; peak RSS 139.7 MiB

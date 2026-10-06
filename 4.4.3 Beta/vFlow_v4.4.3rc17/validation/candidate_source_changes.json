@@ -1,0 +1,175 @@
+{
+  "baseline": "4.4.1",
+  "candidate": "4.4.3rc2",
+  "application_python_files_changed": 28,
+  "files": [
+    {
+      "path": "vflow/__init__.py",
+      "status": "modified",
+      "baseline_sha256": "6e796af54939197190bebfa28ea4aff00ed600946b56e0e4e192d85abb8b97cf",
+      "candidate_sha256": "442b6e92ea18922d4de64fa11c2ec553e3668425cb13d3f41fafa683261e2bb6"
+    },
+    {
+      "path": "vflow/controllers/project_data_load_coordinator.py",
+      "status": "modified",
+      "baseline_sha256": "794d952d579e7df41fc2c61f4bfbd8d6803f32285ad32bb79f56664b9f860fca",
+      "candidate_sha256": "8bbac4c65aaed98f9a143829e7928657d29634d5d9a7f40bf314545339e4e8f8"
+    },
+    {
+      "path": "vflow/core/data_io.py",
+      "status": "modified",
+      "baseline_sha256": "f6f43d6b79d839d83164a9e921b1daeda01122f4b06c91c7928984c83125e98e",
+      "candidate_sha256": "75d4c660b4f57c180bbe9f5138a62c3d1c60feb13a2c1076ecf79fe9b4fc30df"
+    },
+    {
+      "path": "vflow/core/fcs_reader.py",
+      "status": "modified",
+      "baseline_sha256": "3ca865d9c5a09a37e034ab59ce8de7d8af0dc58b0068a537bc58ffeca2a815c9",
+      "candidate_sha256": "241fe30073250952fdbebbe2f1d32021f3eda7ebb0faa7466f11ab913f3c00d3"
+    },
+    {
+      "path": "vflow/io/__init__.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "8f9662156b2d79a00b2eeb19b1d0513879d346dbfbb674e4fa9fe84776417b3e"
+    },
+    {
+      "path": "vflow/io/derivatives.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "9a6e94fc37778e25dd9af9812fd79cc98cbb513a57c85b0ccad3771835dcf2c2"
+    },
+    {
+      "path": "vflow/io/lmd_reader.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ea3e3eec1699ef2d8ef2e8d5c5f072b4b49522f19ac509c590e41e6a5b93843a"
+    },
+    {
+      "path": "vflow/io/models.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "42a3dab4e3064194380b752e522299ead81caedcb929ffd2190e7e3c76a977d4"
+    },
+    {
+      "path": "vflow/io/registry.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ab64f000b1b0d1135a22ceaf93653d9be7d226cb27b6651d3f5803ed44c02448"
+    },
+    {
+      "path": "vflow/legacy/vflow_app.py",
+      "status": "modified",
+      "baseline_sha256": "4dc70f0caff49d75be2f4890b04d49455695548e2e285281eed4f91ca4869a22",
+      "candidate_sha256": "67db9bf05621c8f8d20781ca047e766d08a2e3aa12fba4b2a06e315199ee4d63"
+    },
+    {
+      "path": "vflow/services/batch_stats_export.py",
+      "status": "modified",
+      "baseline_sha256": "8cc94ca90cb1bd56f9065d528789f6b4b6575dde65096f5ef7649e4bc6b79a88",
+      "candidate_sha256": "35c1a14889f1f007754043ff0c81d1ae54cf500aeab1525e3e6158b47f22be34"
+    },
+    {
+      "path": "vflow/statistics/__init__.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "77e6512ccef818bda6eb9eb51778e9a02f2ecd784e23c62190be02af476366e3"
+    },
+    {
+      "path": "vflow/statistics/audit_export.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "5e849bc1bb8628631e75847b43cb4c72c357009d7958adf5b34251c222d44ae2"
+    },
+    {
+      "path": "vflow/statistics/audit_runner.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "1ddbe091b32451043b6cf93d25172351ba72ffd9f39736f3fcf4992dc1490604"
+    },
+    {
+      "path": "vflow/statistics/audit_serialization.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ac3e4f86b2a13d7ed307c82f557eaeb77382230f63f97f61235b0cb386d9029a"
+    },
+    {
+      "path": "vflow/statistics/discordance.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "844731c8eacd7af7d8772c09395e7e67cce0202c115b080cc3d211df520fb6db"
+    },
+    {
+      "path": "vflow/statistics/hierarchy.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "0cbbc2c231c5311da5c7fd4fb3bd6064bacd48d3eae0d5687859023f3dffd31b"
+    },
+    {
+      "path": "vflow/statistics/models.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "a54f520821e1105dd9f71c49870d0c95cf516d0312848c0e6ddf43a95c54cd23"
+    },
+    {
+      "path": "vflow/statistics/sliced_wasserstein.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "73f43a3b1067949c81a741d11dd868e7da7d6b8ee57185ab98fc4c9cb3e2a817"
+    },
+    {
+      "path": "vflow/statistics/variable_eligibility.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "dd46ca698056274fa8efee251875c4906cafb021ee12b2b668021dd0869d577a"
+    },
+    {
+      "path": "vflow/statistics/wasserstein.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "ed91704e02ffcbc40efabf484a9133a6a7b56ba57af086715a00fe16639cba0d"
+    },
+    {
+      "path": "vflow/statistics/workspace_audit.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "901e1e945f77a5cdb17914734159125cd8f34ff0320db5573cf625e63de4ed4b"
+    },
+    {
+      "path": "vflow/ui/batch_stats_dialog.py",
+      "status": "modified",
+      "baseline_sha256": "4ce8db1a9aac8b34f1c0458eac3f30f63934a3cb49d533630271155cd3f46e25",
+      "candidate_sha256": "838d936b6efd1f87b50a64ce4454aa4276159f47653fb7720f6066524f13cfda"
+    },
+    {
+      "path": "vflow/ui/folder_scan_dialog.py",
+      "status": "modified",
+      "baseline_sha256": "be9c0ade93f873fe55de58053fd878b5413f20ccc909848bcae55aa5e3a6d18d",
+      "candidate_sha256": "5b09b2fdfd14820017157664a909ed134f18c7817cadb08c03d2624c6c3411ee"
+    },
+    {
+      "path": "vflow/ui/statistical_audit_dialog.py",
+      "status": "added",
+      "baseline_sha256": null,
+      "candidate_sha256": "f855c845a1f54dc219d4e09ed18309f2943d145d6836aaf05344a820c5d03be3"
+    },
+    {
+      "path": "vflow/workspace/controller.py",
+      "status": "modified",
+      "baseline_sha256": "96ba290984bd80d6a03e5ac6f521df5e5557c49237634192540238d7ddd60510",
+      "candidate_sha256": "7e92520ab8eb46469ff814de2964404c4e427c02b59417e60580d8448aec3d94"
+    },
+    {
+      "path": "vflow/workspace/model.py",
+      "status": "modified",
+      "baseline_sha256": "ca0dcb58bf3f24e4eae8b595c6c1fd97558121316710e0f501a136033a99b750",
+      "candidate_sha256": "efe7fa3c605f63dce34fb2c02810b92ae449749593f92bfa84414f861cbe80d6"
+    },
+    {
+      "path": "vflow/workspace/ui.py",
+      "status": "modified",
+      "baseline_sha256": "4c53e87e60de8b881fe9ce3c84c80c4dcc8806652d4f0c6045ba3269241a7d6b",
+      "candidate_sha256": "4934d391c63a42f2ca6a9918a3146f265334ff28702e7e0c4ab238efc656aad3"
+    }
+  ]
+}

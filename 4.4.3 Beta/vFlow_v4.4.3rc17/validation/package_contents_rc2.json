@@ -1,0 +1,10 @@
+{
+  "wheel": "vflow-4.4.3rc2-py3-none-any.whl",
+  "sha256": "eab1b28f006f77095b44fe05cbf45a6fa3c5a212a7000f63cecf74ca2eb4409f",
+  "zip_integrity": "passed",
+  "version": "4.4.3rc2",
+  "analysis_version": "audit-2",
+  "policy_version": "review-2",
+  "stability_correction_present": true,
+  "effective_joint_n_correction_present": true
+}

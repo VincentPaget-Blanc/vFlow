@@ -1,0 +1,6 @@
+PASS create
+{"phase": "verify_initial", "separate_process": true, "passed": true, "samples": 3, "gate_count": 2, "workspace_bytes": 7054}
+PASS verify_initial
+PASS edit_again
+{"phase": "verify_final", "separate_process": true, "passed": true, "samples": 3, "gate_count": 2, "workspace_bytes": 8190}
+PASS verify_final

@@ -1,0 +1,1 @@
+PASS 36 real benchmark app workflow checks; 48,000 events; exports, save/reopen and raw hashes verified.

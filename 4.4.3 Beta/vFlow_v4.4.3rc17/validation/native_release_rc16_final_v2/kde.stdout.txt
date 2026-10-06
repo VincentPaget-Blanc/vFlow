@@ -1,0 +1,2 @@
+{"stage": "retired", "scenario": "kde", "tk": "9.0.4", "main_thread": 140586871052096, "pending": true}
+{"stage": "passed", "scenario": "kde", "finalizer_threads": [140586871052096], "main_thread": 140586871052096}

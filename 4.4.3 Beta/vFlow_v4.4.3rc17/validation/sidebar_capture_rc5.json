@@ -1,0 +1,112 @@
+{
+  "sources": [
+    "Control_01.csv",
+    "Control_02.csv",
+    "Treatment_01.csv",
+    "Treatment_02.csv"
+  ],
+  "events": {
+    "Control_01.csv": 12000,
+    "Control_02.csv": 12000,
+    "Treatment_01.csv": 12000,
+    "Treatment_02.csv": 12000
+  },
+  "gate_counts": {
+    "Control_01.csv": 7273,
+    "Control_02.csv": 7020,
+    "Treatment_01.csv": 7081,
+    "Treatment_02.csv": 7058
+  },
+  "gate_total": 28432,
+  "screenshots": [
+    {
+      "file": "01_Data.png",
+      "task": "Data",
+      "gate_tool": null,
+      "pixels": [
+        570,
+        1061
+      ],
+      "viewport_height": 712,
+      "content_height": 297,
+      "scroll_pixels": 0,
+      "yview": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "file": "02_Plot.png",
+      "task": "Plot",
+      "gate_tool": null,
+      "pixels": [
+        570,
+        1061
+      ],
+      "viewport_height": 712,
+      "content_height": 680,
+      "scroll_pixels": 0,
+      "yview": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "file": "03_Gates_Manual.png",
+      "task": "Gates",
+      "gate_tool": "GATING",
+      "pixels": [
+        570,
+        1061
+      ],
+      "viewport_height": 712,
+      "content_height": 657,
+      "scroll_pixels": 0,
+      "yview": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "file": "04_Gates_Automatic.png",
+      "task": "Gates",
+      "gate_tool": "AUTO-GATE",
+      "pixels": [
+        570,
+        1061
+      ],
+      "viewport_height": 712,
+      "content_height": 750,
+      "scroll_pixels": 38,
+      "yview": [
+        0.0,
+        0.9493333333333334
+      ]
+    },
+    {
+      "file": "05_Analysis.png",
+      "task": "Analysis",
+      "gate_tool": null,
+      "pixels": [
+        570,
+        1061
+      ],
+      "viewport_height": 712,
+      "content_height": 513,
+      "scroll_pixels": 0,
+      "yview": [
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "capture_font": {
+    "family": "dejavu sans",
+    "size": 10,
+    "weight": "normal",
+    "slant": "roman",
+    "underline": 0,
+    "overstrike": 0
+  },
+  "errors": []
+}

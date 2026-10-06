@@ -1,0 +1,6 @@
+vFlow started in a separate process (PID 12).
+Startup output: /tmp/vflow-startup-z5p73hoa.log
+PASS isolated Spyder launch 1: PASS [{"mode": "spyder-isolated", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+vFlow started in a separate process (PID 26).
+Startup output: /tmp/vflow-startup-k9a92l5i.log
+PASS isolated Spyder launch 2: PASS [{"mode": "spyder-isolated", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]

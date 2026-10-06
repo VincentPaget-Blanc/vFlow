@@ -1,0 +1,37 @@
+.............F..............................................F........... [ 82%]
+...............                                                          [100%]
+=================================== FAILURES ===================================
+_____ test_scrolling_is_scoped_and_clicking_same_task_reveals_its_settings _____
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f4b60edae10>, <vflow.legacy.vflow_app.Flow...-21/test_scrolling_is_scoped_and_c0/B.csv', '/tmp/pytest-of-root/pytest-21/test_scrolling_is_scoped_and_c0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_scrolling_is_scoped_and_c0')
+
+    def test_scrolling_is_scoped_and_clicking_same_task_reveals_its_settings(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;many_samples(app,tmp_path);root.update()
+        outer=app._sidebar_outer_canvas;tree=app._workspace_tree;outer.yview_moveto(0)
+>       tree.event_generate('<Button-5>');root.update();assert tree.yview()[0]>0 and outer.yview()[0]==0
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (0.0 > 0)
+
+tests/test_adaptive_samples_gui.py:64: AssertionError
+________ test_scroll_is_local_to_task_and_dynamic_gate_controls_remain _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f4b604fdc70>, <vflow.legacy.vflow_app.Flow...-21/test_scroll_is_local_to_task_a0/B.csv', '/tmp/pytest-of-root/pytest-21/test_scroll_is_local_to_task_a0/C.csv'], [])
+
+    def test_scroll_is_local_to_task_and_dynamic_gate_controls_remain(experiment):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1024x600');app._set_all_sections(True);app._select_sidebar_task('Plot');root.update()
+        plot=app._task_pages['Plot']['canvas'];plot.yview_moveto(.5);root.update();before=plot.yview()
+        app._select_sidebar_task('Data');root.update();assert plot.yview()==before
+>       app._select_sidebar_task('Plot');root.update();assert plot.yview()==before
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (0.3841676367...7415599534342) == (0.3841676367869616, 1.0)
+E         
+E         At index 1 diff: 0.6577415599534342 != 1.0
+E         Use -v to get more diff
+
+tests/test_task_sidebar_gui.py:167: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_adaptive_samples_gui.py::test_scrolling_is_scoped_and_clicking_same_task_reveals_its_settings
+FAILED tests/test_task_sidebar_gui.py::test_scroll_is_local_to_task_and_dynamic_gate_controls_remain
+2 failed, 85 passed in 103.04s (0:01:43)

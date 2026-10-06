@@ -1,0 +1,90 @@
+{
+  "pass": true,
+  "fit_provenance": {
+    "input_mode": "Selected samples (workspace list)",
+    "sample_ids": [
+      "c04f39a0-1594-43e4-b85b-6503a08394f0",
+      "302f9b7a-cb34-4e13-b185-b9f72ff8771f"
+    ],
+    "source_rows": {
+      "c04f39a0-1594-43e4-b85b-6503a08394f0": 12000,
+      "302f9b7a-cb34-4e13-b185-b9f72ff8771f": 12000
+    },
+    "application_scope": "All samples (default)"
+  },
+  "workspace_application_counts": {
+    "Control_01.csv": {
+      "stats": {
+        "SSC-A+/FSC-A-": {
+          "count": 1,
+          "pct": 0.008333333333333333
+        },
+        "SSC-A+/FSC-A+": {
+          "count": 7948,
+          "pct": 66.23333333333333
+        },
+        "SSC-A-/FSC-A-": {
+          "count": 1222,
+          "pct": 10.183333333333334
+        },
+        "SSC-A-/FSC-A+": {
+          "count": 2829,
+          "pct": 23.575
+        }
+      },
+      "total": 12000,
+      "raw_total": 12000,
+      "transform_excluded": 0,
+      "compensation_metadata_keys": []
+    },
+    "Control_02.csv": {
+      "stats": {
+        "SSC-A+/FSC-A-": {
+          "count": 3,
+          "pct": 0.025
+        },
+        "SSC-A+/FSC-A+": {
+          "count": 8349,
+          "pct": 69.575
+        },
+        "SSC-A-/FSC-A-": {
+          "count": 1180,
+          "pct": 9.833333333333332
+        },
+        "SSC-A-/FSC-A+": {
+          "count": 2468,
+          "pct": 20.566666666666666
+        }
+      },
+      "total": 12000,
+      "raw_total": 12000,
+      "transform_excluded": 0,
+      "compensation_metadata_keys": []
+    },
+    "Treatment_01.csv": {
+      "stats": {
+        "SSC-A+/FSC-A-": {
+          "count": 6,
+          "pct": 0.05
+        },
+        "SSC-A+/FSC-A+": {
+          "count": 8387,
+          "pct": 69.89166666666667
+        },
+        "SSC-A-/FSC-A-": {
+          "count": 1230,
+          "pct": 10.25
+        },
+        "SSC-A-/FSC-A+": {
+          "count": 2377,
+          "pct": 19.808333333333334
+        }
+      },
+      "total": 12000,
+      "raw_total": 12000,
+      "transform_excluded": 0,
+      "compensation_metadata_keys": []
+    }
+  },
+  "save_reopen_parity": true
+}

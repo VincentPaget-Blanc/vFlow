@@ -1,0 +1,88 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+__________ test_missing_unloaded_exclusion_can_be_saved_and_reopened ___________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f20ab197a10>, <vflow.legacy.vflow_app.Flow...-16/test_missing_unloaded_exclusio0/B.csv', '/tmp/pytest-of-root/pytest-16/test_missing_unloaded_exclusio0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-16/test_missing_unloaded_exclusio0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f20ac3514f0>
+
+    def test_missing_unloaded_exclusion_can_be_saved_and_reopened(experiment, tmp_path, monkeypatch):
+        import pandas as pd
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        absent = str(tmp_path / 'moved-away.csv'); listing = tmp_path / 'exclusions.csv'
+        pd.DataFrame({'Path': [absent]}).to_csv(listing, index=False)
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **k: str(listing))
+>       app.load_excluded_list(); root.update()
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_bug_hunt_gui_rc13.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/legacy/vflow_app.py:1695: in load_excluded_list
+    return _project_data_load_owner(self).load_excluded_list(
+vflow/controllers/project_data_load_coordinator.py:262: in load_excluded_list
+    h._on_active_files_changed()
+vflow/legacy/vflow_app.py:1584: in _on_active_files_changed
+    self._workspace.capture(self)
+vflow/workspace/controller.py:208: in capture
+    self.sync_sources()
+vflow/workspace/controller.py:196: in sync_sources
+    self.document.samples[sid] = SampleReference(sid, Path(path).name, FileReference.create(source,self.path), source_member_id=member)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vflow/workspace/model.py:72: in create
+    ref = cls(str(p), filename=p.name, size=p.stat().st_size,
+                                            ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-root/pytest-16/test_missing_unloaded_exclusio0/moved-away.csv')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-root/pytest-16/test_missing_unloaded_exclusio0/moved-away.csv'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:840: FileNotFoundError
+_______________ test_population_audit_lists_only_member_samples ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f20a63237a0>, <vflow.legacy.vflow_app.Flow...-16/test_population_audit_lists_on0/B.csv', '/tmp/pytest-of-root/pytest-16/test_population_audit_lists_on0/C.csv'], [])
+
+    def test_population_audit_lists_only_member_samples(experiment):
+        from vflow.ui.statistical_audit_dialog import StatisticalAuditDialog
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        new_gate(app); app.file_vars[paths[2]].set(False); app._on_active_files_changed()
+        app._open_subgate(50., 50.); child = manager._apps[-1]
+        members = set(owner.document.tabs[child._workspace_tab_id]['sample_ids'])
+        assert owner.sample_id(paths[2]) not in members
+        dialog = StatisticalAuditDialog(owner, child)
+>       try: assert set(dialog.samples.get_children()) == members
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert {'c2b04a68-b3...480c6d21b279'} == {'c306120f-9b...480c6d21b279'}
+E         
+E         Extra items in the left set:
+E         'c2b04a68-b3d8-44ae-9efa-982f35a57ec6'
+E         Use -v to get more diff
+
+tests/test_bug_hunt_gui_rc13.py:67: AssertionError
+______ test_population_capture_refuses_nonmember_even_with_parent_source _______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f209dea70e0>, <vflow.legacy.vflow_app.Flow...-16/test_population_capture_refuse0/B.csv', '/tmp/pytest-of-root/pytest-16/test_population_capture_refuse0/C.csv'], [])
+
+    def test_population_capture_refuses_nonmember_even_with_parent_source(experiment):
+        from vflow.statistics.workspace_audit import prepare_samples
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        new_gate(app); app.file_vars[paths[2]].set(False); app._on_active_files_changed()
+        app._open_subgate(50., 50.); child = manager._apps[-1]
+>       with pytest.raises(ValueError, match='population'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_gui_rc13.py:75: Failed
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc13.py::test_missing_unloaded_exclusion_can_be_saved_and_reopened
+FAILED tests/test_bug_hunt_gui_rc13.py::test_population_audit_lists_only_member_samples
+FAILED tests/test_bug_hunt_gui_rc13.py::test_population_capture_refuses_nonmember_even_with_parent_source
+3 failed, 4 deselected in 3.06s

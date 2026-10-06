@@ -1,0 +1,325 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 34 items
+
+tests/test_derivative_refresh_rc16.py::test_owned_derivative_refresh_preserves_original_integrity PASSED
+tests/test_integrity_edges_rc16.py::test_legacy_identity_kept_but_full_content_pinned PASSED
+tests/test_integrity_edges_rc16.py::test_external_write_during_fsync_refused PASSED
+tests/test_integrity_edges_rc16.py::test_actual_two_process_writers_one_winner PASSED
+tests/test_integrity_edges_rc16.py::test_lock_released_after_abrupt_process_exit PASSED
+tests/test_integrity_edges_rc16.py::test_windows_lock_adapter_contract PASSED
+tests/test_integrity_edges_rc16.py::test_source_change_while_csv_decode_is_rejected PASSED
+tests/test_integrity_edges_rc16.py::test_ingestion_identity_survives_later_file_edit PASSED
+tests/test_integrity_edges_rc16.py::test_legacy_derivative_ownership PASSED
+tests/test_integrity_edges_rc16.py::test_live_audit_state_and_immutable_snapshot PASSED
+tests/test_integrity_edges_rc16.py::test_true_zero_display_not_unavailable PASSED
+tests/test_integrity_edges_rc16.py::test_recovery_failure_preserves_correct_geometry[before_commit] PASSED
+tests/test_integrity_edges_rc16.py::test_recovery_failure_preserves_correct_geometry[after_commit] PASSED
+tests/test_integrity_edges_rc16.py::test_older_recovery_refuses_new_external_winner PASSED
+tests/test_integrity_edges_rc16.py::test_corrupt_newest_recovery_falls_back PASSED
+tests/test_integrity_edges_rc16.py::test_corrupt_unsaved_recovery_falls_back PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[second_writer] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[edit] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[delete] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[source] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[gates] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[audit] PASSED
+tests/test_workspace_integrity_rc16.py::test_retargeted_symlink_save_refused PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_alias_tracks_physical_revision PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[False] PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[True] PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_source_portability_after_tree_move PASSED
+tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty PASSED
+tests/test_workspace_integrity_rc16.py::test_open_same_workspace_reads_after_close_save PASSED
+tests/test_workspace_integrity_rc16.py::test_gui_retarget_guard_and_metadata_after_initial_save PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1601] Timeout (0:00:30)!
+Thread 0x00007fa054e046c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa03beff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa067ef2740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1590 in _on_active_files_changed
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 1662 in _exclude_file
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 64 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/root/.local/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1602] Timeout (0:00:30)!
+Thread 0x00007fa0397566c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa04bd3d6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa03beff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa054e046c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa067ef2740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 861 in navigate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/file_list.py", line 117 in _on_view_mode_change
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 58 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/root/.local/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1603] Timeout (0:00:30)!
+Thread 0x00007fa033aff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa0397566c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa04bd3d6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa03beff6c0 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 174 in _capture_job
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 59 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py", line 93 in _worker
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007fa067ef2740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 186 in _load_filtered
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 4343 in _load_filtered
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 101 in _new_tab
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/tab_manager.py", line 197 in open_subgate_tab
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2966 in _open_subgate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 51 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/root/.local/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1604] Timeout (0:00:30)!
+Thread 0x00007fa067ef2740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/stats/_kde.py", line 281 in evaluate
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 94 in compute_density_render_payload
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 575 in plot_density
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 298 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 922 in gate_action
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_compound_benchmark_rc16.py", line 57 in test_compound_benchmark
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/root/.local/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+PASSED
+
+======================== 34 passed in 562.11s (0:09:22) ========================

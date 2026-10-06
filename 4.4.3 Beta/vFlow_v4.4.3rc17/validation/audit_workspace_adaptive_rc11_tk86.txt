@@ -1,0 +1,22 @@
+..........F............................................................. [ 96%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+_____ test_scroll_long_variable_names_and_many_samples_keeps_toggled_items _____
+
+audit_dialog = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f5cd78bf470>, <vflow.legacy.vflow_app.Flow...variable_name0/C.csv'], [], <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>)
+
+    def test_scroll_long_variable_names_and_many_samples_keeps_toggled_items(audit_dialog):
+        root,manager,app,paths,errors,dialog=audit_dialog
+        for i in range(60):dialog.samples.insert('','end',iid=f'ui_{i}',text=f'UI row {i}')
+        dialog.no_samples_button.invoke();click_sample(dialog,'ui_0');click_sample(dialog,'ui_59')
+>       assert set(dialog.samples.selection())=={'ui_0','ui_59'}
+E       AssertionError: assert {'ui_0'} == {'ui_0', 'ui_59'}
+E         
+E         Extra items in the right set:
+E         'ui_59'
+E         Use -v to get more diff
+
+tests/test_audit_selection_gui.py:186: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_audit_selection_gui.py::test_scroll_long_variable_names_and_many_samples_keeps_toggled_items
+1 failed, 74 passed in 74.34s (0:01:14)

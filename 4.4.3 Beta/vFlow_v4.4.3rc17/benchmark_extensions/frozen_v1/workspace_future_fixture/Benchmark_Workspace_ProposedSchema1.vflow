@@ -1,0 +1,113 @@
+{
+  "workspace_schema": 1,
+  "benchmark_fixture": true,
+  "note": "Fixture for the agreed future vFlow workspace implementation; not expected to load in releases that predate workspace support.",
+  "samples": {
+    "control_01": {
+      "display_name": "Control_01.fcs",
+      "source": {
+        "relative_path": "../cytometry/Control_01.fcs",
+        "filename": "Control_01.fcs"
+      },
+      "active": true,
+      "excluded": false,
+      "view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "asinh",
+        "y_transform": "asinh",
+        "transform_parameters": {
+          "cofactor": 150
+        },
+        "plot_mode": "Density"
+      }
+    },
+    "control_02": {
+      "display_name": "Control_02.fcs",
+      "source": {
+        "relative_path": "../cytometry/Control_02.fcs",
+        "filename": "Control_02.fcs"
+      },
+      "active": true,
+      "excluded": false,
+      "view": {
+        "x_channel": "CD3-A",
+        "y_channel": "CD4-A",
+        "x_transform": "logicle_gml2",
+        "y_transform": "logicle_gml2",
+        "transform_parameters": {
+          "T": 262144,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Dot"
+      }
+    },
+    "treatment_01": {
+      "display_name": "Treatment_01.fcs",
+      "source": {
+        "relative_path": "../cytometry/Treatment_01.fcs",
+        "filename": "Treatment_01.fcs"
+      },
+      "active": true,
+      "excluded": false,
+      "view": {
+        "x_channel": "CD4-A",
+        "y_channel": "CD8-A",
+        "x_transform": "asinh",
+        "y_transform": "asinh",
+        "transform_parameters": {
+          "cofactor": 150
+        },
+        "plot_mode": "Density"
+      }
+    },
+    "missing_cd8": {
+      "display_name": "Missing_CD8_01.fcs",
+      "source": {
+        "relative_path": "../cytometry/Missing_CD8_01.fcs",
+        "filename": "Missing_CD8_01.fcs"
+      },
+      "active": false,
+      "excluded": false,
+      "view": {
+        "x_channel": "CD4-A",
+        "y_channel": "CD8-A",
+        "x_transform": "asinh",
+        "y_transform": "asinh",
+        "transform_parameters": {
+          "cofactor": 150
+        },
+        "plot_mode": "Density"
+      },
+      "expected_restore_status": "incompatible_missing_CD8-A"
+    }
+  },
+  "overlay_view": {
+    "x_channel": "FSC-A",
+    "y_channel": "SSC-A",
+    "x_transform": "asinh",
+    "y_transform": "asinh",
+    "transform_parameters": {
+      "cofactor": 150
+    },
+    "plot_mode": "Density"
+  },
+  "groups": {
+    "Controls": [
+      "control_01",
+      "control_02"
+    ],
+    "Treatment": [
+      "treatment_01"
+    ]
+  },
+  "ui_state": {
+    "view_mode": "cycle",
+    "current_sample_id": "control_01"
+  },
+  "gate_scope_state": {
+    "default_scope": "all_samples"
+  }
+}

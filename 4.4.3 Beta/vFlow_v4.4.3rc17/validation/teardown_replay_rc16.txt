@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 1 item
+
+tests/test_audit_selection_gui.py::test_old_dialog_cannot_run_against_replaced_workspace_or_closed_tab[closed_population] PASSED
+
+============================== 1 passed in 7.37s ===============================

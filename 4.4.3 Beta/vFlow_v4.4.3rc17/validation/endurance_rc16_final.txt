@@ -1,0 +1,295 @@
+SUPERVISOR START child=22 timeout=1500.0
+{"phase": "create", "python": "3.12.14", "tk": "9.0.4", "passed": true, "save_as_preserves_old_revision": true, "events": 48000, "counts": {"Control_01": 7273, "Control_02": 7020, "Treatment_01": 7081, "Treatment_02": 7058}, "saved_audit_events": 24000, "review_note_preserved": true, "bundle_bytes_preserved": true, "seconds": 12.198, "errors": []}
+{"stage": "endurance", "cycle": 1, "workspace_switches": 2, "active_seconds": 11.979}
+SUPERVISOR TIMED STACK elapsed=120.1
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 425 in pchanged
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 1181 in update_from
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 1354 in update_from
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1614 in _copy_tick_props
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1666 in get_major_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1283 in _update_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1351 in get_tightbbox
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 1402 in _get_tightbbox_for_layout_only
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 4564 in get_tightbbox
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 1402 in _get_tightbbox_for_layout_only
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/_tight_layout.py", line 82 in _auto_adjust_subplotpars
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/_tight_layout.py", line 266 in get_tight_layout_figure
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/layout_engine.py", line 188 in execute
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3640 in tight_layout
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/polar_analysis_window.py", line 610 in _render_figure
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 492 in _compute_and_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/polar_analysis_window.py", line 307 in _do_initial_compute
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 102 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 11, "workspace_switches": 22, "active_seconds": 98.436}
+{"stage": "endurance", "cycle": 21, "workspace_switches": 42, "active_seconds": 173.401}
+SUPERVISOR TIMED STACK elapsed=240.3
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 430 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 1008 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 31, "workspace_switches": 62, "active_seconds": 257.096}
+SUPERVISOR TIMED STACK elapsed=360.4
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 430 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 1008 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 41, "workspace_switches": 82, "active_seconds": 367.673}
+SUPERVISOR TIMED STACK elapsed=480.6
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 369 in bounds
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 2594 in get_matrix
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 2438 in get_affine
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 1611 in transform_path_affine
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 1601 in transform_path
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/transforms.py", line 2430 in transform_path_non_affine
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/patches.py", line 640 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/projections/polar.py", line 1050 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 38 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/polar_analysis_window.py", line 611 in _render_figure
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 492 in _compute_and_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/ui/polar_analysis_window.py", line 307 in _do_initial_compute
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 102 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 51, "workspace_switches": 102, "active_seconds": 458.648}
+{"stage": "endurance", "cycle": 61, "workspace_switches": 122, "active_seconds": 550.337}
+SUPERVISOR TIMED STACK elapsed=600.8
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py", line 144 in __exit__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 1197 in _update_props
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 1233 in _internal_update
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 421 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 154 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 429 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1592 in _get_tick
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1690 in get_minor_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1290 in _update_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1404 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 71, "workspace_switches": 142, "active_seconds": 656.562}
+SUPERVISOR TIMED STACK elapsed=721.1
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 430 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/collections.py", line 1008 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 81, "workspace_switches": 162, "active_seconds": 761.39}
+SUPERVISOR TIMED STACK elapsed=841.2
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 91, "workspace_switches": 182, "active_seconds": 860.547}
+SUPERVISOR TIMED STACK elapsed=961.3
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 101, "workspace_switches": 202, "active_seconds": 948.443}
+{"stage": "endurance", "cycle": 111, "workspace_switches": 222, "active_seconds": 1039.644}
+SUPERVISOR TIMED STACK elapsed=1081.6
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 355 in wait
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py", line 451 in result
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/plotting/kde_payloads.py", line 208 in compute_kde_jobs_parallel
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 1138 in precompute_cold_kde_payloads
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 270 in render
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 194 in _refresh_core
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/rendering/flow_renderer.py", line 98 in refresh
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/legacy/vflow_app.py", line 2493 in refresh_plot
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/vflow/workspace/controller.py", line 584 in open
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"stage": "endurance", "cycle": 121, "workspace_switches": 242, "active_seconds": 1163.753}
+SUPERVISOR TIMED STACK elapsed=1201.6
+Stack (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 531 in set_pickradius
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/lines.py", line 422 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 159 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 429 in __init__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1592 in _get_tick
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1690 in get_minor_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1290 in _update_ticks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axis.py", line 1404 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/axes/_base.py", line 3226 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/image.py", line 134 in _draw_list_compositing_images
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/figure.py", line 3257 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 71 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/artist.py", line 94 in draw_wrapper
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_agg.py", line 382 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/backend_tkagg.py", line 10 in draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/matplotlib/backends/_backend_tk.py", line 302 in idle_draw
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 862 in callit
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1968 in __call__
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/release_edges_rc16.py", line 88 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "validation/endurance_rc16.py", line 13 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 98 in _run_module_code
+  File "<frozen runpy>", line 287 in run_path
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/supervise_rc16.py", line 9 in <module>
+{"phase": "long_session", "python": "3.12.14", "tk": "9.0.4", "passed": true, "cycles": 125, "workspace_switches": 250, "real_audit_preparations": 125, "cancelled_closed_workers": 125, "real_audit_runs": 25, "active_seconds": 1206.004, "closed_dialogs_collected": true, "snapshots": [{"cycle": 1, "root_children": 3, "peak_rss_platform_units": 227440}, {"cycle": 2, "root_children": 3, "peak_rss_platform_units": 227568}, {"cycle": 3, "root_children": 3, "peak_rss_platform_units": 233128}, {"cycle": 4, "root_children": 3, "peak_rss_platform_units": 233128}, {"cycle": 5, "root_children": 3, "peak_rss_platform_units": 233264}, {"cycle": 6, "root_children": 3, "peak_rss_platform_units": 237496}, {"cycle": 7, "root_children": 3, "peak_rss_platform_units": 243384}, {"cycle": 8, "root_children": 3, "peak_rss_platform_units": 243512}, {"cycle": 9, "root_children": 3, "peak_rss_platform_units": 243512}, {"cycle": 10, "root_children": 3, "peak_rss_platform_units": 243512}, {"cycle": 11, "root_children": 3, "peak_rss_platform_units": 243768}, {"cycle": 12, "root_children": 3, "peak_rss_platform_units": 249656}, {"cycle": 13, "root_children": 3, "peak_rss_platform_units": 249656}, {"cycle": 14, "root_children": 3, "peak_rss_platform_units": 249656}, {"cycle": 15, "root_children": 3, "peak_rss_platform_units": 249656}, {"cycle": 16, "root_children": 3, "peak_rss_platform_units": 250296}, {"cycle": 17, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 18, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 19, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 20, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 21, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 22, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 23, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 24, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 25, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 26, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 27, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 28, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 29, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 30, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 31, "root_children": 3, "peak_rss_platform_units": 250680}, {"cycle": 32, "root_children": 3, "peak_rss_platform_units": 250816}, {"cycle": 33, "root_children": 3, "peak_rss_platform_units": 250816}, {"cycle": 34, "root_children": 3, "peak_rss_platform_units": 250816}, {"cycle": 35, "root_children": 3, "peak_rss_platform_units": 250944}, {"cycle": 36, "root_children": 3, "peak_rss_platform_units": 250944}, {"cycle": 37, "root_children": 3, "peak_rss_platform_units": 251072}, {"cycle": 38, "root_children": 3, "peak_rss_platform_units": 251072}, {"cycle": 39, "root_children": 3, "peak_rss_platform_units": 251072}, {"cycle": 40, "root_children": 3, "peak_rss_platform_units": 251072}, {"cycle": 41, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 42, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 43, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 44, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 45, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 46, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 47, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 48, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 49, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 50, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 51, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 52, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 53, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 54, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 55, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 56, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 57, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 58, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 59, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 60, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 61, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 62, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 63, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 64, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 65, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 66, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 67, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 68, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 69, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 70, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 71, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 72, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 73, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 74, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 75, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 76, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 77, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 78, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 79, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 80, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 81, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 82, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 83, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 84, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 85, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 86, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 87, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 88, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 89, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 90, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 91, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 92, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 93, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 94, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 95, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 96, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 97, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 98, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 99, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 100, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 101, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 102, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 103, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 104, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 105, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 106, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 107, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 108, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 109, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 110, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 111, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 112, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 113, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 114, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 115, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 116, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 117, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 118, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 119, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 120, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 121, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 122, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 123, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 124, "root_children": 3, "peak_rss_platform_units": 254004}, {"cycle": 125, "root_children": 3, "peak_rss_platform_units": 254004}], "saved_audit_events": 24000, "review_note_preserved": true, "bundle_bytes_preserved": true, "seconds": 1209.913, "errors": []}

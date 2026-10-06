@@ -1,0 +1,1562 @@
+.....E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E [ 84%]
+.E.E.EFFFF                                                               [100%]
+==================================== ERRORS ====================================
+______ ERROR at teardown of test_real_gui_sample_views_overlay_and_scope _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_sample_views_ove0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a5634ef30>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a52b19940>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a52b208c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+___ ERROR at teardown of test_real_gui_override_counts_cache_copy_reset_undo ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_override_counts_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a54af75c0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a54ce10c0>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a52adde40>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_save_reopen_external_sessions_and_recovery _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_save_reopen_exte0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a52b60fe0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a508de6c0>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a508f0f00>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+____ ERROR at teardown of test_real_gui_offscale_arrays_and_all_plot_modes _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_offscale_arrays_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a50437c80>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a509e3a00>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a509d76c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+___ ERROR at teardown of test_real_gui_nested_population_refresh_and_reopen ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_nested_populatio0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a505e43b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...2046c0>), ...] == []
+E         
+E         Left contains 7 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a50403d40>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+invalid command name "139819716838784autosave"
+    while executing
+"139819716838784autosave"
+    ("after" script)
+_ ERROR at teardown of test_real_gui_sizes_collapsed_controls_and_missing_channels _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_sizes_collapsed_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a501481d0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...1cab80>), ...] == []
+E         
+E         Left contains 14 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a501cf6c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+______ ERROR at teardown of test_real_gui_sample_only_gate_is_not_global _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_sample_only_gate0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a50709460>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a4c0e26c0>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a4c3da000>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_partial_reopen_scan_relink_and_exclusion __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_partial_reopen_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a500248f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a5043f980>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a4ff5c400>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_multigate_partition_and_secondary_analysis_use_overrides _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_multigate_partit0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a50369ca0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a47eaae40>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a47f5e580>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_multilevel_lineage_keeps_all_parent_namespaces _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_multilevel_linea0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a506c2150>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a47d8b140>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a4c3b1c40>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_missing_gate_resource_never_opens_child_as_full_population _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_missing_gate_res0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a47ad3c50>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...595080>), ...] == []
+E         
+E         Left contains 7 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a50661a80>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_____ ERROR at teardown of test_real_gui_drag_handle_copies_gate_to_sample _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_drag_handle_copi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a475803b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a47a9f600>)] == []
+E         
+E         Left contains 4 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a4c3ff440>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_child_sample_membership_and_source_exclusion _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_child_sample_mem0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4759a720>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a76c6ed00>)] == []
+E         
+E         Left contains 4 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a47620d80>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_region_labels_agree_with_sample_override_counts _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_region_labels_ag0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a46c1f5c0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a4747d900>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a47d776c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_real_gui_gate_copy_rejects_unavailable_target_lineage _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_real_gui_gate_copy_reject0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a46bc6bd0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a466a4b00>)] == []
+E         
+E         Left contains 4 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a468ef6c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+__ ERROR at teardown of test_auto_fit_default_pools_all_active_even_in_cycle ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_auto_fit_default_pools_al0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a46a4eab0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a466d4040>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a463f76c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_auto_fit_selected_subset_is_independent_of_gate_targets_and_reopens _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_auto_fit_selected_subset_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a47679e80>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a46c86d40>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a476209c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_auto_fit_current_source_can_apply_globally_or_to_one_sample _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_auto_fit_current_source_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a46583f50>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a461ce280>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a464896c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_otsu] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_every_auto_method_receive0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a46515580>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a465575c0>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a462aca80>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_derivative] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_every_auto_method_receive1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a464f5cd0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a45ecb940>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a45f0c080>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_gmm_multi] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_every_auto_method_receive2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4611d550>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a467a54c0>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a478ad740>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_cluster_polygons] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_every_auto_method_receive3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a76bedb50>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a46182540>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a444476c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_entire_workspace_replaces_only_the_selected_gate_overrides_and_undo _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_entire_workspace_replaces0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a45e6a1b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a441a4180>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a45ce6580>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_selected_sample_edit_is_sparse_preserves_unedited_gates_and_undo _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_selected_sample_edit_is_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4431a930>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3dfb20c0>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3df130c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_selected_sample_edit_rejects_incompatible_target_atomically _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_selected_sample_edit_reje0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a50335730>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a463f94c0>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a45f050c0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_auto_gate_reuse_is_one_undo_step_and_scope_change_cancels_live_rerun _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_auto_gate_reuse_is_one_un0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4635c7d0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3ded4a40>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3dd65d00>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_drag_feedback_does_not_mutate_fitting_row_selection _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_drag_feedback_does_not_mu0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a45ee0830>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3dba3540>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3db2cdc0>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_plot_header_names_sample_scope_and_overlay_overrides _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_plot_header_names_sample_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3dbf36e0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3d8af140>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3d845a00>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_cluster_input_keeps_nan_and_log_invalid_rows_aligned _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_cluster_input_keeps_nan_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3d816de0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a45ecc940>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a44301400>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+__ ERROR at teardown of test_cluster_creating_multiple_gates_is_one_undo_step __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_cluster_creating_multiple0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4635ea50>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a44111680>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a46542240>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+______ ERROR at teardown of test_empty_fitting_selection_creates_no_gate _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_empty_fitting_selection_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3d822210>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3d982e40>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3d782640>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_auto_fitting_in_child_uses_each_samples_resolved_parent _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_auto_fitting_in_child_use0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3d7abef0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3d57d440>)] == []
+E         
+E         Left contains 4 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3d57e580>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_tab_selection_refreshes_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a4695d040>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...63a540>), ...] == []
+E         
+E         Left contains 8 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a44454900>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_current_sample_copy_uses_resolved_gate_even_when_editing_all_samples _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_current_sample_copy_uses_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3d0ea4b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3cb86b40>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3cc6bb00>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+___ ERROR at teardown of test_pinned_active_checkbox_controls_pooled_fitting ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_pinned_active_checkbox_co0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a441b43b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3c779400>)] == []
+E         
+E         Left contains 3 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3cad0600>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_missing_parent_lineage_survives_redraw_and_state_save _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_missing_parent_lineage_su0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3ca2f2c0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...73c640>), ...] == []
+E         
+E         Left contains 11 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3d2f0300>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+_ ERROR at teardown of test_native_gate_save_in_selected_scope_keeps_correct_external_references _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_native_gate_save_in_selec0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3d229af0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0]
+        app._workspace.state_dir = tmp_path/"state"
+        app._workspace.recent_path = tmp_path/"state/recent.json"
+        app.plot_type_var.set('Dot Plot');app.show_marginals_var.set(False)
+        paths=[]
+        for name in ['A','B','C']:
+            p=tmp_path/(name+'.csv');pd.DataFrame({'X':[30.,50.,90.,120.,220.],'Y':[30.,50.,90.,120.,70.],
+                'U':[1.,2.,3.,4.,5.],'V':[6.,7.,8.,9.,10.]}).to_csv(p,index=False);paths.append(str(p))
+        app._load_paths(paths);root.update()
+        app.x_var.set('X');app.y_var.set('Y');app.apply_axes()
+        app.x_scale_var.set('linear');app.y_scale_var.set('linear');root.update()
+        yield root,manager,app,paths,errors
+        app._workspace.dispose()
+        root.destroy()
+>       assert errors==[]
+E       assert [(<class 'Val...f2a3d39f8c0>)] == []
+E         
+E         Left contains 5 more items, first extra item: (<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3ba4bd40>)
+E         Use -v to get more diff
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:40: AssertionError
+=================================== FAILURES ===================================
+_________________ test_frozen_sources_in_app[cytometry-names0] _________________
+
+domain = 'cytometry'
+names = ['Control_01.csv', 'Control_02.csv', 'Treatment_01.csv', 'Treatment_02.csv']
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_frozen_sources_in_app_cyt0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a5052b6b0>
+
+    @pytest.mark.parametrize('domain,names',[
+        ('cytometry',['Control_01.csv','Control_02.csv','Treatment_01.csv','Treatment_02.csv']),
+        ('microscopy',['Microscopy_01.csv','Microscopy_02.csv','Microscopy_03.csv']),
+        ('parser_variants',['FCS31_Float_BE.fcs','FCS30_Double_BE.fcs']),
+        ('lmd',['SM239.LMD','188-15.LMD','240+S.LMD']),
+    ])
+    def test_frozen_sources_in_app(domain,names,tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        for key in ('showwarning','showinfo'):monkeypatch.setattr(messagebox,key,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.geometry('1280x900');root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0];owner=app._workspace
+        owner.state_dir=tmp_path/'state';owner.recent_path=tmp_path/'state/recent.json'
+        sources=[str(CORPUS/domain/name) for name in names]
+        if domain=='lmd':
+            sources=[]
+            for name in names:
+                target=tmp_path/name;shutil.copyfile(ROOT/'benchmark_extensions/lmd'/name,target);sources.append(str(target))
+        try:
+            app._load_paths(sources);root.update();assert len(app.loaded_files)==len(names)
+            originals={p:df.copy(deep=True) for p,df in app.loaded_files.items()}
+            for p,df in originals.items():pd.testing.assert_frame_equal(df,read_flow_data_file(p))
+            columns=list(originals[sources[0]].select_dtypes(include='number').columns)
+            app.x_var.set(columns[0]);app.y_var.set(columns[1]);app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+            for mode in ('Dot Plot','Density','Contour Plot'):
+                app.plot_type_var.set(mode);app.refresh_plot();root.update()
+                for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+            ids=[owner.sample_id(p) for p in sources]
+            bundle=run_audit(prepare_samples(owner,app,ids));ref=commit(owner,bundle)
+            result=AuditResultsDialog(owner,ref,bundle);root.update();assert len(result.tree.get_children())==len(names)
+            result.tree.selection_set(ids[0]);result.details();root.update()
+            if domain=='cytometry':
+                from PIL import ImageGrab
+                ImageGrab.grab(xdisplay=os.environ['DISPLAY']).save(ROOT/'validation/candidate_benchmark_app.png')
+            result.destroy()
+            before=Path(ref.result.absolute_path).read_bytes();decide(owner,ref,ids[0],'exclude',note='benchmark manual review');decide(owner,ref,ids[0],'restore')
+            assert before==Path(ref.result.absolute_path).read_bytes()
+            export_xlsx(bundle,tmp_path/'audit.xlsx',ref,owner.document);export_csv_package(bundle,tmp_path/'audit.zip',ref,owner.document)
+            target=tmp_path/(domain+'.vflow');assert owner.save(path=str(target));assert owner.open(str(target));root.update()
+            assert len(owner.document.audits)==1 and len(owner.document.audits[ref.audit_id].decision_history)==2
+            for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+>           assert not errors
+E           assert not [(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3d623bc0>...(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3c650dc0>)]
+
+tests/test_benchmark_app_gui.py:64: AssertionError
+________________ test_frozen_sources_in_app[microscopy-names1] _________________
+
+domain = 'microscopy'
+names = ['Microscopy_01.csv', 'Microscopy_02.csv', 'Microscopy_03.csv']
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_frozen_sources_in_app_mic0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3c693f50>
+
+    @pytest.mark.parametrize('domain,names',[
+        ('cytometry',['Control_01.csv','Control_02.csv','Treatment_01.csv','Treatment_02.csv']),
+        ('microscopy',['Microscopy_01.csv','Microscopy_02.csv','Microscopy_03.csv']),
+        ('parser_variants',['FCS31_Float_BE.fcs','FCS30_Double_BE.fcs']),
+        ('lmd',['SM239.LMD','188-15.LMD','240+S.LMD']),
+    ])
+    def test_frozen_sources_in_app(domain,names,tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        for key in ('showwarning','showinfo'):monkeypatch.setattr(messagebox,key,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.geometry('1280x900');root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0];owner=app._workspace
+        owner.state_dir=tmp_path/'state';owner.recent_path=tmp_path/'state/recent.json'
+        sources=[str(CORPUS/domain/name) for name in names]
+        if domain=='lmd':
+            sources=[]
+            for name in names:
+                target=tmp_path/name;shutil.copyfile(ROOT/'benchmark_extensions/lmd'/name,target);sources.append(str(target))
+        try:
+            app._load_paths(sources);root.update();assert len(app.loaded_files)==len(names)
+            originals={p:df.copy(deep=True) for p,df in app.loaded_files.items()}
+            for p,df in originals.items():pd.testing.assert_frame_equal(df,read_flow_data_file(p))
+            columns=list(originals[sources[0]].select_dtypes(include='number').columns)
+            app.x_var.set(columns[0]);app.y_var.set(columns[1]);app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+            for mode in ('Dot Plot','Density','Contour Plot'):
+                app.plot_type_var.set(mode);app.refresh_plot();root.update()
+                for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+            ids=[owner.sample_id(p) for p in sources]
+            bundle=run_audit(prepare_samples(owner,app,ids));ref=commit(owner,bundle)
+            result=AuditResultsDialog(owner,ref,bundle);root.update();assert len(result.tree.get_children())==len(names)
+            result.tree.selection_set(ids[0]);result.details();root.update()
+            if domain=='cytometry':
+                from PIL import ImageGrab
+                ImageGrab.grab(xdisplay=os.environ['DISPLAY']).save(ROOT/'validation/candidate_benchmark_app.png')
+            result.destroy()
+            before=Path(ref.result.absolute_path).read_bytes();decide(owner,ref,ids[0],'exclude',note='benchmark manual review');decide(owner,ref,ids[0],'restore')
+            assert before==Path(ref.result.absolute_path).read_bytes()
+            export_xlsx(bundle,tmp_path/'audit.xlsx',ref,owner.document);export_csv_package(bundle,tmp_path/'audit.zip',ref,owner.document)
+            target=tmp_path/(domain+'.vflow');assert owner.save(path=str(target));assert owner.open(str(target));root.update()
+            assert len(owner.document.audits)==1 and len(owner.document.audits[ref.audit_id].decision_history)==2
+            for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+>           assert not errors
+E           assert not [(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3c43d8c0>...(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3a5f8b40>)]
+
+tests/test_benchmark_app_gui.py:64: AssertionError
+______________ test_frozen_sources_in_app[parser_variants-names2] ______________
+
+domain = 'parser_variants'
+names = ['FCS31_Float_BE.fcs', 'FCS30_Double_BE.fcs']
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_frozen_sources_in_app_par0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3a9ce330>
+
+    @pytest.mark.parametrize('domain,names',[
+        ('cytometry',['Control_01.csv','Control_02.csv','Treatment_01.csv','Treatment_02.csv']),
+        ('microscopy',['Microscopy_01.csv','Microscopy_02.csv','Microscopy_03.csv']),
+        ('parser_variants',['FCS31_Float_BE.fcs','FCS30_Double_BE.fcs']),
+        ('lmd',['SM239.LMD','188-15.LMD','240+S.LMD']),
+    ])
+    def test_frozen_sources_in_app(domain,names,tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        for key in ('showwarning','showinfo'):monkeypatch.setattr(messagebox,key,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.geometry('1280x900');root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0];owner=app._workspace
+        owner.state_dir=tmp_path/'state';owner.recent_path=tmp_path/'state/recent.json'
+        sources=[str(CORPUS/domain/name) for name in names]
+        if domain=='lmd':
+            sources=[]
+            for name in names:
+                target=tmp_path/name;shutil.copyfile(ROOT/'benchmark_extensions/lmd'/name,target);sources.append(str(target))
+        try:
+            app._load_paths(sources);root.update();assert len(app.loaded_files)==len(names)
+            originals={p:df.copy(deep=True) for p,df in app.loaded_files.items()}
+            for p,df in originals.items():pd.testing.assert_frame_equal(df,read_flow_data_file(p))
+            columns=list(originals[sources[0]].select_dtypes(include='number').columns)
+            app.x_var.set(columns[0]);app.y_var.set(columns[1]);app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+            for mode in ('Dot Plot','Density','Contour Plot'):
+                app.plot_type_var.set(mode);app.refresh_plot();root.update()
+                for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+            ids=[owner.sample_id(p) for p in sources]
+            bundle=run_audit(prepare_samples(owner,app,ids));ref=commit(owner,bundle)
+            result=AuditResultsDialog(owner,ref,bundle);root.update();assert len(result.tree.get_children())==len(names)
+            result.tree.selection_set(ids[0]);result.details();root.update()
+            if domain=='cytometry':
+                from PIL import ImageGrab
+                ImageGrab.grab(xdisplay=os.environ['DISPLAY']).save(ROOT/'validation/candidate_benchmark_app.png')
+            result.destroy()
+            before=Path(ref.result.absolute_path).read_bytes();decide(owner,ref,ids[0],'exclude',note='benchmark manual review');decide(owner,ref,ids[0],'restore')
+            assert before==Path(ref.result.absolute_path).read_bytes()
+            export_xlsx(bundle,tmp_path/'audit.xlsx',ref,owner.document);export_csv_package(bundle,tmp_path/'audit.zip',ref,owner.document)
+            target=tmp_path/(domain+'.vflow');assert owner.save(path=str(target));assert owner.open(str(target));root.update()
+            assert len(owner.document.audits)==1 and len(owner.document.audits[ref.audit_id].decision_history)==2
+            for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+>           assert not errors
+E           assert not [(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3a975a00>...(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3a82b040>)]
+
+tests/test_benchmark_app_gui.py:64: AssertionError
+____________________ test_frozen_sources_in_app[lmd-names3] ____________________
+
+domain = 'lmd', names = ['SM239.LMD', '188-15.LMD', '240+S.LMD']
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_frozen_sources_in_app_lmd0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2a3a8d1df0>
+
+    @pytest.mark.parametrize('domain,names',[
+        ('cytometry',['Control_01.csv','Control_02.csv','Treatment_01.csv','Treatment_02.csv']),
+        ('microscopy',['Microscopy_01.csv','Microscopy_02.csv','Microscopy_03.csv']),
+        ('parser_variants',['FCS31_Float_BE.fcs','FCS30_Double_BE.fcs']),
+        ('lmd',['SM239.LMD','188-15.LMD','240+S.LMD']),
+    ])
+    def test_frozen_sources_in_app(domain,names,tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        for key in ('showwarning','showinfo'):monkeypatch.setattr(messagebox,key,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+        root=tk.Tk();root.geometry('1280x900');root.report_callback_exception=lambda *a:errors.append(a)
+        manager=FlowTabManager(root);app=manager._apps[0];owner=app._workspace
+        owner.state_dir=tmp_path/'state';owner.recent_path=tmp_path/'state/recent.json'
+        sources=[str(CORPUS/domain/name) for name in names]
+        if domain=='lmd':
+            sources=[]
+            for name in names:
+                target=tmp_path/name;shutil.copyfile(ROOT/'benchmark_extensions/lmd'/name,target);sources.append(str(target))
+        try:
+            app._load_paths(sources);root.update();assert len(app.loaded_files)==len(names)
+            originals={p:df.copy(deep=True) for p,df in app.loaded_files.items()}
+            for p,df in originals.items():pd.testing.assert_frame_equal(df,read_flow_data_file(p))
+            columns=list(originals[sources[0]].select_dtypes(include='number').columns)
+            app.x_var.set(columns[0]);app.y_var.set(columns[1]);app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+            for mode in ('Dot Plot','Density','Contour Plot'):
+                app.plot_type_var.set(mode);app.refresh_plot();root.update()
+                for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+            ids=[owner.sample_id(p) for p in sources]
+            bundle=run_audit(prepare_samples(owner,app,ids));ref=commit(owner,bundle)
+            result=AuditResultsDialog(owner,ref,bundle);root.update();assert len(result.tree.get_children())==len(names)
+            result.tree.selection_set(ids[0]);result.details();root.update()
+            if domain=='cytometry':
+                from PIL import ImageGrab
+                ImageGrab.grab(xdisplay=os.environ['DISPLAY']).save(ROOT/'validation/candidate_benchmark_app.png')
+            result.destroy()
+            before=Path(ref.result.absolute_path).read_bytes();decide(owner,ref,ids[0],'exclude',note='benchmark manual review');decide(owner,ref,ids[0],'restore')
+            assert before==Path(ref.result.absolute_path).read_bytes()
+            export_xlsx(bundle,tmp_path/'audit.xlsx',ref,owner.document);export_csv_package(bundle,tmp_path/'audit.zip',ref,owner.document)
+            target=tmp_path/(domain+'.vflow');assert owner.save(path=str(target));assert owner.open(str(target));root.update()
+            assert len(owner.document.audits)==1 and len(owner.document.audits[ref.audit_id].decision_history)==2
+            for p,df in originals.items():pd.testing.assert_frame_equal(app.loaded_files[p],df)
+>           assert not errors
+E           assert not [(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3a581d80>...(<class 'ValueError'>, ValueError("invalid literal for int() with base 10: ''"), <traceback object at 0x7f2a3c5da600>)]
+
+tests/test_benchmark_app_gui.py:64: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[cytometry-names0]
+FAILED tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[microscopy-names1]
+FAILED tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[parser_variants-names2]
+FAILED tests/test_benchmark_app_gui.py::test_frozen_sources_in_app[lmd-names3]
+ERROR tests/test_workspace_gui.py::test_real_gui_sample_views_overlay_and_scope
+ERROR tests/test_workspace_gui.py::test_real_gui_override_counts_cache_copy_reset_undo
+ERROR tests/test_workspace_gui.py::test_real_gui_save_reopen_external_sessions_and_recovery
+ERROR tests/test_workspace_gui.py::test_real_gui_offscale_arrays_and_all_plot_modes
+ERROR tests/test_workspace_gui.py::test_real_gui_nested_population_refresh_and_reopen
+ERROR tests/test_workspace_gui.py::test_real_gui_sizes_collapsed_controls_and_missing_channels
+ERROR tests/test_workspace_gui.py::test_real_gui_sample_only_gate_is_not_global
+ERROR tests/test_workspace_gui.py::test_real_gui_partial_reopen_scan_relink_and_exclusion
+ERROR tests/test_workspace_gui.py::test_real_gui_multigate_partition_and_secondary_analysis_use_overrides
+ERROR tests/test_workspace_gui.py::test_real_gui_multilevel_lineage_keeps_all_parent_namespaces
+ERROR tests/test_workspace_gui.py::test_real_gui_missing_gate_resource_never_opens_child_as_full_population
+ERROR tests/test_workspace_gui.py::test_real_gui_drag_handle_copies_gate_to_sample
+ERROR tests/test_workspace_gui.py::test_real_gui_child_sample_membership_and_source_exclusion
+ERROR tests/test_workspace_gui.py::test_real_gui_region_labels_agree_with_sample_override_counts
+ERROR tests/test_workspace_gui.py::test_real_gui_gate_copy_rejects_unavailable_target_lineage
+ERROR tests/test_workspace_gui.py::test_auto_fit_default_pools_all_active_even_in_cycle
+ERROR tests/test_workspace_gui.py::test_auto_fit_selected_subset_is_independent_of_gate_targets_and_reopens
+ERROR tests/test_workspace_gui.py::test_auto_fit_current_source_can_apply_globally_or_to_one_sample
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_otsu]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_derivative]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_gmm_multi]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_cluster_polygons]
+ERROR tests/test_workspace_gui.py::test_entire_workspace_replaces_only_the_selected_gate_overrides_and_undo
+ERROR tests/test_workspace_gui.py::test_selected_sample_edit_is_sparse_preserves_unedited_gates_and_undo
+ERROR tests/test_workspace_gui.py::test_selected_sample_edit_rejects_incompatible_target_atomically
+ERROR tests/test_workspace_gui.py::test_auto_gate_reuse_is_one_undo_step_and_scope_change_cancels_live_rerun
+ERROR tests/test_workspace_gui.py::test_drag_feedback_does_not_mutate_fitting_row_selection
+ERROR tests/test_workspace_gui.py::test_plot_header_names_sample_scope_and_overlay_overrides
+ERROR tests/test_workspace_gui.py::test_cluster_input_keeps_nan_and_log_invalid_rows_aligned
+ERROR tests/test_workspace_gui.py::test_cluster_creating_multiple_gates_is_one_undo_step
+ERROR tests/test_workspace_gui.py::test_empty_fitting_selection_creates_no_gate
+ERROR tests/test_workspace_gui.py::test_auto_fitting_in_child_uses_each_samples_resolved_parent
+ERROR tests/test_workspace_gui.py::test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens
+ERROR tests/test_workspace_gui.py::test_current_sample_copy_uses_resolved_gate_even_when_editing_all_samples
+ERROR tests/test_workspace_gui.py::test_pinned_active_checkbox_controls_pooled_fitting
+ERROR tests/test_workspace_gui.py::test_missing_parent_lineage_survives_redraw_and_state_save
+ERROR tests/test_workspace_gui.py::test_native_gate_save_in_selected_scope_keeps_correct_external_references
+4 failed, 41 passed, 37 errors in 88.17s (0:01:28)

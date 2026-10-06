@@ -1,0 +1,8 @@
+{
+  "phase": "verify_final",
+  "separate_process": true,
+  "passed": true,
+  "samples": 3,
+  "gate_count": 2,
+  "workspace_bytes": 8268
+}

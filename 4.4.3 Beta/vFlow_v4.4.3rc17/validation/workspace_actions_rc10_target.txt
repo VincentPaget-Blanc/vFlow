@@ -1,0 +1,33 @@
+......................F.................................                 [100%]
+=================================== FAILURES ===================================
+______ test_every_task_tab_and_pinned_list_accessible_at_1024_768[Large] _______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9a744849b0>, <vflow.legacy.vflow_app.Flow...-11/test_every_task_tab_and_pinned3/B.csv', '/tmp/pytest-of-root/pytest-11/test_every_task_tab_and_pinned3/C.csv'], [])
+size = 'Large'
+
+    @pytest.mark.parametrize('size',['Automatic','Compact','Comfortable','Large'])
+    def test_every_task_tab_and_pinned_list_accessible_at_1024_768(experiment,size):
+        root,manager,app,paths,errors=experiment
+        root.geometry('1024x768');app.interface_size_var.set(size);app._apply_interface_size();root.update()
+        notebook=app._task_notebook;selected=notebook.nametowidget(notebook.select());y=max(1,selected.winfo_y()//2)
+        visible=set()
+        for x in range(notebook.winfo_width()):
+            try:visible.add(notebook.index('@'+str(x)+','+str(y)))
+            except tk.TclError:pass
+        assert visible=={0,1,2,3}
+        for name in ['Data','Plot','Gates','Analysis']:
+            app._select_sidebar_task(name);root.update()
+            assert app._task_pages[name]['canvas'].winfo_height()>100
+>           assert app._workspace_tree.winfo_ismapped() and app._status_lbl.winfo_ismapped()
+E           assert (1 and 0)
+E            +  where 1 = winfo_ismapped()
+E            +    where winfo_ismapped = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_ismapped
+E            +      where <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview> = <vflow.legacy.vflow_app.FlowApp object at 0x7f9a612db080>._workspace_tree
+E            +  and   0 = winfo_ismapped()
+E            +    where winfo_ismapped = <tkinter.Label object .!notebook.!frame.!panedwindow.!frame2.!label>.winfo_ismapped
+E            +      where <tkinter.Label object .!notebook.!frame.!panedwindow.!frame2.!label> = <vflow.legacy.vflow_app.FlowApp object at 0x7f9a612db080>._status_lbl
+
+tests/test_task_sidebar_gui.py:154: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_task_sidebar_gui.py::test_every_task_tab_and_pinned_list_accessible_at_1024_768[Large]
+1 failed, 55 passed in 59.88s

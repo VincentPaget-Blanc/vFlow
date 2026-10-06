@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "name": "vFlow_v4.4.1_Workspace_PerSample_Gating_Final(2).zip",
+      "bytes": 2390428,
+      "sha256": "05f8a77f2ec8f9b9e4d11f5c5877246797e2e0d58285085eba5b4efae66477cc"
+    },
+    {
+      "name": "vFlow_v4.4.3_Implementation_Handoff.md",
+      "bytes": 57296,
+      "sha256": "e49a45d538fc68c17646eb47dfe25df2b8e269c4ab90e88bebcda5e14902f0c5"
+    },
+    {
+      "name": "vFlow_Benchmark_Corpus_v1.0.0(1).zip",
+      "bytes": 14230657,
+      "sha256": "f72e88b72af079915f7b55cd4184441c9b0c5e4e270b64e859de61687721878b"
+    }
+  ]
+}

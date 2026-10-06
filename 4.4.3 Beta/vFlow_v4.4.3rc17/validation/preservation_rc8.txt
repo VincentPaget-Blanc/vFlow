@@ -1,0 +1,18 @@
+{
+  "baseline": "4.4.3rc7",
+  "candidate": "4.4.3rc8",
+  "original_modules": 119,
+  "unchanged_modules": 110,
+  "version_only_modules": 5,
+  "changed_feature_and_ui_modules": 4,
+  "added_modules": [
+    "vflow/ui/adaptive_samples.py"
+  ],
+  "unchanged_original_core_modules": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "changed_existing_controller_methods": [],
+  "new_controller_methods": [],
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

@@ -1,0 +1,318 @@
+FFFFFF.FFFFFFFFFF                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_rapid_clicks_never_switch_to_cycle[#0] __________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece71f3e30>, <vflow.legacy.vflow_app.Flow...st-4/test_rapid_clicks_never_switch0/B.csv', '/tmp/pytest-of-root/pytest-4/test_rapid_clicks_never_switch0/C.csv'], [])
+column = '#0'
+
+    @pytest.mark.parametrize('column', ['#0', '#1'])
+    def test_rapid_clicks_never_switch_to_cycle(experiment, column):
+        root, manager, app, paths, errors = experiment
+        owner = app._workspace; sid = owner.sample_id(paths[0])
+        initial = app.file_vars[paths[0]].get()
+        row_click(app, sid, column)
+        row_click(app, sid, column, gap=100)
+>       assert app.view_mode_var.get() == 'overlay'
+E       AssertionError: assert 'cycle' == 'overlay'
+E         
+E         - overlay
+E         + cycle
+
+tests/test_ui_interactions_rc17.py:37: AssertionError
+_________________ test_rapid_clicks_never_switch_to_cycle[#1] __________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece85373e0>, <vflow.legacy.vflow_app.Flow...st-4/test_rapid_clicks_never_switch1/B.csv', '/tmp/pytest-of-root/pytest-4/test_rapid_clicks_never_switch1/C.csv'], [])
+column = '#1'
+
+    @pytest.mark.parametrize('column', ['#0', '#1'])
+    def test_rapid_clicks_never_switch_to_cycle(experiment, column):
+        root, manager, app, paths, errors = experiment
+        owner = app._workspace; sid = owner.sample_id(paths[0])
+        initial = app.file_vars[paths[0]].get()
+        row_click(app, sid, column)
+        row_click(app, sid, column, gap=100)
+>       assert app.view_mode_var.get() == 'overlay'
+E       AssertionError: assert 'cycle' == 'overlay'
+E         
+E         - overlay
+E         + cycle
+
+tests/test_ui_interactions_rc17.py:37: AssertionError
+_________ test_row_selection_is_persistent_and_independent_of_activity _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece71033e0>, <vflow.legacy.vflow_app.Flow...st-4/test_row_selection_is_persiste0/B.csv', '/tmp/pytest-of-root/pytest-4/test_row_selection_is_persiste0/C.csv'], [])
+
+    def test_row_selection_is_persistent_and_independent_of_activity(experiment):
+        root, manager, app, paths, errors = experiment
+        owner = app._workspace; ids = [owner.sample_id(p) for p in paths]
+        for sid in ids: row_click(app, sid)
+>       assert set(app._workspace_tree.selection()) == set(ids)
+E       AssertionError: assert {'4eecb52c-32...06e7eb9e5fac'} == {'4eecb52c-32...dce103e3c157'}
+E         
+E         Extra items in the right set:
+E         'ab40be2c-e1c2-4bf7-8c76-ba9278c87d7c'
+E         'cc5cee8c-2d38-4a57-8698-dce103e3c157'
+E         Use -v to get more diff
+
+tests/test_ui_interactions_rc17.py:48: AssertionError
+______ test_cycle_keeps_current_sample_when_other_members_change[toggle] _______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece88ab2c0>, <vflow.legacy.vflow_app.Flow...st-4/test_cycle_keeps_current_sampl0/B.csv', '/tmp/pytest-of-root/pytest-4/test_cycle_keeps_current_sampl0/C.csv'], [])
+operation = 'toggle'
+
+    @pytest.mark.parametrize('operation', ['toggle', 'exclude', 'restore', 'all'])
+    def test_cycle_keeps_current_sample_when_other_members_change(experiment, operation):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        sid = owner.sample_id(paths[1]); owner.show_sample(app, sid)
+        app.x_var.set('U'); app.y_var.set('V'); app.apply_axes()
+        if operation == 'toggle': owner.toggle_sample(owner.sample_id(paths[0]), app)
+        elif operation == 'exclude': app._exclude_file(paths[0])
+        elif operation == 'restore':
+            app._exclude_file(paths[0]); app._restore_file(paths[0])
+        else:
+            owner.toggle_sample(owner.sample_id(paths[0]), app); app._select_all()
+>       assert owner.current_sid(app) == sid
+E       AssertionError: assert '2b874fed-6f2...-bdaa756d799f' == '33185c82-c8b...-5f28466ff621'
+E         
+E         - 33185c82-c8bf-49fe-b7e5-5f28466ff621
+E         + 2b874fed-6f24-48bd-bcdf-bdaa756d799f
+
+tests/test_ui_interactions_rc17.py:87: AssertionError
+______ test_cycle_keeps_current_sample_when_other_members_change[exclude] ______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece6d13aa0>, <vflow.legacy.vflow_app.Flow...st-4/test_cycle_keeps_current_sampl1/B.csv', '/tmp/pytest-of-root/pytest-4/test_cycle_keeps_current_sampl1/C.csv'], [])
+operation = 'exclude'
+
+    @pytest.mark.parametrize('operation', ['toggle', 'exclude', 'restore', 'all'])
+    def test_cycle_keeps_current_sample_when_other_members_change(experiment, operation):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        sid = owner.sample_id(paths[1]); owner.show_sample(app, sid)
+        app.x_var.set('U'); app.y_var.set('V'); app.apply_axes()
+        if operation == 'toggle': owner.toggle_sample(owner.sample_id(paths[0]), app)
+        elif operation == 'exclude': app._exclude_file(paths[0])
+        elif operation == 'restore':
+            app._exclude_file(paths[0]); app._restore_file(paths[0])
+        else:
+            owner.toggle_sample(owner.sample_id(paths[0]), app); app._select_all()
+>       assert owner.current_sid(app) == sid
+E       AssertionError: assert 'f1c30163-5ee...-e11be4b71913' == 'b30a893e-ec8...-bc8b3a42cd6a'
+E         
+E         - b30a893e-ec8e-41a6-a81e-bc8b3a42cd6a
+E         + f1c30163-5ee2-4052-b909-e11be4b71913
+
+tests/test_ui_interactions_rc17.py:87: AssertionError
+______ test_cycle_keeps_current_sample_when_other_members_change[restore] ______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece6fa1370>, <vflow.legacy.vflow_app.Flow...st-4/test_cycle_keeps_current_sampl2/B.csv', '/tmp/pytest-of-root/pytest-4/test_cycle_keeps_current_sampl2/C.csv'], [])
+operation = 'restore'
+
+    @pytest.mark.parametrize('operation', ['toggle', 'exclude', 'restore', 'all'])
+    def test_cycle_keeps_current_sample_when_other_members_change(experiment, operation):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        sid = owner.sample_id(paths[1]); owner.show_sample(app, sid)
+        app.x_var.set('U'); app.y_var.set('V'); app.apply_axes()
+        if operation == 'toggle': owner.toggle_sample(owner.sample_id(paths[0]), app)
+        elif operation == 'exclude': app._exclude_file(paths[0])
+        elif operation == 'restore':
+            app._exclude_file(paths[0]); app._restore_file(paths[0])
+        else:
+            owner.toggle_sample(owner.sample_id(paths[0]), app); app._select_all()
+>       assert owner.current_sid(app) == sid
+E       AssertionError: assert '944da6f9-bb5...-7549f064c960' == 'f58c221f-479...-62bd36f65be5'
+E         
+E         - f58c221f-4791-44c1-aa37-62bd36f65be5
+E         + 944da6f9-bb58-4dcb-a325-7549f064c960
+
+tests/test_ui_interactions_rc17.py:87: AssertionError
+____________ test_navigation_toolbar_cannot_draw_or_move_gates[pan] ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece00ce330>, <vflow.legacy.vflow_app.Flow...st-4/test_navigation_toolbar_cannot0/B.csv', '/tmp/pytest-of-root/pytest-4/test_navigation_toolbar_cannot0/C.csv'], [])
+mode = 'pan'
+
+    @pytest.mark.parametrize('mode', ['pan', 'zoom'])
+    def test_navigation_toolbar_cannot_draw_or_move_gates(experiment, mode):
+        root, manager, app, paths, errors = experiment
+        gate = new_gate(app); before = app._plain_gate_snapshot(gate)
+        app.gate_mode_var.set('draw'); app.gate_type_var.set('rectangle')
+        toolbar = app.canvas.toolbar; getattr(toolbar,mode)()
+        px, py = app.ax.transData.transform((50,50))
+        for button in (1,2,3):
+            event = MouseEvent('button_press_event', app.canvas, px, py, button=button)
+            app._on_click(event)
+            app._on_motion(MouseEvent('motion_notify_event', app.canvas, px+20, py+10, button=button))
+>       assert len(app.gates) == 1 and app._plain_gate_snapshot(app.gates[0]) == before
+E       AssertionError: assert (2 == 1)
+E        +  where 2 = len([{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}])
+E        +    where [{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}] = <vflow.legacy.vflow_app.FlowApp object at 0x7fecd9430e90>.gates
+
+tests/test_ui_interactions_rc17.py:123: AssertionError
+___________ test_navigation_toolbar_cannot_draw_or_move_gates[zoom] ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece00cec60>, <vflow.legacy.vflow_app.Flow...st-4/test_navigation_toolbar_cannot1/B.csv', '/tmp/pytest-of-root/pytest-4/test_navigation_toolbar_cannot1/C.csv'], [])
+mode = 'zoom'
+
+    @pytest.mark.parametrize('mode', ['pan', 'zoom'])
+    def test_navigation_toolbar_cannot_draw_or_move_gates(experiment, mode):
+        root, manager, app, paths, errors = experiment
+        gate = new_gate(app); before = app._plain_gate_snapshot(gate)
+        app.gate_mode_var.set('draw'); app.gate_type_var.set('rectangle')
+        toolbar = app.canvas.toolbar; getattr(toolbar,mode)()
+        px, py = app.ax.transData.transform((50,50))
+        for button in (1,2,3):
+            event = MouseEvent('button_press_event', app.canvas, px, py, button=button)
+            app._on_click(event)
+            app._on_motion(MouseEvent('motion_notify_event', app.canvas, px+20, py+10, button=button))
+>       assert len(app.gates) == 1 and app._plain_gate_snapshot(app.gates[0]) == before
+E       AssertionError: assert (2 == 1)
+E        +  where 2 = len([{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}])
+E        +    where [{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}] = <vflow.legacy.vflow_app.FlowApp object at 0x7fece00b52e0>.gates
+
+tests/test_ui_interactions_rc17.py:123: AssertionError
+______ test_middle_click_does_not_draw_and_right_double_does_not_open_tab ______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece037bec0>, <vflow.legacy.vflow_app.Flow...st-4/test_middle_click_does_not_dra0/B.csv', '/tmp/pytest-of-root/pytest-4/test_middle_click_does_not_dra0/C.csv'], [])
+
+    def test_middle_click_does_not_draw_and_right_double_does_not_open_tab(experiment):
+        root, manager, app, paths, errors = experiment; new_gate(app)
+        px, py = app.ax.transData.transform((50,50)); before = len(app.gates)
+        app.gate_mode_var.set('draw'); app.gate_type_var.set('rectangle')
+        app._on_click(MouseEvent('button_press_event',app.canvas,px,py,button=2))
+>       assert len(app.gates) == before and not app.moving_gate
+E       AssertionError: assert (2 == 1)
+E        +  where 2 = len([{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}])
+E        +    where [{'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, {'id': 1, 'name': 'Gate 2', 'type': 'rectangle', 'applied': False, ...}] = <vflow.legacy.vflow_app.FlowApp object at 0x7fecd8de8680>.gates
+
+tests/test_ui_interactions_rc17.py:133: AssertionError
+_______________ test_invalid_gate_width_cannot_poison_plot[nan] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece6cdbb00>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot0/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot0/C.csv'], [])
+invalid = 'nan'
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+        assert app._sel_gate()['linewidth'] == before
+        spin.focus_force();root.update();spin.event_generate('<Return>');root.update()
+>       assert float(spin.get()) == before
+E       AssertionError: assert nan == 0.5
+E        +  where nan = float('nan')
+E        +    where 'nan' = get()
+E        +      where get = <tkinter.ttk.Spinbox object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame2.!notebook.!frame3.!canvas.!frame.!frame2.!frame2.!frame3.!spinbox>.get
+
+tests/test_ui_interactions_rc17.py:161: AssertionError
+_______________ test_invalid_gate_width_cannot_poison_plot[inf] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece036bb60>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot1/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot1/C.csv'], [])
+invalid = 'inf'
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+>       assert app._sel_gate()['linewidth'] == before
+E       assert inf == 0.5
+
+tests/test_ui_interactions_rc17.py:159: AssertionError
+________________ test_invalid_gate_width_cannot_poison_plot[-1] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fecd88a90a0>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot2/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot2/C.csv'], [])
+invalid = '-1'
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+>       assert app._sel_gate()['linewidth'] == before
+E       assert -1.0 == 0.5
+
+tests/test_ui_interactions_rc17.py:159: AssertionError
+________________ test_invalid_gate_width_cannot_poison_plot[0] _________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fecd83b1c70>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot3/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot3/C.csv'], [])
+invalid = '0'
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+>       assert app._sel_gate()['linewidth'] == before
+E       assert 0.0 == 0.5
+
+tests/test_ui_interactions_rc17.py:159: AssertionError
+________________ test_invalid_gate_width_cannot_poison_plot[99] ________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fece6c86120>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot4/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot4/C.csv'], [])
+invalid = '99'
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+>       assert app._sel_gate()['linewidth'] == before
+E       assert 99.0 == 0.5
+
+tests/test_ui_interactions_rc17.py:159: AssertionError
+_________________ test_invalid_gate_width_cannot_poison_plot[] _________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fec8b80ec00>, <vflow.legacy.vflow_app.Flow...st-4/test_invalid_gate_width_cannot5/B.csv', '/tmp/pytest-of-root/pytest-4/test_invalid_gate_width_cannot5/C.csv'], [])
+invalid = ''
+
+    @pytest.mark.parametrize('invalid', ['nan', 'inf', '-1', '0', '99', ''])
+    def test_invalid_gate_width_cannot_poison_plot(experiment, invalid):
+        root, manager, app, paths, errors = experiment; gate = new_gate(app)
+        app._select_sidebar_task('Gates'); root.update()
+        spin=next(w for w in widgets(app.gate_manager_frame) if isinstance(w,ttk.Spinbox))
+        before=gate['linewidth'];spin.set(invalid);root.update()
+        assert app._sel_gate()['linewidth'] == before
+        spin.focus_force();root.update();spin.event_generate('<Return>');root.update()
+>       assert float(spin.get()) == before
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: could not convert string to float: ''
+
+tests/test_ui_interactions_rc17.py:161: ValueError
+_______________ test_empty_cycle_does_not_overwrite_overlay_axes _______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fecd84dea20>, <vflow.legacy.vflow_app.Flow...st-4/test_empty_cycle_does_not_over0/B.csv', '/tmp/pytest-of-root/pytest-4/test_empty_cycle_does_not_over0/C.csv'], [])
+
+    def test_empty_cycle_does_not_overwrite_overlay_axes(experiment):
+        root, manager, app, paths, errors = experiment; owner=app._workspace
+        owner.show_sample(app,owner.sample_id(paths[1]))
+        app.x_var.set('U');app.y_var.set('V');app.apply_axes()
+        app._unselect_all();app._select_all()
+        app.view_mode_var.set('overlay');app._on_view_mode_change();root.update()
+>       assert (app.x_channel,app.y_channel)==('X','Y')
+E       AssertionError: assert ('U', 'V') == ('X', 'Y')
+E         
+E         At index 0 diff: 'U' != 'X'
+E         Use -v to get more diff
+
+tests/test_ui_interactions_rc17.py:192: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_ui_interactions_rc17.py::test_rapid_clicks_never_switch_to_cycle[#0]
+FAILED tests/test_ui_interactions_rc17.py::test_rapid_clicks_never_switch_to_cycle[#1]
+FAILED tests/test_ui_interactions_rc17.py::test_row_selection_is_persistent_and_independent_of_activity
+FAILED tests/test_ui_interactions_rc17.py::test_cycle_keeps_current_sample_when_other_members_change[toggle]
+FAILED tests/test_ui_interactions_rc17.py::test_cycle_keeps_current_sample_when_other_members_change[exclude]
+FAILED tests/test_ui_interactions_rc17.py::test_cycle_keeps_current_sample_when_other_members_change[restore]
+FAILED tests/test_ui_interactions_rc17.py::test_navigation_toolbar_cannot_draw_or_move_gates[pan]
+FAILED tests/test_ui_interactions_rc17.py::test_navigation_toolbar_cannot_draw_or_move_gates[zoom]
+FAILED tests/test_ui_interactions_rc17.py::test_middle_click_does_not_draw_and_right_double_does_not_open_tab
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[nan]
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[inf]
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[-1]
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[0]
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[99]
+FAILED tests/test_ui_interactions_rc17.py::test_invalid_gate_width_cannot_poison_plot[]
+FAILED tests/test_ui_interactions_rc17.py::test_empty_cycle_does_not_overwrite_overlay_axes
+16 failed, 1 passed, 7 deselected in 28.62s

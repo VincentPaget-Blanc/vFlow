@@ -1,0 +1,15 @@
+{
+  "files_loaded": 4,
+  "events_loaded": 48000,
+  "audited_sample_count": 2,
+  "audited_events": 24000,
+  "selected_variables": [
+    "FSC-A",
+    "SSC-A"
+  ],
+  "status": "pairwise_only",
+  "no_automatic_exclusion": true,
+  "exports_and_workspace_reopen_passed": true,
+  "raw_hashes_unchanged": true,
+  "errors": []
+}

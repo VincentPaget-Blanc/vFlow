@@ -1,0 +1,1 @@
+PASS 3 layout reviews: scaled results table and details; Large/200% audit with sample/prepare controls visible; empty Data workspace without duplicate Open. No callback errors.

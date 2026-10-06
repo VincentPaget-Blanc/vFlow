@@ -1,0 +1,1 @@
+PASS 2 layout reviews: Large/200% audit with sample/prepare controls visible; empty Data workspace without duplicate Open. No callback errors.

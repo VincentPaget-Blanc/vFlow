@@ -1,0 +1,27 @@
+{
+  "baseline": "4.4.3rc11",
+  "candidate": "4.4.3rc12",
+  "original_modules": 120,
+  "new_modules": [
+    "vflow/io/export_safety.py",
+    "vflow/ui/session_guard.py"
+  ],
+  "unchanged_modules": 108,
+  "version_only_modules": 2,
+  "bug_fix_modules": 10,
+  "unchanged_core_modules": 19,
+  "unchanged_audit_numerical_modules": 10,
+  "no_original_methods_removed": true,
+  "flowapp_changed_methods": [
+    "FlowApp.load_from_folder",
+    "FlowApp.export_stats",
+    "FlowApp.batch_export_stats",
+    "FlowApp.export_gated_data",
+    "FlowApp.export_figure"
+  ],
+  "secondary_numerical_bodies_unchanged_after_session_guard": true,
+  "source_launcher_changed": false,
+  "launcher_sha256": "f3268e4e22c168300f9a8fce4811b7f173fb5ed63b371e92aac28246d22d735f",
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

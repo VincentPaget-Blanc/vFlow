@@ -1,0 +1,45 @@
+{
+  "version": "4.4.3rc12",
+  "events": 48000,
+  "files": 4,
+  "checks": [
+    "Four real CSVs / 48,000 events loaded",
+    "Reference gate counts equal independent frozen truth",
+    "Plot Dot Plot",
+    "Plot Density",
+    "Plot Contour Plot",
+    "Actual pooled automatic gate uses four samples",
+    "Delete individual automatic threshold",
+    "Other automatic axis remains",
+    "Undo restores threshold",
+    "Nested population follows benchmark gate",
+    "Batch plot calculates",
+    "Polar analysis calculates",
+    "export_stats",
+    "export_gated_data",
+    "save_gates",
+    "export_figure",
+    "Successful gated-data export contains full raw event rows",
+    "Refused source collision is actionable",
+    "Save workspace with population and gates",
+    "Reopen workspace without quitting",
+    "Workspace name and population restored",
+    "Original benchmark copies unchanged",
+    "No unexpected Tk/application errors"
+  ],
+  "passed": 23,
+  "reference_gate_counts": {
+    "Control_01": 7273,
+    "Control_02": 7020,
+    "Treatment_01": 7081,
+    "Treatment_02": 7058
+  },
+  "export_bytes": {
+    "stats.csv": 1939,
+    "events.csv": 11097152,
+    "gates.json": 1588,
+    "plot.png": 1493471
+  },
+  "errors": [],
+  "raw_hashes_unchanged": true
+}

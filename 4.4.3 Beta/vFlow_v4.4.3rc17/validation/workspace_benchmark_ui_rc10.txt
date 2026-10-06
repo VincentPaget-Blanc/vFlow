@@ -1,0 +1,1 @@
+PASS UI benchmark controls: 4 files, 48000 events; save-close-open and name persistence; 4 native views; no callback errors.

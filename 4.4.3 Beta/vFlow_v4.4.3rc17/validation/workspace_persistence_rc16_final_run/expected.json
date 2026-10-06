@@ -1,0 +1,11 @@
+{
+  "rectangle": 0,
+  "threshold": 1,
+  "source_hashes": {
+    "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/workspace_persistence_rc16_final_run/A.csv": "1c340feb67ca4b841d62018b0716d07d14c4a440599d6b24cfcc0b01cdd6c31c",
+    "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/workspace_persistence_rc16_final_run/B.csv": "1c340feb67ca4b841d62018b0716d07d14c4a440599d6b24cfcc0b01cdd6c31c",
+    "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/workspace_persistence_rc16_final_run/C.csv": "1c340feb67ca4b841d62018b0716d07d14c4a440599d6b24cfcc0b01cdd6c31c",
+    "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/workspace_persistence_rc16_final_run/D.csv": "1c340feb67ca4b841d62018b0716d07d14c4a440599d6b24cfcc0b01cdd6c31c"
+  },
+  "baseline_gate_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/workspace_persistence_rc16_final_run/Edited_gates_ca91c715f212.json"
+}

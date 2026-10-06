@@ -1,0 +1,19 @@
+{
+  "phase": "create",
+  "python": "3.12.14",
+  "tk": "9.0.4",
+  "passed": true,
+  "save_as_preserves_old_revision": true,
+  "events": 48000,
+  "counts": {
+    "Control_01": 7273,
+    "Control_02": 7020,
+    "Treatment_01": 7081,
+    "Treatment_02": 7058
+  },
+  "saved_audit_events": 24000,
+  "review_note_preserved": true,
+  "bundle_bytes_preserved": true,
+  "seconds": 16.117,
+  "errors": []
+}

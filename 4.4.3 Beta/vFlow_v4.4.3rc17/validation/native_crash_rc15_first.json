@@ -1,0 +1,30 @@
+[
+  {
+    "scenario": "main_gc",
+    "version": "RC15",
+    "returncode": 0,
+    "stdout": "{\"stage\": \"retired\", \"scenario\": \"main_gc\", \"tk\": \"9.0.4\", \"main_thread\": 140371487717184, \"pending\": true}\n{\"stage\": \"passed\", \"scenario\": \"main_gc\", \"finalizer_threads\": [140371487717184], \"main_thread\": 140371487717184}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "kde",
+    "version": "RC15",
+    "returncode": 0,
+    "stdout": "{\"stage\": \"retired\", \"scenario\": \"kde\", \"tk\": \"9.0.4\", \"main_thread\": 140038894409536, \"pending\": true}\n{\"stage\": \"passed\", \"scenario\": \"kde\", \"finalizer_threads\": [140038894409536], \"main_thread\": 140038894409536}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "audit",
+    "version": "RC15",
+    "returncode": 0,
+    "stdout": "{\"stage\": \"retired\", \"scenario\": \"audit\", \"tk\": \"9.0.4\", \"main_thread\": 140049179752256, \"pending\": true}\n{\"stage\": \"passed\", \"scenario\": \"audit\", \"finalizer_threads\": [140049179752256, 140049179752256], \"main_thread\": 140049179752256}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "scan",
+    "version": "RC15",
+    "returncode": 0,
+    "stdout": "{\"stage\": \"retired\", \"scenario\": \"scan\", \"tk\": \"9.0.4\", \"main_thread\": 139912432600896, \"pending\": true}\n{\"stage\": \"passed\", \"scenario\": \"scan\", \"finalizer_threads\": [139912432600896, 139912432600896], \"main_thread\": 139912432600896}\n",
+    "stderr": ""
+  }
+]

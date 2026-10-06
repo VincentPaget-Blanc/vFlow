@@ -1,0 +1,519 @@
+{
+  "workspace_schema": 2,
+  "workspace_id": "293a515d-65d8-415b-8327-d455aa6e96c9",
+  "created_with": "vFlow 4.4.3rc16",
+  "samples": {
+    "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1": {
+      "sample_id": "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+      "display_name": "Control_01.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/Control_01.csv",
+        "relative_path": "Control_01.csv",
+        "filename": "Control_01.csv",
+        "size": 1786977,
+        "identity_fingerprint": "sha256:1e7364b1bdd308e6163b43587ed687ff75ba2287959e24348cb6a0d1ea7c7b5e",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "563f3b2c-710a-4d44-9c79-461d1d736cc8": {
+      "sample_id": "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+      "display_name": "Control_02.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/Control_02.csv",
+        "relative_path": "Control_02.csv",
+        "filename": "Control_02.csv",
+        "size": 1787676,
+        "identity_fingerprint": "sha256:b53ddffed3ba5befa184e80046e2942c5a6276210beb19522f5cb18b7a844733",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": false,
+      "excluded": false,
+      "view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "linear",
+        "y_transform": "linear",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "b53e2694-72ce-47e1-a8b4-3afd08e24587": {
+      "sample_id": "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+      "display_name": "Treatment_01.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/Treatment_01.csv",
+        "relative_path": "Treatment_01.csv",
+        "filename": "Treatment_01.csv",
+        "size": 1787612,
+        "identity_fingerprint": "sha256:7c988e9bc8e3362b5229f65945124662ac8b64f047d32cf8864f6dfb3af6aded",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "linear",
+        "y_transform": "linear",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "820d822b-c54c-457a-9f58-be84dc35b6b9": {
+      "sample_id": "820d822b-c54c-457a-9f58-be84dc35b6b9",
+      "display_name": "Treatment_02.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/Treatment_02.csv",
+        "relative_path": "Treatment_02.csv",
+        "filename": "Treatment_02.csv",
+        "size": 1788234,
+        "identity_fingerprint": "sha256:c99cddfe26974e59b195ec94bcedc4adf1f80e01761824830b49476559cf6ded",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": false,
+      "excluded": true,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    }
+  },
+  "audits": {
+    "QC-20261005-d74d22e96386": {
+      "audit_id": "QC-20261005-d74d22e96386",
+      "name": "QC-20261005-d74d22e96386",
+      "audit_type": "qc",
+      "created_at": "2026-10-05T15:04:18.708987+00:00",
+      "result": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/recovered_audits/QC-20261005-d74d22e96386.vflowaudit.json.gz",
+        "relative_path": "recovered_audits/QC-20261005-d74d22e96386.vflowaudit.json.gz",
+        "filename": "QC-20261005-d74d22e96386.vflowaudit.json.gz",
+        "size": 2576,
+        "identity_fingerprint": "sha256:0d9d0e8e9770520d249d92e588a907b5450a846c2b99b8efdfd2a639cbf27ee8",
+        "kind": "audit",
+        "content_sha256": null
+      },
+      "selected_sample_ids": [
+        "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+        "563f3b2c-710a-4d44-9c79-461d1d736cc8"
+      ],
+      "population_label": "All events",
+      "status_summary": {
+        "pairwise_only": 2
+      },
+      "decision_history": [
+        {
+          "timestamp": "2026-10-05T15:04:25.764165+00:00",
+          "sample_id": "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+          "action": "note",
+          "reason_code": "no_reason_supplied",
+          "note": "Unsaved recovery review"
+        }
+      ]
+    }
+  },
+  "overlay_view": {
+    "x_channel": "FSC-A",
+    "y_channel": "SSC-A",
+    "x_transform": "linear",
+    "y_transform": "linear",
+    "cofactor": 150.0,
+    "x_transform_params": {
+      "T": 262144.0,
+      "W": 0.5,
+      "M": 4.5,
+      "A": 0.0
+    },
+    "y_transform_params": {
+      "T": 262144.0,
+      "W": 0.5,
+      "M": 4.5,
+      "A": 0.0
+    },
+    "plot_mode": "Density",
+    "axis_limits": null,
+    "axis_fit_mode": "automatic"
+  },
+  "default_gate_session": {
+    "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/unsaved_recovery/recovered_gates_13d55c80721c.json",
+    "relative_path": "recovered_gates_13d55c80721c.json",
+    "filename": "recovered_gates_13d55c80721c.json",
+    "size": 8841,
+    "identity_fingerprint": "sha256:a48159dc5f1edbdc84e39f4a9a47fb4b3c286535764652795e8e3342f5ac1513",
+    "kind": "gates",
+    "content_sha256": null
+  },
+  "groups": {},
+  "gate_scope_state": {
+    "default_scope": "all_samples"
+  },
+  "ui_state": {
+    "view_mode": "cycle",
+    "current_sample_id": "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+    "gate_scope": "All samples (default)",
+    "selected_gate_id": 0,
+    "interface_size": "Automatic",
+    "auto_gate_input": "Active samples (pooled)",
+    "selected_sample_ids": [],
+    "active_sample_ids": [
+      "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+      "b53e2694-72ce-47e1-a8b4-3afd08e24587"
+    ],
+    "active_tab_id": "33da75bc-3d40-44d8-99a7-ae74349d0339",
+    "sidebar_width": 1,
+    "sidebar_task": "Plot",
+    "sidebar_outer_scroll": 0.0,
+    "sample_panel_fraction": null,
+    "sidebar_gate_tool": "GATING",
+    "auto_gate_method": "GMM Multi",
+    "sidebar_scroll": {
+      "Data": 0.0,
+      "Plot": 0.0,
+      "Gates": 0.0,
+      "Analysis": 0.0
+    },
+    "workspace_name": "Recovered benchmark edits"
+  },
+  "tabs": {
+    "main": {
+      "title": "Main",
+      "lineage": [],
+      "overlay_view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "linear",
+        "y_transform": "linear",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "sample_views": {
+        "563f3b2c-710a-4d44-9c79-461d1d736cc8": {
+          "x_channel": "FSC-A",
+          "y_channel": "SSC-A",
+          "x_transform": "linear",
+          "y_transform": "linear",
+          "cofactor": 150.0,
+          "x_transform_params": {
+            "T": 262144.0,
+            "W": 0.5,
+            "M": 4.5,
+            "A": 0.0
+          },
+          "y_transform_params": {
+            "T": 262144.0,
+            "W": 0.5,
+            "M": 4.5,
+            "A": 0.0
+          },
+          "plot_mode": "Density",
+          "axis_limits": null,
+          "axis_fit_mode": "automatic"
+        },
+        "b53e2694-72ce-47e1-a8b4-3afd08e24587": {
+          "x_channel": "FSC-A",
+          "y_channel": "SSC-A",
+          "x_transform": "linear",
+          "y_transform": "linear",
+          "cofactor": 150.0,
+          "x_transform_params": {
+            "T": 262144.0,
+            "W": 0.5,
+            "M": 4.5,
+            "A": 0.0
+          },
+          "y_transform_params": {
+            "T": 262144.0,
+            "W": 0.5,
+            "M": 4.5,
+            "A": 0.0
+          },
+          "plot_mode": "Density",
+          "axis_limits": null,
+          "axis_fit_mode": "automatic"
+        }
+      },
+      "ui_state": {
+        "view_mode": "cycle",
+        "current_sample_id": "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+        "gate_scope": "All samples (default)",
+        "selected_gate_id": 0,
+        "interface_size": "Automatic",
+        "auto_gate_input": "Active samples (pooled)",
+        "selected_sample_ids": [],
+        "active_sample_ids": [
+          "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+          "b53e2694-72ce-47e1-a8b4-3afd08e24587"
+        ],
+        "active_tab_id": "33da75bc-3d40-44d8-99a7-ae74349d0339",
+        "sidebar_width": 1,
+        "sidebar_task": "Plot",
+        "sidebar_outer_scroll": 0.0,
+        "sample_panel_fraction": null,
+        "sidebar_gate_tool": "GATING",
+        "auto_gate_method": "GMM Multi",
+        "sidebar_scroll": {
+          "Data": 0.0,
+          "Plot": 0.0,
+          "Gates": 0.0,
+          "Analysis": 0.0
+        }
+      },
+      "sections": {
+        "WORKSPACE": true,
+        "FILES": true,
+        "EXCLUDED FILES": true,
+        "AXES": true,
+        "SCALE": true,
+        "DISPLAY": true,
+        "PLOT LIMITS": true,
+        "TRANSFORM PARAMETERS": true,
+        "FIGURE EXPORT": true,
+        "GATING": true,
+        "AUTO-GATE": true,
+        "GATE MANAGER": true,
+        "GATE INFO": true,
+        "STATISTICS": true,
+        "STATISTICAL AUDITS": true,
+        "GATE SESSIONS": true,
+        "EXPORT": true,
+        "VECTOR ANALYSIS": true,
+        "BATCH PLOTS": true
+      },
+      "sample_ids": null
+    },
+    "dfd90ec6-0fbb-4ad4-b868-ae4f457c0e10": {
+      "title": "IN",
+      "lineage": [
+        {
+          "workspace_tab_id": "main",
+          "gate_id": 0,
+          "region": "IN"
+        }
+      ],
+      "overlay_view": {
+        "x_channel": null,
+        "y_channel": null,
+        "x_transform": "asinh",
+        "y_transform": "asinh",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "sample_views": {},
+      "ui_state": {
+        "view_mode": "overlay",
+        "current_sample_id": "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+        "gate_scope": "All samples (default)",
+        "selected_gate_id": null,
+        "interface_size": "Automatic",
+        "auto_gate_input": "Active samples (pooled)",
+        "selected_sample_ids": [],
+        "active_sample_ids": [
+          "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+          "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+          "b53e2694-72ce-47e1-a8b4-3afd08e24587"
+        ],
+        "active_tab_id": "33da75bc-3d40-44d8-99a7-ae74349d0339",
+        "sidebar_width": 1,
+        "sidebar_task": "Plot",
+        "sidebar_outer_scroll": 0.0,
+        "sample_panel_fraction": null,
+        "sidebar_gate_tool": "GATING",
+        "auto_gate_method": "GMM Multi",
+        "sidebar_scroll": {
+          "Data": 0.0,
+          "Plot": 0.0,
+          "Gates": 0.0,
+          "Analysis": 0.0
+        }
+      },
+      "sections": {
+        "WORKSPACE": true,
+        "FILES": true,
+        "EXCLUDED FILES": true,
+        "AXES": true,
+        "SCALE": true,
+        "DISPLAY": true,
+        "PLOT LIMITS": true,
+        "TRANSFORM PARAMETERS": true,
+        "FIGURE EXPORT": true,
+        "GATING": true,
+        "AUTO-GATE": true,
+        "GATE MANAGER": true,
+        "GATE INFO": true,
+        "STATISTICS": true,
+        "STATISTICAL AUDITS": true,
+        "GATE SESSIONS": true,
+        "EXPORT": true,
+        "VECTOR ANALYSIS": true,
+        "BATCH PLOTS": true
+      },
+      "sample_ids": [
+        "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+        "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+        "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+        "820d822b-c54c-457a-9f58-be84dc35b6b9"
+      ]
+    },
+    "33da75bc-3d40-44d8-99a7-ae74349d0339": {
+      "title": "IN",
+      "lineage": [
+        {
+          "workspace_tab_id": "main",
+          "gate_id": 0,
+          "region": "IN"
+        },
+        {
+          "workspace_tab_id": "dfd90ec6-0fbb-4ad4-b868-ae4f457c0e10",
+          "gate_id": 0,
+          "region": "IN"
+        }
+      ],
+      "overlay_view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "linear",
+        "y_transform": "linear",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "sample_views": {},
+      "ui_state": {
+        "view_mode": "overlay",
+        "current_sample_id": "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+        "gate_scope": "All samples (default)",
+        "selected_gate_id": null,
+        "interface_size": "Automatic",
+        "auto_gate_input": "Active samples (pooled)",
+        "selected_sample_ids": [],
+        "active_sample_ids": [
+          "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+          "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+          "b53e2694-72ce-47e1-a8b4-3afd08e24587"
+        ],
+        "active_tab_id": "33da75bc-3d40-44d8-99a7-ae74349d0339",
+        "sidebar_width": 1,
+        "sidebar_task": "Plot",
+        "sidebar_outer_scroll": 0.0,
+        "sample_panel_fraction": null,
+        "sidebar_gate_tool": "GATING",
+        "auto_gate_method": "GMM Multi",
+        "sidebar_scroll": {
+          "Data": 0.0,
+          "Plot": 0.0,
+          "Gates": 0.0,
+          "Analysis": 0.0
+        }
+      },
+      "sections": {
+        "WORKSPACE": true,
+        "FILES": true,
+        "EXCLUDED FILES": true,
+        "AXES": true,
+        "SCALE": true,
+        "DISPLAY": true,
+        "PLOT LIMITS": true,
+        "TRANSFORM PARAMETERS": true,
+        "FIGURE EXPORT": true,
+        "GATING": true,
+        "AUTO-GATE": true,
+        "GATE MANAGER": true,
+        "GATE INFO": true,
+        "STATISTICS": true,
+        "STATISTICAL AUDITS": true,
+        "GATE SESSIONS": true,
+        "EXPORT": true,
+        "VECTOR ANALYSIS": true,
+        "BATCH PLOTS": true
+      },
+      "sample_ids": [
+        "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+        "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+        "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+        "820d822b-c54c-457a-9f58-be84dc35b6b9"
+      ]
+    }
+  },
+  "axis_aliases": {}
+}

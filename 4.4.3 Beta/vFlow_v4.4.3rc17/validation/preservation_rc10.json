@@ -1,0 +1,742 @@
+{
+  "baseline": "4.4.3rc9",
+  "candidate": "4.4.3rc10",
+  "original_modules": 120,
+  "unchanged_modules": 111,
+  "version_only_modules": 5,
+  "changed_feature_and_ui_modules": 4,
+  "added_modules": [],
+  "unchanged_original_core_modules": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "changed_existing_controller_methods": [],
+  "new_controller_methods": [],
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "modules": [
+    {
+      "path": "vflow/__init__.py",
+      "change": "release version only",
+      "rc9_sha256": "c15c91fb57b1cd38fec4717468e2a6030134d87680886d3493707c2dc1fbf36d",
+      "rc10_sha256": "53d53aee0ef7dcc3cedb0aa6280b1042582a987a066749410835f54113cf20b8"
+    },
+    {
+      "path": "vflow/__main__.py",
+      "change": "unchanged",
+      "rc9_sha256": "e18bc186bba9a4c3c44498f02b28317c61daa6d7dcf200ad111f8421d4184e9a",
+      "rc10_sha256": "e18bc186bba9a4c3c44498f02b28317c61daa6d7dcf200ad111f8421d4184e9a"
+    },
+    {
+      "path": "vflow/app/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "f7b0c7c5c1f9f7f33906f280b7dcd08c1a068dc7fd1375bb992a1def2108f327",
+      "rc10_sha256": "f7b0c7c5c1f9f7f33906f280b7dcd08c1a068dc7fd1375bb992a1def2108f327"
+    },
+    {
+      "path": "vflow/app/cache.py",
+      "change": "unchanged",
+      "rc9_sha256": "9c7fcbc71b38b5f801d59416c44065aeefc8057190b0c67187a1d0e4db616a16",
+      "rc10_sha256": "9c7fcbc71b38b5f801d59416c44065aeefc8057190b0c67187a1d0e4db616a16"
+    },
+    {
+      "path": "vflow/app/dataset.py",
+      "change": "unchanged",
+      "rc9_sha256": "a2b9c8152bfa561aeef4e9be3fe80d51abb0f00d2e05289dcab5e3e5230b32bd",
+      "rc10_sha256": "a2b9c8152bfa561aeef4e9be3fe80d51abb0f00d2e05289dcab5e3e5230b32bd"
+    },
+    {
+      "path": "vflow/app/lineage.py",
+      "change": "unchanged",
+      "rc9_sha256": "feb13e00174e8a15cca1a1c031b5f6f7cc54bc8e59d6b143bd618adf667926a4",
+      "rc10_sha256": "feb13e00174e8a15cca1a1c031b5f6f7cc54bc8e59d6b143bd618adf667926a4"
+    },
+    {
+      "path": "vflow/app/session.py",
+      "change": "unchanged",
+      "rc9_sha256": "0e259a1a26b0174bbfe7dc9650682ebd74d62647519f9d9c17ea249c5e2bfe34",
+      "rc10_sha256": "0e259a1a26b0174bbfe7dc9650682ebd74d62647519f9d9c17ea249c5e2bfe34"
+    },
+    {
+      "path": "vflow/app/state.py",
+      "change": "unchanged",
+      "rc9_sha256": "a1298d346ccb68fee98476b6ead926d12be19571ea5e987b9672caef9f22cc6a",
+      "rc10_sha256": "a1298d346ccb68fee98476b6ead926d12be19571ea5e987b9672caef9f22cc6a"
+    },
+    {
+      "path": "vflow/backends.py",
+      "change": "unchanged",
+      "rc9_sha256": "9e7aeda10dc4c848eaa1faa8ab932fc45805dd69f42ed962739b8f711fbb4157",
+      "rc10_sha256": "9e7aeda10dc4c848eaa1faa8ab932fc45805dd69f42ed962739b8f711fbb4157"
+    },
+    {
+      "path": "vflow/config/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "60af74771c5e929d4c1cc4cd39960f23c61fa12027fbdbded9513c9710ffc830",
+      "rc10_sha256": "60af74771c5e929d4c1cc4cd39960f23c61fa12027fbdbded9513c9710ffc830"
+    },
+    {
+      "path": "vflow/config/constants.py",
+      "change": "unchanged",
+      "rc9_sha256": "dcac8b239da7866276f06fc3e582cb17a06b797b2f4426025810d85891e216b8",
+      "rc10_sha256": "dcac8b239da7866276f06fc3e582cb17a06b797b2f4426025810d85891e216b8"
+    },
+    {
+      "path": "vflow/config/styles.py",
+      "change": "unchanged",
+      "rc9_sha256": "d4ff9c4a7b812e239e568d01a90d57b22397279d6d8303129f4d988284d54fe5",
+      "rc10_sha256": "d4ff9c4a7b812e239e568d01a90d57b22397279d6d8303129f4d988284d54fe5"
+    },
+    {
+      "path": "vflow/config/themes.py",
+      "change": "unchanged",
+      "rc9_sha256": "d1140cbcf39e6766a62a9b0af3941b05ea8b5bd1db1d9033641228881d5dd0f7",
+      "rc10_sha256": "d1140cbcf39e6766a62a9b0af3941b05ea8b5bd1db1d9033641228881d5dd0f7"
+    },
+    {
+      "path": "vflow/controllers/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "791d5bd00b784f352aebf4bc5abb9b1e1aad5a725fa082854ad0bf0e26c48568",
+      "rc10_sha256": "791d5bd00b784f352aebf4bc5abb9b1e1aad5a725fa082854ad0bf0e26c48568"
+    },
+    {
+      "path": "vflow/controllers/gate_interaction_controller.py",
+      "change": "unchanged",
+      "rc9_sha256": "bf5745cdb14fb9c47696a626dde6886de4af4f6329a0ac0ee5484d957d3317c8",
+      "rc10_sha256": "bf5745cdb14fb9c47696a626dde6886de4af4f6329a0ac0ee5484d957d3317c8"
+    },
+    {
+      "path": "vflow/controllers/project_data_load_coordinator.py",
+      "change": "unchanged",
+      "rc9_sha256": "8bbac4c65aaed98f9a143829e7928657d29634d5d9a7f40bf314545339e4e8f8",
+      "rc10_sha256": "8bbac4c65aaed98f9a143829e7928657d29634d5d9a7f40bf314545339e4e8f8"
+    },
+    {
+      "path": "vflow/core/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "7ecb9b13abd53b099525ad3006ec0222098aeea85c369e2a5bbc74ed46b0608a",
+      "rc10_sha256": "7ecb9b13abd53b099525ad3006ec0222098aeea85c369e2a5bbc74ed46b0608a"
+    },
+    {
+      "path": "vflow/core/auto_gate.py",
+      "change": "unchanged",
+      "rc9_sha256": "d00932bc9cd0ffe30bd3d249d5247d881391f3fb6cb029c1eba6625b804c127d",
+      "rc10_sha256": "d00932bc9cd0ffe30bd3d249d5247d881391f3fb6cb029c1eba6625b804c127d"
+    },
+    {
+      "path": "vflow/core/cache_keys.py",
+      "change": "unchanged",
+      "rc9_sha256": "5d275765ed90d2f1f0faee37671151ad0f4f5b7735d87496612b4da5462c8878",
+      "rc10_sha256": "5d275765ed90d2f1f0faee37671151ad0f4f5b7735d87496612b4da5462c8878"
+    },
+    {
+      "path": "vflow/core/circular_stats.py",
+      "change": "unchanged",
+      "rc9_sha256": "efcb475a8572f176d819b4ecfde02fb622bd798b481932e6f34538ccbe65b60e",
+      "rc10_sha256": "efcb475a8572f176d819b4ecfde02fb622bd798b481932e6f34538ccbe65b60e"
+    },
+    {
+      "path": "vflow/core/column_normalization.py",
+      "change": "unchanged",
+      "rc9_sha256": "69771fedd8109cfb4e60709448765005b0d6d3f7594dd1fdd383d586482f4611",
+      "rc10_sha256": "69771fedd8109cfb4e60709448765005b0d6d3f7594dd1fdd383d586482f4611"
+    },
+    {
+      "path": "vflow/core/data_io.py",
+      "change": "unchanged",
+      "rc9_sha256": "75d4c660b4f57c180bbe9f5138a62c3d1c60feb13a2c1076ecf79fe9b4fc30df",
+      "rc10_sha256": "75d4c660b4f57c180bbe9f5138a62c3d1c60feb13a2c1076ecf79fe9b4fc30df"
+    },
+    {
+      "path": "vflow/core/fcs_reader.py",
+      "change": "unchanged",
+      "rc9_sha256": "241fe30073250952fdbebbe2f1d32021f3eda7ebb0faa7466f11ab913f3c00d3",
+      "rc10_sha256": "241fe30073250952fdbebbe2f1d32021f3eda7ebb0faa7466f11ab913f3c00d3"
+    },
+    {
+      "path": "vflow/core/gate_definition.py",
+      "change": "unchanged",
+      "rc9_sha256": "c1d42aea489e1ff6fb9e71a837c69e23ba273dae0c3e79fa9bc109e0e134475f",
+      "rc10_sha256": "c1d42aea489e1ff6fb9e71a837c69e23ba273dae0c3e79fa9bc109e0e134475f"
+    },
+    {
+      "path": "vflow/core/gate_masks.py",
+      "change": "unchanged",
+      "rc9_sha256": "421ecbece4e751e095e646508a7ccabf36d91a500af39029d651fcd6f171d4cc",
+      "rc10_sha256": "421ecbece4e751e095e646508a7ccabf36d91a500af39029d651fcd6f171d4cc"
+    },
+    {
+      "path": "vflow/core/gate_serialization.py",
+      "change": "unchanged",
+      "rc9_sha256": "15cabba6449ffe43c88f7270ffbef6cd731f11735185c6229d81ef8dbf9213a0",
+      "rc10_sha256": "15cabba6449ffe43c88f7270ffbef6cd731f11735185c6229d81ef8dbf9213a0"
+    },
+    {
+      "path": "vflow/core/gate_stats.py",
+      "change": "unchanged",
+      "rc9_sha256": "6219236019a3c7a3c6d917a631a50638b8a4d488b2f6cc69e16101ead7389c5e",
+      "rc10_sha256": "6219236019a3c7a3c6d917a631a50638b8a4d488b2f6cc69e16101ead7389c5e"
+    },
+    {
+      "path": "vflow/core/gates.py",
+      "change": "unchanged",
+      "rc9_sha256": "10110ce7f6fa757d3439e638d7eb1eb2b3ec592cf0094bc2df24f0eb60a7c3e7",
+      "rc10_sha256": "10110ce7f6fa757d3439e638d7eb1eb2b3ec592cf0094bc2df24f0eb60a7c3e7"
+    },
+    {
+      "path": "vflow/core/logicle.py",
+      "change": "unchanged",
+      "rc9_sha256": "2a0f94a32f38766c553c696b04c324697ecc0be945aa8a7cbd4ff99893b22170",
+      "rc10_sha256": "2a0f94a32f38766c553c696b04c324697ecc0be945aa8a7cbd4ff99893b22170"
+    },
+    {
+      "path": "vflow/core/path_identity.py",
+      "change": "unchanged",
+      "rc9_sha256": "62c70a4f525eec4fd21b883f51eab680ed9cf8efea041c49b350c5b7361129d9",
+      "rc10_sha256": "62c70a4f525eec4fd21b883f51eab680ed9cf8efea041c49b350c5b7361129d9"
+    },
+    {
+      "path": "vflow/core/sample_labels.py",
+      "change": "unchanged",
+      "rc9_sha256": "374c9cb1f8c88c903b7438e557adb079dc3fd997e793c47eca260942f2db4160",
+      "rc10_sha256": "374c9cb1f8c88c903b7438e557adb079dc3fd997e793c47eca260942f2db4160"
+    },
+    {
+      "path": "vflow/core/scales.py",
+      "change": "unchanged",
+      "rc9_sha256": "db14175eeb6cb0bdac7d0bfc79d607d7e748aac2ce8460006a19f2648d03d66d",
+      "rc10_sha256": "db14175eeb6cb0bdac7d0bfc79d607d7e748aac2ce8460006a19f2648d03d66d"
+    },
+    {
+      "path": "vflow/core/threshold_edits.py",
+      "change": "unchanged",
+      "rc9_sha256": "09e9b9b5564e3873422555cd6ecfd83e3333143f03f82428f9e042fc2e222580",
+      "rc10_sha256": "09e9b9b5564e3873422555cd6ecfd83e3333143f03f82428f9e042fc2e222580"
+    },
+    {
+      "path": "vflow/core/threshold_state.py",
+      "change": "unchanged",
+      "rc9_sha256": "617ea2c9e54285ad2ed19b1a280bbc3739d9c4e744ee81a5e69d3466a83c5bab",
+      "rc10_sha256": "617ea2c9e54285ad2ed19b1a280bbc3739d9c4e744ee81a5e69d3466a83c5bab"
+    },
+    {
+      "path": "vflow/core/transforms.py",
+      "change": "unchanged",
+      "rc9_sha256": "15df820aa94635fcdbf8a29c226fd738738ffbe607bb2591e5a4585f546cffaa",
+      "rc10_sha256": "15df820aa94635fcdbf8a29c226fd738738ffbe607bb2591e5a4585f546cffaa"
+    },
+    {
+      "path": "vflow/io/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "8f9662156b2d79a00b2eeb19b1d0513879d346dbfbb674e4fa9fe84776417b3e",
+      "rc10_sha256": "8f9662156b2d79a00b2eeb19b1d0513879d346dbfbb674e4fa9fe84776417b3e"
+    },
+    {
+      "path": "vflow/io/derivatives.py",
+      "change": "release version only",
+      "rc9_sha256": "e15c6b09a593bb07b4f2da063136a4fa5a40664f86d136e758c5628e758901c5",
+      "rc10_sha256": "0814def311868f9843be825f63da8385bbba2e8c2f5b788a5fa0580c70d163c9"
+    },
+    {
+      "path": "vflow/io/lmd_reader.py",
+      "change": "unchanged",
+      "rc9_sha256": "ea3e3eec1699ef2d8ef2e8d5c5f072b4b49522f19ac509c590e41e6a5b93843a",
+      "rc10_sha256": "ea3e3eec1699ef2d8ef2e8d5c5f072b4b49522f19ac509c590e41e6a5b93843a"
+    },
+    {
+      "path": "vflow/io/models.py",
+      "change": "unchanged",
+      "rc9_sha256": "42a3dab4e3064194380b752e522299ead81caedcb929ffd2190e7e3c76a977d4",
+      "rc10_sha256": "42a3dab4e3064194380b752e522299ead81caedcb929ffd2190e7e3c76a977d4"
+    },
+    {
+      "path": "vflow/io/registry.py",
+      "change": "unchanged",
+      "rc9_sha256": "ab64f000b1b0d1135a22ceaf93653d9be7d226cb27b6651d3f5803ed44c02448",
+      "rc10_sha256": "ab64f000b1b0d1135a22ceaf93653d9be7d226cb27b6651d3f5803ed44c02448"
+    },
+    {
+      "path": "vflow/legacy/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "e3191410e66441e4048540e5f7a926e884095bb09bb81a89b866eb213a8f2140",
+      "rc10_sha256": "e3191410e66441e4048540e5f7a926e884095bb09bb81a89b866eb213a8f2140"
+    },
+    {
+      "path": "vflow/legacy/vflow_app.py",
+      "change": "release version only",
+      "rc9_sha256": "a8136131311d986ccc3e02d970756834148d337b4268ca4bf6d95cb7600ca788",
+      "rc10_sha256": "1a1e1c24528c055de0755ee9d9fa826a6e5dc219d154c3258a2cf2efec2114f6"
+    },
+    {
+      "path": "vflow/legacy/vflow_legacy.py",
+      "change": "unchanged",
+      "rc9_sha256": "ecf2b2406cc6d091aad8f28372f732243415e90250f288ca1943f9f23c4cde59",
+      "rc10_sha256": "ecf2b2406cc6d091aad8f28372f732243415e90250f288ca1943f9f23c4cde59"
+    },
+    {
+      "path": "vflow/main.py",
+      "change": "unchanged",
+      "rc9_sha256": "bc7b435ed499d4c60ac6b5adb566181d6d637e611a81b4248c3bdfae9af19dac",
+      "rc10_sha256": "bc7b435ed499d4c60ac6b5adb566181d6d637e611a81b4248c3bdfae9af19dac"
+    },
+    {
+      "path": "vflow/nomenclature/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "addf7feb55bf8502f70776daf15b4b9e14f195ae79ce89d5a6cdca52ae3d9e09",
+      "rc10_sha256": "addf7feb55bf8502f70776daf15b4b9e14f195ae79ce89d5a6cdca52ae3d9e09"
+    },
+    {
+      "path": "vflow/nomenclature/channel_names.py",
+      "change": "unchanged",
+      "rc9_sha256": "98fb5b8bbff5f76c2fd423d2062d102df585af0514d642623852d2c269b0df4c",
+      "rc10_sha256": "98fb5b8bbff5f76c2fd423d2062d102df585af0514d642623852d2c269b0df4c"
+    },
+    {
+      "path": "vflow/nomenclature/session.py",
+      "change": "unchanged",
+      "rc9_sha256": "822a424e195bf5793cb27eaa23554a791d6a7e297759853aa8c2ec6474fa8572",
+      "rc10_sha256": "822a424e195bf5793cb27eaa23554a791d6a7e297759853aa8c2ec6474fa8572"
+    },
+    {
+      "path": "vflow/platform/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "e1834623b0315d686e80d54b4c917c38c5455458630bfd7844bebba15e6016c5",
+      "rc10_sha256": "e1834623b0315d686e80d54b4c917c38c5455458630bfd7844bebba15e6016c5"
+    },
+    {
+      "path": "vflow/platform/file_reveal.py",
+      "change": "unchanged",
+      "rc9_sha256": "09a49634687b7971c8e3d3d1f2b1b77aad4bd6d188917c20e2db8f4270d7bf20",
+      "rc10_sha256": "09a49634687b7971c8e3d3d1f2b1b77aad4bd6d188917c20e2db8f4270d7bf20"
+    },
+    {
+      "path": "vflow/plotting/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "0076208288fbb43f28f1a88c88dfe13a6f01a495e0e04893a9f5c9f428d991d2",
+      "rc10_sha256": "0076208288fbb43f28f1a88c88dfe13a6f01a495e0e04893a9f5c9f428d991d2"
+    },
+    {
+      "path": "vflow/plotting/kde_payloads.py",
+      "change": "unchanged",
+      "rc9_sha256": "290dc700046283a7d2a88868b2da7ae2278de3876cbeb29027258e1da50b34d9",
+      "rc10_sha256": "290dc700046283a7d2a88868b2da7ae2278de3876cbeb29027258e1da50b34d9"
+    },
+    {
+      "path": "vflow/plotting/offscale.py",
+      "change": "unchanged",
+      "rc9_sha256": "d689d3e4f9f5ac1e350e80946eae21367f4949ed15468c3eaaa02f9b6f8c704b",
+      "rc10_sha256": "d689d3e4f9f5ac1e350e80946eae21367f4949ed15468c3eaaa02f9b6f8c704b"
+    },
+    {
+      "path": "vflow/plotting/render_lifecycle.py",
+      "change": "unchanged",
+      "rc9_sha256": "1ac30d29cd258aa8121b1982e193d1b85fa3ae4cecf697618cb44e17a091b363",
+      "rc10_sha256": "1ac30d29cd258aa8121b1982e193d1b85fa3ae4cecf697618cb44e17a091b363"
+    },
+    {
+      "path": "vflow/plotting/utils.py",
+      "change": "unchanged",
+      "rc9_sha256": "827a76bc62af21cd99e1429f10dc24e52c3c3b54686fa4002dc7ab5b8bf85672",
+      "rc10_sha256": "827a76bc62af21cd99e1429f10dc24e52c3c3b54686fa4002dc7ab5b8bf85672"
+    },
+    {
+      "path": "vflow/rendering/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "0d31d6399adb3a2a98d13f16ac3cf234ac5d0b5bd35d69f589dfe52c58acd22d",
+      "rc10_sha256": "0d31d6399adb3a2a98d13f16ac3cf234ac5d0b5bd35d69f589dfe52c58acd22d"
+    },
+    {
+      "path": "vflow/rendering/flow_renderer.py",
+      "change": "unchanged",
+      "rc9_sha256": "323b44406be3be8ba198e9731cfeee0e9eba5ffa15a59470a4cb1b92de1118b6",
+      "rc10_sha256": "323b44406be3be8ba198e9731cfeee0e9eba5ffa15a59470a4cb1b92de1118b6"
+    },
+    {
+      "path": "vflow/rendering/render_plan.py",
+      "change": "unchanged",
+      "rc9_sha256": "9c76f008a93f317f3a6b3edbca4021931ee87d4ce712c4144a6afef6f07fa609",
+      "rc10_sha256": "9c76f008a93f317f3a6b3edbca4021931ee87d4ce712c4144a6afef6f07fa609"
+    },
+    {
+      "path": "vflow/services/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "a0a498fbf5aeaa58a7561cee50e1cbc5e310450b69577238c722ebcc9ce110f3",
+      "rc10_sha256": "a0a498fbf5aeaa58a7561cee50e1cbc5e310450b69577238c722ebcc9ce110f3"
+    },
+    {
+      "path": "vflow/services/active_file_changes.py",
+      "change": "unchanged",
+      "rc9_sha256": "2ff102e3b0220c074c75dbc07d225a9c38e8516a9befe083b4fbf595463edd75",
+      "rc10_sha256": "2ff102e3b0220c074c75dbc07d225a9c38e8516a9befe083b4fbf595463edd75"
+    },
+    {
+      "path": "vflow/services/axis_input_planning.py",
+      "change": "unchanged",
+      "rc9_sha256": "8a9e0a6a1dca02384220c02b82c5c3819528a54f0e3cb040b3acff71f7ab67ed",
+      "rc10_sha256": "8a9e0a6a1dca02384220c02b82c5c3819528a54f0e3cb040b3acff71f7ab67ed"
+    },
+    {
+      "path": "vflow/services/batch_plot_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "7e25251a0c6a36ced472ecd4524c0c8f1afaef5328455852fb17757316ea1ef5",
+      "rc10_sha256": "7e25251a0c6a36ced472ecd4524c0c8f1afaef5328455852fb17757316ea1ef5"
+    },
+    {
+      "path": "vflow/services/batch_plot_results.py",
+      "change": "unchanged",
+      "rc9_sha256": "b728fae2b42192cb6323721e391e98e284e8ae92c0fbe413f7d6a07642d065b5",
+      "rc10_sha256": "b728fae2b42192cb6323721e391e98e284e8ae92c0fbe413f7d6a07642d065b5"
+    },
+    {
+      "path": "vflow/services/batch_plot_samples.py",
+      "change": "unchanged",
+      "rc9_sha256": "69927648b8996df237b493cc827d8a4a09abbef41d8251b04bb65ad93dbabe60",
+      "rc10_sha256": "69927648b8996df237b493cc827d8a4a09abbef41d8251b04bb65ad93dbabe60"
+    },
+    {
+      "path": "vflow/services/batch_stats_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "35c1a14889f1f007754043ff0c81d1ae54cf500aeab1525e3e6158b47f22be34",
+      "rc10_sha256": "35c1a14889f1f007754043ff0c81d1ae54cf500aeab1525e3e6158b47f22be34"
+    },
+    {
+      "path": "vflow/services/batch_stats_runner.py",
+      "change": "unchanged",
+      "rc9_sha256": "dc074d17f3e478dc9e0c435cb34637adca477ca883ad097d3f336641e34a0915",
+      "rc10_sha256": "dc074d17f3e478dc9e0c435cb34637adca477ca883ad097d3f336641e34a0915"
+    },
+    {
+      "path": "vflow/services/channel_selection.py",
+      "change": "unchanged",
+      "rc9_sha256": "d723921b44c1da3667795ef328312dfe16c8aab424732cd11108b0919fecc889",
+      "rc10_sha256": "d723921b44c1da3667795ef328312dfe16c8aab424732cd11108b0919fecc889"
+    },
+    {
+      "path": "vflow/services/concat_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "7263457ed24f141a49186eff44100560644f4bf9bf50dce484764d5e3dcaf95b",
+      "rc10_sha256": "7263457ed24f141a49186eff44100560644f4bf9bf50dce484764d5e3dcaf95b"
+    },
+    {
+      "path": "vflow/services/concat_paths.py",
+      "change": "unchanged",
+      "rc9_sha256": "9cdebd5101067cbb1a941b870a3d30ed9640d87a3d948daa532da6d0dae6395b",
+      "rc10_sha256": "9cdebd5101067cbb1a941b870a3d30ed9640d87a3d948daa532da6d0dae6395b"
+    },
+    {
+      "path": "vflow/services/export_names.py",
+      "change": "unchanged",
+      "rc9_sha256": "5d87b6e8ffa5c567a499f54a6cfae021e51cfcf7aab3af6f1c68846811886830",
+      "rc10_sha256": "5d87b6e8ffa5c567a499f54a6cfae021e51cfcf7aab3af6f1c68846811886830"
+    },
+    {
+      "path": "vflow/services/figure_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "434a8507e89c7ab4a5a4bfb25ca8a80c05493ac641dfc767a95de245903b991b",
+      "rc10_sha256": "434a8507e89c7ab4a5a4bfb25ca8a80c05493ac641dfc767a95de245903b991b"
+    },
+    {
+      "path": "vflow/services/file_load_planning.py",
+      "change": "unchanged",
+      "rc9_sha256": "cbe079094f212a90c1686a766c3863899029fc9bd18befa54c599c2dc94b4912",
+      "rc10_sha256": "cbe079094f212a90c1686a766c3863899029fc9bd18befa54c599c2dc94b4912"
+    },
+    {
+      "path": "vflow/services/gate_assignment_transaction.py",
+      "change": "unchanged",
+      "rc9_sha256": "c5b127890893600215fa886c16fdf9fe8e91927ed0566b331d0f36000789eb7c",
+      "rc10_sha256": "c5b127890893600215fa886c16fdf9fe8e91927ed0566b331d0f36000789eb7c"
+    },
+    {
+      "path": "vflow/services/gate_axis_swap.py",
+      "change": "unchanged",
+      "rc9_sha256": "5524f0d2d5e8fa167591207081f35e2364328edc5256935ad525fd851f1b6c7c",
+      "rc10_sha256": "5524f0d2d5e8fa167591207081f35e2364328edc5256935ad525fd851f1b6c7c"
+    },
+    {
+      "path": "vflow/services/gate_evaluation.py",
+      "change": "unchanged",
+      "rc9_sha256": "5bdfaa941dbbd74cada1435bf1053aab75be4da514540f5eb491d6ac9546ea5d",
+      "rc10_sha256": "5bdfaa941dbbd74cada1435bf1053aab75be4da514540f5eb491d6ac9546ea5d"
+    },
+    {
+      "path": "vflow/services/gate_geometry_interaction.py",
+      "change": "unchanged",
+      "rc9_sha256": "2636a2f036901c3abf48d92417f2ad764fffc719b4876bbbdf5d0b18290ac335",
+      "rc10_sha256": "2636a2f036901c3abf48d92417f2ad764fffc719b4876bbbdf5d0b18290ac335"
+    },
+    {
+      "path": "vflow/services/gate_lifecycle.py",
+      "change": "unchanged",
+      "rc9_sha256": "0b1fed83581d66c35e076a7f4230e3df376436471d72ee60bd4aa80899e50c28",
+      "rc10_sha256": "0b1fed83581d66c35e076a7f4230e3df376436471d72ee60bd4aa80899e50c28"
+    },
+    {
+      "path": "vflow/services/gate_session.py",
+      "change": "unchanged",
+      "rc9_sha256": "29d03186ecd1a17ebbc48ab8183b969d70925756c7a1993d461fd369985812ee",
+      "rc10_sha256": "29d03186ecd1a17ebbc48ab8183b969d70925756c7a1993d461fd369985812ee"
+    },
+    {
+      "path": "vflow/services/gate_threshold_planning.py",
+      "change": "unchanged",
+      "rc9_sha256": "ce1d1509174c843be0e84c34d2564aaa7b5401a7c5403a8ff6f35851d7e9c05c",
+      "rc10_sha256": "ce1d1509174c843be0e84c34d2564aaa7b5401a7c5403a8ff6f35851d7e9c05c"
+    },
+    {
+      "path": "vflow/services/gated_data_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "ad72d3823f312203bcec9df802bf7b9ee5bc9775b6c20db86b2a145a4d58141a",
+      "rc10_sha256": "ad72d3823f312203bcec9df802bf7b9ee5bc9775b6c20db86b2a145a4d58141a"
+    },
+    {
+      "path": "vflow/services/polar_results.py",
+      "change": "unchanged",
+      "rc9_sha256": "9c602ab1f2a4ecd9c69d31d183068df9f199b76b46fb642d12bfc2910a755a49",
+      "rc10_sha256": "9c602ab1f2a4ecd9c69d31d183068df9f199b76b46fb642d12bfc2910a755a49"
+    },
+    {
+      "path": "vflow/services/population_evaluation.py",
+      "change": "unchanged",
+      "rc9_sha256": "96b4705735a5e210d6a7eda47cec6950566171a3956548bb72a5103e6020d573",
+      "rc10_sha256": "96b4705735a5e210d6a7eda47cec6950566171a3956548bb72a5103e6020d573"
+    },
+    {
+      "path": "vflow/services/subgate_population.py",
+      "change": "unchanged",
+      "rc9_sha256": "8d1742593c1bd03cd4c1fe2e5c7d08f4a007ba1e78bd638e529c1502edb9af30",
+      "rc10_sha256": "8d1742593c1bd03cd4c1fe2e5c7d08f4a007ba1e78bd638e529c1502edb9af30"
+    },
+    {
+      "path": "vflow/statistics/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "77e6512ccef818bda6eb9eb51778e9a02f2ecd784e23c62190be02af476366e3",
+      "rc10_sha256": "77e6512ccef818bda6eb9eb51778e9a02f2ecd784e23c62190be02af476366e3"
+    },
+    {
+      "path": "vflow/statistics/audit_export.py",
+      "change": "unchanged",
+      "rc9_sha256": "b1a0b96003d1dbc609e608c37facc350390489ca2d9d5332db1f7557d0c564bc",
+      "rc10_sha256": "b1a0b96003d1dbc609e608c37facc350390489ca2d9d5332db1f7557d0c564bc"
+    },
+    {
+      "path": "vflow/statistics/audit_runner.py",
+      "change": "release version only",
+      "rc9_sha256": "039eda7adea35169302bd1058647c6ad091a4dbf5c1d14f4c062f2542f7dd226",
+      "rc10_sha256": "eaaf7f64255b836d36766d94cd55c25652d3707cbfd870c6d6824ed9acef405c"
+    },
+    {
+      "path": "vflow/statistics/audit_serialization.py",
+      "change": "unchanged",
+      "rc9_sha256": "cdc5824ff924bdee097ceeace885ea4250deaa67e3f2c94c7e8f589d8ea3c31d",
+      "rc10_sha256": "cdc5824ff924bdee097ceeace885ea4250deaa67e3f2c94c7e8f589d8ea3c31d"
+    },
+    {
+      "path": "vflow/statistics/discordance.py",
+      "change": "unchanged",
+      "rc9_sha256": "999130aea39fdf5ebf111fc0514a329460ce994eb612683c71080d911cbe7dff",
+      "rc10_sha256": "999130aea39fdf5ebf111fc0514a329460ce994eb612683c71080d911cbe7dff"
+    },
+    {
+      "path": "vflow/statistics/hierarchy.py",
+      "change": "unchanged",
+      "rc9_sha256": "861b75f445d94e3673d788558ed0e6c992935fc1dadd04e0ca311c36f0877867",
+      "rc10_sha256": "861b75f445d94e3673d788558ed0e6c992935fc1dadd04e0ca311c36f0877867"
+    },
+    {
+      "path": "vflow/statistics/models.py",
+      "change": "unchanged",
+      "rc9_sha256": "2a7ee17c839107fd571a7f3003ba1be59a2716b1f514eb54dcd8b5915756caea",
+      "rc10_sha256": "2a7ee17c839107fd571a7f3003ba1be59a2716b1f514eb54dcd8b5915756caea"
+    },
+    {
+      "path": "vflow/statistics/sliced_wasserstein.py",
+      "change": "unchanged",
+      "rc9_sha256": "96b09e1f7b4c03e86e6f8c22f96057a5599e6b864f18db173276148f17d4bfeb",
+      "rc10_sha256": "96b09e1f7b4c03e86e6f8c22f96057a5599e6b864f18db173276148f17d4bfeb"
+    },
+    {
+      "path": "vflow/statistics/variable_eligibility.py",
+      "change": "unchanged",
+      "rc9_sha256": "160cd36f2e1a3cc7af0b6bb177eb0037eafa9e6274763cdaa5297a71fe362386",
+      "rc10_sha256": "160cd36f2e1a3cc7af0b6bb177eb0037eafa9e6274763cdaa5297a71fe362386"
+    },
+    {
+      "path": "vflow/statistics/wasserstein.py",
+      "change": "unchanged",
+      "rc9_sha256": "1e8b71ef4887854234eb5a629fc1fa212c94c15166895bc93bc8404be61e75e2",
+      "rc10_sha256": "1e8b71ef4887854234eb5a629fc1fa212c94c15166895bc93bc8404be61e75e2"
+    },
+    {
+      "path": "vflow/statistics/workspace_audit.py",
+      "change": "unchanged",
+      "rc9_sha256": "f7215a87c48a6d8d5b22840d4d0e9df2b11c95e1ee9d412dd2c40809c67ccba8",
+      "rc10_sha256": "f7215a87c48a6d8d5b22840d4d0e9df2b11c95e1ee9d412dd2c40809c67ccba8"
+    },
+    {
+      "path": "vflow/ui/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "ca0705b149ec9c2a6b5907e4a0e8aafddc5eb2a478a86862b1aff273b6c77a9e",
+      "rc10_sha256": "ca0705b149ec9c2a6b5907e4a0e8aafddc5eb2a478a86862b1aff273b6c77a9e"
+    },
+    {
+      "path": "vflow/ui/adaptive_samples.py",
+      "change": "unchanged",
+      "rc9_sha256": "cffbadf334845e2d41e679909a80dece28f6add311ae389d5b1f2386fa2e447d",
+      "rc10_sha256": "cffbadf334845e2d41e679909a80dece28f6add311ae389d5b1f2386fa2e447d"
+    },
+    {
+      "path": "vflow/ui/app.py",
+      "change": "unchanged",
+      "rc9_sha256": "06f1c7315221040cc9c53b8fb7de7a1de640e9b3b7741a292a8033186d5e4d96",
+      "rc10_sha256": "06f1c7315221040cc9c53b8fb7de7a1de640e9b3b7741a292a8033186d5e4d96"
+    },
+    {
+      "path": "vflow/ui/audit_interpretation.py",
+      "change": "unchanged",
+      "rc9_sha256": "c491cc7c3de6441170c323247ba1e3d134ab80975ca50a62b3d390cd9648cee9",
+      "rc10_sha256": "c491cc7c3de6441170c323247ba1e3d134ab80975ca50a62b3d390cd9648cee9"
+    },
+    {
+      "path": "vflow/ui/axis_name_resolver.py",
+      "change": "unchanged",
+      "rc9_sha256": "7981828c8eabc290dc49855339105991b2d63eebb975224933e974bd33767d8b",
+      "rc10_sha256": "7981828c8eabc290dc49855339105991b2d63eebb975224933e974bd33767d8b"
+    },
+    {
+      "path": "vflow/ui/batch_plot_window.py",
+      "change": "unchanged",
+      "rc9_sha256": "a644b05f3970a18abe6ea8c02f9103e5756a1a0c21b909243c37a676661b7244",
+      "rc10_sha256": "a644b05f3970a18abe6ea8c02f9103e5756a1a0c21b909243c37a676661b7244"
+    },
+    {
+      "path": "vflow/ui/batch_stats_dialog.py",
+      "change": "unchanged",
+      "rc9_sha256": "031ef01f2c9c897634a0a6bf806a448d0218a45d6a57cce0946ffb5faaaeaeed",
+      "rc10_sha256": "031ef01f2c9c897634a0a6bf806a448d0218a45d6a57cce0946ffb5faaaeaeed"
+    },
+    {
+      "path": "vflow/ui/file_list.py",
+      "change": "unchanged",
+      "rc9_sha256": "381b41fad0a29817154c604087d7e7afcdddbec7078bdaf273228c04762ad165",
+      "rc10_sha256": "381b41fad0a29817154c604087d7e7afcdddbec7078bdaf273228c04762ad165"
+    },
+    {
+      "path": "vflow/ui/flow_app_shell.py",
+      "change": "build workspace actions before Data source controls",
+      "rc9_sha256": "b3e27a2d8cfb1fb06a499c2e4918830b4fe2c7671de23c6afd7e81e544be1fe6",
+      "rc10_sha256": "2a34a06a9144d5d76a4d6701a25cb0169f383d669a2d57cb42d391caa2a58b9d"
+    },
+    {
+      "path": "vflow/ui/folder_scan_dialog.py",
+      "change": "unchanged",
+      "rc9_sha256": "4cc5b5f721baafbc4a80e665959c4835ead84589cd4ddafe6e7f756c6fb0ad1a",
+      "rc10_sha256": "4cc5b5f721baafbc4a80e665959c4835ead84589cd4ddafe6e7f756c6fb0ad1a"
+    },
+    {
+      "path": "vflow/ui/folder_state.py",
+      "change": "unchanged",
+      "rc9_sha256": "c5d2705d5a7e3999e73dcbe13d81cdc2b19e262a9ab5c421ca61d42f0c9e3545",
+      "rc10_sha256": "c5d2705d5a7e3999e73dcbe13d81cdc2b19e262a9ab5c421ca61d42f0c9e3545"
+    },
+    {
+      "path": "vflow/ui/fonts.py",
+      "change": "unchanged",
+      "rc9_sha256": "140013d712a72c29924c2a593ef80718d11da66819a29a3ce1ea0737b41d1a88",
+      "rc10_sha256": "140013d712a72c29924c2a593ef80718d11da66819a29a3ce1ea0737b41d1a88"
+    },
+    {
+      "path": "vflow/ui/gate_interaction.py",
+      "change": "unchanged",
+      "rc9_sha256": "89685ed06dcd75cd8a79e5bc263d874c10e8ce5f5e540495e85131b82e62fbd1",
+      "rc10_sha256": "89685ed06dcd75cd8a79e5bc263d874c10e8ce5f5e540495e85131b82e62fbd1"
+    },
+    {
+      "path": "vflow/ui/gate_manager.py",
+      "change": "unchanged",
+      "rc9_sha256": "2d04721dec1eda93040d52470521714fd5f0865d2aeecb825cf5f2a8ac93ded6",
+      "rc10_sha256": "2d04721dec1eda93040d52470521714fd5f0865d2aeecb825cf5f2a8ac93ded6"
+    },
+    {
+      "path": "vflow/ui/layout_helpers.py",
+      "change": "unchanged",
+      "rc9_sha256": "8015c82bfae15e0ab082536b0afca79b1bbdeb14e9421b849bf5789d9caf8da9",
+      "rc10_sha256": "8015c82bfae15e0ab082536b0afca79b1bbdeb14e9421b849bf5789d9caf8da9"
+    },
+    {
+      "path": "vflow/ui/polar_analysis_window.py",
+      "change": "unchanged",
+      "rc9_sha256": "28f48ef993e66e845801072d6de38ceb3c45e6d265369494c25e94b62630cc2c",
+      "rc10_sha256": "28f48ef993e66e845801072d6de38ceb3c45e6d265369494c25e94b62630cc2c"
+    },
+    {
+      "path": "vflow/ui/statistical_audit_dialog.py",
+      "change": "unchanged",
+      "rc9_sha256": "5d4265df672e90b00ade90c8656d605c8fc806f096a1430c01630a0d0ca201f3",
+      "rc10_sha256": "5d4265df672e90b00ade90c8656d605c8fc806f096a1430c01630a0d0ca201f3"
+    },
+    {
+      "path": "vflow/ui/tab_manager.py",
+      "change": "unchanged",
+      "rc9_sha256": "8ae1adb0401038533a05045a31a78307e89deabc702d43d280c54de1a85b7468",
+      "rc10_sha256": "8ae1adb0401038533a05045a31a78307e89deabc702d43d280c54de1a85b7468"
+    },
+    {
+      "path": "vflow/ui/task_sidebar.py",
+      "change": "Workspace section in Data",
+      "rc9_sha256": "7072374014ea8f36ad6b6022d6b5a29faed9b909cfcc062643c7e736b9f0b3fa",
+      "rc10_sha256": "881946f2b829583f8a8038ff7efa21f70fa31f590f1a98647585af085414ec5e"
+    },
+    {
+      "path": "vflow/ui/tooltips.py",
+      "change": "unchanged",
+      "rc9_sha256": "863692e7f1965d7fb8fb68d3fa6912a217bc913208fab95ba107d65130658f3a",
+      "rc10_sha256": "863692e7f1965d7fb8fb68d3fa6912a217bc913208fab95ba107d65130658f3a"
+    },
+    {
+      "path": "vflow/workspace/__init__.py",
+      "change": "unchanged",
+      "rc9_sha256": "6dfbb4b1243f5c52f0cb303c4c3f1240268f17030c90f7f3839bf3bbe3ff2288",
+      "rc10_sha256": "6dfbb4b1243f5c52f0cb303c4c3f1240268f17030c90f7f3839bf3bbe3ff2288"
+    },
+    {
+      "path": "vflow/workspace/autogating.py",
+      "change": "unchanged",
+      "rc9_sha256": "b1c31a3aebbdaec5f1bba931359b389a7f990eff065a9d98f1e8944c60d489c8",
+      "rc10_sha256": "b1c31a3aebbdaec5f1bba931359b389a7f990eff065a9d98f1e8944c60d489c8"
+    },
+    {
+      "path": "vflow/workspace/controller.py",
+      "change": "persist display name and populate recent menus",
+      "rc9_sha256": "2e73dfa5c0c74df1899dd966df514cd2e6053c17f139205eab6dd5b743b02715",
+      "rc10_sha256": "d3ab9e3b4181d539e3157544c3c25995e4fdb680e7f43562fbb95afa17fa73d2"
+    },
+    {
+      "path": "vflow/workspace/gates.py",
+      "change": "unchanged",
+      "rc9_sha256": "f72fe1ce4b6af39925b0ef4d3ca9dffcc2398cbcc4677514c147ff21f78546e9",
+      "rc10_sha256": "f72fe1ce4b6af39925b0ef4d3ca9dffcc2398cbcc4677514c147ff21f78546e9"
+    },
+    {
+      "path": "vflow/workspace/model.py",
+      "change": "release version only",
+      "rc9_sha256": "b5e5b9e5039cf38fd8d8a7e79ab2d20cd9ecfb44876728c6bca757a98cac2ae9",
+      "rc10_sha256": "abb875aeca7c223a16cb411a662570dd4fa8ec9eacd2bbea52c6d5d6dfa0d95d"
+    },
+    {
+      "path": "vflow/workspace/relink.py",
+      "change": "unchanged",
+      "rc9_sha256": "1c5e2c499c26c2082897011f682c8a7e76ea342b118fadbc49b50c498b011976",
+      "rc10_sha256": "1c5e2c499c26c2082897011f682c8a7e76ea342b118fadbc49b50c498b011976"
+    },
+    {
+      "path": "vflow/workspace/ui.py",
+      "change": "editable name, visible workspace actions, scaled recent button and restoration dirty guard",
+      "rc9_sha256": "6f54b1aae9c186c6c337abebae2cdf0b223801b893c03dba95a90c0351048a4d",
+      "rc10_sha256": "758062d61c5ef779547788b280cc5aee897b3e64b4febf7e60cacc3ecbfae581"
+    }
+  ],
+  "source_launcher": {
+    "changed": false,
+    "sha256": "f3268e4e22c168300f9a8fce4811b7f173fb5ed63b371e92aac28246d22d735f"
+  }
+}

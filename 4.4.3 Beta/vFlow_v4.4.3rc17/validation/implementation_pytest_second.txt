@@ -1,0 +1,1842 @@
+........................................................................ [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 17%]
+........................................................................ [ 23%]
+........................................................................ [ 29%]
+........................................................................ [ 35%]
+........................................................................ [ 41%]
+........................................................................ [ 47%]
+........................................................................ [ 53%]
+........................................................................ [ 59%]
+........................................................................ [ 65%]
+...............................................................FF....... [ 71%]
+........................................................................ [ 77%]
+........................................................................ [ 83%]
+........................................................................ [ 89%]
+.........................................F.............................. [ 95%]
+....................EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE                [100%]
+==================================== ERRORS ====================================
+________ ERROR at setup of test_real_gui_sample_views_overlay_and_scope ________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_sample_views_ove0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2632ad4800>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+____ ERROR at setup of test_real_gui_override_counts_cache_copy_reset_undo _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_override_counts_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd3bbf0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+__ ERROR at setup of test_real_gui_save_reopen_external_sessions_and_recovery __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_save_reopen_exte0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cfab6b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+______ ERROR at setup of test_real_gui_offscale_arrays_and_all_plot_modes ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_offscale_arrays_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262ce72bd0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_____ ERROR at setup of test_real_gui_nested_population_refresh_and_reopen _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_nested_populatio0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85820>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_sizes_collapsed_controls_and_missing_channels _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_sizes_collapsed_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be3e90>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+________ ERROR at setup of test_real_gui_sample_only_gate_is_not_global ________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_sample_only_gate0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85130>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+___ ERROR at setup of test_real_gui_partial_reopen_scan_relink_and_exclusion ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_partial_reopen_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd379b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_multigate_partition_and_secondary_analysis_use_overrides _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_multigate_partit0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b844a0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_multilevel_lineage_keeps_all_parent_namespaces _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_multilevel_linea0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85a30>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_missing_gate_resource_never_opens_child_as_full_population _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_missing_gate_res0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b851f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+______ ERROR at setup of test_real_gui_drag_handle_copies_gate_to_sample _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_drag_handle_copi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b84bf0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_child_sample_membership_and_source_exclusion _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_child_sample_mem0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be3530>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_region_labels_agree_with_sample_override_counts _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_region_labels_ag0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b873b0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_real_gui_gate_copy_rejects_unavailable_target_lineage _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_real_gui_gate_copy_reject0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85280>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+____ ERROR at setup of test_auto_fit_default_pools_all_active_even_in_cycle ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_auto_fit_default_pools_al0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b854c0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_auto_fit_selected_subset_is_independent_of_gate_targets_and_reopens _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_auto_fit_selected_subset_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be2840>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_auto_fit_current_source_can_apply_globally_or_to_one_sample _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_auto_fit_current_source_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be3140>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_otsu] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_every_auto_method_receive0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262d5c29f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_derivative] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_every_auto_method_receive1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85580>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_gmm_multi] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_every_auto_method_receive2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b85c10>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_cluster_polygons] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_every_auto_method_receive3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be32f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_entire_workspace_replaces_only_the_selected_gate_overrides_and_undo _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_entire_workspace_replaces0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be23f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_selected_sample_edit_is_sparse_preserves_unedited_gates_and_undo _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_selected_sample_edit_is_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cc4a330>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_selected_sample_edit_rejects_incompatible_target_atomically _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_selected_sample_edit_reje0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd6dee0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_auto_gate_reuse_is_one_undo_step_and_scope_change_cancels_live_rerun _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_auto_gate_reuse_is_one_un0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cc48d10>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+__ ERROR at setup of test_drag_feedback_does_not_mutate_fitting_row_selection __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_drag_feedback_does_not_mu0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be04a0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_plot_header_names_sample_scope_and_overlay_overrides __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_plot_header_names_sample_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b84e30>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_cluster_input_keeps_nan_and_log_invalid_rows_aligned __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_cluster_input_keeps_nan_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cef3440>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+___ ERROR at setup of test_cluster_creating_multiple_gates_is_one_undo_step ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_cluster_creating_multiple0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd3cad0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+________ ERROR at setup of test_empty_fitting_selection_creates_no_gate ________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_empty_fitting_selection_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd9df10>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_auto_fitting_in_child_uses_each_samples_resolved_parent _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_auto_fitting_in_child_use0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cef2d80>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_tab_selection_refreshes_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628b859d0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_current_sample_copy_uses_resolved_gate_even_when_editing_all_samples _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_current_sample_copy_uses_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2628be26f0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+____ ERROR at setup of test_pinned_active_checkbox_controls_pooled_fitting _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_pinned_active_checkbox_co0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262cd9de20>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_missing_parent_lineage_survives_redraw_and_state_save _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_missing_parent_lineage_su0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f262ce71820>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+_ ERROR at setup of test_native_gate_save_in_selected_scope_keeps_correct_external_references _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_native_gate_save_in_selec0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2632af67e0>
+
+    @pytest.fixture
+    def experiment(tmp_path,monkeypatch):
+        from tkinter import messagebox
+        errors=[]
+        for method in ('showinfo','showwarning'):monkeypatch.setattr(messagebox,method,lambda *a,**k:None)
+        monkeypatch.setattr(messagebox,'showerror',lambda *a,**k:errors.append(a))
+        monkeypatch.setattr(messagebox,'askyesno',lambda *a,**k:True)
+        monkeypatch.setattr(messagebox,'askyesnocancel',lambda *a,**k:False)
+>       root=tk.Tk();root.report_callback_exception=lambda *a:errors.append(a)
+             ^^^^^^^
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'Tk', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: couldn't connect to display ":109"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py:2346: TclError
+=================================== FAILURES ===================================
+_______________ test_package_import_does_not_require_matplotlib ________________
+
+    def test_package_import_does_not_require_matplotlib():
+        import vflow
+    
+>       assert vflow.__version__ == "4.4.1"
+E       AssertionError: assert '4.4.3rc1' == '4.4.1'
+E         
+E         - 4.4.1
+E         + 4.4.3rc1
+E         ?     +++
+
+../baseline/vFlow_v4.4.1/tests/test_import_headless.py:12: AssertionError
+_______________________ test_package_imports_headlessly ________________________
+
+    def test_package_imports_headlessly():
+        pytest.importorskip("matplotlib")
+        configure_matplotlib_backend(headless=True)
+    
+        import vflow
+    
+>       assert vflow.__version__ == "4.4.1"
+E       AssertionError: assert '4.4.3rc1' == '4.4.1'
+E         
+E         - 4.4.1
+E         + 4.4.3rc1
+E         ?     +++
+
+../baseline/vFlow_v4.4.1/tests/test_import_headless.py:21: AssertionError
+______________________ test_rejects_unsupported_schema[2] ______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_rejects_unsupported_schem2')
+schema = 2
+
+    @pytest.mark.parametrize('schema',[None,0,2,'1',True])
+    def test_rejects_unsupported_schema(tmp_path,schema):
+        p=tmp_path/'bad.vflow';p.write_text(json.dumps({'workspace_schema':schema}))
+>       with pytest.raises(ValueError):Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+../baseline/vFlow_v4.4.1/tests/test_workspace_domain.py:45: Failed
+=========================== short test summary info ============================
+FAILED tests/test_import_headless.py::test_package_import_does_not_require_matplotlib
+FAILED tests/test_import_headless.py::test_package_imports_headlessly - Asser...
+FAILED tests/test_workspace_domain.py::test_rejects_unsupported_schema[2] - F...
+ERROR tests/test_workspace_gui.py::test_real_gui_sample_views_overlay_and_scope
+ERROR tests/test_workspace_gui.py::test_real_gui_override_counts_cache_copy_reset_undo
+ERROR tests/test_workspace_gui.py::test_real_gui_save_reopen_external_sessions_and_recovery
+ERROR tests/test_workspace_gui.py::test_real_gui_offscale_arrays_and_all_plot_modes
+ERROR tests/test_workspace_gui.py::test_real_gui_nested_population_refresh_and_reopen
+ERROR tests/test_workspace_gui.py::test_real_gui_sizes_collapsed_controls_and_missing_channels
+ERROR tests/test_workspace_gui.py::test_real_gui_sample_only_gate_is_not_global
+ERROR tests/test_workspace_gui.py::test_real_gui_partial_reopen_scan_relink_and_exclusion
+ERROR tests/test_workspace_gui.py::test_real_gui_multigate_partition_and_secondary_analysis_use_overrides
+ERROR tests/test_workspace_gui.py::test_real_gui_multilevel_lineage_keeps_all_parent_namespaces
+ERROR tests/test_workspace_gui.py::test_real_gui_missing_gate_resource_never_opens_child_as_full_population
+ERROR tests/test_workspace_gui.py::test_real_gui_drag_handle_copies_gate_to_sample
+ERROR tests/test_workspace_gui.py::test_real_gui_child_sample_membership_and_source_exclusion
+ERROR tests/test_workspace_gui.py::test_real_gui_region_labels_agree_with_sample_override_counts
+ERROR tests/test_workspace_gui.py::test_real_gui_gate_copy_rejects_unavailable_target_lineage
+ERROR tests/test_workspace_gui.py::test_auto_fit_default_pools_all_active_even_in_cycle
+ERROR tests/test_workspace_gui.py::test_auto_fit_selected_subset_is_independent_of_gate_targets_and_reopens
+ERROR tests/test_workspace_gui.py::test_auto_fit_current_source_can_apply_globally_or_to_one_sample
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_otsu]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_derivative]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_gmm_multi]
+ERROR tests/test_workspace_gui.py::test_every_auto_method_receives_the_same_explicit_full_subset[auto_gate_cluster_polygons]
+ERROR tests/test_workspace_gui.py::test_entire_workspace_replaces_only_the_selected_gate_overrides_and_undo
+ERROR tests/test_workspace_gui.py::test_selected_sample_edit_is_sparse_preserves_unedited_gates_and_undo
+ERROR tests/test_workspace_gui.py::test_selected_sample_edit_rejects_incompatible_target_atomically
+ERROR tests/test_workspace_gui.py::test_auto_gate_reuse_is_one_undo_step_and_scope_change_cancels_live_rerun
+ERROR tests/test_workspace_gui.py::test_drag_feedback_does_not_mutate_fitting_row_selection
+ERROR tests/test_workspace_gui.py::test_plot_header_names_sample_scope_and_overlay_overrides
+ERROR tests/test_workspace_gui.py::test_cluster_input_keeps_nan_and_log_invalid_rows_aligned
+ERROR tests/test_workspace_gui.py::test_cluster_creating_multiple_gates_is_one_undo_step
+ERROR tests/test_workspace_gui.py::test_empty_fitting_selection_creates_no_gate
+ERROR tests/test_workspace_gui.py::test_auto_fitting_in_child_uses_each_samples_resolved_parent
+ERROR tests/test_workspace_gui.py::test_tab_selection_refreshes_parent_changes_and_child_active_state_reopens
+ERROR tests/test_workspace_gui.py::test_current_sample_copy_uses_resolved_gate_even_when_editing_all_samples
+ERROR tests/test_workspace_gui.py::test_pinned_active_checkbox_controls_pooled_fitting
+ERROR tests/test_workspace_gui.py::test_missing_parent_lineage_survives_redraw_and_state_save
+ERROR tests/test_workspace_gui.py::test_native_gate_save_in_selected_scope_keeps_correct_external_references
+3 failed, 1169 passed, 37 errors in 11.36s

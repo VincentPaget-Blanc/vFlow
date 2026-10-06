@@ -1,0 +1,73 @@
+SOURCE SHA256 4f608834f34195c016b617772eac7535e1878ccea5dda61795ec0d5aa8b99c46
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.12.3
+collecting ... collected 1663 items
+
+tests/test_active_file_change_boundary.py::test_active_file_change_service_is_tk_free_and_side_effect_free_by_import_boundary PASSED
+tests/test_active_file_change_boundary.py::test_flowapp_active_file_callback_delegates_decision_but_keeps_side_effects PASSED
+tests/test_active_file_change_boundary.py::test_flowapp_context_change_keeps_scientific_side_effect_order_and_only_formats_status_outside PASSED
+tests/test_active_file_changes.py::test_unchanged_context_without_applied_gates_only_refreshes PASSED
+tests/test_active_file_changes.py::test_unchanged_context_with_any_truthy_applied_gate_recomputes_stats PASSED
+tests/test_active_file_changes.py::test_context_change_suppresses_direct_stats_recompute_path PASSED
+tests/test_active_file_changes.py::test_context_equality_preserves_exact_cofactor_tolerance PASSED
+tests/test_active_file_changes.py::test_non_mapping_contexts_fail_closed_as_changed PASSED
+tests/test_active_file_changes.py::test_incompatible_gate_status_preserves_names_fallback_and_four_gate_truncation PASSED
+tests/test_active_file_changes.py::test_incompatible_gate_status_none_when_no_incompatible_gates PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1024-640-1-Large] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Comfortable] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1440-900-1.5-Large] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Automatic] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Compact] PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Comfortable] TIMED STACK DIAGNOSTIC elapsed=60.0
+Current thread 0x00007f2b6fcc96c0 (most recent call first):
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/run_full_suite_rc16.py", line 15 in watchdog
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1012 in run
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1075 in _bootstrap_inner
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/threading.py", line 1032 in _bootstrap
+
+Thread 0x00007f2b70d0d740 (most recent call first):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/__init__.py", line 1373 in update
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/tests/test_adaptive_samples_gui.py", line 44 in test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/root/.local/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/root/.local/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/root/.local/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/root/.local/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in main
+  File "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/run_full_suite_rc16.py", line 17 in <module>
+PASSED
+tests/test_adaptive_samples_gui.py::test_long_list_uses_window_height_and_keeps_footer_and_tabs_visible[1920-1080-2-Large] PASSED
+tests/test_adaptive_samples_gui.py::test_short_list_fits_rows_and_long_list_reacts_to_add_remove_and_resize 

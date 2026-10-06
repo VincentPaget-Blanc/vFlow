@@ -1,0 +1,8 @@
+Kernel cached RC5; child must load RC11.
+vFlow started in a separate process (PID 14).
+Startup output: /tmp/vflow-startup-s754vkmm.log
+Traceback (most recent call last):
+  File "/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc11_candidate/validation/check_spyder_launcher_rc11.py", line 41, in <module>
+    assert len(checked['observations'])==1,checked
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'stage': 'closed', 'observations': [], 'errors': [], 'pid': 14}

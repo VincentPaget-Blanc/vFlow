@@ -1,0 +1,1 @@
+{"phase": "saved_verify", "passed": true, "loaded_events": 36000, "saved_audit_events": 24000, "nested_populations": 2, "raw_hashes_unchanged": true, "errors": []}

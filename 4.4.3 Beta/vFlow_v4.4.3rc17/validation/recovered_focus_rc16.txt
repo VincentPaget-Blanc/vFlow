@@ -1,0 +1,40 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 30 items
+
+tests/test_derivative_refresh_rc16.py::test_owned_derivative_refresh_preserves_original_integrity PASSED
+tests/test_integrity_edges_rc16.py::test_legacy_identity_kept_but_full_content_pinned PASSED
+tests/test_integrity_edges_rc16.py::test_external_write_during_fsync_refused PASSED
+tests/test_integrity_edges_rc16.py::test_actual_two_process_writers_one_winner PASSED
+tests/test_integrity_edges_rc16.py::test_lock_released_after_abrupt_process_exit PASSED
+tests/test_integrity_edges_rc16.py::test_windows_lock_adapter_contract PASSED
+tests/test_integrity_edges_rc16.py::test_source_change_while_csv_decode_is_rejected PASSED
+tests/test_integrity_edges_rc16.py::test_ingestion_identity_survives_later_file_edit PASSED
+tests/test_integrity_edges_rc16.py::test_legacy_derivative_ownership PASSED
+tests/test_integrity_edges_rc16.py::test_live_audit_state_and_immutable_snapshot SKIPPED
+tests/test_integrity_edges_rc16.py::test_true_zero_display_not_unavailable SKIPPED
+tests/test_integrity_edges_rc16.py::test_recovery_failure_preserves_correct_geometry[before_commit] SKIPPED
+tests/test_integrity_edges_rc16.py::test_recovery_failure_preserves_correct_geometry[after_commit] SKIPPED
+tests/test_integrity_edges_rc16.py::test_older_recovery_refuses_new_external_winner SKIPPED
+tests/test_integrity_edges_rc16.py::test_corrupt_newest_recovery_falls_back SKIPPED
+tests/test_integrity_edges_rc16.py::test_corrupt_unsaved_recovery_falls_back SKIPPED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[second_writer] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[edit] PASSED
+tests/test_workspace_integrity_rc16.py::test_stale_save_refused[delete] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[source] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[gates] PASSED
+tests/test_workspace_integrity_rc16.py::test_unsampled_same_size_edit_rejected[audit] PASSED
+tests/test_workspace_integrity_rc16.py::test_retargeted_symlink_save_refused PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_alias_tracks_physical_revision PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[False] PASSED
+tests/test_workspace_integrity_rc16.py::test_missing_relative_only_reference_survives_save[True] PASSED
+tests/test_workspace_integrity_rc16.py::test_symlink_source_portability_after_tree_move PASSED
+tests/test_workspace_integrity_rc16.py::test_recovery_retains_geometry_and_marks_restored_dirty SKIPPED
+tests/test_workspace_integrity_rc16.py::test_open_same_workspace_reads_after_close_save SKIPPED
+tests/test_workspace_integrity_rc16.py::test_gui_retarget_guard_and_metadata_after_initial_save SKIPPED
+
+======================== 20 passed, 10 skipped in 3.64s ========================

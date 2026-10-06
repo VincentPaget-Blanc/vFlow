@@ -1,0 +1,11 @@
+{"name": "main_gc", "returncode": 0, "expected": 0, "passed": true, "seconds": 0.095}
+{"name": "kde", "returncode": 0, "expected": 0, "passed": true, "seconds": 0.694}
+{"name": "audit", "returncode": 0, "expected": 0, "passed": true, "seconds": 1.838}
+{"name": "scan", "returncode": 0, "expected": 0, "passed": true, "seconds": 1.863}
+{"name": "create", "returncode": 0, "expected": 0, "passed": true, "seconds": 7.219}
+{"name": "moved_workspace", "returncode": 0, "expected": 0, "passed": true, "seconds": 3.309}
+{"name": "long_session", "returncode": 0, "expected": 0, "passed": true, "seconds": 80.3}
+{"name": "interrupt_before", "returncode": 83, "expected": 83, "passed": true, "seconds": 3.413}
+{"name": "verify_before", "returncode": 0, "expected": 0, "passed": true, "seconds": 3.559}
+{"name": "interrupt_after", "returncode": 84, "expected": 84, "passed": true, "seconds": 3.188}
+{"name": "verify_after", "returncode": 0, "expected": 0, "passed": true, "seconds": 3.32}

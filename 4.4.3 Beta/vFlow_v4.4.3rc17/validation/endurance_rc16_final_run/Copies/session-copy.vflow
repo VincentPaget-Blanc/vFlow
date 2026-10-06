@@ -1,0 +1,257 @@
+{
+  "workspace_schema": 2,
+  "workspace_id": "2b1c9e0e-5823-4e35-b4f5-21d2f3908bb8",
+  "created_with": "vFlow 4.4.3rc16",
+  "samples": {
+    "106a9b42-3119-4321-be98-2601536d87dd": {
+      "sample_id": "106a9b42-3119-4321-be98-2601536d87dd",
+      "display_name": "Control_01.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Original/Control_01.csv",
+        "relative_path": "../Original/Control_01.csv",
+        "filename": "Control_01.csv",
+        "size": 1786977,
+        "identity_fingerprint": "sha256:1e7364b1bdd308e6163b43587ed687ff75ba2287959e24348cb6a0d1ea7c7b5e",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "21de419f-61b2-4622-9e3e-b326652c5b61": {
+      "sample_id": "21de419f-61b2-4622-9e3e-b326652c5b61",
+      "display_name": "Control_02.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Original/Control_02.csv",
+        "relative_path": "../Original/Control_02.csv",
+        "filename": "Control_02.csv",
+        "size": 1787676,
+        "identity_fingerprint": "sha256:b53ddffed3ba5befa184e80046e2942c5a6276210beb19522f5cb18b7a844733",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "3634a57f-fc7b-45c8-be40-a9f50d4f8eaf": {
+      "sample_id": "3634a57f-fc7b-45c8-be40-a9f50d4f8eaf",
+      "display_name": "Treatment_01.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Original/Treatment_01.csv",
+        "relative_path": "../Original/Treatment_01.csv",
+        "filename": "Treatment_01.csv",
+        "size": 1787612,
+        "identity_fingerprint": "sha256:7c988e9bc8e3362b5229f65945124662ac8b64f047d32cf8864f6dfb3af6aded",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    },
+    "c7559513-d868-490c-b411-bbc6d5738926": {
+      "sample_id": "c7559513-d868-490c-b411-bbc6d5738926",
+      "display_name": "Treatment_02.csv",
+      "source": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Original/Treatment_02.csv",
+        "relative_path": "../Original/Treatment_02.csv",
+        "filename": "Treatment_02.csv",
+        "size": 1788234,
+        "identity_fingerprint": "sha256:c99cddfe26974e59b195ec94bcedc4adf1f80e01761824830b49476559cf6ded",
+        "kind": "source",
+        "content_sha256": null
+      },
+      "active": true,
+      "excluded": false,
+      "view": null,
+      "gate_session": null,
+      "source_member_id": null
+    }
+  },
+  "audits": {
+    "QC-20261005-975b0574235b": {
+      "audit_id": "QC-20261005-975b0574235b",
+      "name": "QC-20261005-975b0574235b",
+      "audit_type": "qc",
+      "created_at": "2026-10-05T14:59:37.681571+00:00",
+      "result": {
+        "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Copies/session-copy_audits/QC-20261005-975b0574235b.vflowaudit.json.gz",
+        "relative_path": "session-copy_audits/QC-20261005-975b0574235b.vflowaudit.json.gz",
+        "filename": "QC-20261005-975b0574235b.vflowaudit.json.gz",
+        "size": 2571,
+        "identity_fingerprint": "sha256:df53aec3cfccb0aa598dd63145ceef81819a93b31f41333d5b73bae53a5433a1",
+        "kind": "audit",
+        "content_sha256": null
+      },
+      "selected_sample_ids": [
+        "106a9b42-3119-4321-be98-2601536d87dd",
+        "21de419f-61b2-4622-9e3e-b326652c5b61"
+      ],
+      "population_label": "All events",
+      "status_summary": {
+        "pairwise_only": 2
+      },
+      "decision_history": [
+        {
+          "timestamp": "2026-10-05T14:59:37.711136+00:00",
+          "sample_id": "106a9b42-3119-4321-be98-2601536d87dd",
+          "action": "note",
+          "reason_code": "no_reason_supplied",
+          "note": "Benchmark retention note"
+        }
+      ]
+    }
+  },
+  "overlay_view": {
+    "x_channel": "FSC-A",
+    "y_channel": "SSC-A",
+    "x_transform": "linear",
+    "y_transform": "linear",
+    "cofactor": 150.0,
+    "x_transform_params": {
+      "T": 262144.0,
+      "W": 0.5,
+      "M": 4.5,
+      "A": 0.0
+    },
+    "y_transform_params": {
+      "T": 262144.0,
+      "W": 0.5,
+      "M": 4.5,
+      "A": 0.0
+    },
+    "plot_mode": "Density",
+    "axis_limits": null,
+    "axis_fit_mode": "automatic"
+  },
+  "default_gate_session": {
+    "absolute_path": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/endurance_rc16_final_run/Copies/session-copy_gates_2a6bc60d38f2.json",
+    "relative_path": "session-copy_gates_2a6bc60d38f2.json",
+    "filename": "session-copy_gates_2a6bc60d38f2.json",
+    "size": 1431,
+    "identity_fingerprint": "sha256:a895f68c741776707537019ecbf1e84379d4e2404b221d75aab9941cc446bd80",
+    "kind": "gates",
+    "content_sha256": null
+  },
+  "groups": {},
+  "gate_scope_state": {
+    "default_scope": "all_samples"
+  },
+  "ui_state": {
+    "view_mode": "overlay",
+    "current_sample_id": "106a9b42-3119-4321-be98-2601536d87dd",
+    "gate_scope": "All samples (default)",
+    "selected_gate_id": 0,
+    "interface_size": "Automatic",
+    "auto_gate_input": "Active samples (pooled)",
+    "selected_sample_ids": [],
+    "active_sample_ids": [
+      "106a9b42-3119-4321-be98-2601536d87dd",
+      "21de419f-61b2-4622-9e3e-b326652c5b61",
+      "3634a57f-fc7b-45c8-be40-a9f50d4f8eaf",
+      "c7559513-d868-490c-b411-bbc6d5738926"
+    ],
+    "active_tab_id": "main",
+    "sidebar_width": 411,
+    "sidebar_task": "Plot",
+    "sidebar_outer_scroll": 0.0,
+    "sample_panel_fraction": null,
+    "sidebar_gate_tool": "GATING",
+    "auto_gate_method": "GMM Multi",
+    "sidebar_scroll": {
+      "Data": 0.0,
+      "Plot": 0.0,
+      "Gates": 0.0,
+      "Analysis": 0.0
+    },
+    "workspace_name": "Copied benchmark"
+  },
+  "tabs": {
+    "main": {
+      "title": "Main",
+      "lineage": [],
+      "overlay_view": {
+        "x_channel": "FSC-A",
+        "y_channel": "SSC-A",
+        "x_transform": "linear",
+        "y_transform": "linear",
+        "cofactor": 150.0,
+        "x_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "y_transform_params": {
+          "T": 262144.0,
+          "W": 0.5,
+          "M": 4.5,
+          "A": 0.0
+        },
+        "plot_mode": "Density",
+        "axis_limits": null,
+        "axis_fit_mode": "automatic"
+      },
+      "sample_views": {},
+      "ui_state": {
+        "view_mode": "overlay",
+        "current_sample_id": "106a9b42-3119-4321-be98-2601536d87dd",
+        "gate_scope": "All samples (default)",
+        "selected_gate_id": 0,
+        "interface_size": "Automatic",
+        "auto_gate_input": "Active samples (pooled)",
+        "selected_sample_ids": [],
+        "active_sample_ids": [
+          "106a9b42-3119-4321-be98-2601536d87dd",
+          "21de419f-61b2-4622-9e3e-b326652c5b61",
+          "3634a57f-fc7b-45c8-be40-a9f50d4f8eaf",
+          "c7559513-d868-490c-b411-bbc6d5738926"
+        ],
+        "active_tab_id": "main",
+        "sidebar_width": 411,
+        "sidebar_task": "Plot",
+        "sidebar_outer_scroll": 0.0,
+        "sample_panel_fraction": null,
+        "sidebar_gate_tool": "GATING",
+        "auto_gate_method": "GMM Multi",
+        "sidebar_scroll": {
+          "Data": 0.0,
+          "Plot": 0.0,
+          "Gates": 0.0,
+          "Analysis": 0.0
+        }
+      },
+      "sections": {
+        "WORKSPACE": true,
+        "FILES": true,
+        "EXCLUDED FILES": true,
+        "AXES": true,
+        "SCALE": true,
+        "DISPLAY": true,
+        "PLOT LIMITS": true,
+        "TRANSFORM PARAMETERS": true,
+        "FIGURE EXPORT": true,
+        "GATING": true,
+        "AUTO-GATE": true,
+        "GATE MANAGER": true,
+        "GATE INFO": true,
+        "STATISTICS": true,
+        "STATISTICAL AUDITS": true,
+        "GATE SESSIONS": true,
+        "EXPORT": true,
+        "VECTOR ANALYSIS": true,
+        "BATCH PLOTS": true
+      },
+      "sample_ids": null
+    }
+  },
+  "axis_aliases": {}
+}

@@ -1,0 +1,24 @@
+Feature,Fixture,Purpose
+CSV/FCS loading,cytometry/Control_01.fcs + Control_01_matched.csv,Same float32 scientific matrix through both loaders
+Overlay/Cycle,cytometry/Control_01/02 + Treatment_01/02,Multiple compatible samples with biological shifts
+Per-sample view persistence,workspace_future_fixture/Benchmark_Workspace_ProposedSchema1.vflow,Different saved axes/transforms per sample
+Missing-channel fail-closed,cytometry/Missing_CD8_01.fcs,CD8-A deliberately absent
+Linear/log/asinh/logicle/legacy scales,cytometry/EdgeCases_01.fcs,"Negative, near-zero, positive and extreme values"
+Off-scale edge pile-up,autogate_edgecases/OffScale_ExactBoundary.csv + truth/offscale_expected_counts.csv,Known below/inside/above events
+Rectangle gate,references/benchmark_gate_definitions.json,Exact expected counts
+Ellipse gate,references/benchmark_gate_definitions.json,Exact expected counts
+Polygon gate,references/benchmark_gate_definitions.json,Exact expected counts
+Crosshair/regions,references/benchmark_gate_definitions.json,Four expected quadrants
+Sub-gating/lineage,cytometry/*.fcs + reference gates,Scatter/lymph -> singlet -> marker hierarchy
+Otsu/KDE/GMM,autogate_edgecases/AutoGate_ThreeClusters.csv,Separated multimodal fixture
+KDE fail-closed,autogate_edgecases/KDE_NoValley_Unimodal.csv,Single broad mode
+Cluster polygons,autogate_edgecases/AutoGate_ThreeClusters.csv,Three known 2-D clusters
+Degenerate density/contour,autogate_edgecases/ConstantAxis_Degenerate.csv,One exactly constant axis
+Marginal histograms,cytometry/EdgeCases_01.fcs,Tails and off-scale extremes
+Batch Plot/Stats,cytometry/Batch_4Samples_SourceFile.csv,Source_File provenance + multiple samples
+Microscopy CSV workflow,microscopy/Microscopy_01/02/03.csv,Background-corrected negative and multimodal intensities
+Polar/vector analysis,microscopy/Microscopy_*.csv,Ch1-X/Y and Ch2-X/Y with known observed direction metrics
+FCS parser versions/types/endian,parser_variants/*.fcs,2.0/3.0/3.1 + float/double/integer + LE/BE
+Source provenance,all files,Distinct stable filenames and $SRC for FCS
+Display subsampling invariance,cytometry/*.fcs,12k events/sample with exact expected full-population gate counts
+Workspace relinking,workspace_future_fixture + relative paths,Move corpus directory and relink by relative/scan logic

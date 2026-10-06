@@ -1,0 +1,86 @@
+{
+  "schema": "vflow-benchmark-reference-gates-v1",
+  "note": "Benchmark truth definitions; these are NOT asserted to be the app's current gate-session JSON schema.",
+  "gates": [
+    {
+      "id": "G_LYMPH_RECT",
+      "type": "rectangle",
+      "x_channel": "FSC-A",
+      "y_channel": "SSC-A",
+      "x0": 45000.0,
+      "x1": 105000.0,
+      "y0": 5000.0,
+      "y1": 55000.0
+    },
+    {
+      "id": "G_LYMPH_ELLIPSE",
+      "type": "ellipse",
+      "x_channel": "FSC-A",
+      "y_channel": "SSC-A",
+      "cx": 75000.0,
+      "cy": 30000.0,
+      "rx": 33000.0,
+      "ry": 28000.0
+    },
+    {
+      "id": "G_SCATTER_POLY",
+      "type": "polygon",
+      "x_channel": "FSC-A",
+      "y_channel": "SSC-A",
+      "vertices": [
+        [
+          42000,
+          6000
+        ],
+        [
+          98000,
+          5000
+        ],
+        [
+          112000,
+          30000
+        ],
+        [
+          95000,
+          60000
+        ],
+        [
+          52000,
+          57000
+        ]
+      ]
+    },
+    {
+      "id": "G_CD3_CD4_CROSS",
+      "type": "crosshair",
+      "x_channel": "CD3-A",
+      "y_channel": "CD4-A",
+      "x_threshold": 1000.0,
+      "y_threshold": 1000.0
+    },
+    {
+      "id": "G_SINGLET_POLY",
+      "type": "polygon",
+      "x_channel": "FSC-A",
+      "y_channel": "FSC-H",
+      "vertices": [
+        [
+          30000,
+          25000
+        ],
+        [
+          160000,
+          145000
+        ],
+        [
+          175000,
+          175000
+        ],
+        [
+          30000,
+          40000
+        ]
+      ]
+    }
+  ]
+}

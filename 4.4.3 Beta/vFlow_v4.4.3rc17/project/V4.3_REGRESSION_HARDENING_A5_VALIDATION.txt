@@ -1,0 +1,116 @@
+vFlow v4.3.0-dev — Regression Hardening A5 validation
+======================================================
+
+Starting checkpoint
+-------------------
+vFlow v4.3.0-dev Accuracy Hardening A4
+A4 ZIP SHA-256: 6a2b90bcf2728eccabc07af24e06fce5c173a785a23314b741a70c8b5763b357
+Starting cumulative suite: 1102/1102 PASS
+
+Confirmed post-refactor runtime regressions repaired
+----------------------------------------------------
+A5-01  Gate preview/handle-cache NameError after GateInteractionController extraction.
+A5-02  Stale Matplotlib log-axis state could survive a scale transition and reverse limits.
+A5-03  Gate applicability incorrectly treated display-transform changes as channel incompatibility.
+A5-04  Derivative and Otsu auto-gates called removed _axis_transform_params().
+
+Cumulative automated validation
+-------------------------------
+pytest: 1109/1109 PASS
+compileall: PASS
+static refactor wiring scan: PASS
+
+Generated GUI scale/context validation
+--------------------------------------
+X/Y scale combinations checked: 36
+Scale failures: 0
+Different-channel gate inactivity: PASS
+Return to original ordered channels after scale change: PASS
+
+Scales exercised on both axes:
+  linear
+  log
+  asinh
+  logicle_gml2
+  legacy_biexp
+  legacy_logicle
+
+For every scale pair the validator requires:
+  - requested X/Y scale assigned to the correct axis;
+  - Matplotlib scale identity consistent with the target;
+  - finite ordered X/Y limits;
+  - monotonic data-to-pixel transforms;
+  - applied same-channel gate visible and quantified.
+
+Generated GUI auto-gating
+-------------------------
+KDE/Derivative: PASS
+Otsu: PASS
+GMM Multi: PASS
+HDBSCAN Cluster Polygons: PASS
+Messagebox/runtime errors: none
+
+Generated manual interaction/session/multi-file smoke
+-----------------------------------------------------
+rectangle/ellipse/crosshair/polygon creation: PASS
+rectangle handle resize: PASS
+whole-gate move: PASS
+marginal log -> asinh transition: PASS
+two-file overlay statistics: PASS
+cycle mode: PASS
+active-file stats recomputation: PASS
+gate session save/reload across scale change: PASS
+different-channel gate hiding: PASS
+return-to-original-channel restoration: PASS
+messagebox errors: none
+
+Existing scientific validators
+------------------------------
+A4 deterministic accuracy hardening validator: PASS
+A2 science-method validator: PASS
+A3 axis-swap validator: 480/480 PASS
+
+Scientific fingerprint
+----------------------
+b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+Frozen reference match: YES
+
+FlowJo/TextToFCS reference
+-------------------------
+shape: 1473 x 8
+compatibility normalizations: 10
+all decoded values finite: True
+maximum direct big-endian float32 DATA difference: 0.0
+decoded float64 SHA-256:
+5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+
+Frozen render probes
+--------------------
+Dot:
+b1ea81cf7217c6d83d0673697f0a9919298d36fba63e7525695d570de6246bc9
+Density:
+274fdc016409f1d818b0f156e87573fea7897fd14d97b0e542e161ca92a68c34
+Contour:
+e3983d4ca6d2eebad360720b7f6f07b72e0799a5be1ff805ec7bdf47466f7d13
+Gate preview:
+e12d7030e6a51a43e8d1d9fb6e328dfe43a6089b4905413a69bb5f1d4dd2b9a6
+Result: unchanged from A4
+
+Evidence files
+--------------
+validation_artifacts/full_pytest_a5.txt
+validation_artifacts/compileall_a5.txt
+validation_artifacts/generated_gui_regression_a5.json
+validation_artifacts/interaction_smoke_a5.json
+validation_artifacts/refactor_wiring_static_a5.txt
+validation_artifacts/accuracy_hardening_a4_checks_a5.json
+validation_artifacts/science_method_a2_checks_a5.json
+validation_artifacts/gate_axis_swap_checks_a5.json
+validation_artifacts/scientific_fingerprint_a5.json
+validation_artifacts/flowjo_direct_compare_a5.txt
+validation_artifacts/render_diff_a5.json
+
+Version status
+--------------
+This is a v4.3.0-dev regression-hardening checkpoint. Runtime/package metadata
+remains 4.2.0 intentionally until explicit final v4.3 release certification.

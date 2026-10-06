@@ -1,0 +1,10 @@
+{
+  "wheel": "vflow-4.4.3rc1-py3-none-any.whl",
+  "sha256": "83fe62b4b9c6003fbb4df712684a290d644a37da8e92e9b2f993b6f0fa15be52",
+  "files": 124,
+  "zip_integrity": "passed",
+  "version": "4.4.3rc1",
+  "audit_engine_and_readers_present": true,
+  "final_terminal_status_fix_present": true,
+  "test_and_benchmark_files_excluded_from_wheel": true
+}

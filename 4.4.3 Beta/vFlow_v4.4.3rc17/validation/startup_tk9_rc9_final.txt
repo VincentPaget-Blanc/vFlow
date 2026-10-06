@@ -1,0 +1,4 @@
+PASS [{"mode": "source", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+PASS [{"mode": "module", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+PASS [{"mode": "console", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+PASS [{"mode": "spyder", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}, {"mode": "spyder", "version": "4.4.3rc9", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]

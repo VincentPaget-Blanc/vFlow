@@ -1,0 +1,61 @@
+{
+  "all_unchanged": false,
+  "modules": [
+    {
+      "path": "vflow/core/gate_masks.py",
+      "baseline_sha256": "421ecbece4e751e095e646508a7ccabf36d91a500af39029d651fcd6f171d4cc",
+      "release_sha256": "421ecbece4e751e095e646508a7ccabf36d91a500af39029d651fcd6f171d4cc",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/gates.py",
+      "baseline_sha256": "10110ce7f6fa757d3439e638d7eb1eb2b3ec592cf0094bc2df24f0eb60a7c3e7",
+      "release_sha256": "10110ce7f6fa757d3439e638d7eb1eb2b3ec592cf0094bc2df24f0eb60a7c3e7",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/transforms.py",
+      "baseline_sha256": "15df820aa94635fcdbf8a29c226fd738738ffbe607bb2591e5a4585f546cffaa",
+      "release_sha256": "15df820aa94635fcdbf8a29c226fd738738ffbe607bb2591e5a4585f546cffaa",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/logicle.py",
+      "baseline_sha256": "2a0f94a32f38766c553c696b04c324697ecc0be945aa8a7cbd4ff99893b22170",
+      "release_sha256": "2a0f94a32f38766c553c696b04c324697ecc0be945aa8a7cbd4ff99893b22170",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/gate_stats.py",
+      "baseline_sha256": "6219236019a3c7a3c6d917a631a50638b8a4d488b2f6cc69e16101ead7389c5e",
+      "release_sha256": "6219236019a3c7a3c6d917a631a50638b8a4d488b2f6cc69e16101ead7389c5e",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/scales.py",
+      "baseline_sha256": "db14175eeb6cb0bdac7d0bfc79d607d7e748aac2ce8460006a19f2648d03d66d",
+      "release_sha256": "db14175eeb6cb0bdac7d0bfc79d607d7e748aac2ce8460006a19f2648d03d66d",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/fcs_reader.py",
+      "baseline_sha256": "3ca865d9c5a09a37e034ab59ce8de7d8af0dc58b0068a537bc58ffeca2a815c9",
+      "release_sha256": "241fe30073250952fdbebbe2f1d32021f3eda7ebb0faa7466f11ab913f3c00d3",
+      "unchanged": false
+    },
+    {
+      "path": "vflow/core/cache_keys.py",
+      "baseline_sha256": "5d275765ed90d2f1f0faee37671151ad0f4f5b7735d87496612b4da5462c8878",
+      "release_sha256": "5d275765ed90d2f1f0faee37671151ad0f4f5b7735d87496612b4da5462c8878",
+      "unchanged": true
+    },
+    {
+      "path": "vflow/core/auto_gate.py",
+      "baseline_sha256": "d00932bc9cd0ffe30bd3d249d5247d881391f3fb6cb029c1eba6625b804c127d",
+      "release_sha256": "d00932bc9cd0ffe30bd3d249d5247d881391f3fb6cb029c1eba6625b804c127d",
+      "unchanged": true
+    }
+  ],
+  "baseline_version": "4.4.1",
+  "candidate_version": "4.4.3rc3"
+}

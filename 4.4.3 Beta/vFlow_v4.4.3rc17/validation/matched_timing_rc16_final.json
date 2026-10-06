@@ -1,0 +1,349 @@
+{
+  "passed": true,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "warmups_per_version": 1,
+  "measured_runs_per_version": 5,
+  "alternating_order": true,
+  "threads": 1,
+  "subsampling": false,
+  "events": 48000,
+  "numerical_results_identical": true,
+  "summary": {
+    "source_fingerprints_48k": {
+      "rc15_median_seconds": 0.0012832109996452346,
+      "rc16_median_seconds": 0.01033502900008898,
+      "ratio_rc16_over_rc15": 8.054037101416894
+    },
+    "CSV_ingestion_48k": {
+      "rc15_median_seconds": 0.09047152100083622,
+      "rc16_median_seconds": 0.11721622200002457,
+      "ratio_rc16_over_rc15": 1.2956145834990567
+    },
+    "LMD_decode_and_materialize": {
+      "rc15_median_seconds": 0.0998921110003721,
+      "rc16_median_seconds": 0.11649939400012954,
+      "ratio_rc16_over_rc15": 1.1662521978306735
+    },
+    "owned_CSV_redirect_cached": {
+      "rc15_median_seconds": 0.05166949199974624,
+      "rc16_median_seconds": 0.05528838200007158,
+      "ratio_rc16_over_rc15": 1.070039202250007
+    },
+    "rectangle_gates_48k": {
+      "rc15_median_seconds": 0.0008756269999139477,
+      "rc16_median_seconds": 0.0013076899995212443,
+      "ratio_rc16_over_rc15": 1.4934327055352996
+    },
+    "audit_full_48k": {
+      "rc15_median_seconds": 1.8483701020004446,
+      "rc16_median_seconds": 1.8625540230004844,
+      "ratio_rc16_over_rc15": 1.0076737450928734
+    },
+    "verified_references_48k": {
+      "rc15_median_seconds": 0.0016423429997303174,
+      "rc16_median_seconds": 0.007543415999862191,
+      "ratio_rc16_over_rc15": 4.593081957362661
+    },
+    "workspace_save_edit_reopen": {
+      "rc15_median_seconds": 0.002757772999757435,
+      "rc16_median_seconds": 0.004452925000805408,
+      "ratio_rc16_over_rc15": 1.6146814843705675
+    },
+    "audit_CSV_and_XLSX_exports": {
+      "rc15_median_seconds": 0.17401083300046594,
+      "rc16_median_seconds": 0.1401513820001128,
+      "ratio_rc16_over_rc15": 0.8054175684552783
+    }
+  },
+  "runs": [
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0012264970000614994,
+        "CSV_ingestion_48k": 0.10159558200030006,
+        "LMD_decode_and_materialize": 0.20644922599967686,
+        "owned_CSV_redirect_cached": 0.08664238500023203,
+        "rectangle_gates_48k": 0.0015458119996765163,
+        "audit_full_48k": 3.7714888340005928,
+        "verified_references_48k": 0.0024351140000362648,
+        "workspace_save_edit_reopen": 0.0056463040000380715,
+        "audit_CSV_and_XLSX_exports": 0.2935469200001535
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 0,
+      "warmup": true
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.009782961999917461,
+        "CSV_ingestion_48k": 0.10904520900021453,
+        "LMD_decode_and_materialize": 0.12043696399996406,
+        "owned_CSV_redirect_cached": 0.03805458899933001,
+        "rectangle_gates_48k": 0.0008374059998459416,
+        "audit_full_48k": 3.929991937999148,
+        "verified_references_48k": 0.021195653000177117,
+        "workspace_save_edit_reopen": 0.046010411000679596,
+        "audit_CSV_and_XLSX_exports": 0.7612820719996307
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 0,
+      "warmup": true
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.011417052999604493,
+        "CSV_ingestion_48k": 0.11721622200002457,
+        "LMD_decode_and_materialize": 0.11013315099989995,
+        "owned_CSV_redirect_cached": 0.05528838200007158,
+        "rectangle_gates_48k": 0.0010550370006967569,
+        "audit_full_48k": 2.076123087999804,
+        "verified_references_48k": 0.009356671000205097,
+        "workspace_save_edit_reopen": 0.0053836269999010256,
+        "audit_CSV_and_XLSX_exports": 0.1472428269999
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 1,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0014380820002770633,
+        "CSV_ingestion_48k": 0.0965093960003287,
+        "LMD_decode_and_materialize": 0.08808193500044581,
+        "owned_CSV_redirect_cached": 0.04488415700052428,
+        "rectangle_gates_48k": 0.0008010660003492376,
+        "audit_full_48k": 1.6044472410003436,
+        "verified_references_48k": 0.0027968939994025277,
+        "workspace_save_edit_reopen": 0.002906228000028932,
+        "audit_CSV_and_XLSX_exports": 0.12927258699983213
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 1,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0022813370005678735,
+        "CSV_ingestion_48k": 0.12908343599974614,
+        "LMD_decode_and_materialize": 0.11860102599985112,
+        "owned_CSV_redirect_cached": 0.046719906000362244,
+        "rectangle_gates_48k": 0.0008756269999139477,
+        "audit_full_48k": 2.29217111700018,
+        "verified_references_48k": 0.0016423429997303174,
+        "workspace_save_edit_reopen": 0.002757772999757435,
+        "audit_CSV_and_XLSX_exports": 0.192258000000038
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 2,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.00945463900006871,
+        "CSV_ingestion_48k": 0.13900341000044136,
+        "LMD_decode_and_materialize": 0.15438309900036984,
+        "owned_CSV_redirect_cached": 0.0655916209998395,
+        "rectangle_gates_48k": 0.002113839000230655,
+        "audit_full_48k": 1.8625540230004844,
+        "verified_references_48k": 0.007543415999862191,
+        "workspace_save_edit_reopen": 0.0051538300003812765,
+        "audit_CSV_and_XLSX_exports": 0.14704224900015106
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 2,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.014989954000157013,
+        "CSV_ingestion_48k": 0.10087859600025695,
+        "LMD_decode_and_materialize": 0.10158521300036227,
+        "owned_CSV_redirect_cached": 0.0472794610004712,
+        "rectangle_gates_48k": 0.0009732839998832787,
+        "audit_full_48k": 1.6292237810002916,
+        "verified_references_48k": 0.010519109000597382,
+        "workspace_save_edit_reopen": 0.003054642000279273,
+        "audit_CSV_and_XLSX_exports": 0.1344775319994369
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 3,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0008294449999084463,
+        "CSV_ingestion_48k": 0.08549003900043317,
+        "LMD_decode_and_materialize": 0.10204477499974018,
+        "owned_CSV_redirect_cached": 0.05166949199974624,
+        "rectangle_gates_48k": 0.0008537650001017028,
+        "audit_full_48k": 2.2975421020000795,
+        "verified_references_48k": 0.0018611049999890383,
+        "workspace_save_edit_reopen": 0.005169531000319694,
+        "audit_CSV_and_XLSX_exports": 0.17401083300046594
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 3,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0012832109996452346,
+        "CSV_ingestion_48k": 0.08263818100022036,
+        "LMD_decode_and_materialize": 0.09977532300035818,
+        "owned_CSV_redirect_cached": 0.05573691399968084,
+        "rectangle_gates_48k": 0.0009787469998627785,
+        "audit_full_48k": 1.8483701020004446,
+        "verified_references_48k": 0.0008218100001613493,
+        "workspace_save_edit_reopen": 0.002706876999582164,
+        "audit_CSV_and_XLSX_exports": 0.21471038500021677
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 4,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.009419259000424063,
+        "CSV_ingestion_48k": 0.101123634999567,
+        "LMD_decode_and_materialize": 0.11649939400012954,
+        "owned_CSV_redirect_cached": 0.05102149100002862,
+        "rectangle_gates_48k": 0.0013076899995212443,
+        "audit_full_48k": 1.7072451530002581,
+        "verified_references_48k": 0.007016383000518545,
+        "workspace_save_edit_reopen": 0.003117052000561671,
+        "audit_CSV_and_XLSX_exports": 0.13813139099966065
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 4,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc16",
+      "timings": {
+        "source_fingerprints_48k": 0.01033502900008898,
+        "CSV_ingestion_48k": 0.12272530800055392,
+        "LMD_decode_and_materialize": 0.12626537300002383,
+        "owned_CSV_redirect_cached": 0.05710834599994996,
+        "rectangle_gates_48k": 0.0035364089999347925,
+        "audit_full_48k": 2.020800273000532,
+        "verified_references_48k": 0.007330830999308091,
+        "workspace_save_edit_reopen": 0.004452925000805408,
+        "audit_CSV_and_XLSX_exports": 0.1401513820001128
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 5,
+      "warmup": false
+    },
+    {
+      "version": "4.4.3rc15",
+      "timings": {
+        "source_fingerprints_48k": 0.0008412540000790614,
+        "CSV_ingestion_48k": 0.09047152100083622,
+        "LMD_decode_and_materialize": 0.0998921110003721,
+        "owned_CSV_redirect_cached": 0.05361247599921626,
+        "rectangle_gates_48k": 0.0009995129994422314,
+        "audit_full_48k": 1.7069088130001546,
+        "verified_references_48k": 0.0008641040003567468,
+        "workspace_save_edit_reopen": 0.002531769999222888,
+        "audit_CSV_and_XLSX_exports": 0.1368424550000782
+      },
+      "counts": [
+        7273,
+        7020,
+        7081,
+        7058
+      ],
+      "LMD_float64_sha256": "de4021cd090fb2645d34df0c495bf8294c4181945a3ec86d3fa3243074459f5f",
+      "numerical_sha256": "6db1a2bf9e436a32b4a9f2719d370f67c698bc4987d2e46939fe5f47b2b0f818",
+      "repetition": 5,
+      "warmup": false
+    }
+  ]
+}

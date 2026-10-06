@@ -1,0 +1,194 @@
+FFF.F                                                                    [100%]
+=================================== FAILURES ===================================
+______ test_real_audit_resolved_child_population_and_historical_override _______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f8a86f10410>, <vflow.legacy.vflow_app.Flow...st-9/test_real_audit_resolved_child0/B.csv', '/tmp/pytest-of-root/pytest-9/test_real_audit_resolved_child0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-9/test_real_audit_resolved_child0')
+
+    def test_real_audit_resolved_child_population_and_historical_override(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace;gate=new_gate(app);sid=owner.sample_id(paths[1]);gid=gate['id']
+        owner.show_sample(app,sid);app.gate_scope_var.set('Current sample');owner.scope_changed(app);app._sel_gate()['x1']=70.;app.refresh_plot()
+        app._open_subgate(50.,50.);child=manager._apps[1];child.refresh_plot()
+        ids=[owner.sample_id(p) for p in paths]
+>       samples=prepare_samples(owner,child,ids)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statistical_audit_gui.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/statistics/workspace_audit.py:39: in prepare_samples
+    return materialize_population_inputs(capture_population_inputs(owner,app,sample_ids,gate_id,region))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vflow/statistics/workspace_audit.py:24: in capture_population_inputs
+    snapshot={'tab_id':app._workspace_tab_id,'lineage':plain(lineage),
+                                                       ^^^^^^^^^^^^^^
+vflow/workspace/gates.py:11: in plain
+    return GateDefinition.from_live_dict(gate).to_plain_dict()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.core.gate_definition.GateDefinition'>
+gate = [{'gate': {'id': 0, 'name': 'Gate 1', 'type': 'rectangle', 'applied': True, ...}, 'region': 'IN', 'context': {'x_channel': 'X', 'y_channel': 'Y', 'x_scale': 'linear', 'y_scale': 'linear', ...}, 'workspace_tab_id': 'main'}]
+variable_types = ()
+
+    @classmethod
+    def from_live_dict(
+        cls,
+        gate: dict[str, Any],
+        *,
+        variable_types: tuple[type, ...] = (),
+    ) -> "GateDefinition":
+        """Snapshot a legacy live gate while removing UI Variable objects.
+    
+        ``variable_types`` is injected by the UI layer (currently
+        ``(tk.Variable,)``), keeping this core module independent of tkinter.
+        The conversion matches the frozen v4.1.11 ``_plain_gate_snapshot``
+        behavior exactly, including the three threshold-toggle aliases.
+        """
+        snap: dict[str, Any] = {}
+>       for key, value in gate.items():
+                          ^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'items'
+
+vflow/core/gate_definition.py:48: AttributeError
+________ test_real_review_actions_reuse_exclusion_and_preserve_history _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f8a8014f230>, <vflow.legacy.vflow_app.Flow...st-9/test_real_review_actions_reuse0/B.csv', '/tmp/pytest-of-root/pytest-9/test_real_review_actions_reuse0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-9/test_real_review_actions_reuse0')
+
+    def test_real_review_actions_reuse_exclusion_and_preserve_history(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace
+>       sid=owner.sample_id(paths[0]);s=prepare_samples(owner,app,[owner.sample_id(p) for p in paths]);bundle=run_audit(s)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statistical_audit_gui.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/statistics/workspace_audit.py:39: in prepare_samples
+    return materialize_population_inputs(capture_population_inputs(owner,app,sample_ids,gate_id,region))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vflow/statistics/workspace_audit.py:24: in capture_population_inputs
+    snapshot={'tab_id':app._workspace_tab_id,'lineage':plain(lineage),
+                                                       ^^^^^^^^^^^^^^
+vflow/workspace/gates.py:11: in plain
+    return GateDefinition.from_live_dict(gate).to_plain_dict()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.core.gate_definition.GateDefinition'>, gate = []
+variable_types = ()
+
+    @classmethod
+    def from_live_dict(
+        cls,
+        gate: dict[str, Any],
+        *,
+        variable_types: tuple[type, ...] = (),
+    ) -> "GateDefinition":
+        """Snapshot a legacy live gate while removing UI Variable objects.
+    
+        ``variable_types`` is injected by the UI layer (currently
+        ``(tk.Variable,)``), keeping this core module independent of tkinter.
+        The conversion matches the frozen v4.1.11 ``_plain_gate_snapshot``
+        behavior exactly, including the three threshold-toggle aliases.
+        """
+        snap: dict[str, Any] = {}
+>       for key, value in gate.items():
+                          ^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'items'
+
+vflow/core/gate_definition.py:48: AttributeError
+______________ test_real_audit_worker_run_and_cancel_transaction _______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f8abf61c8c0>, <vflow.legacy.vflow_app.Flow...st-9/test_real_audit_worker_run_and0/B.csv', '/tmp/pytest-of-root/pytest-9/test_real_audit_worker_run_and0/C.csv'], [])
+
+    def test_real_audit_worker_run_and_cancel_transaction(experiment):
+        root,manager,app,paths,errors=experiment;owner=app._workspace;dialog=StatisticalAuditDialog(owner,app);root.update()
+>       dialog.prepare()
+
+tests/test_statistical_audit_gui.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/ui/statistical_audit_dialog.py:67: in prepare
+    try:inputs=capture_population_inputs(self.owner,self.app,ids)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vflow/statistics/workspace_audit.py:24: in capture_population_inputs
+    snapshot={'tab_id':app._workspace_tab_id,'lineage':plain(lineage),
+                                                       ^^^^^^^^^^^^^^
+vflow/workspace/gates.py:11: in plain
+    return GateDefinition.from_live_dict(gate).to_plain_dict()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.core.gate_definition.GateDefinition'>, gate = []
+variable_types = ()
+
+    @classmethod
+    def from_live_dict(
+        cls,
+        gate: dict[str, Any],
+        *,
+        variable_types: tuple[type, ...] = (),
+    ) -> "GateDefinition":
+        """Snapshot a legacy live gate while removing UI Variable objects.
+    
+        ``variable_types`` is injected by the UI layer (currently
+        ``(tk.Variable,)``), keeping this core module independent of tkinter.
+        The conversion matches the frozen v4.1.11 ``_plain_gate_snapshot``
+        behavior exactly, including the three threshold-toggle aliases.
+        """
+        snap: dict[str, Any] = {}
+>       for key, value in gate.items():
+                          ^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'items'
+
+vflow/core/gate_definition.py:48: AttributeError
+_____________ test_unavailable_audit_bundle_reported_and_relinked ______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f8a78e0eb70>, <vflow.legacy.vflow_app.Flow...st-9/test_unavailable_audit_bundle_0/B.csv', '/tmp/pytest-of-root/pytest-9/test_unavailable_audit_bundle_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-9/test_unavailable_audit_bundle_0')
+
+    def test_unavailable_audit_bundle_reported_and_relinked(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace
+>       bundle=run_audit(prepare_samples(owner,app,[owner.sample_id(p) for p in paths]));ref=commit(owner,bundle)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statistical_audit_gui.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/statistics/workspace_audit.py:39: in prepare_samples
+    return materialize_population_inputs(capture_population_inputs(owner,app,sample_ids,gate_id,region))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vflow/statistics/workspace_audit.py:24: in capture_population_inputs
+    snapshot={'tab_id':app._workspace_tab_id,'lineage':plain(lineage),
+                                                       ^^^^^^^^^^^^^^
+vflow/workspace/gates.py:11: in plain
+    return GateDefinition.from_live_dict(gate).to_plain_dict()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.core.gate_definition.GateDefinition'>, gate = []
+variable_types = ()
+
+    @classmethod
+    def from_live_dict(
+        cls,
+        gate: dict[str, Any],
+        *,
+        variable_types: tuple[type, ...] = (),
+    ) -> "GateDefinition":
+        """Snapshot a legacy live gate while removing UI Variable objects.
+    
+        ``variable_types`` is injected by the UI layer (currently
+        ``(tk.Variable,)``), keeping this core module independent of tkinter.
+        The conversion matches the frozen v4.1.11 ``_plain_gate_snapshot``
+        behavior exactly, including the three threshold-toggle aliases.
+        """
+        snap: dict[str, Any] = {}
+>       for key, value in gate.items():
+                          ^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'items'
+
+vflow/core/gate_definition.py:48: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_statistical_audit_gui.py::test_real_audit_resolved_child_population_and_historical_override
+FAILED tests/test_statistical_audit_gui.py::test_real_review_actions_reuse_exclusion_and_preserve_history
+FAILED tests/test_statistical_audit_gui.py::test_real_audit_worker_run_and_cancel_transaction
+FAILED tests/test_statistical_audit_gui.py::test_unavailable_audit_bundle_reported_and_relinked
+4 failed, 1 passed in 4.90s

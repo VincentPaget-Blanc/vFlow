@@ -1,0 +1,26 @@
+{
+  "version": "4.4.3rc7",
+  "tests_passed": 1430,
+  "new_regression_cases": 34,
+  "focused_cases_passed": 43,
+  "frozen_scientific_checks": 53,
+  "frozen_fixture_incompatibilities": 6,
+  "expanded_checks": 35,
+  "frozen_hashes": 39,
+  "native_views": 47,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "wheel": "vflow-4.4.3rc7-py3-none-any.whl",
+  "wheel_sha256": "2b7d9b1af85ebc1612591a876b3a7cb25f555cdc7dc1060e695486bc7a99fa87",
+  "verified_wheel_python_sources": 119,
+  "wheel_matches_source": true,
+  "numerical_estimators_changed": false,
+  "intentional_empty_gate_serialization_extended": true,
+  "platform": "Python 3.12 / Linux / Tk 9 / Xvfb",
+  "protected_statistics_ingestion_service_modules": 41,
+  "remaining_format_acceptance": [
+    "MQD native/export truth",
+    "real FCS1.0 acquisition",
+    "external FCS3.2 acquisition"
+  ]
+}

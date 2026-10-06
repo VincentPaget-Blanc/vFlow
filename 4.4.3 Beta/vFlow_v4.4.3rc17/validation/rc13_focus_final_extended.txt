@@ -1,0 +1,29 @@
+..............................................F......................... [ 72%]
+...........................                                              [100%]
+=================================== FAILURES ===================================
+_______ test_relink_refreshes_every_child_and_preserves_inactive_choice ________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f22f1c60fe0>, <vflow.legacy.vflow_app.Flow...-28/test_relink_refreshes_every_ch0/B.csv', '/tmp/pytest-of-root/pytest-28/test_relink_refreshes_every_ch0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-28/test_relink_refreshes_every_ch0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f22f1c63f20>
+
+    def test_relink_refreshes_every_child_and_preserves_inactive_choice(experiment, tmp_path, monkeypatch):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        new_gate(app); app._open_subgate(50., 50.); first = manager._apps[-1]
+        app._open_subgate(50., 50.); second = manager._apps[-1]
+        first.file_vars[paths[0]].set(False); first._on_active_files_changed()
+        sid = owner.sample_id(paths[0]); dest = tmp_path / 'children.vflow'; assert owner.save(path=dest)
+        moved = tmp_path / 'moved.csv'; shutil.copy2(paths[0], moved)
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **k: str(moved))
+        owner.locate_reference('sample:' + sid)
+        assert owner.save()
+        assert str(moved) in first.loaded_files and str(moved) in second.loaded_files
+>       assert not first.file_vars[str(moved)].get()
+E       assert not True
+E        +  where True = get()
+E        +    where get = <tkinter.BooleanVar object at 0x7f22e915c200>.get
+
+tests/test_bug_hunt_gui_rc13.py:115: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc13.py::test_relink_refreshes_every_child_and_preserves_inactive_choice
+1 failed, 98 passed in 51.33s

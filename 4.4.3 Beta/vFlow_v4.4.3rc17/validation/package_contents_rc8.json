@@ -1,0 +1,29 @@
+{
+  "version": "4.4.3rc8",
+  "tests_passed": 1455,
+  "new_native_layout_cases": 25,
+  "frozen_scientific_checks": 53,
+  "frozen_fixture_incompatibilities": 6,
+  "expanded_checks": 35,
+  "frozen_hashes": 39,
+  "current_native_views": 57,
+  "native_general_views": 47,
+  "native_adaptive_views": 10,
+  "fresh_process_persistence_passed": true,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "wheel": "vflow-4.4.3rc8-py3-none-any.whl",
+  "wheel_sha256": "6c621993e65ec5c87a8aa33437730282f70a26033cd1b3106ab7494513d61ea4",
+  "verified_wheel_python_sources": 120,
+  "wheel_matches_source": true,
+  "numerical_changes": false,
+  "original_core_modules_preserved": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "historical_screenshots": "Earlier PNG/JPG sets are available in their original versioned archives; inventories/logs remain.",
+  "platform": "Python 3.12 / Linux / Tk 9 / Xvfb",
+  "remaining_format_acceptance": [
+    "MQD native/export truth",
+    "real FCS1.0 acquisition",
+    "external FCS3.2 acquisition"
+  ]
+}

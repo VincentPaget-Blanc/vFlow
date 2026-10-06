@@ -1,0 +1,5 @@
+# vFlow 4.4.3rc5 — benchmark-loaded task tabs
+
+Unaltered native Linux/Tk screenshots of the implemented Data, Plot, Gates (Manual and Automatic), and Analysis tabs, plus the full app. Four frozen cytometry CSVs are loaded and active: Control_01, Control_02, Treatment_01 and Treatment_02; 12,000 events each, 48,000 total. The benchmark G_LYMPH_RECT gate contains 28,432 events. The mixed-condition screenshot session does not run a within-condition statistical audit.
+
+Light theme, Comfortable interface size and a 570-pixel sidebar; the ordinary default sections are used. Advanced settings remain available in their collapsible sections and Settings menu. The pinned samples, single View Mode selector and gate-target status remain visible on every task. macOS/Windows appearance may differ. The native X11 capture uses DejaVu Sans glyphs; the resolved font and viewport measurements are recorded in validation/sidebar_capture_rc5.json in the app bundle. Automatic gates require a small 38-pixel scroll in this session; the other ordinary task views fit within the viewport.

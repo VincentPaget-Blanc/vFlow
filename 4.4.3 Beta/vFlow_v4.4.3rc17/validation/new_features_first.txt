@@ -1,0 +1,38 @@
+.....................F........F.                                         [100%]
+=================================== FAILURES ===================================
+_____________ test_joint_only_discordance_with_identical_marginals _____________
+
+    def test_joint_only_discordance_with_identical_marginals():
+        x=np.linspace(-3,3,500)
+        s=[AuditSample(str(i),str(i),pd.DataFrame({'a':x,'b':x if i<4 else -x})) for i in range(5)]
+        r=run_audit(s)
+>       assert all(row['raw_w1']==0 for row in r['variable_distances'])
+E       assert False
+E        +  where False = all(<generator object test_joint_only_discordance_with_identical_marginals.<locals>.<genexpr> at 0x7fd1a2d96c20>)
+
+tests/test_statistical_audit.py:51: AssertionError
+______ test_hierarchy_unbalanced_equal_bio_influence_and_identifiability _______
+
+    def test_hierarchy_unbalanced_equal_bio_influence_and_identifiability():
+        s,m=hierarchical(bios=5,nested=3,particles=30)
+        for sample in s:
+            if m[sample.sample_id]=='4':sample.dataframe.x+=25
+            if m[sample.sample_id]=='0':sample.dataframe=pd.concat([sample.dataframe]*10,ignore_index=True)
+        r=run_audit(s,audit_type='hierarchy',hierarchy_mapping=m,policy={'n_projections':4})
+        assert r['variance_components'][0]['n_biological']==5
+        expected=np.mean([np.mean([x.dataframe.x.mean() for x in s if m[x.sample_id]==b]) for b in set(m.values())])
+        assert r['equal_bio_centers'][0]['equal_bio_center']==pytest.approx(expected)
+>       biggest=max(r['influence'],key=lambda x:x['absolute_change']);assert biggest['omitted_bio']=='4' and biggest['influence_status']=='influential'
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert ('4' == '4'
+E         
+E           4 and 'descriptive' == 'influential'
+E         
+E         - influential
+E         + descriptive)
+
+tests/test_statistical_audit.py:133: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_statistical_audit.py::test_joint_only_discordance_with_identical_marginals
+FAILED tests/test_statistical_audit.py::test_hierarchy_unbalanced_equal_bio_influence_and_identifiability
+2 failed, 30 passed in 1.94s

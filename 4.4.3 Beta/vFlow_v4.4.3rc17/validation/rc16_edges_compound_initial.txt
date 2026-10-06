@@ -1,0 +1,276 @@
+..............FFFF                                                       [100%]
+=================================== FAILURES ===================================
+________________________ test_compound_benchmark[1601] _________________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3bae0f43b0>, <vflow.legacy.vflow_app.Flow...test-3/test_compound_benchmark_1601_0/B.csv', '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1601_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1601_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3bae0f6f60>
+seed = 1601
+
+    @pytest.mark.parametrize('seed',[1601,1602,1603,1604])
+    def test_compound_benchmark(experiment,tmp_path,monkeypatch,seed):
+        root,manager,app,_,errors=experiment;owner=app._workspace;owner.clear();rng=random.Random(seed)
+        paths=[];raw={};hashes={}
+        for name in ('Control_01','Control_02','Treatment_01','Treatment_02'):
+            p=tmp_path/(name+'.csv');shutil.copy2(ROOT/'benchmark_extensions/frozen_v1/cytometry'/p.name,p)
+            paths.append(str(p));raw[str(p)]=pd.read_csv(p);hashes[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+        app._load_paths(paths);app.x_var.set('FSC-A');app.y_var.set('SSC-A');app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+        assert sum(map(len,app.loaded_files.values()))==48000
+        definition=json.loads((ROOT/'benchmark_extensions/frozen_v1/references/benchmark_gate_definitions.json').read_text())['gates'][0]
+        app._add_gate(auto_type='rectangle');g=app._sel_gate();g.update({k:definition[k] for k in ('x0','x1','y0','y1')});g['applied']=True;gid=g['id']
+        app._bind_gate_context(g);app.refresh_plot();ids=[owner.sample_id(p) for p in paths]
+        def oracle(df,gate):return df[df['FSC-A'].between(gate['x0'],gate['x1']) & df['SSC-A'].between(gate['y0'],gate['y1'])]
+        def verify():
+            app.refresh_plot()
+            for sid in ids:
+                if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+                p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+                assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+            for child in manager._apps[1:]:
+                child.refresh_plot()
+                for p,df in child.loaded_files.items():
+                    sid=owner.sample_id(p);gate=owner.stores['main'].resolve_gate(sid,gid);expected=oracle(raw[p],gate)
+                    if len(child.population_lineage)>1:
+                        second=owner.stores[manager._apps[1]._workspace_tab_id].resolve_gate(sid,child_gid);expected=oracle(expected,second)
+                    pd.testing.assert_frame_equal(df.reset_index(drop=True),expected.reset_index(drop=True))
+        verify();bundle=run_audit(prepare_samples(owner,app,ids[:2]),variables=['FSC-A','SSC-A']);ref=commit(owner,bundle)
+        decide(owner,ref,ids[0],'note',note='Compound benchmark review');snapshot=copy.deepcopy(bundle)
+        app._sel_gate_id=gid;app._open_subgate(75000.,30000.);child=manager._apps[1]
+        child.plot_type_var.set('Dot Plot');child.show_marginals_var.set(False)
+        child._add_gate(auto_type='rectangle');cg=child._sel_gate();cg.update(x0=55000.,x1=95000.,y0=10000.,y1=45000.,applied=True);child_gid=cg['id']
+        child._bind_gate_context(cg);child.refresh_plot();child._open_subgate(75000.,30000.);manager._apps[-1].plot_type_var.set('Dot Plot');verify()
+        owner.show_sample(app,ids[1]);app.gate_scope_var.set('Current sample');owner.scope_changed(app);app._sel_gate_id=gid
+        app._sel_gate()['x1']=90000.;app.refresh_plot();owner.capture(app);verify()
+        owner.gate_action(app,'undo',gid);verify()
+        app.view_mode_var.set('overlay');app._on_view_mode_change();dest=tmp_path/'mixed.vflow';assert owner.save(path=dest)
+        operations=[]
+        for i in range(20):
+            sid=rng.choice(ids);p=owner.path_for(sid);action=rng.choice(('toggle_exclusion','active','save_reopen'))
+            if action=='toggle_exclusion':
+                if owner.document.samples[sid].excluded:app._restore_file(p)
+                else:app._exclude_file(p)
+            elif action=='active' and p in app.file_vars:app.file_vars[p].set(not app.file_vars[p].get());app._on_active_files_changed()
+            else:assert owner.save() and owner.open(dest)
+>           owner.capture(app);operations.append([sid,action]);verify()
+                                                               ^^^^^^^^
+
+tests/test_compound_benchmark_rc16.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def verify():
+        app.refresh_plot()
+        for sid in ids:
+            if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+            p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+>           assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1601_0/Treatment_02.csv'
+
+tests/test_compound_benchmark_rc16.py:38: KeyError
+________________________ test_compound_benchmark[1602] _________________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3bac57cc20>, <vflow.legacy.vflow_app.Flow...test-3/test_compound_benchmark_1602_0/B.csv', '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1602_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1602_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3bac57cdd0>
+seed = 1602
+
+    @pytest.mark.parametrize('seed',[1601,1602,1603,1604])
+    def test_compound_benchmark(experiment,tmp_path,monkeypatch,seed):
+        root,manager,app,_,errors=experiment;owner=app._workspace;owner.clear();rng=random.Random(seed)
+        paths=[];raw={};hashes={}
+        for name in ('Control_01','Control_02','Treatment_01','Treatment_02'):
+            p=tmp_path/(name+'.csv');shutil.copy2(ROOT/'benchmark_extensions/frozen_v1/cytometry'/p.name,p)
+            paths.append(str(p));raw[str(p)]=pd.read_csv(p);hashes[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+        app._load_paths(paths);app.x_var.set('FSC-A');app.y_var.set('SSC-A');app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+        assert sum(map(len,app.loaded_files.values()))==48000
+        definition=json.loads((ROOT/'benchmark_extensions/frozen_v1/references/benchmark_gate_definitions.json').read_text())['gates'][0]
+        app._add_gate(auto_type='rectangle');g=app._sel_gate();g.update({k:definition[k] for k in ('x0','x1','y0','y1')});g['applied']=True;gid=g['id']
+        app._bind_gate_context(g);app.refresh_plot();ids=[owner.sample_id(p) for p in paths]
+        def oracle(df,gate):return df[df['FSC-A'].between(gate['x0'],gate['x1']) & df['SSC-A'].between(gate['y0'],gate['y1'])]
+        def verify():
+            app.refresh_plot()
+            for sid in ids:
+                if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+                p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+                assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+            for child in manager._apps[1:]:
+                child.refresh_plot()
+                for p,df in child.loaded_files.items():
+                    sid=owner.sample_id(p);gate=owner.stores['main'].resolve_gate(sid,gid);expected=oracle(raw[p],gate)
+                    if len(child.population_lineage)>1:
+                        second=owner.stores[manager._apps[1]._workspace_tab_id].resolve_gate(sid,child_gid);expected=oracle(expected,second)
+                    pd.testing.assert_frame_equal(df.reset_index(drop=True),expected.reset_index(drop=True))
+        verify();bundle=run_audit(prepare_samples(owner,app,ids[:2]),variables=['FSC-A','SSC-A']);ref=commit(owner,bundle)
+        decide(owner,ref,ids[0],'note',note='Compound benchmark review');snapshot=copy.deepcopy(bundle)
+        app._sel_gate_id=gid;app._open_subgate(75000.,30000.);child=manager._apps[1]
+        child.plot_type_var.set('Dot Plot');child.show_marginals_var.set(False)
+        child._add_gate(auto_type='rectangle');cg=child._sel_gate();cg.update(x0=55000.,x1=95000.,y0=10000.,y1=45000.,applied=True);child_gid=cg['id']
+        child._bind_gate_context(cg);child.refresh_plot();child._open_subgate(75000.,30000.);manager._apps[-1].plot_type_var.set('Dot Plot');verify()
+        owner.show_sample(app,ids[1]);app.gate_scope_var.set('Current sample');owner.scope_changed(app);app._sel_gate_id=gid
+        app._sel_gate()['x1']=90000.;app.refresh_plot();owner.capture(app);verify()
+        owner.gate_action(app,'undo',gid);verify()
+        app.view_mode_var.set('overlay');app._on_view_mode_change();dest=tmp_path/'mixed.vflow';assert owner.save(path=dest)
+        operations=[]
+        for i in range(20):
+            sid=rng.choice(ids);p=owner.path_for(sid);action=rng.choice(('toggle_exclusion','active','save_reopen'))
+            if action=='toggle_exclusion':
+                if owner.document.samples[sid].excluded:app._restore_file(p)
+                else:app._exclude_file(p)
+            elif action=='active' and p in app.file_vars:app.file_vars[p].set(not app.file_vars[p].get());app._on_active_files_changed()
+            else:assert owner.save() and owner.open(dest)
+>           owner.capture(app);operations.append([sid,action]);verify()
+                                                               ^^^^^^^^
+
+tests/test_compound_benchmark_rc16.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def verify():
+        app.refresh_plot()
+        for sid in ids:
+            if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+            p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+>           assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1602_0/Treatment_01.csv'
+
+tests/test_compound_benchmark_rc16.py:38: KeyError
+________________________ test_compound_benchmark[1603] _________________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3bae283e90>, <vflow.legacy.vflow_app.Flow...test-3/test_compound_benchmark_1603_0/B.csv', '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1603_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1603_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3bae283920>
+seed = 1603
+
+    @pytest.mark.parametrize('seed',[1601,1602,1603,1604])
+    def test_compound_benchmark(experiment,tmp_path,monkeypatch,seed):
+        root,manager,app,_,errors=experiment;owner=app._workspace;owner.clear();rng=random.Random(seed)
+        paths=[];raw={};hashes={}
+        for name in ('Control_01','Control_02','Treatment_01','Treatment_02'):
+            p=tmp_path/(name+'.csv');shutil.copy2(ROOT/'benchmark_extensions/frozen_v1/cytometry'/p.name,p)
+            paths.append(str(p));raw[str(p)]=pd.read_csv(p);hashes[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+        app._load_paths(paths);app.x_var.set('FSC-A');app.y_var.set('SSC-A');app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+        assert sum(map(len,app.loaded_files.values()))==48000
+        definition=json.loads((ROOT/'benchmark_extensions/frozen_v1/references/benchmark_gate_definitions.json').read_text())['gates'][0]
+        app._add_gate(auto_type='rectangle');g=app._sel_gate();g.update({k:definition[k] for k in ('x0','x1','y0','y1')});g['applied']=True;gid=g['id']
+        app._bind_gate_context(g);app.refresh_plot();ids=[owner.sample_id(p) for p in paths]
+        def oracle(df,gate):return df[df['FSC-A'].between(gate['x0'],gate['x1']) & df['SSC-A'].between(gate['y0'],gate['y1'])]
+        def verify():
+            app.refresh_plot()
+            for sid in ids:
+                if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+                p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+                assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+            for child in manager._apps[1:]:
+                child.refresh_plot()
+                for p,df in child.loaded_files.items():
+                    sid=owner.sample_id(p);gate=owner.stores['main'].resolve_gate(sid,gid);expected=oracle(raw[p],gate)
+                    if len(child.population_lineage)>1:
+                        second=owner.stores[manager._apps[1]._workspace_tab_id].resolve_gate(sid,child_gid);expected=oracle(expected,second)
+                    pd.testing.assert_frame_equal(df.reset_index(drop=True),expected.reset_index(drop=True))
+        verify();bundle=run_audit(prepare_samples(owner,app,ids[:2]),variables=['FSC-A','SSC-A']);ref=commit(owner,bundle)
+        decide(owner,ref,ids[0],'note',note='Compound benchmark review');snapshot=copy.deepcopy(bundle)
+        app._sel_gate_id=gid;app._open_subgate(75000.,30000.);child=manager._apps[1]
+        child.plot_type_var.set('Dot Plot');child.show_marginals_var.set(False)
+        child._add_gate(auto_type='rectangle');cg=child._sel_gate();cg.update(x0=55000.,x1=95000.,y0=10000.,y1=45000.,applied=True);child_gid=cg['id']
+        child._bind_gate_context(cg);child.refresh_plot();child._open_subgate(75000.,30000.);manager._apps[-1].plot_type_var.set('Dot Plot');verify()
+        owner.show_sample(app,ids[1]);app.gate_scope_var.set('Current sample');owner.scope_changed(app);app._sel_gate_id=gid
+        app._sel_gate()['x1']=90000.;app.refresh_plot();owner.capture(app);verify()
+        owner.gate_action(app,'undo',gid);verify()
+        app.view_mode_var.set('overlay');app._on_view_mode_change();dest=tmp_path/'mixed.vflow';assert owner.save(path=dest)
+        operations=[]
+        for i in range(20):
+            sid=rng.choice(ids);p=owner.path_for(sid);action=rng.choice(('toggle_exclusion','active','save_reopen'))
+            if action=='toggle_exclusion':
+                if owner.document.samples[sid].excluded:app._restore_file(p)
+                else:app._exclude_file(p)
+            elif action=='active' and p in app.file_vars:app.file_vars[p].set(not app.file_vars[p].get());app._on_active_files_changed()
+            else:assert owner.save() and owner.open(dest)
+>           owner.capture(app);operations.append([sid,action]);verify()
+                                                               ^^^^^^^^
+
+tests/test_compound_benchmark_rc16.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def verify():
+        app.refresh_plot()
+        for sid in ids:
+            if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+            p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+>           assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1603_0/Control_02.csv'
+
+tests/test_compound_benchmark_rc16.py:38: KeyError
+________________________ test_compound_benchmark[1604] _________________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3bac6f5ee0>, <vflow.legacy.vflow_app.Flow...test-3/test_compound_benchmark_1604_0/B.csv', '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1604_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1604_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3bac331760>
+seed = 1604
+
+    @pytest.mark.parametrize('seed',[1601,1602,1603,1604])
+    def test_compound_benchmark(experiment,tmp_path,monkeypatch,seed):
+        root,manager,app,_,errors=experiment;owner=app._workspace;owner.clear();rng=random.Random(seed)
+        paths=[];raw={};hashes={}
+        for name in ('Control_01','Control_02','Treatment_01','Treatment_02'):
+            p=tmp_path/(name+'.csv');shutil.copy2(ROOT/'benchmark_extensions/frozen_v1/cytometry'/p.name,p)
+            paths.append(str(p));raw[str(p)]=pd.read_csv(p);hashes[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+        app._load_paths(paths);app.x_var.set('FSC-A');app.y_var.set('SSC-A');app.apply_axes();app.x_scale_var.set('linear');app.y_scale_var.set('linear')
+        assert sum(map(len,app.loaded_files.values()))==48000
+        definition=json.loads((ROOT/'benchmark_extensions/frozen_v1/references/benchmark_gate_definitions.json').read_text())['gates'][0]
+        app._add_gate(auto_type='rectangle');g=app._sel_gate();g.update({k:definition[k] for k in ('x0','x1','y0','y1')});g['applied']=True;gid=g['id']
+        app._bind_gate_context(g);app.refresh_plot();ids=[owner.sample_id(p) for p in paths]
+        def oracle(df,gate):return df[df['FSC-A'].between(gate['x0'],gate['x1']) & df['SSC-A'].between(gate['y0'],gate['y1'])]
+        def verify():
+            app.refresh_plot()
+            for sid in ids:
+                if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+                p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+                assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+            for child in manager._apps[1:]:
+                child.refresh_plot()
+                for p,df in child.loaded_files.items():
+                    sid=owner.sample_id(p);gate=owner.stores['main'].resolve_gate(sid,gid);expected=oracle(raw[p],gate)
+                    if len(child.population_lineage)>1:
+                        second=owner.stores[manager._apps[1]._workspace_tab_id].resolve_gate(sid,child_gid);expected=oracle(expected,second)
+                    pd.testing.assert_frame_equal(df.reset_index(drop=True),expected.reset_index(drop=True))
+        verify();bundle=run_audit(prepare_samples(owner,app,ids[:2]),variables=['FSC-A','SSC-A']);ref=commit(owner,bundle)
+        decide(owner,ref,ids[0],'note',note='Compound benchmark review');snapshot=copy.deepcopy(bundle)
+        app._sel_gate_id=gid;app._open_subgate(75000.,30000.);child=manager._apps[1]
+        child.plot_type_var.set('Dot Plot');child.show_marginals_var.set(False)
+        child._add_gate(auto_type='rectangle');cg=child._sel_gate();cg.update(x0=55000.,x1=95000.,y0=10000.,y1=45000.,applied=True);child_gid=cg['id']
+        child._bind_gate_context(cg);child.refresh_plot();child._open_subgate(75000.,30000.);manager._apps[-1].plot_type_var.set('Dot Plot');verify()
+        owner.show_sample(app,ids[1]);app.gate_scope_var.set('Current sample');owner.scope_changed(app);app._sel_gate_id=gid
+        app._sel_gate()['x1']=90000.;app.refresh_plot();owner.capture(app);verify()
+        owner.gate_action(app,'undo',gid);verify()
+        app.view_mode_var.set('overlay');app._on_view_mode_change();dest=tmp_path/'mixed.vflow';assert owner.save(path=dest)
+        operations=[]
+        for i in range(20):
+            sid=rng.choice(ids);p=owner.path_for(sid);action=rng.choice(('toggle_exclusion','active','save_reopen'))
+            if action=='toggle_exclusion':
+                if owner.document.samples[sid].excluded:app._restore_file(p)
+                else:app._exclude_file(p)
+            elif action=='active' and p in app.file_vars:app.file_vars[p].set(not app.file_vars[p].get());app._on_active_files_changed()
+            else:assert owner.save() and owner.open(dest)
+>           owner.capture(app);operations.append([sid,action]);verify()
+                                                               ^^^^^^^^
+
+tests/test_compound_benchmark_rc16.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def verify():
+        app.refresh_plot()
+        for sid in ids:
+            if sid not in owner.document.samples or owner.document.samples[sid].excluded:continue
+            p=owner.path_for(sid);gate=owner.stores['main'].resolve_gate(sid,gid)
+>           assert app.gate_stats[gid][p]['stats']['IN']['count']==len(oracle(raw[p],gate))
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: '/tmp/pytest-of-root/pytest-3/test_compound_benchmark_1604_0/Control_01.csv'
+
+tests/test_compound_benchmark_rc16.py:38: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1601]
+FAILED tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1602]
+FAILED tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1603]
+FAILED tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1604]
+4 failed, 14 passed in 61.47s (0:01:01)

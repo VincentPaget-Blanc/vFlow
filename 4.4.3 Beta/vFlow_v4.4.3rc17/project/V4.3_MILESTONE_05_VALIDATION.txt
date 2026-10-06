@@ -1,0 +1,20 @@
+vFlow v4.3 controller decomposition — Milestone 5
+=================================================
+RenderPlan / composed FlowRenderer boundary
+
+Authoritative v4.2.0 release SHA-256:
+e7e8e51dae1fd0d3cb404b367057275e80da47ea6eded8548fbed8ae7a15d94f
+
+pytest: 1011/1011 PASS
+focused renderer characterization: 76/76 PASS
+compileall: PASS
+scientific fingerprint (byte-identical):
+b9e3da149810d8039b74eb85360cc046a34eb346d2b8aad04f6f109fc4b44aef
+FlowJo/TextToFCS: shape 1473 x 8; normalizations 10; max DATA diff 0.0
+decoded-value SHA-256:
+5650c094054999b7994ccd42c4d1783b87d7057f4a1a8c4274b2de5f0d6a7225
+
+M4 -> M5 exact Agg RGBA parity:
+Dot:     bf1b1b3fae4fda4ea34b1c495402ef2dac406a77f65fe096ae663721143b0e01
+Density: cd950685ef48d2f6f7416b427d879931d6f2fc3fed980c04b7b86f858a4f7422
+Contour: 293f4cf77552e56abe92fc234068931c8431b91500f407cab400c5aaeb748dbd

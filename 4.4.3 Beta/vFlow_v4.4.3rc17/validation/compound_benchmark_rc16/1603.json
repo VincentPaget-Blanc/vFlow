@@ -1,0 +1,90 @@
+{
+  "seed": 1603,
+  "events": 48000,
+  "operations": [
+    [
+      "5e98aba0-8c4b-4df2-8fd2-b733ddb3692b",
+      "save_reopen"
+    ],
+    [
+      "fa8ed5db-270f-45ae-9b03-5aaffc7cf797",
+      "toggle_exclusion"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "toggle_exclusion"
+    ],
+    [
+      "7fa40335-110e-4224-bb21-067ef1bee70c",
+      "active"
+    ],
+    [
+      "7fa40335-110e-4224-bb21-067ef1bee70c",
+      "save_reopen"
+    ],
+    [
+      "7fa40335-110e-4224-bb21-067ef1bee70c",
+      "toggle_exclusion"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "active"
+    ],
+    [
+      "5e98aba0-8c4b-4df2-8fd2-b733ddb3692b",
+      "active"
+    ],
+    [
+      "5e98aba0-8c4b-4df2-8fd2-b733ddb3692b",
+      "save_reopen"
+    ],
+    [
+      "7fa40335-110e-4224-bb21-067ef1bee70c",
+      "toggle_exclusion"
+    ],
+    [
+      "fa8ed5db-270f-45ae-9b03-5aaffc7cf797",
+      "save_reopen"
+    ],
+    [
+      "fa8ed5db-270f-45ae-9b03-5aaffc7cf797",
+      "toggle_exclusion"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "save_reopen"
+    ],
+    [
+      "fa8ed5db-270f-45ae-9b03-5aaffc7cf797",
+      "save_reopen"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "save_reopen"
+    ],
+    [
+      "fa8ed5db-270f-45ae-9b03-5aaffc7cf797",
+      "active"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "save_reopen"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "active"
+    ],
+    [
+      "bc68531a-29b2-494d-9095-0aff377418c3",
+      "toggle_exclusion"
+    ],
+    [
+      "5e98aba0-8c4b-4df2-8fd2-b733ddb3692b",
+      "toggle_exclusion"
+    ]
+  ],
+  "nested_populations": 2,
+  "historical_events": 24000,
+  "raw_hashes_unchanged": true,
+  "passed": true
+}

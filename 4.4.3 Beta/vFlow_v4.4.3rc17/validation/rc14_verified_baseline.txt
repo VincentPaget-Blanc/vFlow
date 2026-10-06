@@ -1,0 +1,303 @@
+Verified all 122 package sources identical to delivered RC13
+FFF..FFFFF.FFF                                                           [100%]
+=================================== FAILURES ===================================
+_____________ test_unreadable_excluded_source_survives_reopen[csv] _____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9eeace1f70>, <vflow.legacy.vflow_app.Flow...st-5/test_unreadable_excluded_sourc0/B.csv', '/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc0')
+extension = 'csv'
+
+    @pytest.mark.parametrize('extension', ['csv', 'mqd'])
+    def test_unreadable_excluded_source_survives_reopen(experiment, tmp_path, extension):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        source = tmp_path / ('unreadable.' + extension); source.write_bytes(b'\xff\xfe\x00invalid source')
+        listing = tmp_path / 'excluded.csv'; pd.DataFrame({'Path': [str(source)]}).to_csv(listing, index=False)
+        from tkinter import filedialog
+        old = filedialog.askopenfilename
+        try:
+            filedialog.askopenfilename = lambda **k: str(listing)
+            app.load_excluded_list()
+        finally: filedialog.askopenfilename = old
+        sid = owner.sample_id(str(source)); dest = tmp_path / 'excluded.vflow'
+        assert owner.save(path=dest) and owner.open(dest)
+        assert owner.document.samples[sid].excluded and 'sample:' + sid in owner.missing
+>       assert str(source) in app.excluded_files and app.excluded_files[str(source)] is None
+E       AssertionError: assert ('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc0/unreadable.csv' in {})
+E        +  where '/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc0/unreadable.csv' = str(PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc0/unreadable.csv'))
+E        +  and   {} = <vflow.legacy.vflow_app.FlowApp object at 0x7f9eea54ddf0>.excluded_files
+
+tests/test_bug_hunt_gui_rc14.py:32: AssertionError
+_____________ test_unreadable_excluded_source_survives_reopen[mqd] _____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee8230770>, <vflow.legacy.vflow_app.Flow...st-5/test_unreadable_excluded_sourc1/B.csv', '/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc1')
+extension = 'mqd'
+
+    @pytest.mark.parametrize('extension', ['csv', 'mqd'])
+    def test_unreadable_excluded_source_survives_reopen(experiment, tmp_path, extension):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        source = tmp_path / ('unreadable.' + extension); source.write_bytes(b'\xff\xfe\x00invalid source')
+        listing = tmp_path / 'excluded.csv'; pd.DataFrame({'Path': [str(source)]}).to_csv(listing, index=False)
+        from tkinter import filedialog
+        old = filedialog.askopenfilename
+        try:
+            filedialog.askopenfilename = lambda **k: str(listing)
+            app.load_excluded_list()
+        finally: filedialog.askopenfilename = old
+        sid = owner.sample_id(str(source)); dest = tmp_path / 'excluded.vflow'
+        assert owner.save(path=dest) and owner.open(dest)
+        assert owner.document.samples[sid].excluded and 'sample:' + sid in owner.missing
+>       assert str(source) in app.excluded_files and app.excluded_files[str(source)] is None
+E       AssertionError: assert ('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc1/unreadable.mqd' in {})
+E        +  where '/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc1/unreadable.mqd' = str(PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_excluded_sourc1/unreadable.mqd'))
+E        +  and   {} = <vflow.legacy.vflow_app.FlowApp object at 0x7f9ee8232bd0>.excluded_files
+
+tests/test_bug_hunt_gui_rc14.py:32: AssertionError
+_______ test_locate_missing_exclusion_can_restore_decoded_events[False] ________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee5d6cb90>, <vflow.legacy.vflow_app.Flow...st-5/test_locate_missing_exclusion_0/B.csv', '/tmp/pytest-of-root/pytest-5/test_locate_missing_exclusion_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_locate_missing_exclusion_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9eea2b8290>
+moved = False
+
+    @pytest.mark.parametrize('moved', [False, True])
+    def test_locate_missing_exclusion_can_restore_decoded_events(experiment, tmp_path, monkeypatch, moved):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        source = tmp_path / 'missing.csv'
+        app._dataset_state_obj().register_unloaded_exclusion(str(source)); owner.capture(app)
+        sid = owner.sample_id(str(source)); dest = tmp_path / 'missing.vflow'
+        assert owner.save(path=dest) and owner.open(dest)
+        found = tmp_path / 'found.csv' if moved else source
+        found.write_text('X,Y\n1,2\n3,4\n5,6\n')
+        monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **k: str(found))
+        owner.locate_reference('sample:' + sid)
+        assert owner.document.samples[sid].excluded and 'sample:' + sid not in owner.missing
+>       assert app.excluded_files[str(found)] is not None
+E       assert None is not None
+
+tests/test_bug_hunt_gui_rc14.py:49: AssertionError
+________ test_unreadable_container_member_keeps_authoritative_identity _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee5bcd790>, <vflow.legacy.vflow_app.Flow...st-5/test_unreadable_container_memb0/B.csv', '/tmp/pytest-of-root/pytest-5/test_unreadable_container_memb0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_container_memb0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9ee5bcc920>
+
+    def test_unreadable_container_member_keeps_authoritative_identity(experiment, tmp_path, monkeypatch):
+        from tests.format_fixtures import write_fixture
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        member = next(s for s in owner.document.samples.values() if s.source.absolute_path == str(source))
+        sid = member.sample_id; member_id = member.source_member_id
+        app._exclude_file(owner.path_for(sid)); expected = set(owner.document.samples)
+        dest = tmp_path/'member.vflow'; assert owner.save(path=dest)
+        aliases = app._apply_axis_aliases_to_df
+        def unavailable(df, path):
+            if df.attrs.get('vflow_source_member_id') == member_id: raise ValueError('Temporary member decode failure')
+            return aliases(df, path)
+        with monkeypatch.context() as patch:
+            patch.setattr(app, '_apply_axis_aliases_to_df', unavailable)
+            assert owner.open(dest)
+>           assert str(source) in app.excluded_files and app.excluded_files[str(source)] is None
+E           AssertionError: assert ('/tmp/pytest-of-root/pytest-5/test_unreadable_container_memb0/plate.lmd' in {})
+E            +  where '/tmp/pytest-of-root/pytest-5/test_unreadable_container_memb0/plate.lmd' = str(PosixPath('/tmp/pytest-of-root/pytest-5/test_unreadable_container_memb0/plate.lmd'))
+E            +  and   {} = <vflow.legacy.vflow_app.FlowApp object at 0x7f9ee5e35160>.excluded_files
+
+tests/test_bug_hunt_gui_rc14.py:90: AssertionError
+___________ test_prepare_publishes_state_only_when_main_thread_polls ___________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee5b75d90>, <vflow.legacy.vflow_app.Flow...st-5/test_prepare_publishes_state_o0/B.csv', '/tmp/pytest-of-root/pytest-5/test_prepare_publishes_state_o0/C.csv'], [])
+
+    def test_prepare_publishes_state_only_when_main_thread_polls(experiment):
+        root, manager, app, paths, errors = experiment
+        dialog = StatisticalAuditDialog(app._workspace, app)
+        try:
+            dialog.prepare(); dialog.worker.join(timeout=10)
+>           assert not dialog.worker.is_alive() and dialog.prepared is None
+E           AssertionError: assert (not False and [AuditSample(sample_id='0cc1e28f-3d84-4f8e-bb2f-2d186de3706c', display_name='A.csv', dataframe=       X      Y    U   ... 'source'}, population_snapshot={'tab_id': 'main', 'lineage': [], 'source_member_id': None, 'resolved_tab_gates': []})] is None)
+E            +  where False = is_alive()
+E            +    where is_alive = <Thread(Thread-1 (work), stopped daemon 140320435414720)>.is_alive
+E            +      where <Thread(Thread-1 (work), stopped daemon 140320435414720)> = <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>.worker
+E            +  and   [AuditSample(sample_id='0cc1e28f-3d84-4f8e-bb2f-2d186de3706c', display_name='A.csv', dataframe=       X      Y    U   ... 'source'}, population_snapshot={'tab_id': 'main', 'lineage': [], 'source_member_id': None, 'resolved_tab_gates': []})] = <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>.prepared
+
+tests/test_bug_hunt_gui_rc14.py:111: AssertionError
+_____________ test_closed_audit_is_not_retained_by_worker[prepare] _____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee82d0860>, <vflow.legacy.vflow_app.Flow...st-5/test_closed_audit_is_not_retai0/B.csv', '/tmp/pytest-of-root/pytest-5/test_closed_audit_is_not_retai0/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9ee5b8bdd0>
+operation = 'prepare'
+
+    @pytest.mark.parametrize('operation', ['prepare', 'run'])
+    def test_closed_audit_is_not_retained_by_worker(experiment, monkeypatch, operation):
+        root, manager, app, paths, errors = experiment
+        dialog = StatisticalAuditDialog(app._workspace, app); root.update()
+        if operation == 'run': dialog.prepare(); settle(root, dialog)
+        entered = threading.Event(); release = threading.Event()
+        def blocked(*args, **kwargs):
+            entered.set(); release.wait(10); raise AuditCancelled('closed')
+        target = 'materialize_population_inputs' if operation == 'prepare' else 'run_audit'
+        monkeypatch.setattr('vflow.ui.statistical_audit_dialog.' + target, blocked)
+        getattr(dialog, operation)(); worker = dialog.worker
+        assert entered.wait(5)
+        ref = weakref.ref(dialog); dialog.close(); del dialog
+        try:
+            gc.collect()
+>           assert ref() is None, 'Worker retains the destroyed Tk dialog and its interpreter'
+E           AssertionError: Worker retains the destroyed Tk dialog and its interpreter
+E           assert <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog> is None
+E            +  where <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog> = <weakref at 0x7f9eddf05760; to 'StatisticalAuditDialog' at 0x7f9ee5d815e0>()
+
+tests/test_bug_hunt_gui_rc14.py:131: AssertionError
+_______________ test_closed_audit_is_not_retained_by_worker[run] _______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee5e348f0>, <vflow.legacy.vflow_app.Flow...st-5/test_closed_audit_is_not_retai1/B.csv', '/tmp/pytest-of-root/pytest-5/test_closed_audit_is_not_retai1/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9ee5e36270>
+operation = 'run'
+
+    @pytest.mark.parametrize('operation', ['prepare', 'run'])
+    def test_closed_audit_is_not_retained_by_worker(experiment, monkeypatch, operation):
+        root, manager, app, paths, errors = experiment
+        dialog = StatisticalAuditDialog(app._workspace, app); root.update()
+        if operation == 'run': dialog.prepare(); settle(root, dialog)
+        entered = threading.Event(); release = threading.Event()
+        def blocked(*args, **kwargs):
+            entered.set(); release.wait(10); raise AuditCancelled('closed')
+        target = 'materialize_population_inputs' if operation == 'prepare' else 'run_audit'
+        monkeypatch.setattr('vflow.ui.statistical_audit_dialog.' + target, blocked)
+        getattr(dialog, operation)(); worker = dialog.worker
+        assert entered.wait(5)
+        ref = weakref.ref(dialog); dialog.close(); del dialog
+        try:
+            gc.collect()
+>           assert ref() is None, 'Worker retains the destroyed Tk dialog and its interpreter'
+E           AssertionError: Worker retains the destroyed Tk dialog and its interpreter
+E           assert <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog> is None
+E            +  where <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog> = <weakref at 0x7f9eddf5c130; to 'StatisticalAuditDialog' at 0x7f9ee5e341d0>()
+
+tests/test_bug_hunt_gui_rc14.py:131: AssertionError
+__________ test_direct_destroy_cancels_audit_and_scheduled_callbacks ___________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee5b76180>, <vflow.legacy.vflow_app.Flow...st-5/test_direct_destroy_cancels_au0/B.csv', '/tmp/pytest-of-root/pytest-5/test_direct_destroy_cancels_au0/C.csv'], [])
+
+    def test_direct_destroy_cancels_audit_and_scheduled_callbacks(experiment):
+        root, manager, app, paths, errors = experiment
+        dialog = StatisticalAuditDialog(app._workspace, app); root.update()
+        release = threading.Event(); dialog.start(lambda: release.wait(5)); worker = dialog.worker
+        try:
+            dialog.destroy()
+>           assert dialog.cancel_event.is_set() and dialog._closed
+E           assert (False)
+E            +  where False = is_set()
+E            +    where is_set = <threading.Event at 0x7f9eddf83620: unset>.is_set
+E            +      where <threading.Event at 0x7f9eddf83620: unset> = <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>.cancel_event
+
+tests/test_bug_hunt_gui_rc14.py:141: AssertionError
+____________ test_rename_audit_rechecks_identity_after_modal[clear] ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee42ce3f0>, <vflow.legacy.vflow_app.Flow...st-5/test_rename_audit_rechecks_ide0/B.csv', '/tmp/pytest-of-root/pytest-5/test_rename_audit_rechecks_ide0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_rename_audit_rechecks_ide0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9eddd31880>
+replacement = 'clear'
+
+    @pytest.mark.parametrize('replacement', ['clear', 'reopen'])
+    def test_rename_audit_rechecks_identity_after_modal(experiment, tmp_path, monkeypatch, replacement):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        bundle = run_audit(prepare_samples(owner, app, [owner.sample_id(p) for p in paths]), variables=['X', 'Y'])
+        reference = commit(owner, bundle); old_name = reference.name
+        dest = tmp_path / 'audits.vflow'; assert owner.save(path=dest)
+        dialog = AuditResultsDialog(owner, reference, bundle)
+        def choose(*a, **k):
+            if replacement == 'reopen': assert owner.open(dest)
+            else: owner.clear(); owner.dirty = False
+            return 'Wrong workspace edit'
+        monkeypatch.setattr('tkinter.simpledialog.askstring', choose)
+        try:
+            dialog.rename()
+>           assert reference.name == old_name and not owner.dirty
+E           AssertionError: assert ('Wrong workspace edit' == 'QC-20261004-bae57730edec'
+E             
+E             - QC-20261004-bae57730edec
+E             + Wrong workspace edit)
+
+tests/test_bug_hunt_gui_rc14.py:165: AssertionError
+___________ test_rename_audit_rechecks_identity_after_modal[reopen] ____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9ee4152e10>, <vflow.legacy.vflow_app.Flow...st-5/test_rename_audit_rechecks_ide1/B.csv', '/tmp/pytest-of-root/pytest-5/test_rename_audit_rechecks_ide1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-5/test_rename_audit_rechecks_ide1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9ee4152240>
+replacement = 'reopen'
+
+    @pytest.mark.parametrize('replacement', ['clear', 'reopen'])
+    def test_rename_audit_rechecks_identity_after_modal(experiment, tmp_path, monkeypatch, replacement):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        bundle = run_audit(prepare_samples(owner, app, [owner.sample_id(p) for p in paths]), variables=['X', 'Y'])
+        reference = commit(owner, bundle); old_name = reference.name
+        dest = tmp_path / 'audits.vflow'; assert owner.save(path=dest)
+        dialog = AuditResultsDialog(owner, reference, bundle)
+        def choose(*a, **k):
+            if replacement == 'reopen': assert owner.open(dest)
+            else: owner.clear(); owner.dirty = False
+            return 'Wrong workspace edit'
+        monkeypatch.setattr('tkinter.simpledialog.askstring', choose)
+        try:
+            dialog.rename()
+>           assert reference.name == old_name and not owner.dirty
+E           AssertionError: assert ('Wrong workspace edit' == 'QC-20261004-015c6a271679'
+E             
+E             - QC-20261004-015c6a271679
+E             + Wrong workspace edit)
+
+tests/test_bug_hunt_gui_rc14.py:165: AssertionError
+_______ test_biological_id_modal_can_close_without_touching_dead_widgets _______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f9eddeffb90>, <vflow.legacy.vflow_app.Flow...st-5/test_biological_id_modal_can_c0/B.csv', '/tmp/pytest-of-root/pytest-5/test_biological_id_modal_can_c0/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f9eddefc950>
+
+    def test_biological_id_modal_can_close_without_touching_dead_widgets(experiment, monkeypatch):
+        root, manager, app, paths, errors = experiment
+        dialog = StatisticalAuditDialog(app._workspace, app); dialog.kind.set('hierarchy'); dialog.update_hierarchy()
+        sid = dialog.samples.get_children()[0]
+        monkeypatch.setattr(dialog.samples, 'identify_column', lambda x: '#2')
+        monkeypatch.setattr(dialog.samples, 'identify_row', lambda y: sid)
+        def choose(*a, **k): dialog.close(); return 'bio'
+        monkeypatch.setattr('tkinter.simpledialog.askstring', choose)
+        class Event: x = 1; y = 1
+>       dialog.edit_bio(Event())
+
+tests/test_bug_hunt_gui_rc14.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/ui/statistical_audit_dialog.py:186: in edit_bio
+    self.mapping[sid]=value.strip();self.samples.set(sid,'bio',value.strip())
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tkinter.ttk.Treeview object .!statisticalauditdialog.!frame2.!treeview>
+item = 'f0b6eda3-5b01-4a44-85cb-be4abb843d9b', column = 'bio', value = 'bio'
+
+    def set(self, item, column=None, value=None):
+        """Query or set the value of given item.
+    
+        With one argument, return a dictionary of column/value pairs
+        for the specified item. With two arguments, return the current
+        value of the specified column. With three arguments, set the
+        value of given column in given item to the specified value."""
+>       res = self.tk.call(self._w, "set", item, column, value)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       _tkinter.TclError: invalid command name ".!statisticalauditdialog.!frame2.!treeview"
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/tkinter/ttk.py:1437: TclError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc14.py::test_unreadable_excluded_source_survives_reopen[csv]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_unreadable_excluded_source_survives_reopen[mqd]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_locate_missing_exclusion_can_restore_decoded_events[False]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_unreadable_container_member_keeps_authoritative_identity
+FAILED tests/test_bug_hunt_gui_rc14.py::test_prepare_publishes_state_only_when_main_thread_polls
+FAILED tests/test_bug_hunt_gui_rc14.py::test_closed_audit_is_not_retained_by_worker[prepare]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_closed_audit_is_not_retained_by_worker[run]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_direct_destroy_cancels_audit_and_scheduled_callbacks
+FAILED tests/test_bug_hunt_gui_rc14.py::test_rename_audit_rechecks_identity_after_modal[clear]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_rename_audit_rechecks_identity_after_modal[reopen]
+FAILED tests/test_bug_hunt_gui_rc14.py::test_biological_id_modal_can_close_without_touching_dead_widgets
+11 failed, 3 passed in 16.26s

@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc13_candidate
+configfile: pyproject.toml
+plugins: platformdirs-4.12.3
+collecting ... collected 1 item
+
+tests/test_adaptive_samples_gui.py::test_gate_action_labels_fit_with_outer_scrollbar_and_scaled_fonts[2-Large] PASSED [100%]
+
+============================== 1 passed in 2.42s ===============================

@@ -1,0 +1,29 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_scroll_long_variable_names_and_many_samples_keeps_toggled_items _____
+
+audit_dialog = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f47ce209370>, <vflow.legacy.vflow_app.Flow...variable_name0/C.csv'], [], <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>)
+
+    def test_scroll_long_variable_names_and_many_samples_keeps_toggled_items(audit_dialog):
+        root,manager,app,paths,errors,dialog=audit_dialog
+        for i in range(60):dialog.samples.insert('','end',iid=f'ui_{i}',text=f'UI row {i}')
+>       dialog.no_samples_button.invoke();click_sample(dialog,'ui_0');click_sample(dialog,'ui_59')
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_audit_selection_gui.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dialog = <vflow.ui.statistical_audit_dialog.StatisticalAuditDialog object .!statisticalauditdialog>
+sid = 'ui_59', column = '#0', gap = 1000, state = 0
+
+    def click_sample(dialog,sid,column='#0',gap=1000,state=0):
+        dialog.samples.see(sid);dialog.update();box=dialog.samples.bbox(sid,column)
+        assert box
+        y=min(box[1]+box[3]//2,dialog.samples.winfo_height()-4)
+>       assert box[1]<=y<box[1]+box[3]
+E       assert 221 <= 220
+
+tests/test_audit_selection_gui.py:30: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_audit_selection_gui.py::test_scroll_long_variable_names_and_many_samples_keeps_toggled_items
+1 failed in 1.99s

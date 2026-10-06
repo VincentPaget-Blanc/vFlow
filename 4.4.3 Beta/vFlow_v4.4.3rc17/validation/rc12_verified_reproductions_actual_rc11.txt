@@ -1,0 +1,960 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                                        [100%]
+=================================== FAILURES ===================================
+_____________ test_malformed_workspace_is_a_value_error[<lambda>0] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_0')
+mutation = <function <lambda> at 0x7f49d6546200>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+                                    ^^^^^^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.Workspace'>
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_0/bad.vflow')
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as f: data = json.load(f)
+        if not isinstance(data, dict): raise ValueError('Workspace must be a JSON object.')
+        version = data.get('workspace_schema')
+        if type(version) is not int or version not in (1, SCHEMA):
+            raise ValueError(f'Unsupported workspace schema {version!r}; supported: {SCHEMA}.')
+        d = copy.deepcopy(data)
+        d["workspace_schema"] = SCHEMA
+        if not isinstance(d.get('audits',{}),dict):raise ValueError('Workspace audits must be an object.')
+        try:
+            d['audits']={aid:AuditReference(**{**item,'result':FileReference(**item['result'])}).validate() for aid,item in d.get('audits',{}).items()}
+        except (KeyError,TypeError,AttributeError) as exc:raise ValueError('Malformed workspace audit reference.') from exc
+        if any(aid!=ref.audit_id for aid,ref in d['audits'].items()):raise ValueError('Workspace audit key/identity mismatch.')
+        for metadata in ('benchmark_fixture', 'note'): d.pop(metadata, None)
+        default_path = d.pop('default_gate_session_path', None)
+        sample_paths = d.pop('sample_gate_session_paths', {})
+        if default_path and not d.get('default_gate_session'):
+            d['default_gate_session'] = {'absolute_path': default_path if Path(default_path).is_absolute() else '', 'relative_path': default_path if not Path(default_path).is_absolute() else None, 'filename': Path(default_path).name, 'kind': 'gates'}
+        samples = {}
+>       for sid, item in d.pop('samples', {}).items():
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'items'
+
+vflow/workspace/model.py:238: AttributeError
+_____________ test_malformed_workspace_is_a_value_error[<lambda>1] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_1')
+mutation = <function <lambda> at 0x7f49c2d3a660>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+                                    ^^^^^^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.Workspace'>
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_1/bad.vflow')
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as f: data = json.load(f)
+        if not isinstance(data, dict): raise ValueError('Workspace must be a JSON object.')
+        version = data.get('workspace_schema')
+        if type(version) is not int or version not in (1, SCHEMA):
+            raise ValueError(f'Unsupported workspace schema {version!r}; supported: {SCHEMA}.')
+        d = copy.deepcopy(data)
+        d["workspace_schema"] = SCHEMA
+        if not isinstance(d.get('audits',{}),dict):raise ValueError('Workspace audits must be an object.')
+        try:
+            d['audits']={aid:AuditReference(**{**item,'result':FileReference(**item['result'])}).validate() for aid,item in d.get('audits',{}).items()}
+        except (KeyError,TypeError,AttributeError) as exc:raise ValueError('Malformed workspace audit reference.') from exc
+        if any(aid!=ref.audit_id for aid,ref in d['audits'].items()):raise ValueError('Workspace audit key/identity mismatch.')
+        for metadata in ('benchmark_fixture', 'note'): d.pop(metadata, None)
+        default_path = d.pop('default_gate_session_path', None)
+        sample_paths = d.pop('sample_gate_session_paths', {})
+        if default_path and not d.get('default_gate_session'):
+            d['default_gate_session'] = {'absolute_path': default_path if Path(default_path).is_absolute() else '', 'relative_path': default_path if not Path(default_path).is_absolute() else None, 'filename': Path(default_path).name, 'kind': 'gates'}
+        samples = {}
+        for sid, item in d.pop('samples', {}).items():
+            source = FileReference(**item['source'])
+            gate = item.get('gate_session')
+            legacy_gate = sample_paths.get(sid) or item.get('gate_session_path')
+            if legacy_gate and not gate:
+                gate = {'absolute_path': legacy_gate if Path(legacy_gate).is_absolute() else '', 'relative_path': legacy_gate if not Path(legacy_gate).is_absolute() else None, 'filename': Path(legacy_gate).name, 'kind': 'gates'}
+            samples[sid] = SampleReference(sid, item['display_name'], source,
+                item.get('active', True), item.get('excluded', False),
+                ViewState.from_dict(item['view']) if item.get('view') else None,
+                FileReference(**gate) if gate else None, item.get("source_member_id"))
+        d['samples'] = samples
+        d['overlay_view'] = ViewState.from_dict(d.get('overlay_view'))
+        if d.get('default_gate_session'):
+            d['default_gate_session'] = FileReference(**d['default_gate_session'])
+        result = cls(**d)
+        for _,ref in result.references():ref.validate()
+        # Validate all views before mutating any application state.
+>       for tab in result.tabs.values():
+                   ^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'values'
+
+vflow/workspace/model.py:255: AttributeError
+_____________ test_malformed_workspace_is_a_value_error[<lambda>2] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_2')
+mutation = <function <lambda> at 0x7f49c2d3bd80>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>3] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_3')
+mutation = <function <lambda> at 0x7f49c2d3be20>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>4] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_4')
+mutation = <function <lambda> at 0x7f49c2d3bec0>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>5] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_5')
+mutation = <function <lambda> at 0x7f49c2d3bf60>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+                                    ^^^^^^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.Workspace'>
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_5/bad.vflow')
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as f: data = json.load(f)
+        if not isinstance(data, dict): raise ValueError('Workspace must be a JSON object.')
+        version = data.get('workspace_schema')
+        if type(version) is not int or version not in (1, SCHEMA):
+            raise ValueError(f'Unsupported workspace schema {version!r}; supported: {SCHEMA}.')
+        d = copy.deepcopy(data)
+        d["workspace_schema"] = SCHEMA
+        if not isinstance(d.get('audits',{}),dict):raise ValueError('Workspace audits must be an object.')
+        try:
+            d['audits']={aid:AuditReference(**{**item,'result':FileReference(**item['result'])}).validate() for aid,item in d.get('audits',{}).items()}
+        except (KeyError,TypeError,AttributeError) as exc:raise ValueError('Malformed workspace audit reference.') from exc
+        if any(aid!=ref.audit_id for aid,ref in d['audits'].items()):raise ValueError('Workspace audit key/identity mismatch.')
+        for metadata in ('benchmark_fixture', 'note'): d.pop(metadata, None)
+        default_path = d.pop('default_gate_session_path', None)
+        sample_paths = d.pop('sample_gate_session_paths', {})
+        if default_path and not d.get('default_gate_session'):
+            d['default_gate_session'] = {'absolute_path': default_path if Path(default_path).is_absolute() else '', 'relative_path': default_path if not Path(default_path).is_absolute() else None, 'filename': Path(default_path).name, 'kind': 'gates'}
+        samples = {}
+        for sid, item in d.pop('samples', {}).items():
+>           source = FileReference(**item['source'])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: vflow.workspace.model.FileReference() argument after ** must be a mapping, not list
+
+vflow/workspace/model.py:239: TypeError
+_____________ test_malformed_workspace_is_a_value_error[<lambda>6] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_6')
+mutation = <function <lambda> at 0x7f49c2d64040>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>7] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_7')
+mutation = <function <lambda> at 0x7f49c2d640e0>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>8] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_8')
+mutation = <function <lambda> at 0x7f49c2d64180>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+_____________ test_malformed_workspace_is_a_value_error[<lambda>9] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_9')
+mutation = <function <lambda> at 0x7f49c2d64220>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+                                    ^^^^^^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.Workspace'>
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_9/bad.vflow')
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as f: data = json.load(f)
+        if not isinstance(data, dict): raise ValueError('Workspace must be a JSON object.')
+        version = data.get('workspace_schema')
+        if type(version) is not int or version not in (1, SCHEMA):
+            raise ValueError(f'Unsupported workspace schema {version!r}; supported: {SCHEMA}.')
+        d = copy.deepcopy(data)
+        d["workspace_schema"] = SCHEMA
+        if not isinstance(d.get('audits',{}),dict):raise ValueError('Workspace audits must be an object.')
+        try:
+            d['audits']={aid:AuditReference(**{**item,'result':FileReference(**item['result'])}).validate() for aid,item in d.get('audits',{}).items()}
+        except (KeyError,TypeError,AttributeError) as exc:raise ValueError('Malformed workspace audit reference.') from exc
+        if any(aid!=ref.audit_id for aid,ref in d['audits'].items()):raise ValueError('Workspace audit key/identity mismatch.')
+        for metadata in ('benchmark_fixture', 'note'): d.pop(metadata, None)
+        default_path = d.pop('default_gate_session_path', None)
+        sample_paths = d.pop('sample_gate_session_paths', {})
+        if default_path and not d.get('default_gate_session'):
+            d['default_gate_session'] = {'absolute_path': default_path if Path(default_path).is_absolute() else '', 'relative_path': default_path if not Path(default_path).is_absolute() else None, 'filename': Path(default_path).name, 'kind': 'gates'}
+        samples = {}
+        for sid, item in d.pop('samples', {}).items():
+            source = FileReference(**item['source'])
+            gate = item.get('gate_session')
+            legacy_gate = sample_paths.get(sid) or item.get('gate_session_path')
+            if legacy_gate and not gate:
+                gate = {'absolute_path': legacy_gate if Path(legacy_gate).is_absolute() else '', 'relative_path': legacy_gate if not Path(legacy_gate).is_absolute() else None, 'filename': Path(legacy_gate).name, 'kind': 'gates'}
+            samples[sid] = SampleReference(sid, item['display_name'], source,
+                item.get('active', True), item.get('excluded', False),
+                ViewState.from_dict(item['view']) if item.get('view') else None,
+                FileReference(**gate) if gate else None, item.get("source_member_id"))
+        d['samples'] = samples
+        d['overlay_view'] = ViewState.from_dict(d.get('overlay_view'))
+        if d.get('default_gate_session'):
+            d['default_gate_session'] = FileReference(**d['default_gate_session'])
+        result = cls(**d)
+        for _,ref in result.references():ref.validate()
+        # Validate all views before mutating any application state.
+        for tab in result.tabs.values():
+            ViewState.from_dict(tab.get('overlay_view'))
+>           for view in tab.get('sample_views', {}).values(): ViewState.from_dict(view)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'list' object has no attribute 'values'
+
+vflow/workspace/model.py:257: AttributeError
+____________ test_malformed_workspace_is_a_value_error[<lambda>10] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_10')
+mutation = <function <lambda> at 0x7f49c2d642c0>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+____________ test_malformed_workspace_is_a_value_error[<lambda>11] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_11')
+mutation = <function <lambda> at 0x7f49c2d64360>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+____________ test_malformed_workspace_is_a_value_error[<lambda>12] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_12')
+mutation = <function <lambda> at 0x7f49c2d64400>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+____________ test_malformed_workspace_is_a_value_error[<lambda>13] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_13')
+mutation = <function <lambda> at 0x7f49c2d644a0>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+____________ test_malformed_workspace_is_a_value_error[<lambda>14] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_workspace_is_a_14')
+mutation = <function <lambda> at 0x7f49c2d64540>
+
+    @pytest.mark.parametrize('mutation',[
+     lambda d:d.update(samples=[]),lambda d:d.update(tabs=[]),lambda d:d.update(ui_state=[]),
+     lambda d:d.update(axis_aliases=[]),lambda d:d.update(groups=[]),
+     lambda d:d['samples']['A'].update(source=[]),lambda d:d['samples']['A'].update(active='false'),
+     lambda d:d['samples']['A'].update(sample_id='different'),
+     lambda d:d.update(tabs={'main':{'ui_state':[]}}),lambda d:d.update(tabs={'main':{'sample_views':[]}}),
+     lambda d:d['overlay_view'].update(axis_limits=[]),lambda d:d['overlay_view'].update(cofactor=True),
+     lambda d:d['overlay_view'].update(axis_limits={'x':['1','10']}),
+     lambda d:d.update(workspace_id=[]),lambda d:d.update(gate_scope_state=[]),
+    ])
+    def test_malformed_workspace_is_a_value_error(tmp_path,mutation):
+     source=tmp_path/'A.csv';source.write_text('X,Y\n1,2\n')
+     w=Workspace();w.samples['A']=SampleReference('A','A',FileReference.create(source))
+     d=w.payload();mutation(d);p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    with pytest.raises(ValueError):Workspace.load(p)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE ValueError
+
+tests/test_full_bug_hunt_rc12.py:25: Failed
+____________ test_non_object_derivative_metadata_is_ignored[value0] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met0')
+value = []
+
+    @pytest.mark.parametrize('value',[[],None,True,1,'text'])
+    def test_non_object_derivative_metadata_is_ignored(tmp_path,value):
+     p=tmp_path/'data.vflow.csv';sidecar(p).write_text(json.dumps(value))
+>    assert read_meta(p) is None
+            ^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met0/data.vflow.csv')
+
+    def read_meta(path):
+        try:
+            m=json.loads(sidecar(path).read_text(encoding='utf-8'))
+>           return m if m.get('generated_by')=='vFlow' and m.get('schema')==1 else None
+                        ^^^^^
+E           AttributeError: 'list' object has no attribute 'get'
+
+vflow/io/derivatives.py:19: AttributeError
+_____________ test_non_object_derivative_metadata_is_ignored[None] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met1')
+value = None
+
+    @pytest.mark.parametrize('value',[[],None,True,1,'text'])
+    def test_non_object_derivative_metadata_is_ignored(tmp_path,value):
+     p=tmp_path/'data.vflow.csv';sidecar(p).write_text(json.dumps(value))
+>    assert read_meta(p) is None
+            ^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met1/data.vflow.csv')
+
+    def read_meta(path):
+        try:
+            m=json.loads(sidecar(path).read_text(encoding='utf-8'))
+>           return m if m.get('generated_by')=='vFlow' and m.get('schema')==1 else None
+                        ^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'get'
+
+vflow/io/derivatives.py:19: AttributeError
+_____________ test_non_object_derivative_metadata_is_ignored[True] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met2')
+value = True
+
+    @pytest.mark.parametrize('value',[[],None,True,1,'text'])
+    def test_non_object_derivative_metadata_is_ignored(tmp_path,value):
+     p=tmp_path/'data.vflow.csv';sidecar(p).write_text(json.dumps(value))
+>    assert read_meta(p) is None
+            ^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met2/data.vflow.csv')
+
+    def read_meta(path):
+        try:
+            m=json.loads(sidecar(path).read_text(encoding='utf-8'))
+>           return m if m.get('generated_by')=='vFlow' and m.get('schema')==1 else None
+                        ^^^^^
+E           AttributeError: 'bool' object has no attribute 'get'
+
+vflow/io/derivatives.py:19: AttributeError
+______________ test_non_object_derivative_metadata_is_ignored[1] _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met3')
+value = 1
+
+    @pytest.mark.parametrize('value',[[],None,True,1,'text'])
+    def test_non_object_derivative_metadata_is_ignored(tmp_path,value):
+     p=tmp_path/'data.vflow.csv';sidecar(p).write_text(json.dumps(value))
+>    assert read_meta(p) is None
+            ^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met3/data.vflow.csv')
+
+    def read_meta(path):
+        try:
+            m=json.loads(sidecar(path).read_text(encoding='utf-8'))
+>           return m if m.get('generated_by')=='vFlow' and m.get('schema')==1 else None
+                        ^^^^^
+E           AttributeError: 'int' object has no attribute 'get'
+
+vflow/io/derivatives.py:19: AttributeError
+_____________ test_non_object_derivative_metadata_is_ignored[text] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met4')
+value = 'text'
+
+    @pytest.mark.parametrize('value',[[],None,True,1,'text'])
+    def test_non_object_derivative_metadata_is_ignored(tmp_path,value):
+     p=tmp_path/'data.vflow.csv';sidecar(p).write_text(json.dumps(value))
+>    assert read_meta(p) is None
+            ^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_rc12.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_non_object_derivative_met4/data.vflow.csv')
+
+    def read_meta(path):
+        try:
+            m=json.loads(sidecar(path).read_text(encoding='utf-8'))
+>           return m if m.get('generated_by')=='vFlow' and m.get('schema')==1 else None
+                        ^^^^^
+E           AttributeError: 'str' object has no attribute 'get'
+
+vflow/io/derivatives.py:19: AttributeError
+__________ test_csv_audit_text_never_starts_a_spreadsheet_formula[=] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star0')
+prefix = '='
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49bf569570>("'")
+E      +    where <built-in method startswith of str object at 0x7f49bf569570> = '=SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+__________ test_csv_audit_text_never_starts_a_spreadsheet_formula[+] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star1')
+prefix = '+'
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49bf55ba30>("'")
+E      +    where <built-in method startswith of str object at 0x7f49bf55ba30> = '+SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+__________ test_csv_audit_text_never_starts_a_spreadsheet_formula[-] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star2')
+prefix = '-'
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49bf56b1b0>("'")
+E      +    where <built-in method startswith of str object at 0x7f49bf56b1b0> = '-SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+__________ test_csv_audit_text_never_starts_a_spreadsheet_formula[@] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star3')
+prefix = '@'
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49bf56eef0>("'")
+E      +    where <built-in method startswith of str object at 0x7f49bf56eef0> = '@SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+_________ test_csv_audit_text_never_starts_a_spreadsheet_formula[\t=] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star4')
+prefix = '\t='
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49d6550770>("'")
+E      +    where <built-in method startswith of str object at 0x7f49d6550770> = '\t=SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+_________ test_csv_audit_text_never_starts_a_spreadsheet_formula[\r=] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star5')
+prefix = '\r='
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49d65424f0>("'")
+E      +    where <built-in method startswith of str object at 0x7f49d65424f0> = '\r=SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+_________ test_csv_audit_text_never_starts_a_spreadsheet_formula[  =] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_csv_audit_text_never_star6')
+prefix = '  ='
+
+    @pytest.mark.parametrize('prefix',['=','+','-','@','\t=','\r=','  ='])
+    def test_csv_audit_text_never_starts_a_spreadsheet_formula(tmp_path,prefix):
+     b=run_audit(samples(n=2),name=prefix+'SUM(1,2)',policy={'n_projections':2})
+     p=tmp_path/'out.zip';export_csv_package(b,p)
+     with zipfile.ZipFile(p) as z:
+      entries=dict(csv.reader(io.StringIO(z.read('summary.csv').decode())))
+>     assert entries['name'].startswith("'")
+E     assert False
+E      +  where False = <built-in method startswith of str object at 0x7f49bf55fbf0>("'")
+E      +    where <built-in method startswith of str object at 0x7f49bf55fbf0> = '  =SUM(1,2)'.startswith
+
+tests/test_full_bug_hunt_rc12.py:38: AssertionError
+___________ test_export_cannot_overwrite_loaded_source[export_stats] ___________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49c020e000>, <vflow.legacy.vflow_app.Flow...st-4/test_export_cannot_overwrite_l0/B.csv', '/tmp/pytest-of-root/pytest-4/test_export_cannot_overwrite_l0/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f49bf63e720>
+method = 'export_stats'
+
+    @pytest.mark.parametrize('method',['export_stats','export_gated_data'])
+    def test_export_cannot_overwrite_loaded_source(experiment,monkeypatch,method):
+     root,manager,app,paths,errors=experiment;new_gate(app)
+     before=Path(paths[0]).read_bytes()
+     monkeypatch.setattr('tkinter.filedialog.asksaveasfilename',lambda **k:paths[0])
+     getattr(app,method)();root.update()
+>    assert Path(paths[0]).read_bytes()==before
+E    AssertionError: assert b'Gate ID,Gat...,5,0,,,40.0\n' == b'X,Y,U,V\n30....0,5.0,10.0\n'
+E      
+E      At index 0 diff: b'G' != b'X'
+E      Use -v to get more diff
+
+tests/test_full_bug_hunt_gui_rc12.py:14: AssertionError
+________ test_export_cannot_overwrite_loaded_source[export_gated_data] _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49bf492ed0>, <vflow.legacy.vflow_app.Flow...st-4/test_export_cannot_overwrite_l1/B.csv', '/tmp/pytest-of-root/pytest-4/test_export_cannot_overwrite_l1/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f49bf4856d0>
+method = 'export_gated_data'
+
+    @pytest.mark.parametrize('method',['export_stats','export_gated_data'])
+    def test_export_cannot_overwrite_loaded_source(experiment,monkeypatch,method):
+     root,manager,app,paths,errors=experiment;new_gate(app)
+     before=Path(paths[0]).read_bytes()
+     monkeypatch.setattr('tkinter.filedialog.asksaveasfilename',lambda **k:paths[0])
+     getattr(app,method)();root.update()
+>    assert Path(paths[0]).read_bytes()==before
+E    AssertionError: assert b'Source_File...N,rectangle\n' == b'X,Y,U,V\n30....0,5.0,10.0\n'
+E      
+E      At index 0 diff: b'S' != b'X'
+E      Use -v to get more diff
+
+tests/test_full_bug_hunt_gui_rc12.py:14: AssertionError
+_________________ test_reset_current_sample_view_takes_effect __________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49d6661f70>, <vflow.legacy.vflow_app.Flow...st-4/test_reset_current_sample_view0/B.csv', '/tmp/pytest-of-root/pytest-4/test_reset_current_sample_view0/C.csv'], [])
+
+    def test_reset_current_sample_view_takes_effect(experiment):
+     root,manager,app,paths,errors=experiment;owner=app._workspace
+     sid=owner.sample_id(paths[0]);owner.show_sample(app,sid)
+     app.x_var.set('U');app.y_var.set('V');app.apply_axes();owner.capture(app)
+     owner.reset_view(app,sid);root.update()
+>    assert (app.x_channel,app.y_channel)==('X','Y')
+E    AssertionError: assert ('U', 'V') == ('X', 'Y')
+E      
+E      At index 0 diff: 'U' != 'X'
+E      Use -v to get more diff
+
+tests/test_full_bug_hunt_gui_rc12.py:22: AssertionError
+_____________ test_malformed_open_does_not_replace_live_workspace ______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49b8e5fec0>, <vflow.legacy.vflow_app.Flow...st-4/test_malformed_open_does_not_r0/B.csv', '/tmp/pytest-of-root/pytest-4/test_malformed_open_does_not_r0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_open_does_not_r0')
+
+    def test_malformed_open_does_not_replace_live_workspace(experiment,tmp_path):
+     root,manager,app,paths,errors=experiment;owner=app._workspace;original=owner.document
+     d=owner.document.payload();d['tabs']=[];p=tmp_path/'bad.vflow';p.write_text(json.dumps(d))
+>    assert owner.open(p) is False
+            ^^^^^^^^^^^^^
+
+tests/test_full_bug_hunt_gui_rc12.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/workspace/controller.py:460: in open
+    doc = Workspace.load(path)
+          ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'vflow.workspace.model.Workspace'>
+path = PosixPath('/tmp/pytest-of-root/pytest-4/test_malformed_open_does_not_r0/bad.vflow')
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as f: data = json.load(f)
+        if not isinstance(data, dict): raise ValueError('Workspace must be a JSON object.')
+        version = data.get('workspace_schema')
+        if type(version) is not int or version not in (1, SCHEMA):
+            raise ValueError(f'Unsupported workspace schema {version!r}; supported: {SCHEMA}.')
+        d = copy.deepcopy(data)
+        d["workspace_schema"] = SCHEMA
+        if not isinstance(d.get('audits',{}),dict):raise ValueError('Workspace audits must be an object.')
+        try:
+            d['audits']={aid:AuditReference(**{**item,'result':FileReference(**item['result'])}).validate() for aid,item in d.get('audits',{}).items()}
+        except (KeyError,TypeError,AttributeError) as exc:raise ValueError('Malformed workspace audit reference.') from exc
+        if any(aid!=ref.audit_id for aid,ref in d['audits'].items()):raise ValueError('Workspace audit key/identity mismatch.')
+        for metadata in ('benchmark_fixture', 'note'): d.pop(metadata, None)
+        default_path = d.pop('default_gate_session_path', None)
+        sample_paths = d.pop('sample_gate_session_paths', {})
+        if default_path and not d.get('default_gate_session'):
+            d['default_gate_session'] = {'absolute_path': default_path if Path(default_path).is_absolute() else '', 'relative_path': default_path if not Path(default_path).is_absolute() else None, 'filename': Path(default_path).name, 'kind': 'gates'}
+        samples = {}
+        for sid, item in d.pop('samples', {}).items():
+            source = FileReference(**item['source'])
+            gate = item.get('gate_session')
+            legacy_gate = sample_paths.get(sid) or item.get('gate_session_path')
+            if legacy_gate and not gate:
+                gate = {'absolute_path': legacy_gate if Path(legacy_gate).is_absolute() else '', 'relative_path': legacy_gate if not Path(legacy_gate).is_absolute() else None, 'filename': Path(legacy_gate).name, 'kind': 'gates'}
+            samples[sid] = SampleReference(sid, item['display_name'], source,
+                item.get('active', True), item.get('excluded', False),
+                ViewState.from_dict(item['view']) if item.get('view') else None,
+                FileReference(**gate) if gate else None, item.get("source_member_id"))
+        d['samples'] = samples
+        d['overlay_view'] = ViewState.from_dict(d.get('overlay_view'))
+        if d.get('default_gate_session'):
+            d['default_gate_session'] = FileReference(**d['default_gate_session'])
+        result = cls(**d)
+        for _,ref in result.references():ref.validate()
+        # Validate all views before mutating any application state.
+>       for tab in result.tabs.values():
+                   ^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'list' object has no attribute 'values'
+
+vflow/workspace/model.py:255: AttributeError
+__ test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[clear] ___
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49b8f04650>, <vflow.legacy.vflow_app.Flow...st-4/test_relink_worker_cannot_fini0/B.csv', '/tmp/pytest-of-root/pytest-4/test_relink_worker_cannot_fini0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_relink_worker_cannot_fini0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f49b8f075f0>
+action = 'clear'
+
+    @pytest.mark.parametrize('action',['clear','dispose'])
+    def test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace(experiment,tmp_path,monkeypatch,action):
+     root,manager,app,paths,errors=experiment;owner=app._workspace
+     dest=tmp_path/'old.vflow';assert owner.save(path=dest)
+     sid=owner.sample_id(paths[0]);moved=tmp_path/'moved';moved.mkdir();Path(paths[0]).rename(moved/'A.csv')
+     assert owner.open(dest);root.update();assert owner.missing
+     entered=threading.Event();release=threading.Event();calls=[]
+     def scan(refs,folder,recursive=True):
+      entered.set();release.wait(3);return {refs[0][0]:[str(moved/'A.csv')]}
+     monkeypatch.setattr('vflow.workspace.controller.scan_candidates',scan)
+     monkeypatch.setattr('tkinter.filedialog.askdirectory',lambda **k:str(moved))
+     owner.find_missing();assert entered.wait(1)
+     getattr(owner,action)();monkeypatch.setattr(owner,'reload_resources',lambda:calls.append(True))
+     release.set()
+     deadline=time.monotonic()+.35
+     while time.monotonic()<deadline:root.update();time.sleep(.01)
+>    assert not calls and not owner._scan_running
+E    assert (not [True])
+
+tests/test_full_bug_hunt_gui_rc12.py:47: AssertionError
+_ test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[dispose] __
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f49bf34aba0>, <vflow.legacy.vflow_app.Flow...st-4/test_relink_worker_cannot_fini1/B.csv', '/tmp/pytest-of-root/pytest-4/test_relink_worker_cannot_fini1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-4/test_relink_worker_cannot_fini1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f49b891fdd0>
+action = 'dispose'
+
+    @pytest.mark.parametrize('action',['clear','dispose'])
+    def test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace(experiment,tmp_path,monkeypatch,action):
+     root,manager,app,paths,errors=experiment;owner=app._workspace
+     dest=tmp_path/'old.vflow';assert owner.save(path=dest)
+     sid=owner.sample_id(paths[0]);moved=tmp_path/'moved';moved.mkdir();Path(paths[0]).rename(moved/'A.csv')
+     assert owner.open(dest);root.update();assert owner.missing
+     entered=threading.Event();release=threading.Event();calls=[]
+     def scan(refs,folder,recursive=True):
+      entered.set();release.wait(3);return {refs[0][0]:[str(moved/'A.csv')]}
+     monkeypatch.setattr('vflow.workspace.controller.scan_candidates',scan)
+     monkeypatch.setattr('tkinter.filedialog.askdirectory',lambda **k:str(moved))
+     owner.find_missing();assert entered.wait(1)
+     getattr(owner,action)();monkeypatch.setattr(owner,'reload_resources',lambda:calls.append(True))
+     release.set()
+     deadline=time.monotonic()+.35
+     while time.monotonic()<deadline:root.update();time.sleep(.01)
+>    assert not calls and not owner._scan_running
+E    assert (not [True])
+
+tests/test_full_bug_hunt_gui_rc12.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>0]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>1]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>2]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>3]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>4]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>5]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>6]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>7]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>8]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>9]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>10]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>11]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>12]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>13]
+FAILED tests/test_full_bug_hunt_rc12.py::test_malformed_workspace_is_a_value_error[<lambda>14]
+FAILED tests/test_full_bug_hunt_rc12.py::test_non_object_derivative_metadata_is_ignored[value0]
+FAILED tests/test_full_bug_hunt_rc12.py::test_non_object_derivative_metadata_is_ignored[None]
+FAILED tests/test_full_bug_hunt_rc12.py::test_non_object_derivative_metadata_is_ignored[True]
+FAILED tests/test_full_bug_hunt_rc12.py::test_non_object_derivative_metadata_is_ignored[1]
+FAILED tests/test_full_bug_hunt_rc12.py::test_non_object_derivative_metadata_is_ignored[text]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[=]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[+]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[-]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[@]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[\t=]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[\r=]
+FAILED tests/test_full_bug_hunt_rc12.py::test_csv_audit_text_never_starts_a_spreadsheet_formula[  =]
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_stats]
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_gated_data]
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_reset_current_sample_view_takes_effect
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_malformed_open_does_not_replace_live_workspace
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[clear]
+FAILED tests/test_full_bug_hunt_gui_rc12.py::test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[dispose]
+33 failed in 5.67s

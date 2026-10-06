@@ -1,0 +1,22 @@
+{
+  "baseline": "4.4.3rc8",
+  "candidate": "4.4.3rc9",
+  "original_modules": 120,
+  "unchanged_modules": 113,
+  "version_only_modules": 5,
+  "changed_feature_and_ui_modules": 2,
+  "added_modules": [],
+  "unchanged_original_core_modules": 19,
+  "protected_statistics_ingestion_service_modules": 41,
+  "changed_existing_controller_methods": [],
+  "new_controller_methods": [],
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "source_launcher": {
+    "changed": true,
+    "purpose": "isolated Spyder launch with adjacent checkout and startup diagnostics",
+    "rc8_sha256": "39e5e198cb013cf59b7cf0e44b60890e0de85367902dfd1fa839d491dacc8a4b",
+    "rc9_sha256": "f3268e4e22c168300f9a8fce4811b7f173fb5ed63b371e92aac28246d22d735f"
+  }
+}

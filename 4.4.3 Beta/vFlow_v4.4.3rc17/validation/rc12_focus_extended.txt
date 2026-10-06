@@ -1,0 +1,25 @@
+.....................................................F.................. [ 75%]
+.......................                                                  [100%]
+=================================== FAILURES ===================================
+____________ test_project_data_coordinator_owns_all_three_workflows ____________
+
+    def test_project_data_coordinator_owns_all_three_workflows():
+        load_src = inspect.getsource(ProjectDataLoadCoordinator.load_paths)
+        save_src = inspect.getsource(ProjectDataLoadCoordinator.save_gates)
+        gate_load_src = inspect.getsource(ProjectDataLoadCoordinator.load_gates)
+    
+        assert "plan_path_admission" in load_src
+        assert "commit_loaded_file(path, df)" in load_src
+        assert load_src.index("h._add_file_row(path)") < load_src.index(
+            "commit_loaded_file(path, df)")
+    
+        assert "build_gate_session_payload(" in save_src
+        assert "except (ThresholdSchemaError, ValueError) as exc:" in save_src
+>       assert save_src.index("build_gate_session_payload(") < save_src.index(
+            "with open(path, 'w') as fh:")
+E       ValueError: substring not found
+
+tests/test_v43_project_data_load_coordinator.py:32: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_v43_project_data_load_coordinator.py::test_project_data_coordinator_owns_all_three_workflows
+1 failed, 94 passed in 19.62s

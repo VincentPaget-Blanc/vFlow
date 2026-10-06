@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/scratch/d5c8064eecdc/vFlow_v4.4.3rc16
+configfile: pyproject.toml
+collecting ... collected 648 items
+
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1601] PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1602] PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1603] PASSED
+tests/test_compound_benchmark_rc16.py::test_compound_benchmark[1604] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_stats] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_gated_data] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[save_gates] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_export_cannot_overwrite_loaded_source[export_figure] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_workspace_save_as_cannot_replace_source PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_concat_cannot_replace_selected_acquisition[_do_concat_save] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_concat_cannot_replace_selected_acquisition[_do_concat_save_load] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_relink_preserves_gate_edits_made_during_scan PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[new-batch] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[new-polar] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[reopen-batch] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[reopen-polar] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[close_tab-batch] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_secondary_window_cannot_export_after_session_replacement[close_tab-polar] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_reset_current_sample_view_takes_effect PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_malformed_open_does_not_replace_live_workspace PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[clear] PASSED
+tests/test_full_bug_hunt_gui_rc12.py::test_relink_worker_cannot_finish_in_replaced_or_disposed_workspace[dispose] PASSED
+tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[0-missing] PASSED
+tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[0-decode] PASSED
+tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[1-missing] PASSED
+tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[1-decode] PASSED
+tests/test_release_edges_gui_rc15.py::test_save_as_modal_rechecks_workspace[clear] PASSED
+tests/test_release_edges_gui_rc15.py::test_save_as_modal_rechecks_workspace[reopen] 

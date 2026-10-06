@@ -1,0 +1,382 @@
+{
+  "scientific_checks": 53,
+  "passed": 53,
+  "results": [
+    {
+      "sample": "Control_01",
+      "gate": "G_LYMPH_RECT",
+      "expected": 7273,
+      "actual": 7273,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_LYMPH_ELLIPSE",
+      "expected": 7236,
+      "actual": 7236,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_SCATTER_POLY",
+      "expected": 7332,
+      "actual": 7332,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4hi",
+      "expected": 3087,
+      "actual": 3087,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4lo",
+      "expected": 2294,
+      "actual": 2294,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4hi",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4lo",
+      "expected": 6619,
+      "actual": 6619,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "gate": "G_SINGLET_POLY",
+      "expected": 10117,
+      "actual": 10117,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_LYMPH_RECT",
+      "expected": 7020,
+      "actual": 7020,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_LYMPH_ELLIPSE",
+      "expected": 6994,
+      "actual": 6994,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_SCATTER_POLY",
+      "expected": 7058,
+      "actual": 7058,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4hi",
+      "expected": 2840,
+      "actual": 2840,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4lo",
+      "expected": 2367,
+      "actual": 2367,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4hi",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4lo",
+      "expected": 6793,
+      "actual": 6793,
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "gate": "G_SINGLET_POLY",
+      "expected": 10131,
+      "actual": 10131,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_LYMPH_RECT",
+      "expected": 7081,
+      "actual": 7081,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_LYMPH_ELLIPSE",
+      "expected": 7083,
+      "actual": 7083,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_SCATTER_POLY",
+      "expected": 7152,
+      "actual": 7152,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4hi",
+      "expected": 2159,
+      "actual": 2159,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4lo",
+      "expected": 2802,
+      "actual": 2802,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4hi",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4lo",
+      "expected": 7039,
+      "actual": 7039,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "gate": "G_SINGLET_POLY",
+      "expected": 10003,
+      "actual": 10003,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_LYMPH_RECT",
+      "expected": 7058,
+      "actual": 7058,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_LYMPH_ELLIPSE",
+      "expected": 7024,
+      "actual": 7024,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_SCATTER_POLY",
+      "expected": 7075,
+      "actual": 7075,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4hi",
+      "expected": 1496,
+      "actual": 1496,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_CD3_CD4_CROSS:CD3hi_CD4lo",
+      "expected": 2863,
+      "actual": 2863,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4hi",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_CD3_CD4_CROSS:CD3lo_CD4lo",
+      "expected": 7641,
+      "actual": 7641,
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "gate": "G_SINGLET_POLY",
+      "expected": 10135,
+      "actual": 10135,
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "channel": "CD3-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "channel": "CD4-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "channel": "FSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_01",
+      "channel": "SSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "channel": "CD3-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "channel": "CD4-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "channel": "FSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Control_02",
+      "channel": "SSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "channel": "CD3-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "channel": "CD4-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "channel": "FSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_01",
+      "channel": "SSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "channel": "CD3-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "channel": "CD4-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "channel": "FSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "sample": "Treatment_02",
+      "channel": "SSC-A",
+      "check": "offscale",
+      "pass": true
+    },
+    {
+      "file": "FCS20_Float_LE.fcs",
+      "check": "parser_shape",
+      "pass": true
+    },
+    {
+      "file": "FCS30_Double_BE.fcs",
+      "check": "parser_shape",
+      "pass": true
+    },
+    {
+      "file": "FCS31_Float_BE.fcs",
+      "check": "parser_shape",
+      "pass": true
+    },
+    {
+      "file": "FCS31_Integer16_LE.fcs",
+      "check": "parser_shape",
+      "pass": true
+    },
+    {
+      "check": "proposed_workspace_schema_migration",
+      "pass": true
+    }
+  ],
+  "fixture_issues": [
+    {
+      "file": "Control_01.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    },
+    {
+      "file": "Control_02.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    },
+    {
+      "file": "EdgeCases_01.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    },
+    {
+      "file": "Missing_CD8_01.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    },
+    {
+      "file": "Treatment_01.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    },
+    {
+      "file": "Treatment_02.fcs",
+      "reason": "FCS TIME parameter is present but required $TIMESTEP is missing.",
+      "category": "supplied_fixture_incompatible_with_frozen_baseline"
+    }
+  ]
+}

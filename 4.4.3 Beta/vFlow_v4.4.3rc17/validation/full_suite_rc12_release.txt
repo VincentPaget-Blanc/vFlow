@@ -1,0 +1,187 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+...........................F............................................ [ 23%]
+........................................................................ [ 27%]
+...........................F............................................ [ 32%]
+........................................................................ [ 37%]
+.....................F.................................................. [ 41%]
+........................................................................ [ 46%]
+.................................................................FFF.... [ 50%]
+........................................................................ [ 55%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+.......F..............F................................................. [ 69%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 83%]
+................................F....................................... [ 87%]
+...................................................F.....F...F..F..F.... [ 92%]
+........................................................................ [ 97%]
+............................................                             [100%]
+=================================== FAILURES ===================================
+_______ test_load_and_batch_raw_rereads_apply_aliases_before_schema_use ________
+
+    def test_load_and_batch_raw_rereads_apply_aliases_before_schema_use():
+        from vflow.controllers.project_data_load_coordinator import ProjectDataLoadCoordinator
+    
+        load_src = inspect.getsource(ProjectDataLoadCoordinator.load_paths)
+        assert load_src.index('_read_data_file(path)') < load_src.index('apply_aliases(df, path)')
+        assert load_src.index('apply_aliases(df, path)') < load_src.index('plan_loaded_frame(')
+        assert 'h.axis_aliases.update(frame_plan.rename_map)' in load_src
+    
+        batch_src = inspect.getsource(FlowApp.batch_export_stats)
+>       assert batch_src.index('_read_data_file(fpath)') < batch_src.index(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            '_apply_axis_aliases_to_df(df, fpath)')
+E       ValueError: substring not found
+
+tests/test_channel_nomenclature_port.py:191: ValueError
+____ test_project_data_coordinator_owns_load_planning_and_side_effect_order ____
+
+    def test_project_data_coordinator_owns_load_planning_and_side_effect_order():
+        import inspect
+        from vflow.controllers.project_data_load_coordinator import ProjectDataLoadCoordinator
+        from vflow.legacy.vflow_app import FlowApp
+    
+        facade = inspect.getsource(FlowApp._load_paths)
+>       assert "_project_data_load_owner(self).load_paths" in facade
+E       assert '_project_data_load_owner(self).load_paths' in '    def _offer_axis_name_resolution(self):\n        """Offer resolver once per heterogeneous schema that constrains m...\nOpen the Axis Name Resolver now?",\n                parent=self.root):\n            self.open_axis_name_resolver()\n'
+
+tests/test_file_load_planning.py:97: AssertionError
+__ test_polygon_lifecycle_remains_separate_from_fresh_draw_assignment_helper ___
+
+    def test_polygon_lifecycle_remains_separate_from_fresh_draw_assignment_helper():
+        release = inspect.getsource(GateInteractionController.on_release)
+        poly_finish = inspect.getsource(FlowApp._poly_finish)
+        assert "polygon finishes via _poly_finish" in release
+>       assert "polygon_gate_can_finish" in poly_finish
+E       AssertionError: assert 'polygon_gate_can_finish' in '    def _on_release(self, event):\n        try:\n            return self._interaction_controller().on_release(event)\...       self._workspace.capture(self)\n                self._workspace.stores[self._workspace_tab_id].editing = False\n'
+
+tests/test_gate_draw_geometry_refactor.py:59: AssertionError
+_____ test_single_y_auto_gate_delegates_plan_but_keeps_mutation_in_flowapp _____
+
+    def test_single_y_auto_gate_delegates_plan_but_keeps_mutation_in_flowapp():
+        source = inspect.getsource(FlowApp._apply_gate_and_refresh)
+>       assert 'single_y_auto_threshold_plan(xbs_raw)' in source
+E       AssertionError: assert 'single_y_auto_threshold_plan(xbs_raw)' in '    def _collect_y_transform(self):\n        active = self._auto_gate_data()\n        if not self._active_axes_comple...self.y_scale,\n            cofactor=self.cofactor,\n            transform_params=self.y_transform_params,\n        )\n'
+
+tests/test_gate_threshold_planning_boundary.py:33: AssertionError
+_ test_gmm_multi_delegates_plan_without_moving_scientific_fit_or_side_effects __
+
+    def test_gmm_multi_delegates_plan_without_moving_scientific_fit_or_side_effects():
+        source = inspect.getsource(FlowApp.auto_gate_gmm_multi)
+>       assert 'fit_gmm_crossings(' in source
+E       assert 'fit_gmm_crossings(' in '    def auto_gate_otsu(self):\n        """\n        Otsu threshold on each axis independently, using ALL selected fil...n            y_threshold=yb_raw,\n            x_percent_below=pct_x,\n            y_percent_below=pct_y,\n        ))\n'
+
+tests/test_gate_threshold_planning_boundary.py:43: AssertionError
+___ test_threshold_toggle_callback_remains_unchanged_controller_side_effects ___
+
+    def test_threshold_toggle_callback_remains_unchanged_controller_side_effects():
+        source = inspect.getsource(FlowApp._on_thresh_toggle)
+        assert 'gate_threshold_planning' not in source
+>       assert 'self._sel_gate()' in source
+E       assert 'self._sel_gate()' in '    def _delete_threshold(self, gid, axis, index):\n        """Delete one boundary using the current workspace edit s...elf.status_var.set(f\'Deleted {axis.upper()}{index+1} threshold · Undo gate edit restores it\')\n        return True\n'
+
+tests/test_gate_threshold_planning_boundary.py:54: AssertionError
+___ test_flowapp_keeps_authoritative_polygon_finish_mutations_and_callbacks ____
+
+    def test_flowapp_keeps_authoritative_polygon_finish_mutations_and_callbacks():
+        source = inspect.getsource(FlowApp._poly_finish)
+>       assert "plan_polygon_finish(draw)" in source
+E       AssertionError: assert 'plan_polygon_finish(draw)' in '    def _on_release(self, event):\n        try:\n            return self._interaction_controller().on_release(event)\...       self._workspace.capture(self)\n                self._workspace.stores[self._workspace_tab_id].editing = False\n'
+
+tests/test_polygon_finish_planning_refactor.py:62: AssertionError
+_____ test_flowapp_owns_polygon_live_mutation_and_keeps_finalize_separate ______
+
+    def test_flowapp_owns_polygon_live_mutation_and_keeps_finalize_separate():
+        click_source = inspect.getsource(GateInteractionController.on_click)
+        finish_source = inspect.getsource(FlowApp._poly_finish)
+    
+        assert "plan_polygon_vertex('initialize', x, y).vertex" in click_source
+        assert "plan_polygon_vertex('append', x, y).vertex" in click_source
+        assert "gate['vertices'] =" in click_source
+        assert "draw.setdefault('vertices', [])" in click_source
+        assert "require_polygon_vertices" in click_source
+>       assert "polygon_gate_can_finish(draw)" in finish_source
+E       AssertionError: assert 'polygon_gate_can_finish(draw)' in '    def _on_release(self, event):\n        try:\n            return self._interaction_controller().on_release(event)\...       self._workspace.capture(self)\n                self._workspace.stores[self._workspace_tab_id].editing = False\n'
+
+tests/test_polygon_vertex_lifecycle_refactor.py:73: AssertionError
+____ test_flowapp_keeps_threshold_toggle_side_effects_in_legacy_controller _____
+
+    def test_flowapp_keeps_threshold_toggle_side_effects_in_legacy_controller():
+        source = inspect.getsource(FlowApp._on_thresh_toggle)
+    
+>       assert "self._sel_gate()" in source
+E       assert 'self._sel_gate()' in '    def _delete_threshold(self, gid, axis, index):\n        """Delete one boundary using the current workspace edit s...elf.status_var.set(f\'Deleted {axis.upper()}{index+1} threshold · Undo gate edit restores it\')\n        return True\n'
+
+tests/test_threshold_state_boundary.py:44: AssertionError
+______________ test_flow_app_render_surface_is_composed_and_lazy _______________
+
+    def test_flow_app_render_surface_is_composed_and_lazy():
+        source = inspect.getsource(FlowApp.refresh_plot)
+>       assert source.strip().endswith("return self._flow_renderer().refresh()")
+E       assert False
+E        +  where False = <built-in method endswith of str object at 0x7fabc04d4290>('return self._flow_renderer().refresh()')
+E        +    where <built-in method endswith of str object at 0x7fabc04d4290> = "def _flow_renderer(self):\n        renderer = self.__dict__.get('_flow_renderer_instance')\n        if renderer is No...enderer = FlowRenderer(self)\n            self.__dict__['_flow_renderer_instance'] = renderer\n        return renderer".endswith
+E        +      where "def _flow_renderer(self):\n        renderer = self.__dict__.get('_flow_renderer_instance')\n        if renderer is No...enderer = FlowRenderer(self)\n            self.__dict__['_flow_renderer_instance'] = renderer\n        return renderer" = <built-in method strip of str object at 0x7fabc04d57f0>()
+E        +        where <built-in method strip of str object at 0x7fabc04d57f0> = "    def _flow_renderer(self):\n        renderer = self.__dict__.get('_flow_renderer_instance')\n        if renderer i...derer = FlowRenderer(self)\n            self.__dict__['_flow_renderer_instance'] = renderer\n        return renderer\n".strip
+
+tests/test_v43_flow_renderer.py:25: AssertionError
+_____________ test_flowapp_event_surface_is_thin_composed_delegate _____________
+
+    def test_flowapp_event_surface_is_thin_composed_delegate():
+        click = inspect.getsource(FlowApp._on_click)
+        motion = inspect.getsource(FlowApp._on_motion)
+        release = inspect.getsource(FlowApp._on_release)
+>       assert "_interaction_controller().on_click(event)" in click
+E       assert '_interaction_controller().on_click(event)' in "    def _interaction_controller(self):\n        controller = self.__dict__.get('_gate_interaction_controller')\n     ...nController(self)\n            self.__dict__['_gate_interaction_controller'] = controller\n        return controller\n"
+
+tests/test_v43_gate_interaction_controller.py:12: AssertionError
+___ test_interaction_helper_implementations_are_owned_by_composed_controller ___
+
+    def test_interaction_helper_implementations_are_owned_by_composed_controller():
+        line_wrapper = inspect.getsource(FlowApp._hit_test_gate_line)
+        preview_wrapper = inspect.getsource(FlowApp._preview_gate)
+        drag_wrapper = inspect.getsource(FlowApp._drag_handle_update)
+>       assert "_gate_interaction_owner(self).hit_test_gate_line" in line_wrapper
+E       AssertionError: assert '_gate_interaction_owner(self).hit_test_gate_line' in '    def _rebuild_handle_px_cache(self, event=None):\n        return _gate_interaction_owner(self).rebuild_handle_px_cache(event)\n'
+
+tests/test_v43_gate_interaction_controller.py:87: AssertionError
+_________ test_flow_app_project_data_methods_are_compatibility_facades _________
+
+    def test_flow_app_project_data_methods_are_compatibility_facades():
+        load_paths = inspect.getsource(FlowApp._load_paths)
+        save_gates = inspect.getsource(FlowApp.save_gates)
+        load_gates = inspect.getsource(FlowApp.load_gates)
+    
+>       assert "_project_data_load_owner(self).load_paths" in load_paths
+E       assert '_project_data_load_owner(self).load_paths' in '    def _offer_axis_name_resolution(self):\n        """Offer resolver once per heterogeneous schema that constrains m...\nOpen the Axis Name Resolver now?",\n                parent=self.root):\n            self.open_axis_name_resolver()\n'
+
+tests/test_v43_project_data_load_coordinator.py:12: AssertionError
+__________ test_excluded_list_facades_delegate_to_project_data_owner ___________
+
+    def test_excluded_list_facades_delegate_to_project_data_owner():
+        save_src = inspect.getsource(FlowApp.save_excluded_list)
+        load_src = inspect.getsource(FlowApp.load_excluded_list)
+>       assert "_project_data_load_owner(self).save_excluded_list" in save_src
+E       assert '_project_data_load_owner(self).save_excluded_list' in '    def _restore_file(self, path: str):\n        """Move a file from the excluded list back into the active list.\n\n...uild_excluded_list()\n        self._axis_resolution_prompt_signature = None\n        self._on_active_files_changed()\n'
+
+tests/test_v43_project_data_load_coordinator.py:71: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_channel_nomenclature_port.py::test_load_and_batch_raw_rereads_apply_aliases_before_schema_use
+FAILED tests/test_file_load_planning.py::test_project_data_coordinator_owns_load_planning_and_side_effect_order
+FAILED tests/test_gate_draw_geometry_refactor.py::test_polygon_lifecycle_remains_separate_from_fresh_draw_assignment_helper
+FAILED tests/test_gate_threshold_planning_boundary.py::test_single_y_auto_gate_delegates_plan_but_keeps_mutation_in_flowapp
+FAILED tests/test_gate_threshold_planning_boundary.py::test_gmm_multi_delegates_plan_without_moving_scientific_fit_or_side_effects
+FAILED tests/test_gate_threshold_planning_boundary.py::test_threshold_toggle_callback_remains_unchanged_controller_side_effects
+FAILED tests/test_polygon_finish_planning_refactor.py::test_flowapp_keeps_authoritative_polygon_finish_mutations_and_callbacks
+FAILED tests/test_polygon_vertex_lifecycle_refactor.py::test_flowapp_owns_polygon_live_mutation_and_keeps_finalize_separate
+FAILED tests/test_threshold_state_boundary.py::test_flowapp_keeps_threshold_toggle_side_effects_in_legacy_controller
+FAILED tests/test_v43_flow_renderer.py::test_flow_app_render_surface_is_composed_and_lazy
+FAILED tests/test_v43_gate_interaction_controller.py::test_flowapp_event_surface_is_thin_composed_delegate
+FAILED tests/test_v43_gate_interaction_controller.py::test_interaction_helper_implementations_are_owned_by_composed_controller
+FAILED tests/test_v43_project_data_load_coordinator.py::test_flow_app_project_data_methods_are_compatibility_facades
+FAILED tests/test_v43_project_data_load_coordinator.py::test_excluded_list_facades_delegate_to_project_data_owner
+14 failed, 1542 passed in 216.39s (0:03:36)

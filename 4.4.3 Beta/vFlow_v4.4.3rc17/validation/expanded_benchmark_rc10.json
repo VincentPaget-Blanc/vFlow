@@ -1,0 +1,291 @@
+{
+  "passed": 35,
+  "checks": 35,
+  "results": [
+    {
+      "check": "real_LMD:188-15.LMD",
+      "pass": true,
+      "events": 11369
+    },
+    {
+      "check": "real_LMD:222.LMD",
+      "pass": true,
+      "events": 10356
+    },
+    {
+      "check": "real_LMD:240+S.LMD",
+      "pass": true,
+      "events": 15754
+    },
+    {
+      "check": "real_LMD:240-4-2+rad.LMD",
+      "pass": true,
+      "events": 5507
+    },
+    {
+      "check": "real_LMD:248+S.LMD",
+      "pass": true,
+      "events": 16152
+    },
+    {
+      "check": "real_LMD:248+r.LMD",
+      "pass": true,
+      "events": 9380
+    },
+    {
+      "check": "real_LMD:337.LMD",
+      "pass": true,
+      "events": 23066
+    },
+    {
+      "check": "real_LMD:350.LMD",
+      "pass": true,
+      "events": 16260
+    },
+    {
+      "check": "real_LMD:358.LMD",
+      "pass": true,
+      "events": 21421
+    },
+    {
+      "check": "real_LMD:597.LMD",
+      "pass": true,
+      "events": 9596
+    },
+    {
+      "check": "real_LMD:734.LMD",
+      "pass": true,
+      "events": 8980
+    },
+    {
+      "check": "real_LMD:744.LMD",
+      "pass": true,
+      "events": 7085
+    },
+    {
+      "check": "real_LMD:S.621.LMD",
+      "pass": true,
+      "events": 12144
+    },
+    {
+      "check": "real_LMD:SM239.LMD",
+      "pass": true,
+      "events": 6163
+    },
+    {
+      "check": "synthetic:FCS1.0",
+      "pass": true
+    },
+    {
+      "check": "synthetic:FCS2.0",
+      "pass": true
+    },
+    {
+      "check": "synthetic:FCS3.0",
+      "pass": true
+    },
+    {
+      "check": "synthetic:FCS3.1",
+      "pass": true
+    },
+    {
+      "check": "synthetic:FCS3.2 mixed <",
+      "pass": true
+    },
+    {
+      "check": "synthetic:FCS3.2 mixed >",
+      "pass": true
+    },
+    {
+      "check": "concordant_no_false_flags",
+      "pass": true
+    },
+    {
+      "check": "shifted_peer_flagged",
+      "pass": true
+    },
+    {
+      "check": "identical_marginals_joint_flag",
+      "pass": true
+    },
+    {
+      "check": "small_N_semantics:1",
+      "pass": true
+    },
+    {
+      "check": "small_N_semantics:2",
+      "pass": true
+    },
+    {
+      "check": "small_N_semantics:3",
+      "pass": true
+    },
+    {
+      "check": "small_N_semantics:4",
+      "pass": true
+    },
+    {
+      "check": "complete_cases_no_imputation",
+      "pass": true
+    },
+    {
+      "check": "cytometry:shared_attribute_coverage",
+      "pass": true
+    },
+    {
+      "check": "cytometry:all_events",
+      "pass": true
+    },
+    {
+      "check": "microscopy:shared_attribute_coverage",
+      "pass": true
+    },
+    {
+      "check": "microscopy:all_events",
+      "pass": true
+    },
+    {
+      "check": "known_hierarchy_variance_recovery",
+      "pass": true,
+      "estimate": {
+        "estimator": "nested_random_intercept_sufficient_statistics_REML-1",
+        "n_biological": 20,
+        "n_nested": 100,
+        "n_particles": 10000,
+        "low_biological_n": false,
+        "sigma2_bio": 5.497821578385656,
+        "sigma2_nested_sample": 1.0387590699781126,
+        "sigma2_particle": 0.9753939799330105,
+        "bio_variance_proportion": 0.731874354004867,
+        "nested_variance_proportion": 0.1382804284329212,
+        "particle_variance_proportion": 0.12984521756221182,
+        "icc_bio": 0.731874354004867,
+        "icc_same_nested_sample": 0.8701547824377882,
+        "model_status": "converged",
+        "reason": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    },
+    {
+      "check": "equal_bio_influential_shift",
+      "pass": true
+    },
+    {
+      "check": "large_full_event_counts",
+      "pass": true
+    }
+  ],
+  "timings": [
+    {
+      "scenario": "concordant",
+      "seconds": 0.0825156020000577,
+      "samples": 5,
+      "rows": 1600,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "multivariable shift",
+      "seconds": 0.07737571999950887,
+      "samples": 5,
+      "rows": 1600,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "joint only covariance",
+      "seconds": 0.08301534699967306,
+      "samples": 5,
+      "rows": 2500,
+      "variables": 2,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "small N=1",
+      "seconds": 0.009845436000432528,
+      "samples": 1,
+      "rows": 300,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "small N=2",
+      "seconds": 0.013877090000278258,
+      "samples": 2,
+      "rows": 610,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "small N=3",
+      "seconds": 0.03199827099979302,
+      "samples": 3,
+      "rows": 930,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "small N=4",
+      "seconds": 0.049284194000392745,
+      "samples": 4,
+      "rows": 1260,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "missing values",
+      "seconds": 0.08387601200047357,
+      "samples": 5,
+      "rows": 1600,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "frozen cytometry audit",
+      "seconds": 0.30281581999952323,
+      "samples": 2,
+      "rows": 24000,
+      "variables": 12,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "frozen microscopy audit",
+      "seconds": 0.4698123750004015,
+      "samples": 3,
+      "rows": 15000,
+      "variables": 17,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "unbalanced hierarchical influence",
+      "seconds": 0.3929447650007205,
+      "samples": 14,
+      "rows": 960,
+      "variables": 1,
+      "projections": 64,
+      "subsampling": false
+    },
+    {
+      "scenario": "250000-event full-data profile",
+      "seconds": 14.612477126999693,
+      "samples": 5,
+      "rows": 250000,
+      "variables": 3,
+      "projections": 64,
+      "subsampling": false
+    }
+  ],
+  "peak_process_rss_MiB": 139.73828125,
+  "MQD": "blocked: verified same-acquisition native/export corpus unavailable",
+  "FCS1.0": "synthetic only: real reference acceptance blocked",
+  "FCS3.2": "synthetic mixed numeric truth; external/vendor acquisition acceptance pending"
+}

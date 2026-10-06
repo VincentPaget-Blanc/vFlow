@@ -1,0 +1,200 @@
+FFFFFF.                                                                  [100%]
+=================================== FAILURES ===================================
+_____________ test_unavailable_members_stay_independent[0-missing] _____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba2e8bf830>, <vflow.legacy.vflow_app.Flow...st-0/test_unavailable_members_stay_0/B.csv', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba482968a0>
+failure = 'missing', remove_index = 0
+
+    @pytest.mark.parametrize('failure', ['missing', 'decode'])
+    @pytest.mark.parametrize('remove_index', [0, 1])
+    def test_unavailable_members_stay_independent(experiment, tmp_path, monkeypatch, failure, remove_index):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        ids = [s.sample_id for s in owner.document.samples.values() if s.source.absolute_path == str(source)]
+        assert len(ids) == 2
+        for sid in ids: app._exclude_file(owner.path_for(sid))
+        expected = set(owner.document.samples); dest = tmp_path/'members.vflow'; assert owner.save(path=dest)
+        moved = tmp_path/'moved.lmd'
+        if failure == 'missing': source.rename(moved)
+        import vflow.io.registry as registry
+        reader = registry.read_flow_source
+        def unavailable(path):
+            if str(path) == str(source): raise ValueError('Temporary container decoder failure')
+            return reader(path)
+        with monkeypatch.context() as patch:
+            if failure == 'decode': patch.setattr(registry, 'read_flow_source', unavailable)
+            assert owner.open(dest)
+            keys = [owner.path_for(sid) for sid in ids]
+>           assert len(set(keys)) == 2 and len(app.excluded_files) == 2
+E           AssertionError: assert (1 == 2)
+E            +  where 1 = len({'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0/plate.lmd'})
+E            +    where {'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0/plate.lmd'} = set(['/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0/plate.lmd', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_0/plate.lmd'])
+
+tests/test_release_edges_gui_rc15.py:33: AssertionError
+_____________ test_unavailable_members_stay_independent[0-decode] ______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba2d609df0>, <vflow.legacy.vflow_app.Flow...st-0/test_unavailable_members_stay_1/B.csv', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba2d6083e0>
+failure = 'decode', remove_index = 0
+
+    @pytest.mark.parametrize('failure', ['missing', 'decode'])
+    @pytest.mark.parametrize('remove_index', [0, 1])
+    def test_unavailable_members_stay_independent(experiment, tmp_path, monkeypatch, failure, remove_index):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        ids = [s.sample_id for s in owner.document.samples.values() if s.source.absolute_path == str(source)]
+        assert len(ids) == 2
+        for sid in ids: app._exclude_file(owner.path_for(sid))
+        expected = set(owner.document.samples); dest = tmp_path/'members.vflow'; assert owner.save(path=dest)
+        moved = tmp_path/'moved.lmd'
+        if failure == 'missing': source.rename(moved)
+        import vflow.io.registry as registry
+        reader = registry.read_flow_source
+        def unavailable(path):
+            if str(path) == str(source): raise ValueError('Temporary container decoder failure')
+            return reader(path)
+        with monkeypatch.context() as patch:
+            if failure == 'decode': patch.setattr(registry, 'read_flow_source', unavailable)
+            assert owner.open(dest)
+            keys = [owner.path_for(sid) for sid in ids]
+>           assert len(set(keys)) == 2 and len(app.excluded_files) == 2
+E           AssertionError: assert (1 == 2)
+E            +  where 1 = len({'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1/plate.lmd'})
+E            +    where {'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1/plate.lmd'} = set(['/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1/plate.lmd', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_1/plate.lmd'])
+
+tests/test_release_edges_gui_rc15.py:33: AssertionError
+_____________ test_unavailable_members_stay_independent[1-missing] _____________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba487248c0>, <vflow.legacy.vflow_app.Flow...st-0/test_unavailable_members_stay_2/B.csv', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba2e8550d0>
+failure = 'missing', remove_index = 1
+
+    @pytest.mark.parametrize('failure', ['missing', 'decode'])
+    @pytest.mark.parametrize('remove_index', [0, 1])
+    def test_unavailable_members_stay_independent(experiment, tmp_path, monkeypatch, failure, remove_index):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        ids = [s.sample_id for s in owner.document.samples.values() if s.source.absolute_path == str(source)]
+        assert len(ids) == 2
+        for sid in ids: app._exclude_file(owner.path_for(sid))
+        expected = set(owner.document.samples); dest = tmp_path/'members.vflow'; assert owner.save(path=dest)
+        moved = tmp_path/'moved.lmd'
+        if failure == 'missing': source.rename(moved)
+        import vflow.io.registry as registry
+        reader = registry.read_flow_source
+        def unavailable(path):
+            if str(path) == str(source): raise ValueError('Temporary container decoder failure')
+            return reader(path)
+        with monkeypatch.context() as patch:
+            if failure == 'decode': patch.setattr(registry, 'read_flow_source', unavailable)
+            assert owner.open(dest)
+            keys = [owner.path_for(sid) for sid in ids]
+>           assert len(set(keys)) == 2 and len(app.excluded_files) == 2
+E           AssertionError: assert (1 == 2)
+E            +  where 1 = len({'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2/plate.lmd'})
+E            +    where {'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2/plate.lmd'} = set(['/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2/plate.lmd', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_2/plate.lmd'])
+
+tests/test_release_edges_gui_rc15.py:33: AssertionError
+_____________ test_unavailable_members_stay_independent[1-decode] ______________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba2538fbf0>, <vflow.legacy.vflow_app.Flow...st-0/test_unavailable_members_stay_3/B.csv', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba2538deb0>
+failure = 'decode', remove_index = 1
+
+    @pytest.mark.parametrize('failure', ['missing', 'decode'])
+    @pytest.mark.parametrize('remove_index', [0, 1])
+    def test_unavailable_members_stay_independent(experiment, tmp_path, monkeypatch, failure, remove_index):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        a, _ = write_fixture(tmp_path/'a.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(1,2),(3,4),(5,6)])
+        b, _ = write_fixture(tmp_path/'b.fcs', types=('I','I'), bits=(16,16), names=('X','Y'), rows=[(9,8),(7,6),(5,4)])
+        source = tmp_path/'plate.lmd'; raw = a.read_bytes()+b.read_bytes(); source.write_bytes(raw)
+        app._load_paths([str(source)]); owner.capture(app)
+        ids = [s.sample_id for s in owner.document.samples.values() if s.source.absolute_path == str(source)]
+        assert len(ids) == 2
+        for sid in ids: app._exclude_file(owner.path_for(sid))
+        expected = set(owner.document.samples); dest = tmp_path/'members.vflow'; assert owner.save(path=dest)
+        moved = tmp_path/'moved.lmd'
+        if failure == 'missing': source.rename(moved)
+        import vflow.io.registry as registry
+        reader = registry.read_flow_source
+        def unavailable(path):
+            if str(path) == str(source): raise ValueError('Temporary container decoder failure')
+            return reader(path)
+        with monkeypatch.context() as patch:
+            if failure == 'decode': patch.setattr(registry, 'read_flow_source', unavailable)
+            assert owner.open(dest)
+            keys = [owner.path_for(sid) for sid in ids]
+>           assert len(set(keys)) == 2 and len(app.excluded_files) == 2
+E           AssertionError: assert (1 == 2)
+E            +  where 1 = len({'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3/plate.lmd'})
+E            +    where {'/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3/plate.lmd'} = set(['/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3/plate.lmd', '/tmp/pytest-of-root/pytest-0/test_unavailable_members_stay_3/plate.lmd'])
+
+tests/test_release_edges_gui_rc15.py:33: AssertionError
+_________________ test_save_as_modal_rechecks_workspace[clear] _________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba28fbe2d0>, <vflow.legacy.vflow_app.Flow...st-0/test_save_as_modal_rechecks_wo0/B.csv', '/tmp/pytest-of-root/pytest-0/test_save_as_modal_rechecks_wo0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_save_as_modal_rechecks_wo0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba28fbee40>
+replacement = 'clear'
+
+    @pytest.mark.parametrize('replacement', ['clear', 'reopen'])
+    def test_save_as_modal_rechecks_workspace(experiment, tmp_path, monkeypatch, replacement):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        old = tmp_path/'original.vflow'; assert owner.save(path=old)
+        target = tmp_path/'stale-dialog.vflow'
+        def choose(**k):
+            if replacement == 'clear': owner.clear()
+            else: assert owner.open(old)
+            return str(target)
+        monkeypatch.setattr('tkinter.filedialog.asksaveasfilename', choose)
+>       assert owner.save(save_as=True) is False
+E       assert True is False
+E        +  where True = save(save_as=True)
+E        +    where save = <vflow.workspace.controller.WorkspaceController object at 0x7fba253ee930>.save
+
+tests/test_release_edges_gui_rc15.py:63: AssertionError
+________________ test_save_as_modal_rechecks_workspace[reopen] _________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7fba24ec4a10>, <vflow.legacy.vflow_app.Flow...st-0/test_save_as_modal_rechecks_wo1/B.csv', '/tmp/pytest-of-root/pytest-0/test_save_as_modal_rechecks_wo1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_save_as_modal_rechecks_wo1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fba24ec4ec0>
+replacement = 'reopen'
+
+    @pytest.mark.parametrize('replacement', ['clear', 'reopen'])
+    def test_save_as_modal_rechecks_workspace(experiment, tmp_path, monkeypatch, replacement):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        old = tmp_path/'original.vflow'; assert owner.save(path=old)
+        target = tmp_path/'stale-dialog.vflow'
+        def choose(**k):
+            if replacement == 'clear': owner.clear()
+            else: assert owner.open(old)
+            return str(target)
+        monkeypatch.setattr('tkinter.filedialog.asksaveasfilename', choose)
+>       assert owner.save(save_as=True) is False
+E       assert True is False
+E        +  where True = save(save_as=True)
+E        +    where save = <vflow.workspace.controller.WorkspaceController object at 0x7fba24ec7d70>.save
+
+tests/test_release_edges_gui_rc15.py:63: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[0-missing]
+FAILED tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[0-decode]
+FAILED tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[1-missing]
+FAILED tests/test_release_edges_gui_rc15.py::test_unavailable_members_stay_independent[1-decode]
+FAILED tests/test_release_edges_gui_rc15.py::test_save_as_modal_rechecks_workspace[clear]
+FAILED tests/test_release_edges_gui_rc15.py::test_save_as_modal_rechecks_workspace[reopen]
+6 failed, 1 passed in 7.22s

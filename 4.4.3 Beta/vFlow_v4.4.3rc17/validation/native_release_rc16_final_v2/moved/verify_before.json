@@ -1,0 +1,12 @@
+{
+  "phase": "verify_before",
+  "python": "3.12.14",
+  "tk": "9.0.4",
+  "passed": true,
+  "previous_revision_intact": true,
+  "saved_audit_events": 24000,
+  "review_note_preserved": true,
+  "bundle_bytes_preserved": true,
+  "seconds": 9.825,
+  "errors": []
+}

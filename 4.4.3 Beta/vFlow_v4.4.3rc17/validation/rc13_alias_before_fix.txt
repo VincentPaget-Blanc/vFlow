@@ -1,0 +1,71 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_____ test_unloaded_exclusion_identity_survives_repeated_capture[symlink] ______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f6a00e81f70>, <vflow.legacy.vflow_app.Flow...-22/test_unloaded_exclusion_identi0/B.csv', '/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6a0052c800>
+kind = 'symlink'
+
+    @pytest.mark.parametrize('kind', ['symlink', 'relative_missing'])
+    def test_unloaded_exclusion_identity_survives_repeated_capture(experiment, tmp_path, monkeypatch, kind):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        monkeypatch.chdir(tmp_path)
+        if kind == 'symlink':
+            raw = tmp_path / 'not-loaded.csv'; raw.write_text('X,Y\n1,2\n')
+            alias = tmp_path / 'alias.csv'; alias.symlink_to(raw); path = str(alias)
+        else: path = 'relative-missing.csv'
+        app._dataset_state_obj().register_unloaded_exclusion(path)
+        owner.capture(app); sid = owner.sample_id(path)
+>       assert sid and owner.document.samples[sid].excluded
+E       assert (None)
+
+/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc12_candidate/tests/test_bug_hunt_gui_rc13.py:88: AssertionError
+_ test_unloaded_exclusion_identity_survives_repeated_capture[relative_missing] _
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f6a0d0b7c50>, <vflow.legacy.vflow_app.Flow...-22/test_unloaded_exclusion_identi1/B.csv', '/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi1/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f69fdf92330>
+kind = 'relative_missing'
+
+    @pytest.mark.parametrize('kind', ['symlink', 'relative_missing'])
+    def test_unloaded_exclusion_identity_survives_repeated_capture(experiment, tmp_path, monkeypatch, kind):
+        root, manager, app, paths, errors = experiment; owner = app._workspace
+        monkeypatch.chdir(tmp_path)
+        if kind == 'symlink':
+            raw = tmp_path / 'not-loaded.csv'; raw.write_text('X,Y\n1,2\n')
+            alias = tmp_path / 'alias.csv'; alias.symlink_to(raw); path = str(alias)
+        else: path = 'relative-missing.csv'
+        app._dataset_state_obj().register_unloaded_exclusion(path)
+>       owner.capture(app); sid = owner.sample_id(path)
+        ^^^^^^^^^^^^^^^^^^
+
+/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc12_candidate/tests/test_bug_hunt_gui_rc13.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc12_candidate/vflow/workspace/controller.py:208: in capture
+    self.sync_sources()
+/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc12_candidate/vflow/workspace/controller.py:196: in sync_sources
+    self.document.samples[sid] = SampleReference(sid, Path(path).name, FileReference.create(source,self.path), source_member_id=member)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/workspace/scratch/21ab9582eaac/vFlow_v4.4.3rc12_candidate/vflow/workspace/model.py:72: in create
+    ref = cls(str(p), filename=p.name, size=p.stat().st_size,
+                                            ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi1/relative-missing.csv')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-root/pytest-22/test_unloaded_exclusion_identi1/relative-missing.csv'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:840: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[symlink]
+FAILED tests/test_bug_hunt_gui_rc13.py::test_unloaded_exclusion_identity_survives_repeated_capture[relative_missing]
+2 failed, 7 deselected in 2.36s

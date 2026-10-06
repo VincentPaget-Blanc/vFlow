@@ -1,0 +1,21 @@
+{
+  "ids": [
+    "876b45b6-f025-4b18-9fd6-84b23d0db4bd",
+    "fe88b521-d221-41ba-b3a2-da19e5befc60",
+    "ce17dcd8-d444-46de-9b3d-adfcf9c98ea2",
+    "bad78573-3abd-46f1-821d-d4edee914fca"
+  ],
+  "gid": 0,
+  "child_gid": 0,
+  "raw_hashes": {
+    "Control_01.csv": "1e7364b1bdd308e6163b43587ed687ff75ba2287959e24348cb6a0d1ea7c7b5e",
+    "Control_02.csv": "b53ddffed3ba5befa184e80046e2942c5a6276210beb19522f5cb18b7a844733",
+    "Treatment_01.csv": "7c988e9bc8e3362b5229f65945124662ac8b64f047d32cf8864f6dfb3af6aded",
+    "Treatment_02.csv": "c99cddfe26974e59b195ec94bcedc4adf1f80e01761824830b49476559cf6ded"
+  },
+  "audit_id": "QC-20261005-37e8fff4ccf8",
+  "audit_sha": "e7744d4b1a900e04e85ddd563e23ba31c3e28b94fe1fcf43d47d498a95affd1f",
+  "original_sha": "346f99d4cc791d1c69beb3941afa6510a3b53a3da7ac14eba5a6aab5586a6070",
+  "original_gate": "/workspace/scratch/812e7f019f1f/vFlow_v4.4.3rc16/validation/native_release_rc16_final_v2/saved_recovery/study_gates_a51dbab0e58d.json",
+  "original_gate_sha": "cb767e36dc86885e51a97c987c118b60f817e9ce8fad5c028c6f1a70743c0e3d"
+}

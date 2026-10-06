@@ -1,0 +1,2 @@
+{"stage": "retired", "scenario": "audit", "tk": "9.0.4", "main_thread": 140283163084608, "pending": true}
+{"stage": "passed", "scenario": "audit", "finalizer_threads": [140283163084608, 140283163084608], "main_thread": 140283163084608}

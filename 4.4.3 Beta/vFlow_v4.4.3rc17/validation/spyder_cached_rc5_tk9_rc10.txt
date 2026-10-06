@@ -1,0 +1,7 @@
+Kernel cached RC5; child must load RC10.
+vFlow started in a separate process (PID 261).
+Startup output: /tmp/vflow-startup-hd191753.log
+PASS isolated Spyder launch 1: PASS [{"mode": "spyder-isolated", "version": "4.4.3rc10", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]
+vFlow started in a separate process (PID 275).
+Startup output: /tmp/vflow-startup-qljc2oyc.log
+PASS isolated Spyder launch 2: PASS [{"mode": "spyder-isolated", "version": "4.4.3rc10", "tk": "9.0.4", "mapped": true, "samples": 4, "events": 48000}]

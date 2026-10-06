@@ -1,0 +1,55 @@
+{
+  "vflow_workspace_gates": 1,
+  "workspace_id": "2b1c9e0e-5823-4e35-b4f5-21d2f3908bb8",
+  "tabs": {
+    "main": {
+      "population_lineage": [],
+      "global_session": {
+        "version": 3,
+        "x_channel": "",
+        "y_channel": "",
+        "gates": [
+          {
+            "id": 0,
+            "name": "Benchmark rectangle",
+            "type": "rectangle",
+            "auto_method": null,
+            "applied": true,
+            "color": "#ff6b6b",
+            "linestyle": "-",
+            "linewidth": 0.5,
+            "x_boundaries": [],
+            "y_boundary": null,
+            "x_thresh_active": [],
+            "y_thresh_active": false,
+            "y_boundaries": null,
+            "y_thresh_actives": [],
+            "x0": 45000.0,
+            "y0": 5000.0,
+            "x1": 105000.0,
+            "y1": 55000.0,
+            "vertices": []
+          }
+        ],
+        "x_scale": "asinh",
+        "y_scale": "asinh",
+        "cofactor": 150.0,
+        "x_transform_params": null,
+        "y_transform_params": null,
+        "gate_contexts": {
+          "0": {
+            "x_channel": "FSC-A",
+            "y_channel": "SSC-A",
+            "x_scale": "linear",
+            "y_scale": "linear",
+            "cofactor": null
+          }
+        },
+        "population_lineage": [],
+        "workspace_auto_fit": {}
+      },
+      "sample_sessions": {},
+      "sample_deleted_gate_ids": {}
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "baseline": "4.4.3rc4",
+  "candidate": "4.4.3rc5",
+  "original_modules": 116,
+  "unchanged_modules": 105,
+  "version_only_modules": 5,
+  "presentation_modules": 6,
+  "added_modules": [
+    "vflow/ui/task_sidebar.py"
+  ],
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

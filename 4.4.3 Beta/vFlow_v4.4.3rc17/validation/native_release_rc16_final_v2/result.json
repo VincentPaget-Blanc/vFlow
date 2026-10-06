@@ -1,0 +1,114 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "results": [
+    {
+      "name": "main_gc",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 0.188
+    },
+    {
+      "name": "kde",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 1.147
+    },
+    {
+      "name": "audit",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 4.383
+    },
+    {
+      "name": "scan",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 3.236
+    },
+    {
+      "name": "create",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 16.193
+    },
+    {
+      "name": "moved_workspace",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 6.733
+    },
+    {
+      "name": "long_session",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 206.793
+    },
+    {
+      "name": "interrupt_before",
+      "returncode": 83,
+      "expected": 83,
+      "passed": true,
+      "seconds": 6.951
+    },
+    {
+      "name": "verify_before",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 15.976
+    },
+    {
+      "name": "interrupt_after",
+      "returncode": 84,
+      "expected": 84,
+      "passed": true,
+      "seconds": 14.278
+    },
+    {
+      "name": "verify_after",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 12.222
+    },
+    {
+      "name": "saved_crash",
+      "returncode": 85,
+      "expected": 85,
+      "passed": true,
+      "seconds": 32.847
+    },
+    {
+      "name": "saved_recovery",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 14.768
+    },
+    {
+      "name": "unsaved_crash",
+      "returncode": 85,
+      "expected": 85,
+      "passed": true,
+      "seconds": 37.562
+    },
+    {
+      "name": "unsaved_recovery",
+      "returncode": 0,
+      "expected": 0,
+      "passed": true,
+      "seconds": 13.906
+    }
+  ],
+  "passed": true,
+  "unsafe_controls_run": false
+}

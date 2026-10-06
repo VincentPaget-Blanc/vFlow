@@ -1,0 +1,24 @@
+{
+  "baseline": "4.4.3rc6",
+  "candidate": "4.4.3rc7",
+  "original_modules": 118,
+  "unchanged_modules": 102,
+  "version_only_modules": 4,
+  "changed_feature_and_ui_modules": 12,
+  "added_modules": [
+    "vflow/core/threshold_edits.py"
+  ],
+  "unchanged_original_core_modules": 17,
+  "protected_statistics_ingestion_service_modules": 41,
+  "changed_existing_controller_methods": [
+    "_compute_gate_stats_for",
+    "_on_thresh_toggle",
+    "export_stats"
+  ],
+  "new_controller_methods": [
+    "_delete_threshold"
+  ],
+  "unexpected_changes": [],
+  "analysis_version": "audit-4",
+  "review_policy": "review-3"
+}

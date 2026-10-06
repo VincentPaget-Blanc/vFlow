@@ -1,0 +1,73 @@
+{
+  "sources": [
+    "Control_01.csv",
+    "Control_02.csv",
+    "Treatment_01.csv",
+    "Treatment_02.csv"
+  ],
+  "events": {
+    "Control_01.csv": 12000,
+    "Control_02.csv": 12000,
+    "Treatment_01.csv": 12000,
+    "Treatment_02.csv": 12000
+  },
+  "screenshots": [
+    {
+      "file": "01_Samples_and_Files.png",
+      "viewport_fraction": 0.0,
+      "pixels": [
+        570,
+        1065
+      ]
+    },
+    {
+      "file": "02_Axes_and_Scales.png",
+      "viewport_fraction": 0.15928106600557793,
+      "pixels": [
+        570,
+        1065
+      ]
+    },
+    {
+      "file": "03_Manual_Gating.png",
+      "viewport_fraction": 0.423923148435079,
+      "pixels": [
+        570,
+        1065
+      ]
+    },
+    {
+      "file": "04_Automatic_Gating.png",
+      "viewport_fraction": 0.4924078091106291,
+      "pixels": [
+        570,
+        1065
+      ]
+    },
+    {
+      "file": "05_Gate_Manager_and_Statistics.png",
+      "viewport_fraction": 0.6399132321041214,
+      "pixels": [
+        570,
+        1065
+      ]
+    },
+    {
+      "file": "06_Exports_and_Analysis.png",
+      "viewport_fraction": 0.8373101952277657,
+      "pixels": [
+        570,
+        1065
+      ]
+    }
+  ],
+  "capture_font": {
+    "family": "fixed",
+    "size": 10,
+    "weight": "normal",
+    "slant": "roman",
+    "underline": 0,
+    "overstrike": 0
+  },
+  "errors": []
+}

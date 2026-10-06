@@ -1,0 +1,52 @@
+.............F                                                           [100%]
+=================================== FAILURES ===================================
+___________________ test_corrupt_unsaved_recovery_falls_back ___________________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7efc27093770>, <vflow.legacy.vflow_app.Flow...st-2/test_corrupt_unsaved_recovery_0/B.csv', '/tmp/pytest-of-root/pytest-2/test_corrupt_unsaved_recovery_0/C.csv'], [])
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_corrupt_unsaved_recovery_0')
+
+    @pytest.mark.skipif(not os.environ.get('DISPLAY'),reason='Tk display required')
+    def test_corrupt_unsaved_recovery_falls_back(experiment,tmp_path):
+        root,manager,app,paths,errors=experiment;owner=app._workspace
+        new_gate(app);owner.rename('Valid unsaved');owner.autosave();checkpoint=owner.recovery_path
+        corrupt=checkpoint.with_name('corrupt.vflow');corrupt.write_text('{bad')
+        later=checkpoint.stat().st_mtime_ns+1000000;os.utime(corrupt,ns=(later,later))
+>       owner.clear();owner.offer_unsaved_recovery()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_integrity_edges_rc16.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+vflow/workspace/controller.py:1151: in offer_unsaved_recovery
+    snapshot=Workspace.load(path);gate=snapshot.default_gate_session
+             ^^^^^^^^^^^^^^^^^^^^
+vflow/workspace/model.py:258: in load
+    raw=Path(path).read_bytes();data=json.loads(raw.decode('utf-8'),parse_constant=reject_constant)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py:359: in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7efc26e7bd40>, s = '{bad', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py:354: JSONDecodeError
+=========================== short test summary info ============================
+FAILED tests/test_integrity_edges_rc16.py::test_corrupt_unsaved_recovery_falls_back
+1 failed, 13 passed in 8.53s

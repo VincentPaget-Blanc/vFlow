@@ -1,0 +1,40 @@
+{
+  "all_checks_passed": true,
+  "version": "4.4.3rc16",
+  "ordinary_tests": 1663,
+  "focused_tests": 34,
+  "font_aware_native_focused_tests": 30,
+  "ingestion_tests": 61,
+  "source_integrity_tests": 13,
+  "compound_scenarios": 4,
+  "scientific_checks": 88,
+  "benchmark_files_preserved": 57,
+  "frozen_manifest_files": 39,
+  "native_release_phases": 15,
+  "workspace_persistence_phases": 4,
+  "actual_cached_RC5_Spyder_launches": 2,
+  "endurance_active_seconds": 1206.004,
+  "endurance_cycles": 125,
+  "matched_timing_repeats_per_version": 5,
+  "numerical_timing_results_identical": true,
+  "source_count": 123,
+  "wheel": "vflow-4.4.3rc16-py3-none-any.whl",
+  "wheel_sha256": "dca15e21016784a0d72512e610db57fdc56dd8ba15a8b07ae5a3865b8933b3f8",
+  "wheel_matches_source": true,
+  "embedded_README_matches_source": true,
+  "numerical_algorithms_changed": false,
+  "source_launcher_changed": false,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "acceptance_platform": "Linux / Python 3.12.14 / Tk 9.0.4 / Xvfb; actual SpyderShell",
+  "native_platform_limits": [
+    "Fresh Tk 8.6",
+    "Native macOS",
+    "Native Windows"
+  ],
+  "format_limits": [
+    "MQD same-acquisition native/export truth remains required",
+    "real FCS1.0 acquisition acceptance pending",
+    "external/vendor FCS3.2 acquisition acceptance pending"
+  ]
+}

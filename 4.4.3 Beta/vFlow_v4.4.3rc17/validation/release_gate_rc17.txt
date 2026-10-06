@@ -1,0 +1,26 @@
+{
+  "all_checks_passed": true,
+  "version": "4.4.3rc17",
+  "ordinary_tests": 1690,
+  "test_modules": 162,
+  "shards": 4,
+  "shard_seconds": [
+    166.311,
+    403.866,
+    473.421,
+    297.59
+  ],
+  "release_expectation_cases_rechecked": 24,
+  "outdated_expectations_corrected": 7,
+  "focused_interaction_tests": 28,
+  "new_interaction_tests": 27,
+  "tk86_interaction_and_audit_tests": 51,
+  "scientific_checks": 88,
+  "raw_benchmark_files_preserved": 57,
+  "benchmark_app_workflows": 36,
+  "visual_interaction_checks": 8,
+  "screenshots": 6,
+  "native_runtime": "Linux/Python 3.12/Tk 9.0.4; focused and visual Linux/Tk 8.6.14",
+  "wheel_sha256": "adb9edf54f9c6c725c3b339de41ba27b2388771b9765ab18e83865ae2a38bd0d",
+  "source_count": 123
+}

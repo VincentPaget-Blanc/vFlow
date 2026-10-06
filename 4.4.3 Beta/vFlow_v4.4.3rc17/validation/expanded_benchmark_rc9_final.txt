@@ -1,0 +1,10 @@
+concordant 0.082 seconds
+multivariable shift 0.131 seconds
+joint only covariance 0.089 seconds
+small N=1 0.009 seconds
+small N=2 0.014 seconds
+small N=3 0.03 seconds
+small N=4 0.049 seconds
+missing values 0.08 seconds
+frozen cytometry audit 0.293 seconds
+frozen microscopy audit 0.504 seconds

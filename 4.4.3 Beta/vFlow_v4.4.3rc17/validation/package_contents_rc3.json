@@ -1,0 +1,13 @@
+{
+  "version": "4.4.3rc3",
+  "wheel": "vflow-4.4.3rc3-py3-none-any.whl",
+  "wheel_bytes": 769716,
+  "wheel_sha256": "e8df51cdccfab180d1f30554206cc05cdcb01f51eee1f05b6846b8aca60b537a",
+  "wheel_python_sources_match": true,
+  "full_suite": 1302,
+  "new_regressions": 28,
+  "final_edges_and_help": 33,
+  "frozen_checks": 53,
+  "expanded_checks": 35,
+  "frozen_hashes": 39
+}

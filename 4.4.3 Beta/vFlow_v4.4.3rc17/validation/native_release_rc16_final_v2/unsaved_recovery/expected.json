@@ -1,0 +1,21 @@
+{
+  "ids": [
+    "5ba3103e-385e-4e9b-b1f9-a1b58060f7a1",
+    "563f3b2c-710a-4d44-9c79-461d1d736cc8",
+    "b53e2694-72ce-47e1-a8b4-3afd08e24587",
+    "820d822b-c54c-457a-9f58-be84dc35b6b9"
+  ],
+  "gid": 0,
+  "child_gid": 0,
+  "raw_hashes": {
+    "Control_01.csv": "1e7364b1bdd308e6163b43587ed687ff75ba2287959e24348cb6a0d1ea7c7b5e",
+    "Control_02.csv": "b53ddffed3ba5befa184e80046e2942c5a6276210beb19522f5cb18b7a844733",
+    "Treatment_01.csv": "7c988e9bc8e3362b5229f65945124662ac8b64f047d32cf8864f6dfb3af6aded",
+    "Treatment_02.csv": "c99cddfe26974e59b195ec94bcedc4adf1f80e01761824830b49476559cf6ded"
+  },
+  "audit_id": "QC-20261005-d74d22e96386",
+  "audit_sha": "0d9d0e8e9770520d249d92e588a907b5450a846c2b99b8efdfd2a639cbf27ee8",
+  "original_sha": null,
+  "original_gate": null,
+  "original_gate_sha": null
+}

@@ -1,0 +1,27 @@
+{
+  "ids": [
+    "106a9b42-3119-4321-be98-2601536d87dd",
+    "21de419f-61b2-4622-9e3e-b326652c5b61",
+    "3634a57f-fc7b-45c8-be40-a9f50d4f8eaf",
+    "c7559513-d868-490c-b411-bbc6d5738926"
+  ],
+  "gid": 0,
+  "x1": 105000.0,
+  "counts": {
+    "Control_01": 7273,
+    "Control_02": 7020,
+    "Treatment_01": 7081,
+    "Treatment_02": 7058
+  },
+  "raw_hashes": {
+    "Control_01.csv": "1e7364b1bdd308e6163b43587ed687ff75ba2287959e24348cb6a0d1ea7c7b5e",
+    "Control_02.csv": "b53ddffed3ba5befa184e80046e2942c5a6276210beb19522f5cb18b7a844733",
+    "Treatment_01.csv": "7c988e9bc8e3362b5229f65945124662ac8b64f047d32cf8864f6dfb3af6aded",
+    "Treatment_02.csv": "c99cddfe26974e59b195ec94bcedc4adf1f80e01761824830b49476559cf6ded"
+  },
+  "audit_id": "QC-20261005-975b0574235b",
+  "audit_sha": "df53aec3cfccb0aa598dd63145ceef81819a93b31f41333d5b73bae53a5433a1",
+  "copy_sha": "b750db44909c56f9bca22821d1142f68a94b0f122242644dc14f222d755d065a",
+  "copy_gate": "session-copy_gates_2a6bc60d38f2.json",
+  "copy_gate_sha": "a895f68c741776707537019ecbf1e84379d4e2404b221d75aab9941cc446bd80"
+}

@@ -1,0 +1,21 @@
+{
+  "baseline": "4.4.3rc15",
+  "candidate": "4.4.3rc16",
+  "verified_baseline_manifest_files": 894,
+  "original_modules": 122,
+  "unchanged_modules": 114,
+  "version_only_modules": 3,
+  "behavioral_modules": 5,
+  "unchanged_core_modules": 19,
+  "protected_statistical_modules": 11,
+  "no_original_methods_removed": true,
+  "all_legacy_methods_unchanged": true,
+  "population_capture_unchanged": true,
+  "source_launcher_changed": false,
+  "analysis_version": "audit-4",
+  "review_policy": "review-3",
+  "launcher_sha256": "f3268e4e22c168300f9a8fce4811b7f173fb5ed63b371e92aac28246d22d735f",
+  "new_module_sha256": {
+    "vflow/workspace/file_guard.py": "94a6796221d590f101f70a5e9fd47d16ee807305ee7361bb61347ea06791c22e"
+  }
+}

@@ -1,0 +1,68 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 14%]
+..................................F..................................... [ 18%]
+........................................................................ [ 23%]
+........................................................................ [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 37%]
+........................................................................ [ 42%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 56%]
+........................................................................ [ 61%]
+........................................................................ [ 65%]
+........................................................................ [ 70%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 84%]
+........................................................................ [ 89%]
+........................................F...F........................... [ 94%]
+........................................................................ [ 98%]
+...................                                                      [100%]
+=================================== FAILURES ===================================
+_ test_save_controller_catches_only_expected_validation_errors_source_contract _
+
+    def test_save_controller_catches_only_expected_validation_errors_source_contract():
+        import inspect
+        from vflow.controllers.project_data_load_coordinator import ProjectDataLoadCoordinator
+    
+        block = inspect.getsource(ProjectDataLoadCoordinator.save_gates)
+        assert "except (ThresholdSchemaError, ValueError) as exc:" in block
+        assert "except Exception" not in block
+>       assert block.index("build_gate_session_payload(") < block.index("with open(path, 'w') as fh:")
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_behavior_review_03_threshold_schema_validation.py:130: ValueError
+____________ test_project_data_coordinator_owns_all_three_workflows ____________
+
+    def test_project_data_coordinator_owns_all_three_workflows():
+        load_src = inspect.getsource(ProjectDataLoadCoordinator.load_paths)
+        save_src = inspect.getsource(ProjectDataLoadCoordinator.save_gates)
+        gate_load_src = inspect.getsource(ProjectDataLoadCoordinator.load_gates)
+    
+        assert "plan_path_admission" in load_src
+        assert "commit_loaded_file(path, df)" in load_src
+        assert load_src.index("h._add_file_row(path)") < load_src.index(
+            "commit_loaded_file(path, df)")
+    
+>       assert "build_gate_session_payload(" in save_src
+E       assert 'build_gate_session_payload(' in '    def load_excluded_list(\n        self, *, filedialog: Any, messagebox: Any, last_folder_getter: Callable[[], str ...cluded list loaded: " + ", ".join(parts)\n            if parts else "Excluded list loaded: nothing new to exclude.")\n'
+
+tests/test_v43_project_data_load_coordinator.py:30: AssertionError
+__ test_gate_session_load_uses_a3_axis_transposition_for_pure_saved_axis_swap __
+
+    def test_gate_session_load_uses_a3_axis_transposition_for_pure_saved_axis_swap():
+        import inspect
+        from vflow.controllers.project_data_load_coordinator import ProjectDataLoadCoordinator
+        src = inspect.getsource(ProjectDataLoadCoordinator.load_gates)
+>       assert "is_pure_axis_swap" in src
+E       assert 'is_pure_axis_swap' in '    def save_gates(self, *, filedialog: Any, messagebox: Any) -> None:\n        """Serialize the current gate session..., n))\n        messagebox.showinfo(\n            "Save Gates", gate_save_message(path, n, h.x_channel, h.y_channel))\n'
+
+tests/test_v43_project_data_load_coordinator.py:127: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_behavior_review_03_threshold_schema_validation.py::test_save_controller_catches_only_expected_validation_errors_source_contract
+FAILED tests/test_v43_project_data_load_coordinator.py::test_project_data_coordinator_owns_all_three_workflows
+FAILED tests/test_v43_project_data_load_coordinator.py::test_gate_session_load_uses_a3_axis_transposition_for_pure_saved_axis_swap
+3 failed, 1528 passed in 202.24s (0:03:22)

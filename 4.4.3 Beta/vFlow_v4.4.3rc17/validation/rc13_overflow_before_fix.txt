@@ -1,0 +1,76 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+__________ test_workspace_ui_validated_before_restore[workspace-ui12] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-19/test_workspace_ui_validated_be0')
+ui = {'sidebar_width': 1e+100}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:23: Failed
+__________ test_workspace_ui_validated_before_restore[workspace-ui13] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-19/test_workspace_ui_validated_be1')
+ui = {'sample_panel_fraction': 1e+308}, where = 'workspace'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:23: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui12] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-19/test_workspace_ui_validated_be2')
+ui = {'sidebar_width': 1e+100}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:23: Failed
+_____________ test_workspace_ui_validated_before_restore[tab-ui13] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-19/test_workspace_ui_validated_be3')
+ui = {'sample_panel_fraction': 1e+308}, where = 'tab'
+
+    @pytest.mark.parametrize('ui', BAD_UI)
+    @pytest.mark.parametrize('where', ['workspace', 'tab'])
+    def test_workspace_ui_validated_before_restore(tmp_path, ui, where):
+        d = Workspace().payload()
+        if where == 'workspace': d['ui_state'].update(ui)
+        else: d['tabs']['main'] = {'ui_state': ui}
+        p = tmp_path / 'bad.vflow'; p.write_text(json.dumps(d))
+>       with pytest.raises(ValueError): Workspace.load(p)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bug_hunt_rc13.py:23: Failed
+=========================== short test summary info ============================
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui12]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[workspace-ui13]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui12]
+FAILED tests/test_bug_hunt_rc13.py::test_workspace_ui_validated_before_restore[tab-ui13]
+4 failed, 32 deselected in 0.40s
