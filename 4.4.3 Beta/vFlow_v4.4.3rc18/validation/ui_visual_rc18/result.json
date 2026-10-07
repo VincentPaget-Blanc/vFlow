@@ -1,0 +1,68 @@
+{
+  "passed": 9,
+  "checks": [
+    "Two persistent row targets and independently inactive third sample",
+    "Selecting/toggling keeps Overlay",
+    "Multi-target selection disables single-sample Show/Exclude",
+    "Three gates have one editor and no repeated styling controls",
+    "Other-sample deactivation keeps Cycle identity",
+    "Prepared benchmark audit with eligible variables",
+    "Audit mouse variable choices remain additive",
+    "Raw benchmark bytes unchanged",
+    "No callback errors"
+  ],
+  "errors": [],
+  "views": [
+    {
+      "name": "01_Data_selection",
+      "size": [
+        407,
+        962
+      ]
+    },
+    {
+      "name": "02_Plot",
+      "size": [
+        407,
+        962
+      ]
+    },
+    {
+      "name": "02_Gates",
+      "size": [
+        407,
+        962
+      ]
+    },
+    {
+      "name": "02_Analysis",
+      "size": [
+        407,
+        962
+      ]
+    },
+    {
+      "name": "05_Selected_gate",
+      "size": [
+        407,
+        962
+      ]
+    },
+    {
+      "name": "03_Audit_selection",
+      "size": [
+        965,
+        824
+      ]
+    },
+    {
+      "name": "04_Light_compact_window",
+      "size": [
+        407,
+        730
+      ]
+    }
+  ],
+  "tk": "8.6.14",
+  "events": 48000
+}

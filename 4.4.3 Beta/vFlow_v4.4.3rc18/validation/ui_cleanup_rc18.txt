@@ -1,0 +1,99 @@
+...........................................................FF...FF...... [ 74%]
+F........................                                                [100%]
+=================================== FAILURES ===================================
+__ test_threshold_panel_keeps_frozen_persistent_threshold_variable_semantics ___
+
+    def test_threshold_panel_keeps_frozen_persistent_threshold_variable_semantics():
+        src = inspect.getsource(GateManagerPresentationMixin._rebuild_thresh_panel)
+>       assert "gate['y_thresh_vars'] = y_tvs" in src
+E       assert "gate['y_thresh_vars'] = y_tvs" in "        def _validate_lw(event=None, g=gate, v=lw_var):\n            try: value = float(v.get())\n            except ...st be between 0.5 and 5.0.')\n            return 'break' if event is not None and event.keysym == 'Return' else None\n"
+
+tests/test_gate_manager_presentation.py:51: AssertionError
+_____ test_gate_style_ui_keeps_frozen_preview_draw_and_debounce_callbacks ______
+
+    def test_gate_style_ui_keeps_frozen_preview_draw_and_debounce_callbacks():
+        src = inspect.getsource(GateManagerPresentationMixin._build_gate_editor)
+>       assert "g['linestyle'] = _LINESTYLE_MAP.get(v.get(), '-')" in src
+E       assert "g['linestyle'] = _LINESTYLE_MAP.get(v.get(), '-')" in "                name_lbl.bind(key, lambda e, gid=gate['id']: self._select_gate(gid))\n"
+
+tests/test_gate_manager_presentation.py:59: AssertionError
+_____ test_single_sample_list_and_view_selector_and_all_original_settings ______
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f36507bf6b0>, <vflow.legacy.vflow_app.Flow...st-0/test_single_sample_list_and_vi0/B.csv', '/tmp/pytest-of-root/pytest-0/test_single_sample_list_and_vi0/C.csv'], [])
+
+    def test_single_sample_list_and_view_selector_and_all_original_settings(experiment):
+        root,manager,app,paths,errors=experiment
+        assert [app._task_notebook.tab(t,'text') for t in app._task_notebook.tabs()]==['Data','Plot','Gates','Analysis']
+        selectors=[w for w in widgets(app._side_outer) if isinstance(w,ttk.Radiobutton) and str(w.cget('variable'))==str(app.view_mode_var)]
+        assert sorted(w.cget('value') for w in selectors)==['cycle','overlay']
+        assert not app.file_list_frame.winfo_ismapped() and not app.file_list_frame.winfo_children()
+        assert len(app._workspace_tree.get_children())==3
+        expected=['view_mode_var','gate_scope_var','x_var','y_var','x_scale_var','y_scale_var','cofactor_str',
+                  'plot_type_var','dot_size_var','alpha_var','prob_var','show_marginals_var','show_labels_var',
+                  'show_legend_var','show_grid_var','fit_axes_var','lock_scale_var','gate_mode_var','gate_type_var',
+                  'auto_gate_input_var','auto_sensitivity_var','gmm_max_x_var','gmm_max_y_var','stats_mode_var']
+        assert {str(getattr(app,n)) for n in expected}<=control_variables(app)
+        dot=next(w for w in app._scale_widgets if str(w.cget('variable'))==str(app.dot_size_var))
+        assert float(dot.cget('from'))==1 and float(dot.cget('to'))==12 and float(dot.cget('resolution'))==1
+        alpha=next(w for w in app._scale_widgets if str(w.cget('variable'))==str(app.alpha_var))
+        assert float(alpha.cget('from'))==.05 and float(alpha.cget('to'))==1 and float(alpha.cget('resolution'))==.05
+        for var in (app.x_scale_var,app.y_scale_var):
+            menu=next(w for w in widgets(app._side_outer) if isinstance(w,ttk.Combobox) and str(w.cget('textvariable'))==str(var))
+            assert tuple(menu.cget('values'))==tuple(ALL_SCALES)
+        for task in ('Data','Plot','Gates','Analysis'):
+            app._select_sidebar_task(task);root.update()
+>           assert app._workspace_tree.winfo_ismapped()
+E           assert (1 and 0)
+E            +  where 1 = winfo_ismapped()
+E            +    where winfo_ismapped = <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview>.winfo_ismapped
+E            +      where <tkinter.ttk.Treeview object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame3.!treeview> = <vflow.legacy.vflow_app.FlowApp object at 0x7f3650ade840>._workspace_tree
+E            +  and   0 = winfo_ismapped()
+E            +    where winfo_ismapped = <tkinter.ttk.Button object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame5.!button>.winfo_ismapped
+E            +      where <tkinter.ttk.Button object .!notebook.!frame.!panedwindow.!frame.!canvas.!panedwindow.!frame.!frame.!frame5.!button> = <vflow.legacy.vflow_app.FlowApp object at 0x7f3650ade840>._btn_prev
+
+tests/test_task_sidebar_gui.py:46: AssertionError
+_________ test_original_action_callbacks_and_exports_remain_registered _________
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f3650369df0>, <vflow.legacy.vflow_app.Flow...st-0/test_original_action_callbacks0/B.csv', '/tmp/pytest-of-root/pytest-0/test_original_action_callbacks0/C.csv'], [])
+
+    
+    def test_original_action_callbacks_and_exports_remain_registered(experiment):
+        root,manager,app,paths,errors=experiment
+        registered=[]
+        for w in widgets(app._side_outer):
+            if 'command' in w.keys():registered.append(str(w.cget('command')))
+        required=['load_files','load_from_folder','clear_all_files','_select_all','_unselect_all',
+                  'save_excluded_list','load_excluded_list','apply_axes','open_axis_name_resolver',
+                  '_on_lock_scale_toggle','_edit_logicle_params','_on_gate_mode_change','_on_gate_type_change',
+                  '_poly_finish','_add_gate','_update_stats_display','save_gates',
+                  'load_gates','export_stats','export_gated_data','batch_export_stats','export_figure',
+>                 'open_polar_analysis','open_batch_plots','_on_view_mode_change','_cycle_prev','_cycle_next']
+E       AssertionError: assert not ['clear_gate', 'clear_all_gates']
+
+tests/test_task_sidebar_gui.py:60: AssertionError
+_____ test_sample_actions_exclude_restore_and_reveal_keep_other_activation _____
+
+experiment = (<tkinter.Tk object .>, <vflow.legacy.vflow_app.FlowTabManager object at 0x7f364fdcacc0>, <vflow.legacy.vflow_app.Flow...st-0/test_sample_actions_exclude_re0/B.csv', '/tmp/pytest-of-root/pytest-0/test_sample_actions_exclude_re0/C.csv'], [])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f364fdca000>
+
+        assert 'Gates apply to:' in app._workspace_scope_label.get()
+    
+    
+    def test_sample_actions_exclude_restore_and_reveal_keep_other_activation(experiment,monkeypatch):
+        root,manager,app,paths,errors=experiment;owner=app._workspace
+        monkeypatch.setattr(tk.Menu,'tk_popup',lambda *a,**k:None)
+        monkeypatch.setattr(tk.Menu,'grab_release',lambda *a,**k:None)
+        app.file_vars[paths[1]].set(False);app._on_active_files_changed()
+>       sid=owner.sample_id(paths[0]);app._workspace_tree.selection_set(sid)
+E       AssertionError: assert {'Assign gate session…', 'Clear sample-specific gate session', 'Exclude from analysis', 'Find Missing Files…', 'Locate source file…', 'Remove from workspace', ...} <= dict_keys(['Show sample', 'Toggle active', 'Exclude from analysis', 'Restore to analysis', 'Show in File Manager', 'As...ed view', 'Locate source file…', 'Find Missing Files…', 'Clear sample-specific gate session', 'Remove from workspace'])
+E        +  where dict_keys(['Show sample', 'Toggle active', 'Exclude from analysis', 'Restore to analysis', 'Show in File Manager', 'As...ed view', 'Locate source file…', 'Find Missing Files…', 'Clear sample-specific gate session', 'Remove from workspace']) = <built-in method keys of dict object at 0x7f364f841f80>()
+E        +    where <built-in method keys of dict object at 0x7f364f841f80> = {'Show sample': 0, 'Toggle active': 1, 'Exclude from analysis': 2, 'Restore to analysis': 3, ...}.keys
+
+tests/test_task_sidebar_gui.py:114: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_gate_manager_presentation.py::test_threshold_panel_keeps_frozen_persistent_threshold_variable_semantics
+FAILED tests/test_gate_manager_presentation.py::test_gate_style_ui_keeps_frozen_preview_draw_and_debounce_callbacks
+FAILED tests/test_task_sidebar_gui.py::test_single_sample_list_and_view_selector_and_all_original_settings
+FAILED tests/test_task_sidebar_gui.py::test_original_action_callbacks_and_exports_remain_registered
+FAILED tests/test_task_sidebar_gui.py::test_sample_actions_exclude_restore_and_reveal_keep_other_activation
+5 failed, 92 passed in 322.77s (0:05:22)

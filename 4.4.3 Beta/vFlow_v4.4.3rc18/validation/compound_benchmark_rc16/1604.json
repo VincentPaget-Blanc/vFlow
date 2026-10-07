@@ -1,0 +1,90 @@
+{
+  "seed": 1604,
+  "events": 48000,
+  "operations": [
+    [
+      "f88e65bb-f018-4dd3-aec2-07d0acdf51d1",
+      "active"
+    ],
+    [
+      "d9f9083e-9aeb-4475-8165-13db1b4ee148",
+      "active"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "active"
+    ],
+    [
+      "d9f9083e-9aeb-4475-8165-13db1b4ee148",
+      "save_reopen"
+    ],
+    [
+      "37b6b911-efad-4ef3-847e-89e5e1190ffb",
+      "active"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "active"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "toggle_exclusion"
+    ],
+    [
+      "37b6b911-efad-4ef3-847e-89e5e1190ffb",
+      "save_reopen"
+    ],
+    [
+      "f88e65bb-f018-4dd3-aec2-07d0acdf51d1",
+      "save_reopen"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "toggle_exclusion"
+    ],
+    [
+      "d9f9083e-9aeb-4475-8165-13db1b4ee148",
+      "active"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "save_reopen"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "save_reopen"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "save_reopen"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "save_reopen"
+    ],
+    [
+      "f88e65bb-f018-4dd3-aec2-07d0acdf51d1",
+      "active"
+    ],
+    [
+      "37b6b911-efad-4ef3-847e-89e5e1190ffb",
+      "toggle_exclusion"
+    ],
+    [
+      "37b6b911-efad-4ef3-847e-89e5e1190ffb",
+      "save_reopen"
+    ],
+    [
+      "f88e65bb-f018-4dd3-aec2-07d0acdf51d1",
+      "active"
+    ],
+    [
+      "5cceb7f9-c0bc-4b3f-b486-567cbe5986b4",
+      "save_reopen"
+    ]
+  ],
+  "nested_populations": 2,
+  "historical_events": 24000,
+  "raw_hashes_unchanged": true,
+  "passed": true
+}

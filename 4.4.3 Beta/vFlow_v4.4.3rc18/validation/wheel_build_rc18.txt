@@ -1,0 +1,9 @@
+Processing ./.
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: vflow
+  Building wheel for vflow (pyproject.toml): started
+  Building wheel for vflow (pyproject.toml): finished with status 'done'
+  Created wheel for vflow: filename=vflow-4.4.3rc18-py3-none-any.whl size=807027 sha256=50cac40a77de9467215c5911cc12ebc36cb1849015f752f8d2078ba406945333
+  Stored in directory: /tmp/pip-ephem-wheel-cache-5o_a9_bo/wheels/3b/d9/f3/0353e2988298f5b32e8f0d8f92fc928cc2fceb2d400929ffec
+Successfully built vflow

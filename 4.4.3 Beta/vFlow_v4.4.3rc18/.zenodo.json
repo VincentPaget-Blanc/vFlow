@@ -1,0 +1,28 @@
+{
+  "creators": [
+    {
+      "name": "Paget-Blanc, Vincent",
+      "type": "Researcher"
+    }
+  ],
+  "title": "vFlow: Visual Flow Cytometry & Immunofluorescence Analysis Tool",
+  "version": "4.4.3rc18",
+  "description": "vFlow desktop gating and single-particle analysis. Candidate 4.4.3rc18 consolidates duplicate controls, introduces a compact gate list with a selected-gate editor, and preserves all analysis options. Includes RC17 interaction fixes and RC16 workspace integrity and recovery. Scientific algorithms and benchmark acquisitions are unchanged. See UI_CLEANUP_v4.4.3rc18.md for validation and platform limits.",
+  "access_right": "open",
+  "license": "gpl-3.0-only",
+  "upload_type": "software",
+  "language": "eng",
+  "keywords": [
+    "flow cytometry",
+    "immunofluorescence",
+    "gating",
+    "FCS",
+    "single-particle analysis",
+    "synaptosomes",
+    "quantitative microscopy",
+    "Logicle",
+    "Gating-ML",
+    "batch statistics",
+    "Python"
+  ]
+}

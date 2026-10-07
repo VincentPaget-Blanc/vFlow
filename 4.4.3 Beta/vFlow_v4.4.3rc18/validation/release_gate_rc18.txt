@@ -1,0 +1,29 @@
+{
+  "version": "4.4.3rc18",
+  "all_checks_passed": true,
+  "ordinary_tests": 1693,
+  "test_modules": 163,
+  "focused_tests": 53,
+  "scientific_checks": 88,
+  "visual_checks": 9,
+  "screenshots": 7,
+  "raw_files_preserved": 57,
+  "native_runtime": "Linux/Python 3.12/Tk 8.6.14",
+  "native_macos_windows_verified": false,
+  "changed_application_modules": [
+    "vflow/__init__.py",
+    "vflow/io/derivatives.py",
+    "vflow/legacy/vflow_app.py",
+    "vflow/statistics/audit_runner.py",
+    "vflow/ui/file_list.py",
+    "vflow/ui/flow_app_shell.py",
+    "vflow/ui/gate_manager.py",
+    "vflow/ui/task_sidebar.py",
+    "vflow/workspace/controller.py",
+    "vflow/workspace/model.py",
+    "vflow/workspace/ui.py"
+  ],
+  "scientific_algorithms_unchanged": true,
+  "legacy_methods_unchanged_except_select_gate_presentation": true,
+  "wheel_sha256": "50cac40a77de9467215c5911cc12ebc36cb1849015f752f8d2078ba406945333"
+}

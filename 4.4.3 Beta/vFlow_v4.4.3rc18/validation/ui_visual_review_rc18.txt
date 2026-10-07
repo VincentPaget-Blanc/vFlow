@@ -1,0 +1,1 @@
+PASS 9 benchmark interaction checks; 7 native screenshots; Tk 8.6.14
